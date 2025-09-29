@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>En savoir plus sur nos prestataires - Viiveo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #3B82F6;
+            --primary-dark-color: #2563EB;
+            --text-color-dark: #1F2937;
+            --text-color-light: #6B7280;
+            --background-light: #F9FAFB;
+            --card-background: #FFFFFF;
+            --border-color: #E5E7EB;
+            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.1);
+            --border-radius-large: 1.5rem;
+            --border-radius-medium: 0.75rem;
+            --border-radius-small: 0.5rem;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 3rem 2rem;
+            background: var(--background-light);
+            color: var(--text-color-dark);
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: #0A1931;
+            text-align: center;
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .modal-header h2 {
+            color: #0A1931;
+        }
+
+        .presta-card {
+            background: var(--card-background);
+            border-radius: var(--border-radius-large);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .presta-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .presta-card img {
+            width: 320px;
+            height: 320px;
+            border: 4px solid var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .presta-card h4 {
+            margin: 0.5rem 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color-dark);
+        }
+
+        .prestataires-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .rating {
+            color: #FFC107;
+            font-size: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        .rating .fa-star, .rating .fa-star-half-alt, .rating .fa-regular.fa-star {
+            margin-right: 2px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: var(--card-background);
+            border-radius: var(--border-radius-large);
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow-light);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .service-card .emoji-icon {
+            font-size: 3rem;
+            margin-bottom: 1.25rem;
+            line-height: 1;
+        }
+
+        .service-card h3 {
+            margin-top: 0.5rem;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-color-dark);
+        }
+
+        .service-card p {
+            color: var(--text-color-light);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius-medium);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark-color);
+            transform: translateY(-1px);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--card-background);
+            border-radius: var(--border-radius-large);
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .close {
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-color-light);
+            transition: color 0.2s ease;
+        }
+
+        .close:hover {
+            color: var(--text-color-dark);
+        }
+
+        .menu-bubble {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            z-index: 9999;
+            transition: background-color 0.3s ease;
+            color: #333;
+            font-size: 20px;
+        }
+
+        .menu-bubble:hover {
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        footer {
+            width: 90%;
+            max-width: 1150px;
+            margin: 60px auto 0 auto;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        footer img {
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        footer .contact-info p {
+            color: #555;
+            font-size: 14px;
+            margin: 2px 0;
+        }
+
+        footer .social-icons {
+            margin-top: 10px;
+        }
+
+        footer .social-icons a {
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        footer .social-icons i {
+            font-size: 30px;
+        }
+
+        footer hr {
+            margin: 20px auto;
+            width: 80%;
+            border: 0;
+            border-top: 1px solid #ccc;
+        }
+
+        footer .copyright {
+            font-size: 12px;
+            color: #999;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 2rem 1rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+
+            .modal-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .presta-card img {
+                width: 128px;
+                height: 128px;
+            }
+
+            .prestataires-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Bouton Maison (accueil) -->
+    <a href="https://viiveo-se.carrd.co" class="menu-bubble" aria-label="Accueil">
+        <i class="fas fa-home"></i>
+    </a>
+
+    <h1>Nos Services à Domicile</h1>
+    <div class="services-grid" id="services"></div>
+
+    <div class="modal" id="modale">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modale-titre"></h2>
+                <span class="close" id="close-btn">&times;</span>
+            </div>
+            <p id="modale-description"></p>
+            <h3 style="margin-bottom: 1rem;">Prestataires disponibles</h3>
+            <div class="prestataires-grid" id="liste-prestataires"></div>
+        </div>
+    </div>
+
+    <footer>
+        <img src="https://i.postimg.cc/VNqjxcQX/logo-viiveo-2.png" alt="viiveo Logo">
+        <div class="contact-info">
+            <p>info@viiveo.com</p>
+            <p>+32 475 32 51 27</p>
+        </div>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/viiveo.be?locale=fr_FR" target="_blank">
+                <i class="fab fa-facebook" style="color: #3b5998;"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/danydecarpentrie" target="_blank">
+                <i class="fab fa-linkedin" style="color: #0077b5;"></i>
+            </a>
+            <a href="https://wa.me/+32475325127" target="_blank">
+                <i class="fab fa-whatsapp" style="color: #25D366;"></i>
+            </a>
+        </div>
+        <hr>
+        <p class="copyright">Copyright © Viiveo 2025</p>
+    </footer>
+
+    <script>
+        const services = [
+            { nom: "Aide ménagère", emoji: "🧹", description: "Ménage, repassage, entretien régulier du domicile pour une propreté éclatante." },
+            { nom: "Courses à domicile", emoji: "🛒", description: "Faites vos courses sans bouger de chez vous ! Nous nous occupons de tout et livrons à votre porte." },
+            { nom: "Coiffure à domicile", emoji: "💇", description: "Profitez d'un service de coiffure professionnel, confortablement installé chez vous, pour toute la famille." },
+            { nom: "Jardinage", emoji: "🌳", description: "De l'entretien de haies à la tonte, en passant par le désherbage, votre jardin sera impeccable toute l'année." },
+            { nom: "Transport accompagné", emoji: "🚗", description: "Bénéficiez d'un accompagnement sécurisé pour vos rendez-vous médicaux, courses ou sorties." },
+            { nom: "Assistance / Secours", emoji: "🚨", description: "Une aide urgente en cas de besoin, des contrôles de sécurité réguliers et des visites de courtoisie pour votre tranquillité." },
+            { nom: "Homme à tout faire", emoji: "🔧", description: "Pour tous vos petits travaux, bricolage et réparations, un expert à votre service rapidement et efficacement." },
+            { nom: "Repas à domicile", emoji: "🍲", description: "Savourez des repas équilibrés et savoureux, préparés avec soin et livrés chauds directement à votre domicile." },
+            { nom: "Bénévole", emoji: "🤝", description: "Partagez des moments d'échanges humains, recevez un soutien moral ou simplement de la compagnie pour rompre la solitude." }
+        ];
+
+        const servicesContainer = document.getElementById("services");
+
+        // Génération dynamique des cartes
+        services.forEach(service => {
+            const card = document.createElement("div");
+            card.className = "service-card";
+            card.innerHTML = `
+                <div class="emoji-icon">${service.emoji}</div>
+                <h3>${service.nom}</h3>
+                <p>${service.description}</p>
+                <button class="btn" onclick="ouvrirModale('${service.nom}', '${service.description.replace(/'/g, "\\'")}')">
+                    Voir les prestataires
+                </button>
+            `;
+            servicesContainer.appendChild(card);
+        });
+
+        const modale = document.getElementById("modale");
+        const modaleTitre = document.getElementById("modale-titre");
+        const modaleDescription = document.getElementById("modale-description");
+        const listePrestataires = document.getElementById("liste-prestataires");
+
+        // Fonction pour ouvrir la modale et charger les prestataires
+        async function ouvrirModale(service, description) {
+            modaleTitre.innerText = service;
+            modaleDescription.innerText = description;
+            modale.classList.add("active");
+
+            listePrestataires.innerHTML = `<p style="text-align:center; color: var(--text-color-light);">Chargement des prestataires...</p>`;
+
+            try {
+                const res = await fetch(`https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec?type=getPrestatairesStyl%C3%A9s&specialite=${encodeURIComponent(service)}`);
+                if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
+                const data = await res.json();
+
+                if (data.success && data.prestataires.length > 0) {
+                    listePrestataires.innerHTML = data.prestataires.map(p => {
+                        const rating = p.rating ?? 4;
+                        const fullStars = Math.floor(rating);
+                        const halfStar = (rating % 1) >= 0.5;
+                        const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+                        let starsHtml = '';
+                        for (let i = 0; i < fullStars; i++) starsHtml += '<i class="fa-solid fa-star"></i>';
+                        if (halfStar) starsHtml += '<i class="fa-solid fa-star-half-stroke"></i>';
+                        for (let i = 0; i < emptyStars; i++) starsHtml += '<i class="fa-regular fa-star"></i>';
+
+                        return `
+                            <div class="presta-card">
+                                <img src="${p.photo || 'https://via.placeholder.com/160/3B82F6/FFFFFF?text=?'}" alt="${p.nom}" />
+                                <h4>${p.prenom} ${p.nom}</h4>
+                                <div class="rating">${starsHtml}</div>
+                                <p>${p.commentaire || 'Prestataire qualifié et disponible.'}</p>
+                                <a href="https://viiveo-se.carrd.co/" target="_blank" class="btn" style="background: #28a745; margin-top: 0.5rem;">Contacter</a>
+                            </div>
+                        `;
+                    }).join("");
+                } else {
+                    listePrestataires.innerHTML = `<p style="text-align:center; color: var(--text-color-light);">Aucun prestataire disponible pour ce service actuellement.</p>`;
+                }
+            } catch (error) {
+                console.error("Erreur lors du chargement des prestataires :", error);
+                listePrestataires.innerHTML = `<p style="text-align:center; color: #EF4444;">Une erreur est survenue lors du chargement des prestataires.</p>`;
+            }
+        }
+
+        // Fermeture de la modale
+        function fermerModale() {
+            modale.classList.remove("active");
+            listePrestataires.innerHTML = '';
+        }
+
+        // Gestion des événements
+        document.getElementById('close-btn').addEventListener('click', fermerModale);
+        modale.addEventListener('click', (event) => { if (event.target === modale) fermerModale(); });
+        document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && modale.classList.contains('active')) fermerModale(); });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986b6dcf6664d204',t:'MTc1OTE0ODM2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
