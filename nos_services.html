@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viiveo - Nos Services</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Bouton Maison (accueil) -->
+    <a href="https://viiveo.carrd.co/" class="menu-bubble" aria-label="Accueil"> 
+        <i class="fas fa-home"></i>
+    </a>
+
+    <!-- Contenu principal -->
+    <div class="container">
+        <h1 style="text-align: center; margin: 40px 0; font-size: 2.5rem;">Nos Services à Domicile</h1>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="https://viiveo-prestatairespres.carrd.co/" target="_blank" class="btn-presta">
+                En savoir plus sur nos prestataires ?
+            </a>
+        </div>
+        
+        <div class="grid-container">
+            <!-- Aide ménagère -->
+            <div class="card" onclick="openModal('modal-aide-menagere')">
+                <div style="font-size: 4rem; margin-bottom: 20px;">🧹</div>
+                <h3>Aide ménagère</h3>
+                <p>Service de ménage professionnel à domicile pour vous faciliter le quotidien</p>
+            </div>
+
+            <!-- Courses à domicile -->
+            <div class="card" onclick="openModal('modal-courses')">
+                <div style="font-size: 4rem; margin-bottom: 20px;">🛒</div>
+                <h3>Courses à domicile</h3>
+                <p>Nous faisons vos courses et vous les livrons directement chez vous</p>
+            </div>
+
+            <!-- Coiffure à domicile -->
+            <div class="card" onclick="openModal('modal-coiffure')">
+                <div style="font-size: 4rem; margin-bottom: 20px;">✂️</div>
+                <h3>Coiffure à domicile</h3>
+                <p>Services de coiffure professionnels dans le confort de votre domicile</p>
+            </div>
+
+            <!-- Jardinage -->
+            <div class="card" onclick="openModal('modal-jardinage')">
+                <div style="font-size: 4rem; margin-bottom: 20px;">🌱</div>
+                <h3>Jardinage</h3>
+                <p>Entretien de votre jardin et espaces verts par des professionnels</p>
+            </div>
+
+            <!-- Transport accompagné -->
+            <div class="card" onclick="openModal('modal-transport')">
+                <div style="font-size: 4rem; margin-bottom: 20px;">🚗</div>
+                <h3>Transport accompagné</h3>
+                <p>Service de transport avec accompagnement pour vos déplacements</p>
+            </div>
+
+            <!-- Assistance / Secours -->
+            <div class="card" onclick="openModal('modal-assistance')">
+                <div style="font-size: 4rem; margin-bottom: 20px;">🆘</div>
+                <h3>Assistance / Secours</h3>
+                <p>Aide d'urgence et assistance pour toutes situations délicates</p>
+            </div>
+
+            <!-- Homme à tout faire -->
+            <div class="card" onclick="openModal('modal-homme')">
+                <div style="font-size: 4rem; margin-bottom: 20px;">🔧</div>
+                <h3>Homme à tout faire</h3>
+                <p>Petits travaux et réparations diverses dans votre domicile</p>
+            </div>
+
+            <!-- Visite bénévole -->
+            <div class="card" onclick="openModal('modal-benevole')">
+                <div style="font-size: 4rem; margin-bottom: 20px;">❤️</div>
+                <h3>Visite bénévole</h3>
+                <p>Compagnie et soutien moral par nos bénévoles dévoués</p>
+            </div>
+
+            <!-- Livraison de repas -->
+            <div class="card" onclick="openModal('modal-repas')">
+                <div style="font-size: 4rem; margin-bottom: 20px;">🍽️</div>
+                <h3>Commande de repas</h3>
+                <p>Livraison de repas équilibrés et savoureux directement chez vous</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modales -->
+    <!-- Modal Aide ménagère -->
+    <div id="modal-aide-menagere" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-aide-menagere')">&times;</span>
+            <form name="form-aide-menagere" method="POST">
+                <h2>Demande : Aide ménagère</h2>
+                <label>🔒 Mot de passe</label>
+                <input type="password" name="password" required>
+                <label>👤 Prénom</label>
+                <input type="text" name="prenom" required>
+                <label>👤 Nom</label>
+                <input type="text" name="nom" required>
+                <label>🏠 Adresse complète</label>
+                <input type="text" name="adresse" required>
+                <label>📧 Email</label>
+                <input type="email" name="email" required>
+                <label>🛎️ Nature du service</label>
+                <input type="text" name="service" value="Aide ménagère" readonly>
+                <label>📅 Date souhaitée</label>
+                <input type="date" name="date" required>
+                <label>⏰ Heure de passage souhaitée</label>
+                <input type="time" name="heure" required>
+                <label>🔽 Choisir un prestataire (optionnel)</label>
+                <select name="prestataire" id="select-prestataire-aide-menagere">
+                    <option value="" selected>Pas de préférence</option>
+                </select>
+                <label>📝 Commentaire</label>
+                <textarea name="commentaire"></textarea>
+                <input type="hidden" name="prenom_prestataire" value="">
+                <input type="hidden" name="nom_prestataire" value="">
+                <button type="submit">Envoyer la demande</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Courses -->
+    <div id="modal-courses" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-courses')">&times;</span>
+            <form name="form-courses" method="POST">
+                <h2>Demande : Courses à domicile</h2>
+                <label>🔒 Mot de passe</label>
+                <input type="password" name="password" required>
+                <label>👤 Prénom</label>
+                <input type="text" name="prenom" required>
+                <label>👤 Nom</label>
+                <input type="text" name="nom" required>
+                <label>🏠 Adresse complète</label>
+                <input type="text" name="adresse" required>
+                <label>📧 Email</label>
+                <input type="email" name="email" required>
+                <label>🛎️ Nature du service</label>
+                <input type="text" name="service" value="Courses à domicile" readonly>
+                <label>📅 Date souhaitée</label>
+                <input type="date" name="date" required>
+                <label>⏰ Heure de passage souhaitée</label>
+                <input type="time" name="heure" required>
+                <label>🔽 Choisir un prestataire (optionnel)</label>
+                <select name="prestataire" id="select-prestataire-courses">
+                    <option value="" selected>Pas de préférence</option>
+                </select>
+                <label>📝 Commentaire</label>
+                <textarea name="commentaire"></textarea>
+                <input type="hidden" name="prenom_prestataire" value="">
+                <input type="hidden" name="nom_prestataire" value="">
+                <button type="submit">Envoyer la demande</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Coiffure -->
+    <div id="modal-coiffure" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-coiffure')">&times;</span>
+            <form name="form-coiffure" method="POST">
+                <h2>Demande : Coiffure à domicile</h2>
+                <label>🔒 Mot de passe</label>
+                <input type="password" name="password" required>
+                <label>👤 Prénom</label>
+                <input type="text" name="prenom" required>
+                <label>👤 Nom</label>
+                <input type="text" name="nom" required>
+                <label>🏠 Adresse complète</label>
+                <input type="text" name="adresse" required>
+                <label>📧 Email</label>
+                <input type="email" name="email" required>
+                <label>🛎️ Nature du service</label>
+                <input type="text" name="service" value="Coiffure à domicile" readonly>
+                <label>📅 Date souhaitée</label>
+                <input type="date" name="date" required>
+                <label>⏰ Heure de passage souhaitée</label>
+                <input type="time" name="heure" required>
+                <label>🔽 Choisir un prestataire (optionnel)</label>
+                <select name="prestataire" id="select-prestataire-coiffure">
+                    <option value="" selected>Pas de préférence</option>
+                </select>
+                <label>📝 Commentaire</label>
+                <textarea name="commentaire"></textarea>
+                <input type="hidden" name="prenom_prestataire" value="">
+                <input type="hidden" name="nom_prestataire" value="">
+                <button type="submit">Envoyer la demande</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Jardinage -->
+    <div id="modal-jardinage" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-jardinage')">&times;</span>
+            <form name="form-jardinage" method="POST">
+                <h2>Demande : Jardinage</h2>
+                <label>🔒 Mot de passe</label>
+                <input type="password" name="password" required>
+                <label>👤 Prénom</label>
+                <input type="text" name="prenom" required>
+                <label>👤 Nom</label>
+                <input type="text" name="nom" required>
+                <label>🏠 Adresse complète</label>
+                <input type="text" name="adresse" required>
+                <label>📧 Email</label>
+                <input type="email" name="email" required>
+                <label>🛎️ Nature du service</label>
+                <input type="text" name="service" value="Jardinage" readonly>
+                <label>📅 Date souhaitée</label>
+                <input type="date" name="date" required>
+                <label>⏰ Heure de passage souhaitée</label>
+                <input type="time" name="heure" required>
+                <label>🔽 Choisir un prestataire (optionnel)</label>
+                <select name="prestataire" id="select-prestataire-jardinage">
+                    <option value="" selected>Pas de préférence</option>
+                </select>
+                <label>📝 Commentaire</label>
+                <textarea name="commentaire"></textarea>
+                <input type="hidden" name="prenom_prestataire" value="">
+                <input type="hidden" name="nom_prestataire" value="">
+                <button type="submit">Envoyer la demande</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Transport -->
+    <div id="modal-transport" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-transport')">&times;</span>
+            <form name="form-transport" method="POST">
+                <h2>Demande : Transport accompagné</h2>
+                <label>🔒 Mot de passe</label>
+                <input type="password" name="password" required>
+                <label>👤 Prénom</label>
+                <input type="text" name="prenom" required>
+                <label>👤 Nom</label>
+                <input type="text" name="nom" required>
+                <label>🏠 Adresse complète</label>
+                <input type="text" name="adresse" required>
+                <label>📧 Email</label>
+                <input type="email" name="email" required>
+                <label>🛎️ Nature du service</label>
+                <input type="text" name="service" value="Transport accompagné" readonly>
+                <label>📅 Date souhaitée</label>
+                <input type="date" name="date" required>
+                <label>⏰ Heure de passage souhaitée</label>
+                <input type="time" name="heure" required>
+                <label>🔽 Choisir un prestataire (optionnel)</label>
+                <select name="prestataire" id="select-prestataire-transport">
+                    <option value="" selected>Pas de préférence</option>
+                </select>
+                <label>📝 Commentaire</label>
+                <textarea name="commentaire"></textarea>
+                <input type="hidden" name="prenom_prestataire" value="">
+                <input type="hidden" name="nom_prestataire" value="">
+                <button type="submit">Envoyer la demande</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Assistance -->
+    <div id="modal-assistance" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-assistance')">&times;</span>
+            <form name="form-assistance" method="POST">
+                <h2>Demande : Assistance / Secours</h2>
+                <label>🔒 Mot de passe</label>
+                <input type="password" name="password" required>
+                <label>👤 Prénom</label>
+                <input type="text" name="prenom" required>
+                <label>👤 Nom</label>
+                <input type="text" name="nom" required>
+                <label>🏠 Adresse complète</label>
+                <input type="text" name="adresse" required>
+                <label>📧 Email</label>
+                <input type="email" name="email" required>
+                <label>🛎️ Nature du service</label>
+                <input type="text" name="service" value="Assistance / Secours" readonly>
+                <label>📅 Date souhaitée</label>
+                <input type="date" name="date" required>
+                <label>⏰ Heure de passage souhaitée</label>
+                <input type="time" name="heure" required>
+                <label>🔽 Choisir un prestataire (optionnel)</label>
+                <select name="prestataire" id="select-prestataire-assistance">
+                    <option value="" selected>Pas de préférence</option>
+                </select>
+                <label>📝 Commentaire</label>
+                <textarea name="commentaire"></textarea>
+                <input type="hidden" name="prenom_prestataire" value="">
+                <input type="hidden" name="nom_prestataire" value="">
+                <button type="submit">Envoyer la demande</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Homme à tout faire -->
+    <div id="modal-homme" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-homme')">&times;</span>
+            <form name="form-homme" method="POST">
+                <h2>Demande : Homme à tout faire</h2>
+                <label>🔒 Mot de passe</label>
+                <input type="password" name="password" required>
+                <label>👤 Prénom</label>
+                <input type="text" name="prenom" required>
+                <label>👤 Nom</label>
+                <input type="text" name="nom" required>
+                <label>🏠 Adresse complète</label>
+                <input type="text" name="adresse" required>
+                <label>📧 Email</label>
+                <input type="email" name="email" required>
+                <label>🛎️ Nature du service</label>
+                <input type="text" name="service" value="Homme à tout faire" readonly>
+                <label>📅 Date souhaitée</label>
+                <input type="date" name="date" required>
+                <label>⏰ Heure de passage souhaitée</label>
+                <input type="time" name="heure" required>
+                <label>🔽 Choisir un prestataire (optionnel)</label>
+                <select name="prestataire" id="select-prestataire-homme">
+                    <option value="" selected>Pas de préférence</option>
+                </select>
+                <label>📝 Commentaire</label>
+                <textarea name="commentaire"></textarea>
+                <input type="hidden" name="prenom_prestataire" value="">
+                <input type="hidden" name="nom_prestataire" value="">
+                <button type="submit">Envoyer la demande</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Bénévole -->
+    <div id="modal-benevole" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-benevole')">&times;</span>
+            <form name="form-benevole" method="POST">
+                <h2>Demande : Visite bénévole</h2>
+                <label>🔒 Mot de passe</label>
+                <input type="password" name="password" required>
+                <label>👤 Prénom</label>
+                <input type="text" name="prenom" required>
+                <label>👤 Nom</label>
+                <input type="text" name="nom" required>
+                <label>🏠 Adresse complète</label>
+                <input type="text" name="adresse" required>
+                <label>📧 Email</label>
+                <input type="email" name="email" required>
+                <label>🛎️ Nature du service</label>
+                <input type="text" name="service" value="Visite bénévole" readonly>
+                <label>📅 Date souhaitée</label>
+                <input type="date" name="date" required>
+                <label>⏰ Heure de passage souhaitée</label>
+                <input type="time" name="heure" required>
+                <label>🔽 Choisir un prestataire (optionnel)</label>
+                <select name="prestataire" id="select-prestataire-benevole">
+                    <option value="" selected>Pas de préférence</option>
+                </select>
+                <label>📝 Commentaire</label>
+                <textarea name="commentaire"></textarea>
+                <input type="hidden" name="prenom_prestataire" value="">
+                <input type="hidden" name="nom_prestataire" value="">
+                <button type="submit">Envoyer la demande</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Repas -->
+    <div id="modal-repas" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal-repas')">&times;</span>
+            <form name="form-repas" method="POST">
+                <h2>Demande : Commande de repas</h2>
+                <label>🔒 Mot de passe</label>
+                <input type="password" name="password" required>
+                <label>👤 Prénom</label>
+                <input type="text" name="prenom" required>
+                <label>👤 Nom</label>
+                <input type="text" name="nom" required>
+                <label>🏠 Adresse complète</label>
+                <input type="text" name="adresse" required>
+                <label>📧 Email</label>
+                <input type="email" name="email" required>
+                <label>🛎️ Nature du service</label>
+                <input type="text" name="service" value="Commande de repas" readonly>
+                <label>📅 Date souhaitée</label>
+                <input type="date" name="date" required>
+                <label>⏰ Heure de passage souhaitée</label>
+                <input type="time" name="heure" required>
+                <label>🔽 Choisir un prestataire (optionnel)</label>
+                <select name="prestataire" id="select-prestataire-repas">
+                    <option value="" selected>Pas de préférence</option>
+                </select>
+                <label>📝 Commentaire</label>
+                <textarea name="commentaire"></textarea>
+                <input type="hidden" name="prenom_prestataire" value="">
+                <input type="hidden" name="nom_prestataire" value="">
+                <button type="submit">Envoyer la demande</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <img src="https://i.postimg.cc/VNqjxcQX/logo-viiveo-2.png" alt="viiveo Logo">
+        <div class="contact-info">
+            <p>info@viiveo.com</p>
+            <p>+32 475 32 51 27</p>
+        </div>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/viiveo.be?locale=fr_FR" target="_blank">
+                <i class="fab fa-facebook" style="color: #3b5998;"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/danydecarpentrie" target="_blank">
+                <i class="fab fa-linkedin" style="color: #0077b5;"></i>
+            </a>
+            <a href="https://wa.me/+32475325127" target="_blank">
+                <i class="fab fa-whatsapp" style="color: #25D366;"></i>
+            </a>
+        </div>
+        <hr>
+        <p class="copyright">Copyright © Viiveo 2025</p>
+    </footer>
+
+    <!-- Loader (optionnel) -->
+    <div class="viiveo-loader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 20px; border-radius: 10px; text-align: center;">
+            <div style="border: 4px solid #f3f3f3; border-top: 4px solid #006E90; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 10px;"></div>
+            <p>Envoi en cours...</p>
+        </div>
+    </div>
+
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            background-image: url('https://res.cloudinary.com/drn6w4nab/image/upload/v1759138967/viiveo_bkg_servives_sbzzec.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            color: #1e1e1e;
+            font-size: 1.2rem;
+            line-height: 1.7;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            color: #1e1e1e;
+        }
+
+        .menu-bubble {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            z-index: 9999;
+            transition: background-color 0.3s ease;
+            color: #333;
+            font-size: 20px;
+        }
+
+        .menu-bubble:hover {
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.85);
+            border: 2px solid #dbe3e7;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 1.1rem;
+            color: #444;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            margin: auto;
+            padding: 40px;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 32px;
+            color: #666;
+            cursor: pointer;
+        }
+
+        form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            margin-top: 16px;
+        }
+
+        form input,
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-top: 6px;
+            box-sizing: border-box;
+        }
+
+        form input:focus,
+        form textarea:focus,
+        form select:focus {
+            outline: none;
+            border-color: #006E90;
+            box-shadow: 0 0 0 3px rgba(0, 110, 144, 0.2);
+        }
+
+        form button {
+            display: block;
+            width: 100%;
+            background-color: #006E90;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #004e66;
+        }
+
+        footer {
+            width: 90%;
+            max-width: 1150px;
+            margin: 60px auto 0 auto;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        footer img {
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        footer .contact-info p {
+            color: #555;
+            font-size: 14px;
+            margin: 2px 0;
+        }
+
+        footer .social-icons {
+            margin-top: 10px;
+        }
+
+        footer .social-icons a {
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        footer .social-icons i {
+            font-size: 30px;
+        }
+
+        footer hr {
+            margin: 20px auto;
+            width: 80%;
+            border: 0;
+            border-top: 1px solid #ccc;
+        }
+
+        footer .copyright {
+            font-size: 12px;
+            color: #999;
+            margin-top: 10px;
+        }
+
+        .btn-presta {
+            display: inline-block;
+            background-color: #006E90;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 110, 144, 0.3);
+        }
+
+        .btn-presta:hover {
+            background-color: #004e66;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 110, 144, 0.4);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                font-size: 1.1rem;
+            }
+
+            form button {
+                font-size: 1.1rem;
+                padding: 12px;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const baseUrl = "https://gaetano1747.gm-harchies.workers.dev";
+            const loader = document.querySelector(".viiveo-loader");
+
+            function openModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = "block";
+                    document.body.style.overflow = "hidden";
+                }
+            }
+
+            function closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = "none";
+                    document.body.style.overflow = "auto";
+                }
+            }
+
+            window.handleDropdownResponse = function(result, selectId) {
+                const selectElement = document.getElementById(selectId);
+                if (!selectElement) return;
+
+                selectElement.innerHTML = '<option value="" selected>Pas de préférence</option>';
+
+                if (result && result.success && Array.isArray(result.prestataires)) {
+                    result.prestataires.forEach(presta => {
+                        const option = document.createElement('option');
+                        option.value = presta.nomComplet;
+                        option.textContent = presta.nomComplet;
+                        selectElement.appendChild(option);
+                    });
+                } else {
+                    console.warn("Réponse inattendue ou vide:", result);
+                    selectElement.innerHTML = '<option value="" selected>Aucun prestataire disponible</option>';
+                }
+            };
+
+            function loadPrestataires(selectId, type) {
+                const selectElement = document.getElementById(selectId);
+                if (!selectElement) return;
+
+                selectElement.innerHTML = '<option value="" selected>Chargement...</option>';
+
+                const callbackName = `jsonpCallback_${Date.now()}`;
+                window[callbackName] = function (data) {
+                    window.handleDropdownResponse(data, selectId);
+                    delete window[callbackName];
+                    script.remove();
+                };
+
+                const encodedType = encodeURIComponent(type);
+                const url = `${baseUrl}?type=dropdown&specialite=${encodedType}&callback=${callbackName}`;
+                const script = document.createElement("script");
+                script.src = url;
+                document.body.appendChild(script);
+            }
+
+            const modalToPrestataireMap = {
+                'modal-aide-menagere': { selectId: 'select-prestataire-aide-menagere', specialite: 'Aide ménagère' },
+                'modal-courses': { selectId: 'select-prestataire-courses', specialite: 'Courses à domicile' },
+                'modal-coiffure': { selectId: 'select-prestataire-coiffure', specialite: 'Coiffure à domicile' },
+                'modal-jardinage': { selectId: 'select-prestataire-jardinage', specialite: 'Jardinage' },
+                'modal-transport': { selectId: 'select-prestataire-transport', specialite: 'Transport accompagné' },
+                'modal-assistance': { selectId: 'select-prestataire-assistance', specialite: 'Assistance / Secours' },
+                'modal-homme': { selectId: 'select-prestataire-homme', specialite: 'Homme à tout faire' },
+                'modal-benevole': { selectId: 'select-prestataire-benevole', specialite: 'Bénévole' },
+                'modal-repas': { selectId: 'select-prestataire-repas', specialite: 'Livraison de repas' }
+            };
+
+            document.querySelectorAll(".card").forEach(card => {
+                card.addEventListener("click", function () {
+                    const modalId = this.getAttribute("onclick").match(/'([^']+)'/)[1];
+                    openModal(modalId);
+
+                    const config = modalToPrestataireMap[modalId];
+                    if (config) {
+                        loadPrestataires(config.selectId, config.specialite);
+                    }
+                });
+            });
+
+            document.querySelectorAll("form").forEach(form => {
+                form.addEventListener("submit", async function (e) {
+                    e.preventDefault();
+
+                    const submitButton = this.querySelector('button[type="submit"]');
+
+                    if (loader) loader.style.display = "flex";
+                    if (submitButton) submitButton.disabled = true;
+
+                    const selectPrestataire = this.querySelector('select[name="prestataire"]');
+                    const fullName = selectPrestataire?.value || "";
+
+                    const prenomInput = this.querySelector('input[name="prenom_prestataire"]');
+                    const nomInput = this.querySelector('input[name="nom_prestataire"]');
+
+                    if (prenomInput && nomInput) {
+                        if (fullName.trim() && fullName !== "Pas de préférence") {
+                            const parts = fullName.trim().split(" ");
+                            prenomInput.value = parts.shift() || "";
+                            nomInput.value = parts.join(" ") || "";
+                        } else {
+                            prenomInput.value = "";
+                            nomInput.value = "";
+                        }
+                    }
+
+                    const formUrl = `${baseUrl}?type=formClient`;
+                    const formData = new FormData(this);
+
+                    try {
+                        const response = await fetch(formUrl, {
+                            method: "POST",
+                            body: formData,
+                        });
+
+                        if (!response.ok) throw new Error(`Erreur serveur: ${response.statusText}`);
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            alert(`✅ ${result.message || "Demande envoyée avec succès !"}`);
+                            this.reset();
+                            const modal = this.closest(".modal");
+                            if (modal) closeModal(modal.id);
+                        } else {
+                            alert(`⚠️ ${result.message || "Erreur côté serveur."}`);
+                        }
+
+                    } catch (err) {
+                        alert("❌ Problème de connexion : " + err.message);
+                        console.error(err);
+                    } finally {
+                        if (loader) loader.style.display = "none";
+                        if (submitButton) submitButton.disabled = false;
+                    }
+                });
+            });
+
+            window.openModal = openModal;
+            window.closeModal = closeModal;
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986b6e72d396d204',t:'MTc1OTE0ODM5My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
