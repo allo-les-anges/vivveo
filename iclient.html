@@ -899,12 +899,37 @@
                 font-size: 0.85rem;
             }
 
-            .menu-bubble {
+            .main-menu {
                 top: 1rem;
                 right: 1rem;
+            }
+
+            .main-hamburger {
+                width: 3rem;
+                height: 3rem;
+                font-size: 1rem;
+            }
+
+            .main-dropdown {
+                top: 4rem;
+                min-width: 250px;
+            }
+
+            .menu-btn {
+                padding: 0.8rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .menu-bubble {
+                top: 1rem;
+                right: 5rem;
                 width: 3rem;
                 height: 3rem;
                 font-size: 1.1rem;
+            }
+
+            .welcome-modal {
+                display: none;
             }
 
             #login {
@@ -1074,9 +1099,14 @@
             </form>
         </div>
         
+        <!-- Modale de bienvenue -->
+        <div class="welcome-modal" id="welcomeModal">
+            <h2 data-translate="welcome_modal_title">Bienvenue dans votre interface client</h2>
+            <p data-translate="welcome_modal_text">Accédez à vos missions et gérez votre profil</p>
+        </div>
+
         <!-- Embed 2 partie 2 - Interface client -->
         <div id="client-area">
-            <div id="welcome-msg" data-translate="client_welcome">Bienvenue dans votre interface client</div>
             <img id="client-photo" src="" alt="Photo du client" />
             <h3><span data-translate="welcome_user">Bienvenue</span> <span id="prenomClient"></span> !</h3>
             <p><span data-translate="credits_available">Crédits disponibles</span> : <strong><span id="creditsClient"></span></strong></p>
@@ -1086,7 +1116,7 @@
                 <button onclick="voirRapports()" data-translate="view_reports">Voir mes rapports de visites</button>
             </div>
 
-            <h4 data-translate="your_requests">Vos demandes :</h4>
+            <h4 data-translate="your_requests">Vos demandes en cours :</h4>
             <div class="table-wrapper">
                 <table id="demandesTable">
                     <thead>
@@ -1103,6 +1133,128 @@
                 </table>
             </div>
             <div class="mobile-card-view" id="mobileCardView"></div>
+        </div>
+
+        <!-- Modale missions clôturées -->
+        <div class="modal-overlay" id="closedMissionsModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title" data-translate="closed_missions_title">Missions clôturées</h2>
+                    <button class="modal-close" onclick="closeModal('closedMissionsModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-wrapper">
+                        <table id="closedMissionsTable">
+                            <thead>
+                                <tr>
+                                    <th data-translate="request_date">Date demande</th>
+                                    <th data-translate="service">Service</th>
+                                    <th data-translate="intervention">Intervention</th>
+                                    <th data-translate="time">Heure</th>
+                                    <th data-translate="task">Tâche</th>
+                                    <th data-translate="status">Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody id="closedMissionsTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="mobile-card-view" id="closedMissionsCardView"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modale modification profil -->
+        <div class="modal-overlay" id="editProfileModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2 class="modal-title" data-translate="edit_profile_title">Modifier mes données personnelles</h2>
+                    <button class="modal-close" onclick="closeModal('editProfileModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProfileForm" onsubmit="event.preventDefault(); saveProfile();">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label data-translate="client_name">Nom</label>
+                                <input type="text" id="clientName" required>
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="client_firstname">Prénom</label>
+                                <input type="text" id="clientFirstname" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="client_email">Email</label>
+                            <input type="email" id="clientEmail" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="client_password">Nouveau mot de passe</label>
+                            <input type="password" id="clientPassword" placeholder="Laisser vide pour ne pas changer">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="client_address">Adresse</label>
+                            <input type="text" id="clientAddress">
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label data-translate="client_city">Ville</label>
+                                <input type="text" id="clientCity">
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="client_postal">Code postal</label>
+                                <input type="text" id="clientPostal">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="client_phone">Téléphone</label>
+                            <input type="tel" id="clientPhone">
+                        </div>
+                        
+                        <h3 style="margin: 2rem 0 1rem 0; color: #8b7355; font-size: 1.2rem;">Données du tuteur</h3>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label data-translate="tutor_name">Nom du tuteur</label>
+                                <input type="text" id="tutorName">
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="tutor_firstname">Prénom du tuteur</label>
+                                <input type="text" id="tutorFirstname">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="tutor_address">Adresse du tuteur</label>
+                            <input type="text" id="tutorAddress">
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label data-translate="tutor_city">Ville du tuteur</label>
+                                <input type="text" id="tutorCity">
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="tutor_postal">Code postal du tuteur</label>
+                                <input type="text" id="tutorPostal">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="tutor_phone">Téléphone du tuteur</label>
+                            <input type="tel" id="tutorPhone">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary" data-translate="save_changes">Enregistrer</button>
+                            <button type="button" class="btn-secondary" onclick="closeModal('editProfileModal')" data-translate="cancel">Annuler</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
         
         <!-- Les autres embeds seront ajoutés ici -->
@@ -1363,6 +1515,200 @@
           }
         }
 
+        // Variables globales pour stocker les données client
+        let currentClientData = null;
+
+        // Fonctions de gestion des modales
+        function toggleMainMenu() {
+            const dropdown = document.getElementById('mainDropdown');
+            dropdown.classList.toggle('show');
+            
+            // Fermer le menu si on clique ailleurs
+            document.addEventListener('click', function closeMenu(e) {
+                if (!e.target.closest('.main-menu')) {
+                    dropdown.classList.remove('show');
+                    document.removeEventListener('click', closeMenu);
+                }
+            });
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('show');
+        }
+
+        function showClosedMissions() {
+            // Fermer le menu hamburger
+            document.getElementById('mainDropdown').classList.remove('show');
+            
+            if (!currentClientData) return;
+            
+            showGlobalLoader(translations[currentLanguage].loading_data);
+            
+            // Filtrer les missions clôturées (validées)
+            const closedMissions = currentClientData.demandes.filter(d => 
+                d.validationClient === "validée" || 
+                (d.statut && d.statut.toLowerCase() === "refusée")
+            );
+            
+            const tbody = document.getElementById("closedMissionsTableBody");
+            const mobileView = document.getElementById("closedMissionsCardView");
+            tbody.innerHTML = "";
+            mobileView.innerHTML = "";
+            
+            if (closedMissions.length === 0) {
+                const tr = document.createElement("tr");
+                const td = document.createElement("td");
+                td.colSpan = 6;
+                td.style.textAlign = "center";
+                td.textContent = translations[currentLanguage].no_requests;
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+                
+                const mobileMsg = document.createElement("div");
+                mobileMsg.style.textAlign = "center";
+                mobileMsg.style.padding = "2rem";
+                mobileMsg.style.color = "#8b7355";
+                mobileMsg.textContent = translations[currentLanguage].no_requests;
+                mobileView.appendChild(mobileMsg);
+            } else {
+                closedMissions.forEach(d => {
+                    let statutHtml = "";
+                    let mobileStatutHtml = "";
+                    
+                    if (d.validationClient === "validée") {
+                        statutHtml = `<span style="
+                            padding: 0.6rem 1.2rem;
+                            border-radius: 2rem;
+                            color: white;
+                            font-weight: 700;
+                            font-size: 0.9rem;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+                            box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+                            border: 2px solid #ffd700;">
+                            ✔ ${translations[currentLanguage].validated}
+                        </span>`;
+                        mobileStatutHtml = statutHtml;
+                    } else {
+                        const badgeStyle = `
+                            padding: 0.6rem 1.2rem;
+                            border-radius: 2rem;
+                            color: white;
+                            font-weight: 700;
+                            font-size: 0.9rem;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            background: linear-gradient(135deg, #8b8680 0%, #6b645f 100%);
+                            box-shadow: 0 6px 16px rgba(139, 134, 128, 0.4);
+                            border: 2px solid #a8a29e;
+                        `;
+                        statutHtml = `<span style="${badgeStyle}">${d.statut || ""}</span>`;
+                        mobileStatutHtml = statutHtml;
+                    }
+                    
+                    // Tableau desktop
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td>${formatDateOrTime(d.dateDemande)}</td>
+                        <td>${d.service || ""}</td>
+                        <td>${formatDateOrTime(d.intervention)}</td>
+                        <td>${formatDateOrTime(d.heure)}</td>
+                        <td>${d.tache || ""}</td>
+                        <td>${statutHtml}</td>
+                    `;
+                    tbody.appendChild(tr);
+                    
+                    // Carte mobile
+                    const card = document.createElement("div");
+                    card.className = "request-card";
+                    card.innerHTML = `
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].request_date}</span>
+                            <span class="card-value">${formatDateOrTime(d.dateDemande)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].service}</span>
+                            <span class="card-value">${d.service || ""}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].intervention}</span>
+                            <span class="card-value">${formatDateOrTime(d.intervention)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].time}</span>
+                            <span class="card-value">${formatDateOrTime(d.heure)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].task}</span>
+                            <span class="card-value">${d.tache || ""}</span>
+                        </div>
+                        <div class="card-status">
+                            ${mobileStatutHtml}
+                        </div>
+                    `;
+                    mobileView.appendChild(card);
+                });
+            }
+            
+            hideGlobalLoader();
+            document.getElementById('closedMissionsModal').classList.add('show');
+        }
+
+        function showEditProfile() {
+            // Fermer le menu hamburger
+            document.getElementById('mainDropdown').classList.remove('show');
+            
+            if (!currentClientData) return;
+            
+            // Pré-remplir le formulaire avec les données actuelles
+            const client = currentClientData.client;
+            document.getElementById('clientName').value = client.nom || '';
+            document.getElementById('clientFirstname').value = client.prenom || '';
+            document.getElementById('clientEmail').value = client.email || '';
+            document.getElementById('clientAddress').value = client.adresse || '';
+            document.getElementById('clientCity').value = client.ville || '';
+            document.getElementById('clientPostal').value = client.codePostal || '';
+            document.getElementById('clientPhone').value = client.telephone || '';
+            
+            // Données du tuteur
+            document.getElementById('tutorName').value = client.nomTuteur || '';
+            document.getElementById('tutorFirstname').value = client.prenomTuteur || '';
+            document.getElementById('tutorAddress').value = client.adresseTuteur || '';
+            document.getElementById('tutorCity').value = client.villeTuteur || '';
+            document.getElementById('tutorPostal').value = client.codePostalTuteur || '';
+            document.getElementById('tutorPhone').value = client.telephoneTuteur || '';
+            
+            document.getElementById('editProfileModal').classList.add('show');
+        }
+
+        async function saveProfile() {
+            const form = document.getElementById('editProfileForm');
+            const formData = new FormData(form);
+            const saveButton = form.querySelector('button[type="submit"]');
+            const originalText = saveButton.textContent;
+            
+            showGlobalLoader(translations[currentLanguage].loading_data);
+            showButtonLoader(saveButton, originalText);
+            
+            try {
+                // Simuler la sauvegarde (à remplacer par l'appel API réel)
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                hideGlobalLoader();
+                hideButtonLoader(saveButton, originalText);
+                
+                alert(translations[currentLanguage].changes_saved);
+                closeModal('editProfileModal');
+                
+            } catch (error) {
+                hideGlobalLoader();
+                hideButtonLoader(saveButton, originalText);
+                alert(translations[currentLanguage].server_error);
+            }
+        }
+
         async function login() {
           const email = document.getElementById("email").value.trim();
           const password = document.getElementById("password").value.trim();
@@ -1399,6 +1745,9 @@
               return;
             }
 
+            // Stocker les données client globalement
+            currentClientData = data;
+
             const imgEl = document.getElementById("client-photo");
             imgEl.onerror = () => {
               imgEl.src = "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
@@ -1414,7 +1763,15 @@
             tbody.innerHTML = "";
             mobileView.innerHTML = "";
 
-            if (!data.demandes || data.demandes.length === 0) {
+            // Filtrer seulement les missions en attente ou confirmées
+            const activeMissions = data.demandes ? data.demandes.filter(d => {
+                const statut = (d.statut || "").toLowerCase();
+                return d.validationClient !== "validée" && 
+                       statut !== "refusée" && 
+                       (statut === "confirmée" || statut === "terminée" || statut === "en attente" || !statut);
+            }) : [];
+
+            if (activeMissions.length === 0) {
               const tr = document.createElement("tr");
               const td = document.createElement("td");
               td.colSpan = 6;
@@ -1431,12 +1788,15 @@
               mobileMsg.textContent = translations[currentLanguage].no_requests;
               mobileView.appendChild(mobileMsg);
             } else {
-              data.demandes.forEach(d => {
+              activeMissions.forEach(d => {
                 let statutHtml = "";
                 let mobileStatutHtml = "";
                 
-                if (d.validationClient === "validée") {
-                  statutHtml = `<span style="
+                const statut = (d.statut || "").toLowerCase();
+                let badgeStyle = "";
+                
+                if (statut === "confirmée") {
+                  badgeStyle = `
                     padding: 0.6rem 1.2rem;
                     border-radius: 2rem;
                     color: white;
@@ -1444,116 +1804,83 @@
                     font-size: 0.9rem;
                     text-transform: uppercase;
                     letter-spacing: 0.1em;
-                    background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
-                    box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
-                    border: 2px solid #ffd700;">
-                    ✔ ${translations[currentLanguage].validated}
-                  </span>`;
-                  mobileStatutHtml = statutHtml;
+                    background: linear-gradient(135deg, #d4a574 0%, #c49a7b 100%);
+                    box-shadow: 0 6px 16px rgba(212, 165, 116, 0.4);
+                    border: 2px solid #e6b885;
+                  `;
+                } else if (statut === "terminée") {
+                  badgeStyle = `
+                    padding: 0.6rem 1.2rem;
+                    border-radius: 2rem;
+                    color: white;
+                    font-weight: 700;
+                    font-size: 0.9rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                    background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+                    box-shadow: 0 6px 16px rgba(255, 215, 0, 0.4);
+                    border: 2px solid #ffe55c;
+                  `;
                 } else {
-                  const statut = (d.statut || "").toLowerCase();
-                  let badgeStyle = "";
+                  badgeStyle = `
+                    padding: 0.6rem 1.2rem;
+                    border-radius: 2rem;
+                    color: white;
+                    font-weight: 700;
+                    font-size: 0.9rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                    background: linear-gradient(135deg, #d4a574 0%, #c49a7b 100%);
+                    box-shadow: 0 6px 16px rgba(212, 165, 116, 0.4);
+                    border: 2px solid #e6b885;
+                  `;
+                }
+
+                statutHtml = `<span style="${badgeStyle}">
+                  ${d.statut || "En attente"}
+                </span>`;
+                mobileStatutHtml = `<span style="${badgeStyle}">
+                  ${d.statut || "En attente"}
+                </span>`;
+
+                if (statut === "terminée") {
+                  const validateButton = `<br><button style="
+                    margin-top: 1rem;
+                    background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+                    color: white;
+                    padding: 0.7rem 1.3rem;
+                    border: 2px solid #ffd700;
+                    border-radius: 1rem;
+                    font-size: 0.9rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;"
+                    onmouseover="this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 12px 24px rgba(212, 175, 55, 0.5)'; this.style.background='linear-gradient(135deg, #ffd700 0%, #ffb347 100%)';"
+                    onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 6px 12px rgba(212, 175, 55, 0.3)'; this.style.background='linear-gradient(135deg, #d4af37 0%, #b8860b 100%)';"
+                    onclick="validerPrestationDepuisClient('${d.idMission}')">✓ ${translations[currentLanguage].validate}</button>`;
                   
-                  if (statut === "confirmée") {
-                    badgeStyle = `
-                      padding: 0.6rem 1.2rem;
-                      border-radius: 2rem;
-                      color: white;
-                      font-weight: 700;
-                      font-size: 0.9rem;
-                      text-transform: uppercase;
-                      letter-spacing: 0.1em;
-                      background: linear-gradient(135deg, #d4a574 0%, #c49a7b 100%);
-                      box-shadow: 0 6px 16px rgba(212, 165, 116, 0.4);
-                      border: 2px solid #e6b885;
-                    `;
-                  } else if (statut === "refusée") {
-                    badgeStyle = `
-                      padding: 0.6rem 1.2rem;
-                      border-radius: 2rem;
-                      color: white;
-                      font-weight: 700;
-                      font-size: 0.9rem;
-                      text-transform: uppercase;
-                      letter-spacing: 0.1em;
-                      background: linear-gradient(135deg, #8b8680 0%, #6b645f 100%);
-                      box-shadow: 0 6px 16px rgba(139, 134, 128, 0.4);
-                      border: 2px solid #a8a29e;
-                    `;
-                  } else if (statut === "terminée") {
-                    badgeStyle = `
-                      padding: 0.6rem 1.2rem;
-                      border-radius: 2rem;
-                      color: white;
-                      font-weight: 700;
-                      font-size: 0.9rem;
-                      text-transform: uppercase;
-                      letter-spacing: 0.1em;
-                      background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
-                      box-shadow: 0 6px 16px rgba(255, 215, 0, 0.4);
-                      border: 2px solid #ffe55c;
-                    `;
-                  } else {
-                    badgeStyle = `
-                      padding: 0.6rem 1.2rem;
-                      border-radius: 2rem;
-                      color: white;
-                      font-weight: 700;
-                      font-size: 0.9rem;
-                      text-transform: uppercase;
-                      letter-spacing: 0.1em;
-                      background: linear-gradient(135deg, #d4a574 0%, #c49a7b 100%);
-                      box-shadow: 0 6px 16px rgba(212, 165, 116, 0.4);
-                      border: 2px solid #e6b885;
-                    `;
-                  }
-
-                  statutHtml = `<span style="${badgeStyle}">
-                    ${d.statut || ""}
-                  </span>`;
-                  mobileStatutHtml = `<span style="${badgeStyle}">
-                    ${d.statut || ""}
-                  </span>`;
-
-                  if (statut === "terminée") {
-                    const validateButton = `<br><button style="
-                      margin-top: 1rem;
-                      background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
-                      color: white;
-                      padding: 0.7rem 1.3rem;
-                      border: 2px solid #ffd700;
-                      border-radius: 1rem;
-                      font-size: 0.9rem;
-                      font-weight: 700;
-                      cursor: pointer;
-                      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                      box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
-                      text-transform: uppercase;
-                      letter-spacing: 0.05em;"
-                      onmouseover="this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 12px 24px rgba(212, 175, 55, 0.5)'; this.style.background='linear-gradient(135deg, #ffd700 0%, #ffb347 100%)';"
-                      onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 6px 12px rgba(212, 175, 55, 0.3)'; this.style.background='linear-gradient(135deg, #d4af37 0%, #b8860b 100%)';"
-                      onclick="validerPrestationDepuisClient('${d.idMission}')">✓ ${translations[currentLanguage].validate}</button>`;
-                    
-                    statutHtml += validateButton;
-                    
-                    const mobileValidateButton = `<button style="
-                      margin-top: 1rem;
-                      background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
-                      color: white;
-                      padding: 0.8rem 1.5rem;
-                      border: 2px solid #ffd700;
-                      border-radius: 1rem;
-                      font-size: 0.9rem;
-                      font-weight: 700;
-                      cursor: pointer;
-                      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                      box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
-                      text-transform: uppercase;
-                      letter-spacing: 0.05em;
-                      width: 100%;"
-                      onclick="validerPrestationDepuisClient('${d.idMission}')">✓ ${translations[currentLanguage].validate}</button>`;
-                    mobileStatutHtml += `<br>${mobileValidateButton}`;
-                  }
+                  statutHtml += validateButton;
+                  
+                  const mobileValidateButton = `<button style="
+                    margin-top: 1rem;
+                    background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+                    color: white;
+                    padding: 0.8rem 1.5rem;
+                    border: 2px solid #ffd700;
+                    border-radius: 1rem;
+                    font-size: 0.9rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    width: 100%;"
+                    onclick="validerPrestationDepuisClient('${d.idMission}')">✓ ${translations[currentLanguage].validate}</button>`;
+                  mobileStatutHtml += `<br>${mobileValidateButton}`;
                 }
 
                 // Tableau desktop
@@ -1607,6 +1934,20 @@
             const clientArea = document.getElementById("client-area");
             clientArea.style.display = "block";
             clientArea.classList.add("fade-in");
+
+            // Afficher le menu hamburger et la modale de bienvenue
+            document.getElementById("mainMenu").style.display = "block";
+            
+            // Afficher la modale de bienvenue sur PC seulement
+            if (window.innerWidth > 768) {
+                setTimeout(() => {
+                    document.getElementById("welcomeModal").classList.add("show");
+                    // Masquer automatiquement après 4 secondes
+                    setTimeout(() => {
+                        document.getElementById("welcomeModal").classList.remove("show");
+                    }, 4000);
+                }, 500);
+            }
 
           } catch (err) {
             hideGlobalLoader();
@@ -1662,5 +2003,5 @@
           }
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9098864db729',t:'MTc1OTE2MDI3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9873bd861782a008',t:'MTc1OTIzNTUxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9098864db729',t:'MTc1OTE2MDI3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98744cd63099b9b3',t:'MTc1OTI0MTM4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
