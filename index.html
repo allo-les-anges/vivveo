@@ -45,7 +45,7 @@
             transform: translateY(-2px);
         }
         /* Style spécifique pour le bouton d'envoi du formulaire */
-        #contact-form button[type="submit"] {
+        #contact-form-background button[type="submit"] {
             width: 100%;
             padding: 1rem;
             font-size: 1.125rem;
@@ -61,28 +61,15 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            /* L'overlay sombre (::before) a été retiré */
             position: relative;
         }
-        #contact-form-background::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.3); /* Overlay sombre */
-            z-index: 1;
-        }
-        #contact-form-background > .container {
-            position: relative;
-            z-index: 2; /* S'assurer que le contenu est au-dessus de l'overlay */
-        }
-        /* Ajustements pour le texte sur l'image de fond */
+        /* Ajustements pour le texte sur l'image de fond (couleur sombre pour mieux contraster si l'image est claire) */
         #contact-form-background h3, #contact-form-background p {
-            color: white; /* Texte blanc pour meilleure lisibilité */
+            color: #1f2937; /* Gris foncé */
         }
-        #contact-form-background .bg-white { /* Le formulaire lui-même reste blanc */
-            background-color: rgba(255, 255, 255, 0.95); /* Légère transparence pour voir le fond */
+        #contact-form-background .bg-white { 
+            background-color: rgba(255, 255, 255, 0.95);
         }
     </style>
 </head>
@@ -92,7 +79,6 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
-                    <h1 class="text-2xl font-bold">Viiveo</h1>
                 </div>
                 <nav class="hidden md:flex space-x-6">
                     <a href="#services" class="hover:text-yellow-400 transition-colors">Services</a>
@@ -214,8 +200,8 @@
     <section id="contact-form-background" class="py-24">
         <div class="container mx-auto px-6">
             <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-xl">
-                <h3 class="text-3xl md:text-4xl font-bold mb-6 text-center">Contactez-nous</h3>
-                <p class="text-lg mb-8 text-center">
+                <h3 class="text-3xl md:text-4xl font-bold mb-6 text-center text-gray-800">Contactez-nous</h3>
+                <p class="text-lg mb-8 text-center text-gray-600">
                     Remplissez ce formulaire pour toute question ou demande d'informations complémentaires.
                 </p>
                 
@@ -254,7 +240,7 @@
         </div>
     </section>
 
-    <footer class="bg-gray-800 text-white py-12">
+    <footer class="bg-white text-gray-800 py-12 border-t border-gray-100">
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="flex items-center space-x-3 mb-6 md:mb-0">
@@ -262,7 +248,7 @@
                     <span class="text-xl font-bold">Viiveo</span>
                 </div>
                 <div class="text-center md:text-right">
-                    <p class="text-gray-400">
+                    <p class="text-gray-500">
                         © 2024 Viiveo. Votre bien-être à domicile, notre priorité.
                     </p>
                 </div>
