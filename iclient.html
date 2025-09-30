@@ -17,38 +17,94 @@
             color: #4a4237;
         }
 
-        /* Sélecteur de langue */
-        .language-selector {
+        /* Menu hamburger pour les langues */
+        .language-menu {
             position: fixed;
             top: 1.5rem;
             left: 1.5rem;
             z-index: 9999;
-            display: flex;
-            gap: 0.5rem;
         }
 
-        .lang-btn {
-            width: 3rem;
-            height: 3rem;
+        .lang-hamburger {
+            width: 3.5rem;
+            height: 3.5rem;
             border-radius: 50%;
             border: 2px solid var(--card-border);
             background: var(--card-bg);
             color: #8b7355;
-            font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 1.2rem;
             cursor: pointer;
             transition: var(--transition);
             backdrop-filter: blur(15px);
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .lang-hamburger:hover {
+            background: var(--primary-gradient);
+            color: white;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 4.5rem;
+            left: 0;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-heavy);
+            border: 2px solid var(--card-border);
+            backdrop-filter: blur(20px);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition);
+            min-width: 120px;
+        }
+
+        .language-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .lang-btn {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border: none;
+            background: transparent;
+            color: #8b7355;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.5rem;
+            text-align: left;
+        }
+
+        .lang-btn:first-child {
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .lang-btn:last-child {
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
         }
 
         .lang-btn:hover, .lang-btn.active {
             background: var(--primary-gradient);
             color: white;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
+        }
+
+        .lang-btn.active::before {
+            content: '✓';
+            font-weight: 700;
+            margin-right: 0.3rem;
         }
 
         /* Variables CSS pour cohérence - Palette Jaune, Gris, Vieux Rose */
@@ -107,14 +163,16 @@
         .welcome-section {
             background: var(--card-bg);
             border-radius: var(--border-radius-lg);
-            padding: 4rem 3rem;
-            margin-bottom: 3rem;
+            padding: 3rem 2.5rem;
+            margin: 0 auto 3rem auto;
             box-shadow: var(--shadow-heavy);
             text-align: center;
             backdrop-filter: blur(20px);
             border: 2px solid var(--card-border);
             position: relative;
             overflow: hidden;
+            width: 90%;
+            max-width: 450px;
         }
 
         .welcome-section::before {
@@ -573,16 +631,25 @@
                 font-size: 1.1rem;
             }
 
-            .language-selector {
+            .language-menu {
                 top: 1rem;
                 left: 1rem;
-                flex-direction: column;
+            }
+
+            .lang-hamburger {
+                width: 3rem;
+                height: 3rem;
+                font-size: 1rem;
+            }
+
+            .language-dropdown {
+                top: 4rem;
+                min-width: 140px;
             }
 
             .lang-btn {
-                width: 2.5rem;
-                height: 2.5rem;
-                font-size: 0.8rem;
+                padding: 0.7rem 1rem;
+                font-size: 0.85rem;
             }
 
             .menu-bubble {
@@ -697,12 +764,17 @@
     </style>
 </head>
 <body>
-    <!-- Sélecteur de langue -->
-    <div class="language-selector">
-        <button class="lang-btn active" onclick="changeLanguage('fr')" data-lang="fr">FR</button>
-        <button class="lang-btn" onclick="changeLanguage('nl')" data-lang="nl">NL</button>
-        <button class="lang-btn" onclick="changeLanguage('de')" data-lang="de">DE</button>
-        <button class="lang-btn" onclick="changeLanguage('en')" data-lang="en">EN</button>
+    <!-- Menu hamburger pour les langues -->
+    <div class="language-menu">
+        <button class="lang-hamburger" onclick="toggleLanguageMenu()" aria-label="Sélectionner la langue">
+            <i class="fas fa-globe"></i>
+        </button>
+        <div class="language-dropdown" id="languageDropdown">
+            <button class="lang-btn active" onclick="changeLanguage('fr')" data-lang="fr">🇫🇷 Français</button>
+            <button class="lang-btn" onclick="changeLanguage('nl')" data-lang="nl">🇳🇱 Nederlands</button>
+            <button class="lang-btn" onclick="changeLanguage('de')" data-lang="de">🇩🇪 Deutsch</button>
+            <button class="lang-btn" onclick="changeLanguage('en')" data-lang="en">🇬🇧 English</button>
+        </div>
     </div>
 
     <!-- Bouton Maison (accueil) -->
@@ -919,8 +991,24 @@
 
         let currentLanguage = 'fr';
 
+        function toggleLanguageMenu() {
+            const dropdown = document.getElementById('languageDropdown');
+            dropdown.classList.toggle('show');
+            
+            // Fermer le menu si on clique ailleurs
+            document.addEventListener('click', function closeMenu(e) {
+                if (!e.target.closest('.language-menu')) {
+                    dropdown.classList.remove('show');
+                    document.removeEventListener('click', closeMenu);
+                }
+            });
+        }
+
         function changeLanguage(lang) {
             currentLanguage = lang;
+            
+            // Fermer le menu dropdown
+            document.getElementById('languageDropdown').classList.remove('show');
             
             // Mettre à jour les boutons de langue
             document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -1170,5 +1258,5 @@
           }
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9098864db729',t:'MTc1OTE2MDI3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9873a05ca4457638',t:'MTc1OTIzNDMyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9098864db729',t:'MTc1OTE2MDI3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9873aad7a3de0c49',t:'MTc1OTIzNDc1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
