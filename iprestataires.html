@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface Prestataire - Viiveo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Embed 3 - Ressources externes -->
+    <link rel="stylesheet" href="https://allo-les-anges.github.io/viiveo-tableauxviiveo-tableaux-prestataire/viiveo-styles.css">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://allo-les-anges.github.io/viiveo-tableauxviiveo-tableaux-prestataire/viiveo-app.js"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Bouton Maison (accueil) */
+        .menu-bubble {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            z-index: 9999;
+            transition: background-color 0.3s ease;
+            color: #333;
+            font-size: 20px;
+        }
+
+        .menu-bubble:hover {
+            background-color: #f2f2f2;
+        }
+
+        /* Container principal */
+        .main-container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 2rem;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .welcome-section h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .welcome-section p {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        /* Section pour les embeds */
+        .embed-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .embed-section h2 {
+            color: #764ba2;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* Styles pour les futurs embeds */
+        .prestataire-info {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .prestataire-info h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+        }
+
+        .prestataire-info p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* Styles pour les boutons d'action */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-card i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .action-card h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Styles pour l'embed 2 */
+        @keyframes spin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+
+        /* Styles pour le menu hamburger */
+        #menu-toggle:checked + label + #menu {
+            display: block !important; /* Force l'affichage du menu quand la checkbox est cochée */
+        }
+
+        /* Animation de la croix pour le menu */
+        #menu-toggle:checked + label span:nth-child(1) {
+            transform: translateY(11px) rotate(45deg);
+        }
+
+        #menu-toggle:checked + label span:nth-child(2) {
+            opacity: 0;
+        }
+
+        #menu-toggle:checked + label span:nth-child(3) {
+            transform: translateY(-11px) rotate(-45deg);
+        }
+
+        /* Le loader global pour les missions sera géré par JS */
+        #global-loader {
+            display: none;
+        }
+
+        /* Embed 3 - Styles responsifs pour tableaux */
+        /* 🌐 Responsivité tableaux améliorée */
+        /* Format 16:9 avec ajustement pour écrans larges */
+        .table-wrapper {
+            width: 95vw;
+            max-width: 1600px;
+            aspect-ratio: 16 / 9;
+            margin: 2rem auto;
+            overflow-x: auto;
+        }
+
+        /* Assure que le tableau occupe toute la largeur disponible */
+        .table-wrapper table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: auto;
+        }
+
+        /* Adaptation mobile */
+        @media (max-width: 768px) {
+            .table-wrapper {
+                width: 95%;
+                aspect-ratio: auto;
+            }
+
+            .table-wrapper table {
+                font-size: 14px;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .welcome-section {
+                padding: 2rem;
+            }
+            
+            .welcome-section h1 {
+                font-size: 2rem;
+            }
+            
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Embed 4 - Bouton Maison (accueil) amélioré -->
+    <a href="https://viiveo.carrd.co/" class="menu-bubble" aria-label="Accueil" target="_blank" rel="noopener noreferrer">
+        <i class="fas fa-home"></i> <!-- Icône maison -->
+    </a>
+
+    <div class="main-container">
+        <div class="welcome-section">
+            <h1><i class="fas fa-user-tie"></i> Interface Prestataire Viiveo</h1>
+            <p>Gérez vos missions et interventions en toute simplicité</p>
+        </div>
+
+        <!-- Embed 2 - Menu hamburger -->
+        <div id="menu-container" style="display: none; position: fixed; top: 1rem; right: 1rem; z-index: 999;">
+            <input type="checkbox" id="menu-toggle" style="display:none;">
+            <label for="menu-toggle" style="cursor:pointer; display:inline-block; width:30px; height:25px; position:relative;">
+                <span style="background:#ec4899; display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:0; left:0; transition:0.3s;"></span>
+                <span style="background:#ec4899; display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:11px; left:0; transition:0.3s;"></span>
+                <span style="background:#ec4899; display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:22px; left:0; transition:0.3s;"></span>
+            </label>
+            <nav id="menu" style="
+                display:none;
+                position:absolute;
+                top:0;
+                /* Modifier left à right ici pour que le menu s'ouvre depuis la droite */
+                left:40px; /* Ajustez cette valeur si nécessaire pour l'espacement */
+                background:#fff;
+                border:1px solid #ddd;
+                border-radius:8px;
+                padding:0.5em 1em;
+                box-shadow:0 0 10px rgba(0,0,0,0.1);
+                white-space: nowrap;
+                ">
+                <ul style="
+                    display:flex;
+                    gap:1rem;
+                    list-style:none;
+                    margin:0;
+                    padding:0;
+                    ">
+                    <li><a href="#" style="font-weight:bold; color:#333; text-decoration:none; padding:0.5em 0; display:inline-block;" onclick="showMesDonnees(); closeMenu()">Mes données</a></li>
+                    <li><a href="#" style="font-weight:bold; color:#333; text-decoration:none; padding:0.5em 0; display:inline-block;" onclick="showHistorique(); closeMenu()">Historique des Prestations</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Section de connexion -->
+        <h2 style="text-align:center; font-weight:bold; margin-top:3rem;">Connexion</h2>
+        <div id="login-section" class="viiveo-login" style="max-width:400px; margin:1rem auto;">
+            <form id="loginForm" onsubmit="event.preventDefault(); handleLogin();">
+                <input type="email" id="email" placeholder="E-mail" autocomplete="username" required style="width:100%; padding:0.5rem; margin-bottom:0.75rem; box-sizing:border-box;">
+                <input type="password" id="password" placeholder="Mot de passe" autocomplete="current-password" required style="width:100%; padding:0.5rem; margin-bottom:0.75rem; box-sizing:border-box;">
+                <button type="submit" style="width:100%; background:#ec4899; color:#fff; border:none; padding:0.75rem; font-weight:bold; cursor:pointer; border-radius:4px;">Connexion</button>
+                <div id="message" style="color:red; margin-top:0.5em; visibility:hidden;"></div>
+            </form>
+        </div>
+        
+        <div id="loader" style="display:none; margin: 2rem auto; width:50px; height:50px; border:6px solid #f8d3e5; border-top:6px solid #ec4899; border-radius:50%; animation:spin 1s linear infinite;"></div>
+
+        <!-- Interface des missions -->
+        <div id="main-missions-display" class="viiveo-missions" style="display: none; max-width: 900px; margin: 1rem auto; padding: 1rem;">
+            <div id="global-loader" style="display: none; text-align: center; padding: 20px; font-size: 1.2em; color: #555;">
+                Chargement des missions en cours...
+            </div>
+
+            <div id="missions-attente-container">
+                <h3>Missions en attente de validation</h3>
+                <div id="missions-attente"></div>
+            </div>
+
+            <div id="missions-planifiees">
+                <h3>Missions planifiées (validées / confirmées)</h3>
+                <div id="missions-a-venir"></div>
+            </div>
+
+            <div id="missions-en-cours-container">
+                <h3>Missions en cours</h3>
+                <div id="missions-en-cours"></div>
+            </div>
+
+            <div id="missions-terminees-container">
+                <h3>Missions terminées</h3>
+                <div id="missions-terminees"></div>
+            </div>
+        </div>
+
+        <!-- Section Actions disponibles - Visible uniquement après connexion -->
+        <div id="actions-section" class="embed-section" style="display: none;">
+            <h2><i class="fas fa-tools"></i> Actions disponibles</h2>
+            <div class="action-grid">
+                <div class="action-card">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3>Mes missions</h3>
+                    <p>Consulter et gérer vos missions assignées</p>
+                </div>
+                
+                <div class="action-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Planning</h3>
+                    <p>Visualiser votre planning d'interventions</p>
+                </div>
+                
+                <div class="action-card">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>Rapports</h3>
+                    <p>Créer et envoyer vos rapports d'intervention</p>
+                </div>
+                
+                <div class="action-card">
+                    <i class="fas fa-user-circle"></i>
+                    <h3>Profil</h3>
+                    <p>Gérer vos informations personnelles</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Placeholder pour les autres embeds -->
+        <div id="embed-container">
+            <!-- Les autres embeds seront ajoutés ici -->
+        </div>
+    </div>
+
+    <!-- Embed 1 - Script de configuration -->
+    <script>
+        window.webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
+
+        window.currentEmail = null;
+        window.currentPrenom = null;
+        window.currentNom = null;
+
+        window.setPrestataireData = function(email, prenom, nom) {
+            if (!email) {
+                return;
+            }
+
+            if (typeof email === 'string' && email.includes('@')) {
+                window.currentEmail = email;
+                window.currentPrenom = prenom || '';
+                window.currentNom = nom || '';
+                console.log(`Prestataire connecté : ${window.currentPrenom} ${window.currentNom} (${window.currentEmail})`);
+            } else {
+                console.error("Erreur: L'email du prestataire fourni n'est pas valide (format incorrect).");
+            }
+        };
+
+        // Initialisation de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Interface prestataire initialisée');
+            console.log('URL de l\'API:', window.webAppUrl);
+        });
+
+        // Embed 3 - Fonctions pour menu hamburger
+        function showHistorique() {
+            document.getElementById('section-terminees').style.display = 'block';
+        }
+
+        function showMesDonnees() {
+            alert("Fonctionnalité 'Mes données' à venir.");
+        }
+
+        function closeMenu() {
+            document.getElementById('menu-toggle').checked = false;
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9218b5dfb729',t:'MTc1OTE2MDMzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
