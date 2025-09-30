@@ -343,13 +343,183 @@
             font-size: 0.95rem;
         }
 
-        /* Loader modernisé */
+        /* Loader élégant modernisé */
         #loader {
             display: none;
             margin-top: 1.5rem;
             text-align: center;
-            color: #4a90e2;
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        /* Overlay de chargement global */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(245, 241, 232, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .loading-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Spinner principal */
+        .elegant-spinner {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .spinner-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid transparent;
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        .spinner-ring:nth-child(1) {
+            border-top-color: #d4af37;
+            animation-delay: 0s;
+        }
+
+        .spinner-ring:nth-child(2) {
+            border-right-color: #ffd700;
+            animation-delay: 0.3s;
+            animation-duration: 1.5s;
+        }
+
+        .spinner-ring:nth-child(3) {
+            border-bottom-color: #c49a7b;
+            animation-delay: 0.6s;
+            animation-duration: 1.8s;
+        }
+
+        .spinner-ring:nth-child(4) {
+            border-left-color: #8b8680;
+            animation-delay: 0.9s;
+            animation-duration: 2.2s;
+        }
+
+        /* Animation de rotation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Texte de chargement animé */
+        .loading-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .loading-subtext {
+            font-size: 1rem;
+            color: #8b7355;
             font-weight: 500;
+            opacity: 0.8;
+        }
+
+        /* Animation de pulsation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        /* Points animés */
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+
+        /* Loader compact pour les boutons */
+        .btn-loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        /* Loader pour les cartes */
+        .card-loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+            color: #8b7355;
+        }
+
+        .card-loader .elegant-spinner {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+
+        /* Animation d'apparition des éléments */
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Skeleton loading pour les tableaux */
+        .skeleton-row {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            height: 20px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
         /* Interface client modernisée */
@@ -542,6 +712,83 @@
 
         #demandesTable tbody tr:last-child td {
             border-bottom: none;
+        }
+
+        /* Affichage mobile en cartes pour le tableau */
+        .mobile-card-view {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .table-wrapper {
+                display: none;
+            }
+
+            .mobile-card-view {
+                display: block;
+                margin-top: 2rem;
+            }
+
+            .request-card {
+                background: var(--card-bg);
+                border-radius: var(--border-radius);
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                box-shadow: var(--shadow-medium);
+                border: 2px solid var(--card-border);
+                position: relative;
+            }
+
+            .request-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: var(--primary-gradient);
+                border-radius: var(--border-radius) var(--border-radius) 0 0;
+            }
+
+            .card-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0.8rem;
+                padding-bottom: 0.8rem;
+                border-bottom: 1px solid #f0ead6;
+            }
+
+            .card-row:last-child {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+            }
+
+            .card-label {
+                font-weight: 700;
+                color: #8b7355;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                flex-shrink: 0;
+                margin-right: 1rem;
+            }
+
+            .card-value {
+                color: #6b5b47;
+                font-weight: 500;
+                text-align: right;
+                flex-grow: 1;
+                font-size: 0.95rem;
+            }
+
+            .card-status {
+                text-align: center;
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top: 2px solid #f0ead6;
+            }
         }
 
         /* Animations d'entrée */
@@ -782,6 +1029,20 @@
         <i class="fas fa-home"></i>
     </a>
 
+    <!-- Overlay de chargement global -->
+    <div class="loading-overlay" id="globalLoader">
+        <div class="elegant-spinner">
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+        </div>
+        <div class="loading-text">
+            <span data-translate="loading">Connexion en cours</span><span class="loading-dots"></span>
+        </div>
+        <div class="loading-subtext" data-translate="loading_wait">Veuillez patienter...</div>
+    </div>
+
     <div class="main-container">
         <!-- Illustrations décoratives -->
         <div class="illustration illustration-1">
@@ -841,6 +1102,7 @@
                     <tbody id="demandesTableBody"></tbody>
                 </table>
             </div>
+            <div class="mobile-card-view" id="mobileCardView"></div>
         </div>
         
         <!-- Les autres embeds seront ajoutés ici -->
@@ -883,7 +1145,10 @@
                 reports_coming: "Fonction de consultation des rapports à venir.",
                 confirm_validation: "Confirmez-vous que cette prestation a bien été réalisée ?",
                 validation_success: "Merci ! Votre validation a bien été enregistrée.",
-                server_error: "Erreur de communication avec le serveur."
+                server_error: "Erreur de communication avec le serveur.",
+                loading_wait: "Veuillez patienter...",
+                loading_data: "Chargement des données",
+                loading_validation: "Validation en cours"
             },
             nl: {
                 welcome_title: "Viiveo Klant Interface",
@@ -917,7 +1182,10 @@
                 reports_coming: "Rapportconsultatiefunctie binnenkort beschikbaar.",
                 confirm_validation: "Bevestigt u dat deze dienst is uitgevoerd?",
                 validation_success: "Dank u! Uw validatie is geregistreerd.",
-                server_error: "Servercommunicatiefout."
+                server_error: "Servercommunicatiefout.",
+                loading_wait: "Even geduld...",
+                loading_data: "Gegevens laden",
+                loading_validation: "Validatie bezig"
             },
             de: {
                 welcome_title: "Viiveo Kunden Interface",
@@ -951,7 +1219,10 @@
                 reports_coming: "Berichtskonsultationsfunktion demnächst verfügbar.",
                 confirm_validation: "Bestätigen Sie, dass diese Dienstleistung erbracht wurde?",
                 validation_success: "Danke! Ihre Validierung wurde registriert.",
-                server_error: "Server-Kommunikationsfehler."
+                server_error: "Server-Kommunikationsfehler.",
+                loading_wait: "Bitte warten...",
+                loading_data: "Daten werden geladen",
+                loading_validation: "Validierung läuft"
             },
             en: {
                 welcome_title: "Viiveo Client Interface",
@@ -985,11 +1256,43 @@
                 reports_coming: "Report consultation feature coming soon.",
                 confirm_validation: "Do you confirm that this service has been completed?",
                 validation_success: "Thank you! Your validation has been recorded.",
-                server_error: "Server communication error."
+                server_error: "Server communication error.",
+                loading_wait: "Please wait...",
+                loading_data: "Loading data",
+                loading_validation: "Validation in progress"
             }
         };
 
         let currentLanguage = 'fr';
+
+        // Fonctions de gestion du loader
+        function showGlobalLoader(message = null) {
+            const loader = document.getElementById('globalLoader');
+            const loadingText = loader.querySelector('.loading-text span[data-translate="loading"]');
+            
+            if (message) {
+                loadingText.textContent = message;
+            } else {
+                loadingText.textContent = translations[currentLanguage].loading;
+            }
+            
+            loader.classList.add('show');
+        }
+
+        function hideGlobalLoader() {
+            const loader = document.getElementById('globalLoader');
+            loader.classList.remove('show');
+        }
+
+        function showButtonLoader(button, originalText) {
+            button.disabled = true;
+            button.innerHTML = `<span class="btn-loader"></span>${originalText}`;
+        }
+
+        function hideButtonLoader(button, originalText) {
+            button.disabled = false;
+            button.innerHTML = originalText;
+        }
 
         function toggleLanguageMenu() {
             const dropdown = document.getElementById('languageDropdown');
@@ -1065,11 +1368,19 @@
           const password = document.getElementById("password").value.trim();
           const messageEl = document.getElementById("message");
           const loaderEl = document.getElementById("loader");
+          const loginButton = document.querySelector('#login button[type="submit"]');
+          const originalButtonText = loginButton.textContent;
 
           messageEl.textContent = "";
+          
+          // Afficher le loader global et le loader du bouton
+          showGlobalLoader(translations[currentLanguage].loading_data);
+          showButtonLoader(loginButton, originalButtonText);
           loaderEl.style.display = "block";
 
           if (!email || !password) {
+            hideGlobalLoader();
+            hideButtonLoader(loginButton, originalButtonText);
             loaderEl.style.display = "none";
             messageEl.textContent = translations[currentLanguage].fill_fields;
             return;
@@ -1079,6 +1390,8 @@
             const response = await fetch(`${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
             const data = await response.json();
 
+            hideGlobalLoader();
+            hideButtonLoader(loginButton, originalButtonText);
             loaderEl.style.display = "none";
 
             if (!data.success) {
@@ -1097,7 +1410,9 @@
             document.getElementById("creditsClient").textContent = data.client.credits || "0";
 
             const tbody = document.getElementById("demandesTableBody");
+            const mobileView = document.getElementById("mobileCardView");
             tbody.innerHTML = "";
+            mobileView.innerHTML = "";
 
             if (!data.demandes || data.demandes.length === 0) {
               const tr = document.createElement("tr");
@@ -1107,9 +1422,18 @@
               td.textContent = translations[currentLanguage].no_requests;
               tr.appendChild(td);
               tbody.appendChild(tr);
+
+              // Message pour mobile aussi
+              const mobileMsg = document.createElement("div");
+              mobileMsg.style.textAlign = "center";
+              mobileMsg.style.padding = "2rem";
+              mobileMsg.style.color = "#8b7355";
+              mobileMsg.textContent = translations[currentLanguage].no_requests;
+              mobileView.appendChild(mobileMsg);
             } else {
               data.demandes.forEach(d => {
                 let statutHtml = "";
+                let mobileStatutHtml = "";
                 
                 if (d.validationClient === "validée") {
                   statutHtml = `<span style="
@@ -1125,6 +1449,7 @@
                     border: 2px solid #ffd700;">
                     ✔ ${translations[currentLanguage].validated}
                   </span>`;
+                  mobileStatutHtml = statutHtml;
                 } else {
                   const statut = (d.statut || "").toLowerCase();
                   let badgeStyle = "";
@@ -1186,9 +1511,12 @@
                   statutHtml = `<span style="${badgeStyle}">
                     ${d.statut || ""}
                   </span>`;
+                  mobileStatutHtml = `<span style="${badgeStyle}">
+                    ${d.statut || ""}
+                  </span>`;
 
                   if (statut === "terminée") {
-                    statutHtml += `<br><button style="
+                    const validateButton = `<br><button style="
                       margin-top: 1rem;
                       background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
                       color: white;
@@ -1205,9 +1533,30 @@
                       onmouseover="this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 12px 24px rgba(212, 175, 55, 0.5)'; this.style.background='linear-gradient(135deg, #ffd700 0%, #ffb347 100%)';"
                       onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 6px 12px rgba(212, 175, 55, 0.3)'; this.style.background='linear-gradient(135deg, #d4af37 0%, #b8860b 100%)';"
                       onclick="validerPrestationDepuisClient('${d.idMission}')">✓ ${translations[currentLanguage].validate}</button>`;
+                    
+                    statutHtml += validateButton;
+                    
+                    const mobileValidateButton = `<button style="
+                      margin-top: 1rem;
+                      background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+                      color: white;
+                      padding: 0.8rem 1.5rem;
+                      border: 2px solid #ffd700;
+                      border-radius: 1rem;
+                      font-size: 0.9rem;
+                      font-weight: 700;
+                      cursor: pointer;
+                      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                      box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
+                      text-transform: uppercase;
+                      letter-spacing: 0.05em;
+                      width: 100%;"
+                      onclick="validerPrestationDepuisClient('${d.idMission}')">✓ ${translations[currentLanguage].validate}</button>`;
+                    mobileStatutHtml += `<br>${mobileValidateButton}`;
                   }
                 }
 
+                // Tableau desktop
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
                   <td>${formatDateOrTime(d.dateDemande)}</td>
@@ -1218,13 +1567,50 @@
                   <td>${statutHtml}</td>
                 `;
                 tbody.appendChild(tr);
+
+                // Carte mobile
+                const card = document.createElement("div");
+                card.className = "request-card";
+                card.innerHTML = `
+                  <div class="card-row">
+                    <span class="card-label" data-translate="request_date">${translations[currentLanguage].request_date}</span>
+                    <span class="card-value">${formatDateOrTime(d.dateDemande)}</span>
+                  </div>
+                  <div class="card-row">
+                    <span class="card-label" data-translate="service">${translations[currentLanguage].service}</span>
+                    <span class="card-value">${d.service || ""}</span>
+                  </div>
+                  <div class="card-row">
+                    <span class="card-label" data-translate="intervention">${translations[currentLanguage].intervention}</span>
+                    <span class="card-value">${formatDateOrTime(d.intervention)}</span>
+                  </div>
+                  <div class="card-row">
+                    <span class="card-label" data-translate="time">${translations[currentLanguage].time}</span>
+                    <span class="card-value">${formatDateOrTime(d.heure)}</span>
+                  </div>
+                  <div class="card-row">
+                    <span class="card-label" data-translate="task">${translations[currentLanguage].task}</span>
+                    <span class="card-value">${d.tache || ""}</span>
+                  </div>
+                  <div class="card-status">
+                    ${mobileStatutHtml}
+                  </div>
+                `;
+                mobileView.appendChild(card);
               });
             }
 
+            // Animation d'apparition de l'interface client
             document.getElementById("login").style.display = "none";
-            document.getElementById("client-area").style.display = "block";
+            document.querySelector(".welcome-section").style.display = "none";
+            
+            const clientArea = document.getElementById("client-area");
+            clientArea.style.display = "block";
+            clientArea.classList.add("fade-in");
 
           } catch (err) {
+            hideGlobalLoader();
+            hideButtonLoader(loginButton, originalButtonText);
             loaderEl.style.display = "none";
             messageEl.textContent = translations[currentLanguage].connection_error;
             console.error(err);
@@ -1243,20 +1629,38 @@
           const confirmMsg = translations[currentLanguage].confirm_validation;
           if (!confirm(confirmMsg)) return;
 
+          // Trouver le bouton cliqué et afficher le loader
+          const button = event.target;
+          const originalText = button.textContent;
+          
+          showGlobalLoader(translations[currentLanguage].loading_validation);
+          showButtonLoader(button, originalText);
+
           try {
             const res = await fetch(`${webAppUrl}?type=validerPrestationClient&id=${encodeURIComponent(idMission)}`);
             const data = await res.json();
+            
+            hideGlobalLoader();
+            hideButtonLoader(button, originalText);
+            
             if (data.success) {
               alert(translations[currentLanguage].validation_success);
-              location.reload();
+              
+              // Afficher le loader pendant le rechargement
+              showGlobalLoader(translations[currentLanguage].loading_data);
+              setTimeout(() => {
+                location.reload();
+              }, 500);
             } else {
               alert("Erreur : " + (data.error || "inconnue"));
             }
           } catch (err) {
+            hideGlobalLoader();
+            hideButtonLoader(button, originalText);
             console.error(err);
             alert(translations[currentLanguage].server_error);
           }
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9098864db729',t:'MTc1OTE2MDI3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9873aad7a3de0c49',t:'MTc1OTIzNDc1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9098864db729',t:'MTc1OTE2MDI3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9873bd861782a008',t:'MTc1OTIzNTUxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
