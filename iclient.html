@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface Client - Viiveo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Bouton Maison (accueil) */
+        .menu-bubble {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            z-index: 9999;
+            transition: background-color 0.3s ease;
+            color: #333;
+            font-size: 20px;
+        }
+
+        .menu-bubble:hover {
+            background-color: #f2f2f2;
+        }
+
+        /* Container principal */
+        .main-container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            background: white;
+            border-radius: 2rem;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .welcome-section h1 {
+            color: #4a90e2;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-section p {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        /* Styles pour l'embed 2 - Connexion */
+        #background-wrapper {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('https://i.postimg.cc/7LX7CrC9/bkg-viive-cl.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(0.85);
+            z-index: -1;
+        }
+
+        #login-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            flex-direction: column;
+        }
+
+        #login {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            width: 90%;
+            max-width: 400px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        #login h2 {
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-size: 28px;
+            color: #2563A0;
+            text-align: center;
+        }
+
+        #login input[type="email"],
+        #login input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 20px;
+            border: 1.8px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        #login button {
+            width: 100%;
+            background: #2563A0;
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            padding: 14px 0;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        #message {
+            margin-top: 12px;
+            color: #d32f2f;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        #loader {
+            display: none;
+            margin-top: 12px;
+            text-align: center;
+            color: #2563A0;
+        }
+
+        /* Styles pour l'interface client */
+        #client-area {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            width: 95%;
+            max-width: 1000px;
+            margin-top: 30px;
+            text-align: center;
+            display: none;
+            z-index: 10;
+        }
+
+        #welcome-msg {
+            font-size: 34px;
+            font-weight: 700;
+            color: #CF94B4;
+            margin-bottom: 20px;
+        }
+
+        #client-photo {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            display: block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        #client-area h3 {
+            font-size: 26px;
+            color: #CF94B4;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .action-buttons {
+            margin-bottom: 20px;
+        }
+
+        .action-buttons button {
+            background-color: #2563A0;
+            color: white;
+            padding: 10px 16px;
+            margin: 5px;
+            font-size: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #client-area p {
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        #demandesTable {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        #demandesTable th, #demandesTable td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        #demandesTable th {
+            background-color: #CF94B4;
+            color: #000;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        #demandesTable td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Bouton Maison (accueil) -->
+    <a href="https://viiveo.carrd.co/" class="menu-bubble" aria-label="Accueil" target="_blank" rel="noopener noreferrer">
+        <i class="fas fa-home"></i>
+    </a>
+
+    <div class="main-container">
+        <div class="welcome-section">
+            <h1>Interface Client Viiveo</h1>
+            <p>Bienvenue dans votre espace personnel</p>
+        </div>
+        
+        <!-- Embed 2 - Formulaire de connexion -->
+        <div id="background-wrapper"></div>
+        
+        <div id="login-container">
+            <form id="login" onsubmit="event.preventDefault(); login();">
+                <h2>Connexion à votre interface client</h2>
+                <input type="email" id="email" placeholder="Votre e-mail" autocomplete="username" />
+                <input type="password" id="password" placeholder="Mot de passe" autocomplete="current-password" />
+                <button type="submit">Se connecter</button>
+                <div id="message"></div>
+                <div id="loader">Connexion en cours...</div>
+            </form>
+        </div>
+        
+        <!-- Embed 2 partie 2 - Interface client -->
+        <div id="client-area">
+            <div id="welcome-msg">Bienvenue dans votre interface client</div>
+            <img id="client-photo" src="" alt="Photo du client" />
+            <h3>Bienvenue <span id="prenomClient"></span> !</h3>
+            <p>Crédits disponibles : <strong><span id="creditsClient"></span></strong></p>
+
+            <div class="action-buttons">
+                <button onclick="rechargerCredits()">Recharger mes crédits</button>
+                <button onclick="voirRapports()">Voir mes rapports de visites</button>
+            </div>
+
+            <h4>Vos demandes :</h4>
+            <div class="table-wrapper">
+                <table id="demandesTable">
+                    <thead>
+                        <tr>
+                            <th>Date demande</th>
+                            <th>Service</th>
+                            <th>Intervention</th>
+                            <th>Heure</th>
+                            <th>Tâche</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody id="demandesTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Les autres embeds seront ajoutés ici -->
+    </div>
+
+    <script>
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
+
+        function formatDateOrTime(dateString) {
+          if (!dateString) return "";
+          const date = new Date(dateString);
+          if (isNaN(date)) return dateString;
+          if (date.getFullYear() === 1899 && date.getMonth() === 11 && date.getDate() === 30) {
+            const h = date.getHours().toString().padStart(2, '0');
+            const m = date.getMinutes().toString().padStart(2, '0');
+            return `${h}h${m}`;
+          } else {
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear().toString().slice(2);
+            return `${day}/${month}/${year}`;
+          }
+        }
+
+        async function login() {
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value.trim();
+          const messageEl = document.getElementById("message");
+          const loaderEl = document.getElementById("loader");
+
+          messageEl.textContent = "";
+          loaderEl.style.display = "block";
+
+          if (!email || !password) {
+            loaderEl.style.display = "none";
+            messageEl.textContent = "Merci de remplir tous les champs.";
+            return;
+          }
+
+          try {
+            const response = await fetch(`${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
+            const data = await response.json();
+
+            loaderEl.style.display = "none";
+
+            if (!data.success) {
+              messageEl.textContent = data.message || "Erreur lors de la connexion.";
+              return;
+            }
+
+            const imgEl = document.getElementById("client-photo");
+            imgEl.onerror = () => {
+              imgEl.src = "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
+            };
+            imgEl.src = data.client.photoUrl || "";
+            imgEl.alt = `Photo de ${data.client.prenom || ''}`;
+
+            document.getElementById("prenomClient").textContent = data.client.prenom || "";
+            document.getElementById("creditsClient").textContent = data.client.credits || "0";
+
+            const tbody = document.getElementById("demandesTableBody");
+            tbody.innerHTML = "";
+
+            if (!data.demandes || data.demandes.length === 0) {
+              const tr = document.createElement("tr");
+              const td = document.createElement("td");
+              td.colSpan = 6;
+              td.style.textAlign = "center";
+              td.textContent = "Aucune demande trouvée.";
+              tr.appendChild(td);
+              tbody.appendChild(tr);
+            } else {
+              data.demandes.forEach(d => {
+                let statutHtml = "";
+                
+                if (d.validationClient === "validée") {
+                  statutHtml = `<span style="
+                    padding: 4px 10px;
+                    border-radius: 12px;
+                    color: white;
+                    font-weight: 600;
+                    background-color: #4CAF50;">
+                    ✔ Validée
+                  </span>`;
+                } else {
+                  const statut = (d.statut || "").toLowerCase();
+                  const color = statut === "confirmée" ? "#4CAF50"
+                    : statut === "refusée" ? "#F44336"
+                    : statut === "terminée" ? "#2196F3"
+                    : "#FFC107";
+
+                  statutHtml = `<span style="
+                    padding: 4px 10px;
+                    border-radius: 12px;
+                    color: white;
+                    font-weight: 600;
+                    background-color: ${color};">
+                    ${d.statut || ""}
+                  </span>`;
+
+                  if (statut === "terminée") {
+                    statutHtml += `<br><button style="
+                      margin-top: 5px;
+                      background-color: #4CAF50;
+                      color: white;
+                      padding: 6px 12px;
+                      border: none;
+                      border-radius: 6px;
+                      font-size: 13px;
+                      cursor: pointer;"
+                      onclick="validerPrestationDepuisClient('${d.idMission}')">Valider</button>`;
+                  }
+                }
+
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                  <td>${formatDateOrTime(d.dateDemande)}</td>
+                  <td>${d.service || ""}</td>
+                  <td>${formatDateOrTime(d.intervention)}</td>
+                  <td>${formatDateOrTime(d.heure)}</td>
+                  <td>${d.tache || ""}</td>
+                  <td>${statutHtml}</td>
+                `;
+                tbody.appendChild(tr);
+              });
+            }
+
+            document.getElementById("login").style.display = "none";
+            document.getElementById("client-area").style.display = "block";
+
+          } catch (err) {
+            loaderEl.style.display = "none";
+            messageEl.textContent = "Erreur de connexion, veuillez réessayer plus tard.";
+            console.error(err);
+          }
+        }
+
+        function rechargerCredits() {
+          alert("Redirection vers la page de paiement (à configurer avec Stripe ou autre).");
+        }
+
+        function voirRapports() {
+          alert("Fonction de consultation des rapports à venir.");
+        }
+
+        async function validerPrestationDepuisClient(idMission) {
+          const confirmMsg = "Confirmez-vous que cette prestation a bien été réalisée ?";
+          if (!confirm(confirmMsg)) return;
+
+          try {
+            const res = await fetch(`${webAppUrl}?type=validerPrestationClient&id=${encodeURIComponent(idMission)}`);
+            const data = await res.json();
+            if (data.success) {
+              alert("Merci ! Votre validation a bien été enregistrée.");
+              location.reload();
+            } else {
+              alert("Erreur : " + (data.error || "inconnue"));
+            }
+          } catch (err) {
+            console.error(err);
+            alert("Erreur de communication avec le serveur.");
+          }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9098864db729',t:'MTc1OTE2MDI3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
