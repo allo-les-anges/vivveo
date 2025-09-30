@@ -8,7 +8,7 @@
     <style>
         body {
             box-sizing: border-box;
-            font-family: sans-serif; /* Ajout d'une police de base */
+            font-family: sans-serif;
         }
         
         .gradient-bg {
@@ -54,6 +54,36 @@
             border: none;
             cursor: pointer;
         }
+
+        /* Styles pour la section du formulaire de contact avec image de fond */
+        #contact-form-background {
+            background-image: url('https://i.ibb.co/chdSthsh/BKG-page-services.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        #contact-form-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.3); /* Overlay sombre */
+            z-index: 1;
+        }
+        #contact-form-background > .container {
+            position: relative;
+            z-index: 2; /* S'assurer que le contenu est au-dessus de l'overlay */
+        }
+        /* Ajustements pour le texte sur l'image de fond */
+        #contact-form-background h3, #contact-form-background p {
+            color: white; /* Texte blanc pour meilleure lisibilité */
+        }
+        #contact-form-background .bg-white { /* Le formulaire lui-même reste blanc */
+            background-color: rgba(255, 255, 255, 0.95); /* Légère transparence pour voir le fond */
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
@@ -61,9 +91,7 @@
         <div class="container mx-auto px-6">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                        <span class="text-2xl">🏠</span>
-                    </div>
+                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
                     <h1 class="text-2xl font-bold">Viiveo</h1>
                 </div>
                 <nav class="hidden md:flex space-x-6">
@@ -71,7 +99,7 @@
                     <a href="#formules" class="hover:text-yellow-400 transition-colors">Formules</a>
                     <a href="https://allo-les-anges.github.io/vivveo/iclient.html" class="hover:text-yellow-400 transition-colors">Interface Client</a>
                     <a href="#LIEN_INTERFACE_UTILISATEUR" class="hover:text-yellow-400 transition-colors">Interface Utilisateur</a>
-                    <a href="#contact-form" class="hover:text-yellow-400 transition-colors">Contact</a>
+                    <a href="#contact-form-background" class="hover:text-yellow-400 transition-colors">Contact</a>
                 </nav>
             </div>
         </div>
@@ -160,11 +188,34 @@
         </div>
     </section>
 
-    <section id="contact-form" class="py-24 bg-gray-100">
+    <section class="py-20 bg-gray-100">
+        <div class="container mx-auto px-6 text-center">
+            <div class="max-w-3xl mx-auto">
+                <h3 class="text-4xl font-bold text-gray-800 mb-6">
+                    Prêt à vivre sereinement chez vous ?
+                </h3>
+                <p class="text-xl text-gray-600 mb-10 leading-relaxed">
+                    Rejoignez des milliers de personnes qui ont choisi Viiveo pour leur bien-être à domicile
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="https://tally.so/r/n0zM26" rel="noopener noreferrer"
+                       class="btn-primary text-white px-10 py-4 rounded-full text-lg font-semibold inline-block">
+                        Commencer maintenant
+                    </a>
+                    <a href="https://allo-les-anges.github.io/vivveo/iclient.html" rel="noopener noreferrer"
+                       class="btn-secondary text-yellow-400 px-10 py-4 rounded-full text-lg font-semibold inline-block">
+                        Accès Client
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact-form-background" class="py-24">
         <div class="container mx-auto px-6">
             <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-xl">
-                <h3 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 text-center">Contactez-nous</h3>
-                <p class="text-lg text-gray-600 mb-8 text-center">
+                <h3 class="text-3xl md:text-4xl font-bold mb-6 text-center">Contactez-nous</h3>
+                <p class="text-lg mb-8 text-center">
                     Remplissez ce formulaire pour toute question ou demande d'informations complémentaires.
                 </p>
                 
@@ -203,36 +254,11 @@
         </div>
     </section>
 
-    <section class="py-20 bg-gray-100">
-        <div class="container mx-auto px-6 text-center">
-            <div class="max-w-3xl mx-auto">
-                <h3 class="text-4xl font-bold text-gray-800 mb-6">
-                    Prêt à vivre sereinement chez vous ?
-                </h3>
-                <p class="text-xl text-gray-600 mb-10 leading-relaxed">
-                    Rejoignez des milliers de personnes qui ont choisi Viiveo pour leur bien-être à domicile
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="https://tally.so/r/n0zM26" rel="noopener noreferrer"
-                       class="btn-primary text-white px-10 py-4 rounded-full text-lg font-semibold inline-block">
-                        Commencer maintenant
-                    </a>
-                    <a href="https://allo-les-anges.github.io/vivveo/iclient.html" rel="noopener noreferrer"
-                       class="btn-secondary text-yellow-400 px-10 py-4 rounded-full text-lg font-semibold inline-block">
-                        Accès Client
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <footer class="bg-gray-800 text-white py-12">
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="flex items-center space-x-3 mb-6 md:mb-0">
-                    <div class="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
-                        <span class="text-lg">🏠</span>
-                    </div>
+                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-8 w-auto">
                     <span class="text-xl font-bold">Viiveo</span>
                 </div>
                 <div class="text-center md:text-right">
