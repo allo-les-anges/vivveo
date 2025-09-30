@@ -81,17 +81,16 @@
     <header class="bg-white shadow-sm">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
+                <a href="https://allo-les-anges.github.io/vivveo/" class="flex items-center space-x-3">
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-10">
-                    <span class="text-xl font-bold text-gray-800">Viiveo</span>
-                </div>
+                </a>
                 <nav class="hidden lg:flex space-x-6 xl:space-x-8">
-                    <a href="#" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_home">Accueil</a>
-                    <a href="#" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_services">Nos Services</a>
-                    <a href="#" class="text-yellow-500 font-semibold text-sm xl:text-base" data-translate="nav_formules">Formules</a>
-                    <a href="#" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_how">Comment ça fonctionne ?</a>
-                    <a href="#" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_credits">Acheter des crédits</a>
-                    <a href="#" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_contact">Contact</a>
+                    <a href="#hero" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_home">Accueil</a>
+                    <a href="#services" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_services">Nos Services</a>
+                    <a href="#formules" class="text-yellow-500 font-semibold text-sm xl:text-base" data-translate="nav_formules">Formules</a>
+                    <a href="#how-it-works" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_how">Comment ça fonctionne ?</a>
+                    <a href="#credits" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_credits">Acheter des crédits</a>
+                    <a href="#contact" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_contact">Contact</a>
                 </nav>
                 
                 <div class="flex items-center space-x-2 sm:space-x-4">
@@ -135,19 +134,19 @@
             <!-- Menu mobile -->
             <div id="mobile-menu" class="lg:hidden hidden bg-white border-t border-gray-200">
                 <div class="px-6 py-4 space-y-4">
-                    <a href="#" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_home">Accueil</a>
-                    <a href="#" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_services">Nos Services</a>
-                    <a href="#" class="block text-yellow-500 font-semibold py-2" data-translate="nav_formules">Formules</a>
-                    <a href="#" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_how">Comment ça fonctionne ?</a>
-                    <a href="#" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_credits">Acheter des crédits</a>
-                    <a href="#" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_contact">Contact</a>
+                    <a href="#hero" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_home">Accueil</a>
+                    <a href="#services" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_services">Nos Services</a>
+                    <a href="#formules" class="block text-yellow-500 font-semibold py-2" data-translate="nav_formules">Formules</a>
+                    <a href="#how-it-works" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_how">Comment ça fonctionne ?</a>
+                    <a href="#credits" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_credits">Acheter des crédits</a>
+                    <a href="#contact" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_contact">Contact</a>
                 </div>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero-bg relative text-white py-20 md:py-32">
+    <section id="hero" class="hero-bg relative text-white py-20 md:py-32">
         <div class="absolute inset-0 bg-black bg-opacity-40"></div>
         
         <div class="container mx-auto px-6 text-center relative z-10">
@@ -217,7 +216,7 @@
     </section>
 
     <!-- Comment ça fonctionne Section -->
-    <section class="py-20 bg-white">
+    <section id="how-it-works" class="py-20 bg-white">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="how_title">
@@ -259,7 +258,7 @@
 
 
     <!-- Crédits Section -->
-    <section class="py-20 bg-white">
+    <section id="formules" class="py-20 bg-white">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="credits_title">
@@ -657,14 +656,13 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
+    <footer id="contact" class="bg-white text-gray-800 py-12 border-t border-gray-200">
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                <a href="https://allo-les-anges.github.io/vivveo/" class="flex items-center space-x-3 mb-4 md:mb-0">
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-8">
-                    <span class="text-xl font-bold">Viiveo</span>
-                </div>
-                <p class="text-gray-400 text-center md:text-right" data-translate="footer_text">
+                </a>
+                <p class="text-gray-600 text-center md:text-right" data-translate="footer_text">
                     © 2024 Viiveo. Votre bien-être à domicile, notre priorité.
                 </p>
             </div>
@@ -1836,5 +1834,5 @@
             });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9872e601e0e7b9b3',t:'MTc1OTIyNjY5MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98735e8554e596fe',t:'MTc1OTIzMTYyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
