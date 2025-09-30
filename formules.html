@@ -4,801 +4,1837 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nos Formules - Viiveo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
         }
-
-        /* Menu fixe en haut de page */
-        .viiveo-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: linear-gradient(90deg, #4a90e2, #5e72e4);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            font-family: 'Montserrat', sans-serif;
-            z-index: 9999;
-            padding: 0.75rem 1rem;
-            backdrop-filter: saturate(180%) blur(10px);
-            border-bottom-left-radius: 1rem;
-            border-bottom-right-radius: 1rem;
-            transition: background-color 0.3s ease;
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
         }
-
-        .viiveo-menu ul {
-            display: flex;
-            justify-content: center;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            gap: 3rem;
+        
+        .hero-bg {
+            background-image: url('https://i.ibb.co/6cJCrCjN/Hero-formules.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
-
-        .viiveo-menu a {
-            text-decoration: none;
-            color: white;
-            font-weight: 700;
-            font-size: 1.1rem;
-            padding: 0.5rem 0;
-            border-bottom: 3px solid transparent;
-            transition: color 0.3s ease, border-bottom-color 0.3s ease;
-        }
-
-        .viiveo-menu a:hover,
-        .viiveo-menu a:focus {
-            color: #ffb6c1;
-            border-bottom-color: #ffb6c1;
-        }
-
-        body {
-            scroll-padding-top: 70px;
-        }
-
-        /* Cacher le menu sur mobile */
-        @media (max-width: 767px) {
-            .viiveo-menu {
-                display: none;
-            }
-        }
-
-        /* Hero Styles */
-        .viiveo-hero {
-            background: linear-gradient(135deg, #4a90e2, #5e72e4);
-            color: white;
-            padding: 4rem 1rem;
-            text-align: center;
-            font-family: 'Poppins', sans-serif;
-            border-radius: 2rem;
-            max-width: 900px;
-            margin: 3rem auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .viiveo-hero h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
-
-        .viiveo-hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        .viiveo-btn {
-            display: inline-block;
-            background-color: white;
-            color: #4a90e2;
-            font-weight: 600;
-            text-decoration: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 30px;
-            margin: 0.5rem;
+        
+        .card-hover {
             transition: all 0.3s ease;
         }
-
-        .viiveo-btn:hover {
-            background-color: #e5e5e5;
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
         }
-
-        .viiveo-btn-outline {
-            background-color: transparent;
-            color: white;
-            border: 2px solid white;
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            transition: all 0.3s ease;
         }
-
-        .viiveo-btn-outline:hover {
-            background-color: white;
-            color: #4a90e2;
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(253, 224, 71, 0.4);
         }
-
-        /* Section générale */
-        .viiveo-section {
-            background: linear-gradient(135deg, #FFFFFF, #5e72e4);
-            color: white;
-            padding: 4rem 1rem;
-            text-align: center;
-            font-family: 'Poppins', sans-serif;
-            border-radius: 2rem;
-            max-width: 900px;
-            margin: 3rem auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .viiveo-section h2 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .viiveo-section p {
-            font-size: 1rem;
-            color: #666;
-            margin-bottom: 3rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .viiveo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .viiveo-card {
-            background-color: white;
-            border-radius: 20px;
-            padding: 2rem 1rem;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .viiveo-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-        }
-
-        .viiveo-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            margin: 0 auto 1rem auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: white;
-        }
-
-        .viiveo-icon.blue { background-color: #4a90e2; }
-        .viiveo-icon.green { background-color: #38b000; }
-        .viiveo-icon.purple { background-color: #8e44ad; }
-        .viiveo-icon.orange { background-color: #f39c12; }
-
-        .viiveo-card h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .viiveo-card p {
-            font-size: 0.95rem;
-            color: #555;
-        }
-
-        /* Section Tarifs */
-        .viiveo-pricing {
-            background: linear-gradient(135deg, #666, #5e72e4);
-            color: white;
-            padding: 4rem 1rem;
-            text-align: center;
-            font-family: 'Poppins', sans-serif;
-            border-radius: 2rem;
-            max-width: 900px;
-            margin: 3rem auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .viiveo-pricing h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
-
-        .viiveo-pricing p {
-            max-width: 600px;
-            margin: 0 auto 2rem auto;
-            color: #f8f9fa;
-        }
-
-        .viiveo-cards {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .viiveo-pricing .viiveo-card {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
-            padding: 2rem;
-            text-align: center;
-            max-width: 280px;
-            flex: 1 1 250px;
-            transition: transform 0.3s ease;
+        
+        .language-selector {
             position: relative;
-            overflow: hidden;
         }
-
-        .viiveo-pricing .viiveo-card:hover {
-            transform: scale(1.03);
+        
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 50;
+            min-width: 150px;
         }
-
-        .viiveo-pricing .viiveo-card .icon-circle {
-            width: 60px;
-            height: 60px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin: 0 auto 1rem auto;
-        }
-
-        .viiveo-pricing .viiveo-card.essentiel .icon-circle {
-            background-color: #e0aaff;
-        }
-
-        .viiveo-pricing .viiveo-card.confort .icon-circle {
-            background-color: #ffd166;
-        }
-
-        .viiveo-pricing .viiveo-card.premium .icon-circle {
-            background-color: #06d6a0;
-        }
-
-        .viiveo-pricing .viiveo-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
-            color: #0e2b53;
-        }
-
-        .viiveo-pricing .viiveo-card h3.no-blue {
-            color: #444444;
-        }
-
-        .viiveo-pricing .viiveo-card .price {
-            font-size: 1.8rem;
-            color: #007bff;
-            margin-bottom: 0.5rem;
-        }
-
-        .viiveo-pricing .viiveo-card .details {
-            font-size: 0.95rem;
-            color: #6c757d;
-            margin-bottom: 1rem;
-            line-height: 1.4;
-        }
-
-        .viiveo-pricing .viiveo-card .btn-achat {
-            display: inline-block;
-            background-color: #0e2b53;
-            color: white;
-            padding: 0.6rem 1.25rem;
-            border-radius: 2rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: background 0.3s ease;
-        }
-
-        .viiveo-pricing .viiveo-card .btn-achat:hover {
-            background-color: #1b3f77;
-        }
-
-        .viiveo-pricing .viiveo-card button {
-            background-color: #0e2b53;
-            color: white;
-            padding: 0.6rem 1.25rem;
-            border: none;
-            border-radius: 2rem;
-            font-weight: 600;
+        
+        .language-option {
+            padding: 0.75rem 1rem;
             cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .viiveo-pricing .viiveo-card button:hover {
-            background-color: #1b3f77;
-        }
-
-        /* Comment ça fonctionne */
-        .viiveo-how {
-            background: linear-gradient(135deg, #FFFFFF, #5e72e4);
-            color: white;
-            padding: 4rem 1rem;
-            text-align: center;
-            font-family: 'Poppins', sans-serif;
-            border-radius: 2rem;
-            max-width: 900px;
-            margin: 3rem auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .viiveo-how h2 {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
-
-        .viiveo-how p {
-            text-align: center;
-            max-width: 650px;
-            margin: 0 auto 2.5rem auto;
-            color: #6c757d;
-        }
-
-        .viiveo-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .viiveo-step {
-            background: #ffffff;
-            border-left: 5px solid #eda9d0;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-
-        .viiveo-step-number {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: #eda9d0;
-            color: white;
-            border-radius: 50%;
-            width: 2.5rem;
-            height: 2.5rem;
+            transition: background-color 0.2s;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 0.5rem;
         }
-
-        .viiveo-step-content {
-            flex: 1;
+        
+        .language-option:hover {
+            background-color: #f9fafb;
         }
-
-        .viiveo-step-content h3 {
-            margin: 0 0 0.5rem 0;
-            font-size: 1.2rem;
-        }
-
-        .viiveo-step-content p {
-            margin: 0;
-            color: #6c757d;
-            font-size: 0.95rem;
-        }
-
-        /* Section Tarifs & Paiement */
-        .viiveo-section.bg-light {
-            background-color: #f9f9fb;
-            padding: 4rem 1rem;
-            font-family: 'Poppins', sans-serif;
-            color: #0e2b53;
-        }
-
-        .viiveo-heading {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-        }
-
-        .viiveo-grid-2 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .viiveo-payment-info,
-        .viiveo-example-rates {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .viiveo-payment-info h4,
-        .viiveo-example-rates h4 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-        }
-
-        .viiveo-payment-info ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .viiveo-payment-info li {
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: #444;
-        }
-
-        .viiveo-payment-info .viiveo-icon {
-            color: #4a90e2;
-            font-size: 1.2rem;
-            width: auto;
-            height: auto;
-        }
-
-        .viiveo-table-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .viiveo-example-rates table {
-            min-width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95rem;
-            color: #333;
-        }
-
-        .viiveo-example-rates th,
-        .viiveo-example-rates td {
-            border: 1px solid #ddd;
-            padding: 0.75rem;
-            text-align: left;
-        }
-
-        .viiveo-example-rates th {
-            background-color: #eef2f7;
-            font-weight: 600;
-        }
-
-        /* Bouton Maison */
-        .menu-bubble {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 48px;
-            height: 48px;
-            background-color: white;
-            border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            z-index: 9999;
-            transition: background-color 0.3s ease;
-            color: #333;
-            font-size: 20px;
-        }
-
-        .menu-bubble:hover {
-            background-color: #f2f2f2;
-        }
-
-        /* Footer */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        footer {
-            width: 90%;
-            max-width: 1150px;
-            margin: 60px auto 0 auto;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 20px;
-            font-family: 'Inter', sans-serif;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-
-        footer img {
-            max-width: 180px;
-            height: auto;
-            margin-bottom: 10px;
-        }
-
-        footer .contact-info p {
-            color: #555;
-            font-size: 14px;
-            margin: 2px 0;
-        }
-
-        footer .social-icons {
-            margin-top: 10px;
-        }
-
-        footer .social-icons a {
-            margin: 0 10px;
-            text-decoration: none;
-        }
-
-        footer .social-icons i {
-            font-size: 30px;
-        }
-
-        footer hr {
-            margin: 20px auto;
-            width: 80%;
-            border: 0;
-            border-top: 1px solid #ccc;
-        }
-
-        footer .copyright {
-            font-size: 12px;
-            color: #999;
-            margin-top: 10px;
+        
+        .language-option.active {
+            background-color: #fef3c7;
+            color: #92400e;
         }
     </style>
 </head>
-<body>
-    <!-- Menu Navigation -->
-    <nav class="viiveo-menu" role="navigation" aria-label="Menu principal">
-        <ul>
-            <li><a href="#viiveo-how">Comment ça fonctionne ?</a></li>
-            <li><a href="#services">Nos Services</a></li>
-            <li><a href="#buy-credits">Acheter des crédits</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-
-    <!-- Bouton Accueil -->
-    <a href="https://allo-les-anges.github.io/vivveo/" class="menu-bubble" aria-label="Accueil" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-home"></i>
-    </a>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-10">
+                    <span class="text-xl font-bold text-gray-800">Viiveo</span>
+                </div>
+                <nav class="hidden lg:flex space-x-6 xl:space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_home">Accueil</a>
+                    <a href="#" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_services">Nos Services</a>
+                    <a href="#" class="text-yellow-500 font-semibold text-sm xl:text-base" data-translate="nav_formules">Formules</a>
+                    <a href="#" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_how">Comment ça fonctionne ?</a>
+                    <a href="#" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_credits">Acheter des crédits</a>
+                    <a href="#" class="text-gray-600 hover:text-yellow-500 transition-colors text-sm xl:text-base" data-translate="nav_contact">Contact</a>
+                </nav>
+                
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <!-- Sélecteur de langue -->
+                    <div class="language-selector">
+                        <button id="language-button" class="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                            <span id="current-flag" class="text-sm sm:text-base">🇫🇷</span>
+                            <span class="hidden sm:inline text-xs sm:text-sm font-medium">FR</span>
+                            <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="language-dropdown" class="language-dropdown hidden">
+                            <div class="language-option active" data-lang="fr">
+                                <span>🇫🇷</span>
+                                <span>Français</span>
+                            </div>
+                            <div class="language-option" data-lang="nl">
+                                <span>🇳🇱</span>
+                                <span>Nederlands</span>
+                            </div>
+                            <div class="language-option" data-lang="en">
+                                <span>🇬🇧</span>
+                                <span>English</span>
+                            </div>
+                            <div class="language-option" data-lang="de">
+                                <span>🇩🇪</span>
+                                <span>Deutsch</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Menu mobile -->
+            <div id="mobile-menu" class="lg:hidden hidden bg-white border-t border-gray-200">
+                <div class="px-6 py-4 space-y-4">
+                    <a href="#" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_home">Accueil</a>
+                    <a href="#" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_services">Nos Services</a>
+                    <a href="#" class="block text-yellow-500 font-semibold py-2" data-translate="nav_formules">Formules</a>
+                    <a href="#" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_how">Comment ça fonctionne ?</a>
+                    <a href="#" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_credits">Acheter des crédits</a>
+                    <a href="#" class="block text-gray-600 hover:text-yellow-500 transition-colors py-2" data-translate="nav_contact">Contact</a>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <!-- Hero Section -->
-    <section class="viiveo-hero" id="viiveo-hero">
-        <h1>L'assistance à domicile simple,<br>humaine et connectée</h1>
-        <p>
-            Des services pour vous accompagner à chaque étape de la vie, à la maison.<br>
-            Pour les personnes âgées, isolées ou en perte d'autonomie – et pour leurs proches.
-        </p>
-        <a href="#services" class="viiveo-btn">Découvrir nos services</a>
-        <a href="#buy-credits" class="viiveo-btn viiveo-btn-outline">Voir nos tarifs</a>
-    </section>
-
-    <!-- À qui s'adresse Viiveo -->
-    <section class="viiveo-section" id="services">
-        <h2>À qui s'adresse Viiveo ?</h2>
-        <p>Viiveo offre des solutions adaptées à différents profils pour faciliter le maintien à domicile.</p>
-        <div class="viiveo-grid">
-            <div class="viiveo-card">
-                <i data-lucide="user-check" class="viiveo-icon"></i>
-                <h3>Personnes âgées</h3>
-                <p>Autonomes ou dépendantes, pour maintenir votre indépendance à domicile.</p>
-            </div>
-            <div class="viiveo-card">
-                <i data-lucide="hand-heart" class="viiveo-icon"></i>
-                <h3>Proches aidants</h3>
-                <p>Organisez facilement l'aide pour vos proches, même à distance.</p>
-            </div>
-            <div class="viiveo-card">
-                <i data-lucide="stethoscope" class="viiveo-icon"></i>
-                <h3>Professionnels du soin</h3>
-                <p>Rejoignez notre réseau et développez votre activité auprès de nouveaux clients.</p>
-            </div>
-            <div class="viiveo-card">
-                <i data-lucide="building-2" class="viiveo-icon"></i>
-                <h3>Communes / CPAS</h3>
-                <p>Offrez des solutions d'assistance innovantes aux habitants de votre commune.</p>
+    <section class="hero-bg relative text-white py-20 md:py-32">
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 leading-tight" data-translate="hero_title">
+                L'assistance à domicile simple, humaine et connectée
+            </h1>
+            <p class="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 max-w-3xl mx-auto text-yellow-100 leading-relaxed px-4 sm:px-0" data-translate="hero_subtitle">
+                Des services pour vous accompagner à chaque étape de la vie, à la maison. Pour les personnes âgées, isolées ou en perte d'autonomie – et pour leurs proches.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mt-8 sm:mt-10 px-4 sm:px-0">
+                <a href="#services" class="btn-primary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold inline-block text-center" data-translate="hero_discover">
+                    Découvrir nos services
+                </a>
+                <a href="#formules" class="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold inline-block hover:bg-white hover:text-gray-800 transition-all text-center" data-translate="hero_pricing">
+                    Voir nos tarifs
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Packs de crédits -->
-    <div class="viiveo-pricing" id="buy-credits">
-        <h2>Achetez vos crédits Viiveo</h2>
-        <p>Les crédits vous permettent de commander tous les services Viiveo. Leur valeur est dégressive : plus vous achetez, moins chaque crédit vous coûte.</p>
-        <div class="viiveo-cards">
-            <div class="viiveo-card essentiel">
-                <div class="icon-circle"><i class="fas fa-leaf"></i></div>
-                <h3>Pack Essentiel</h3>
-                <div class="price">50€</div>
-                <div class="details">
-                    50 crédits<br>1€ / crédit<br>Valide 6 mois
-                </div>
-                <a href="https://viiveo-achacts.carrd.co" class="btn-achat" target="_blank" rel="noopener noreferrer">Acheter</a>
+    <!-- À qui s'adresse Viiveo Section -->
+    <section id="services" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="target_title">
+                    À qui s'adresse Viiveo ?
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto" data-translate="target_subtitle">
+                    Viiveo offre des solutions adaptées à différents profils pour faciliter le maintien à domicile.
+                </p>
             </div>
-            <div class="viiveo-card confort">
-                <div class="icon-circle"><i class="fas fa-star"></i></div>
-                <h3>Pack Confort</h3>
-                <div class="price">95€</div>
-                <div class="details">
-                    100 crédits<br>0,95€ / crédit<br>Valide 12 mois
-                </div>
-                <a href="https://viiveo-achacts.carrd.co" class="btn-achat" target="_blank" rel="noopener noreferrer">Acheter</a>
-            </div>
-            <div class="viiveo-card premium">
-                <div class="icon-circle"><i class="fas fa-gem"></i></div>
-                <h3>Pack Premium</h3>
-                <div class="price">180€</div>
-                <div class="details">
-                    200 crédits<br>0,90€ / crédit<br>Valide 18 mois
-                </div>
-                <a href="https://viiveo-achacts.carrd.co" class="btn-achat" target="_blank" rel="noopener noreferrer">Acheter</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section Confiance -->
-    <div class="viiveo-pricing">
-        <h2>Accédez à Viiveo en toute confiance</h2>
-        <p>Chez Viiveo, votre sécurité et votre tranquillité d'esprit sont notre priorité. Que ce soit pour accéder aux services, effectuer un paiement ou choisir un prestataire, tout est pensé pour vous garantir une expérience fluide, sécurisée et fiable.</p>
-        <div class="viiveo-cards">
-            <div class="viiveo-card confort">
-                <div class="icon-circle"><i class="fas fa-qrcode"></i></div>
-                <h3 class="no-blue">QR code personnel</h3>
-                <div class="price">Gratuit efficace</div>
-                <div class="details">
-                    Votre code unique pour accéder aux services
-                </div>
-                <button>Voir</button>
-            </div>
-            <div class="viiveo-card premium">
-                <div class="icon-circle"><i class="fas fa-lock"></i></div>
-                <h3 class="no-blue">Paiement sécurisé</h3>
-                <div class="price">100% sécurisé</div>
-                <div class="details">
-                    Transactions protégées par SSL
-                </div>
-                <button>En savoir plus</button>
-            </div>
-            <div class="viiveo-card premium">
-                <div class="icon-circle"><i class="fas fa-user-check"></i></div>
-                <h3 class="no-blue">Prestataires vérifiés</h3>
-                <div class="price">Qualité garantie</div>
-                <div class="details">
-                    Nos prestataires sont contrôlés rigoureusement
-                </div>
-                <button>Découvrir</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Comment ça fonctionne -->
-    <div class="viiveo-how" id="viiveo-how">
-        <h2>Comment ça fonctionne ?</h2>
-        <p>Viiveo simplifie l'accès à des services de qualité, à domicile, en quelques étapes simples.</p>
-        <div class="viiveo-steps">
-            <div class="viiveo-step">
-                <div class="viiveo-step-number">1</div>
-                <div class="viiveo-step-content">
-                    <h3>Remplissez un formulaire</h3>
-                    <p>Décrivez votre besoin via notre formulaire en ligne. Nous vous accompagnons si nécessaire.</p>
-                </div>
-            </div>
-            <div class="viiveo-step">
-                <div class="viiveo-step-number">2</div>
-                <div class="viiveo-step-content">
-                    <h3>Nous trouvons un prestataire</h3>
-                    <p>Un professionnel qualifié vous est attribué, selon vos préférences et disponibilités.</p>
-                </div>
-            </div>
-            <div class="viiveo-step">
-                <div class="viiveo-step-number">3</div>
-                <div class="viiveo-step-content">
-                    <h3>Suivi et validation</h3>
-                    <p>Suivez l'intervention depuis votre espace client, validez et évaluez la prestation.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Exemples de tarifs -->
-    <div class="viiveo-wrapper">
-        <section class="viiveo-section bg-light">
-            <div class="viiveo-container">
-                <h2 class="viiveo-heading">Exemples de tarifs et paiement</h2>
-                <div class="viiveo-grid-2" style="margin-top: 40px;">
-                    <div class="viiveo-payment-info">
-                        <h4>Informations de paiement</h4>
-                        <ul>
-                            <li><i class="fas fa-credit-card viiveo-icon"></i> Paiement par carte bancaire ou virement</li>
-                            <li><i class="fas fa-file-invoice viiveo-icon"></i> Envoi automatique d'une facture</li>
-                            <li><i class="fas fa-redo-alt viiveo-icon"></i> Rechargement possible depuis votre espace client</li>
-                            <li><i class="fas fa-percent viiveo-icon"></i> Certains services peuvent être déductibles fiscalement</li>
-                        </ul>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+                <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-lg text-center card-hover">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                        <span class="text-2xl sm:text-3xl">👴</span>
                     </div>
-                    <div class="viiveo-example-rates">
-                        <h4>Exemples de tarifs</h4>
-                        <div class="viiveo-table-wrapper">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Service</th>
-                                        <th>Crédits</th>
-                                        <th>Prix estimé</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Aide ménagère (1h)</td>
-                                        <td>8 crédits</td>
-                                        <td><strong>8,00 €</strong> (avec Pack Essentiel)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Coiffure (coupe)</td>
-                                        <td>10 crédits</td>
-                                        <td><strong>9,50 €</strong> (avec Pack Confort)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Transport (A/R)</td>
-                                        <td>6 crédits</td>
-                                        <td><strong>5,40 €</strong> (avec Pack Premium)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Jardinage (1h)</td>
-                                        <td>12 crédits</td>
-                                        <td><strong>10,80 €</strong> (avec Pack Premium)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4" data-translate="target1_title">Personnes âgées</h3>
+                    <p class="text-sm sm:text-base text-gray-600 leading-relaxed" data-translate="target1_desc">Autonomes ou dépendantes, pour maintenir votre indépendance à domicile.</p>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-lg text-center card-hover">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                        <span class="text-2xl sm:text-3xl">👨‍👩‍👧‍👦</span>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4" data-translate="target2_title">Proches aidants</h3>
+                    <p class="text-sm sm:text-base text-gray-600 leading-relaxed" data-translate="target2_desc">Organisez facilement l'aide pour vos proches, même à distance.</p>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-lg text-center card-hover">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                        <span class="text-2xl sm:text-3xl">👩‍⚕️</span>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4" data-translate="target3_title">Professionnels du soin</h3>
+                    <p class="text-sm sm:text-base text-gray-600 leading-relaxed" data-translate="target3_desc">Rejoignez notre réseau et développez votre activité auprès de nouveaux clients.</p>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-lg text-center card-hover">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                        <span class="text-2xl sm:text-3xl">🏛️</span>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4" data-translate="target4_title">Communes / CPAS</h3>
+                    <p class="text-sm sm:text-base text-gray-600 leading-relaxed" data-translate="target4_desc">Offrez des solutions d'assistance innovantes aux habitants de votre commune.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comment ça fonctionne Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="how_title">
+                    Comment ça fonctionne ?
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto" data-translate="how_subtitle">
+                    Viiveo simplifie l'accès à des services de qualité, à domicile, en quelques étapes simples.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-5xl mx-auto">
+                <div class="text-center">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                        <span class="text-2xl sm:text-3xl font-bold text-yellow-600">1</span>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4" data-translate="step1_title">Remplissez un formulaire</h3>
+                    <p class="text-sm sm:text-base text-gray-600 leading-relaxed" data-translate="step1_desc">Décrivez votre besoin via notre formulaire en ligne. Nous vous accompagnons si nécessaire.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                        <span class="text-2xl sm:text-3xl font-bold text-yellow-600">2</span>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4" data-translate="step2_title">Nous trouvons un prestataire</h3>
+                    <p class="text-sm sm:text-base text-gray-600 leading-relaxed" data-translate="step2_desc">Un professionnel qualifié vous est attribué, selon vos préférences et disponibilités.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                        <span class="text-2xl sm:text-3xl font-bold text-yellow-600">3</span>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4" data-translate="step3_title">Suivi et validation</h3>
+                    <p class="text-sm sm:text-base text-gray-600 leading-relaxed" data-translate="step3_desc">Suivez l'intervention depuis votre espace client, validez et évaluez la prestation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Crédits Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="credits_title">
+                    Achetez vos crédits Viiveo
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto" data-translate="credits_subtitle">
+                    Les crédits vous permettent de commander tous les services Viiveo. Leur valeur est dégressive : plus vous achetez, moins chaque crédit vous coûte.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto mb-12 lg:mb-16">
+                <!-- Pack Essentiel -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-200 card-hover">
+                    <div class="text-center mb-6 sm:mb-8">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4" data-translate="pack1_title">Pack Essentiel</h3>
+                        <div class="text-3xl sm:text-4xl font-bold text-green-600 mb-2">50€</div>
+                        <div class="text-lg sm:text-2xl font-semibold text-gray-700 mb-2" data-translate="pack1_credits">50 crédits</div>
+                        <div class="text-base sm:text-lg text-gray-600 mb-2" data-translate="pack1_price">1€ / crédit</div>
+                        <div class="text-sm text-gray-500" data-translate="pack1_validity">Valide 6 mois</div>
+                    </div>
+                    <button class="w-full btn-primary text-white py-3 sm:py-4 px-6 rounded-full font-semibold text-base sm:text-lg" data-translate="buy_pack">
+                        Acheter
+                    </button>
+                </div>
+
+                <!-- Pack Confort -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-yellow-400 relative md:transform md:scale-105 card-hover">
+                    <div class="absolute -top-3 sm:-top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-yellow-400 text-white px-4 sm:px-6 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-bold" data-translate="popular">
+                            ⭐ POPULAIRE
+                        </span>
+                    </div>
+                    <div class="text-center mb-6 sm:mb-8">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4" data-translate="pack2_title">Pack Confort</h3>
+                        <div class="text-3xl sm:text-4xl font-bold text-yellow-600 mb-2">95€</div>
+                        <div class="text-lg sm:text-2xl font-semibold text-gray-700 mb-2" data-translate="pack2_credits">100 crédits</div>
+                        <div class="text-base sm:text-lg text-gray-600 mb-2" data-translate="pack2_price">0,95€ / crédit</div>
+                        <div class="text-sm text-gray-500" data-translate="pack2_validity">Valide 12 mois</div>
+                    </div>
+                    <button class="w-full btn-primary text-white py-3 sm:py-4 px-6 rounded-full font-semibold text-base sm:text-lg" data-translate="buy_pack">
+                        Acheter
+                    </button>
+                </div>
+
+                <!-- Pack Premium -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-200 card-hover">
+                    <div class="text-center mb-6 sm:mb-8">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4" data-translate="pack3_title">Pack Premium</h3>
+                        <div class="text-3xl sm:text-4xl font-bold text-purple-600 mb-2">180€</div>
+                        <div class="text-lg sm:text-2xl font-semibold text-gray-700 mb-2" data-translate="pack3_credits">200 crédits</div>
+                        <div class="text-base sm:text-lg text-gray-600 mb-2" data-translate="pack3_price">0,90€ / crédit</div>
+                        <div class="text-sm text-gray-500" data-translate="pack3_validity">Valide 18 mois</div>
+                    </div>
+                    <button class="w-full btn-primary text-white py-3 sm:py-4 px-6 rounded-full font-semibold text-base sm:text-lg" data-translate="buy_pack">
+                        Acheter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tarifs détaillés -->
+            <div class="bg-gray-50 rounded-3xl p-4 sm:p-6 lg:p-8">
+                <h3 class="text-xl sm:text-2xl font-bold text-gray-800 mb-6 sm:mb-8 text-center" data-translate="pricing_examples">Tarifs détaillés par service</h3>
+                
+                <!-- Tableau principal des services -->
+                <div class="overflow-x-auto mb-8">
+                    <table class="w-full min-w-[600px]">
+                        <thead>
+                            <tr class="border-b-2 border-gray-300">
+                                <th class="text-left py-3 sm:py-4 px-2 sm:px-4 font-semibold text-gray-700 text-sm sm:text-base" data-translate="service_col">Service</th>
+                                <th class="text-center py-3 sm:py-4 px-2 sm:px-4 font-semibold text-gray-700 text-sm sm:text-base" data-translate="base_rate_col">Base horaire</th>
+                                <th class="text-left py-3 sm:py-4 px-2 sm:px-4 font-semibold text-gray-700 text-sm sm:text-base" data-translate="remarks_col">Remarques spécifiques</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-600">
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base">
+                                    <div class="flex items-center gap-2">
+                                        <span>🧹</span>
+                                        <span data-translate="service_cleaning">Aide ménagère</span>
+                                    </div>
+                                </td>
+                                <td class="text-center py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base font-semibold">20 crédits / heure</td>
+                                <td class="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base" data-translate="cleaning_remarks">Inclut nettoyage courant, repassage léger, etc.</td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base">
+                                    <div class="flex items-center gap-2">
+                                        <span>🛒</span>
+                                        <span data-translate="service_shopping">Courses à domicile</span>
+                                    </div>
+                                </td>
+                                <td class="text-center py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base font-semibold">18 crédits / heure</td>
+                                <td class="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base" data-translate="shopping_remarks">Temps de trajet inclus dans l'heure.</td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base">
+                                    <div class="flex items-center gap-2">
+                                        <span>💇‍♀️</span>
+                                        <span data-translate="service_hairdressing">Coiffure à domicile</span>
+                                    </div>
+                                </td>
+                                <td class="text-center py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base font-semibold text-yellow-600">Variable : 25 à 40 crédits</td>
+                                <td class="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base" data-translate="hairdressing_remarks">Dépend du type de coupe / brushing / soins. Voir détails ci-dessous.</td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base">
+                                    <div class="flex items-center gap-2">
+                                        <span>🌿</span>
+                                        <span data-translate="service_gardening">Jardinage</span>
+                                    </div>
+                                </td>
+                                <td class="text-center py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base font-semibold">25 crédits / heure</td>
+                                <td class="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base" data-translate="gardening_remarks">Taille de haies, tonte, désherbage simple.</td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base">
+                                    <div class="flex items-center gap-2">
+                                        <span>🚗</span>
+                                        <span data-translate="service_transport">Transport accompagné</span>
+                                    </div>
+                                </td>
+                                <td class="text-center py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base font-semibold">20 crédits / heure</td>
+                                <td class="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base" data-translate="transport_remarks">Inclut l'aller-retour + temps d'attente éventuel.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base">
+                                    <div class="flex items-center gap-2">
+                                        <span>🆘</span>
+                                        <span data-translate="service_assistance">Assistance / Secours</span>
+                                    </div>
+                                </td>
+                                <td class="text-center py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base font-semibold">22 crédits / heure</td>
+                                <td class="py-3 sm:py-4 px-2 sm:px-4 text-sm sm:text-base" data-translate="assistance_remarks">Services de type aide ponctuelle urgente ou soutien.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Détail coiffure -->
+                <div class="bg-white rounded-2xl p-4 sm:p-6 mb-8">
+                    <h4 class="text-lg sm:text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span>💇‍♀️</span>
+                        <span data-translate="hairdressing_detail_title">Détail des prestations coiffure</span>
+                    </h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-[500px]">
+                            <thead>
+                                <tr class="border-b border-gray-200">
+                                    <th class="text-left py-2 sm:py-3 px-2 sm:px-3 font-semibold text-gray-700 text-sm" data-translate="service_detail_col">Prestation</th>
+                                    <th class="text-center py-2 sm:py-3 px-2 sm:px-3 font-semibold text-gray-700 text-sm" data-translate="credits_estimated_col">Crédits estimés</th>
+                                    <th class="text-center py-2 sm:py-3 px-2 sm:px-3 font-semibold text-gray-700 text-sm" data-translate="duration_col">Durée estimée</th>
+                                    <th class="text-left py-2 sm:py-3 px-2 sm:px-3 font-semibold text-gray-700 text-sm" data-translate="remarks_col">Remarques</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 text-sm">
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3" data-translate="hair_cut_short">Coupe femme courte</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3 font-semibold">25 crédits</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3">~45 min</td>
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3" data-translate="hair_cut_short_remarks">Shampoing + coupe + brushing simple</td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3" data-translate="hair_cut_long">Coupe femme mi-longue ou longue</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3 font-semibold">30 crédits</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3">~1h</td>
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3" data-translate="hair_cut_long_remarks">Avec brushing soigné</td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3" data-translate="hair_brushing">Brushing seul</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3 font-semibold">20 crédits</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3">~30-45 min</td>
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3" data-translate="hair_brushing_remarks">Selon la longueur</td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3" data-translate="hair_cut_men">Coupe homme</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3 font-semibold">20 crédits</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3">~30 min</td>
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3">-</td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3" data-translate="hair_cut_child">Coupe enfant</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3 font-semibold">15 crédits</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3">~20 min</td>
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3" data-translate="hair_cut_child_remarks">Jusqu'à 12 ans</td>
+                                </tr>
+                                <tr class="border-b border-gray-100">
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3" data-translate="hair_coloring">Coloration (racines) + brushing</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3 font-semibold">40 crédits</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3">~1h30</td>
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3" data-translate="hair_coloring_remarks">Hors soin spécifique</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3" data-translate="hair_highlights">Mèches / balayage + coupe + brushing</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3 font-semibold text-yellow-600">50-60 crédits</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3">~2h à 2h30</td>
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3" data-translate="hair_highlights_remarks">À estimer avec le prestataire au cas par cas</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Comparaison avec les mutuelles -->
+                <div class="bg-blue-50 rounded-2xl p-4 sm:p-6">
+                    <h4 class="text-lg sm:text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span>🤝</span>
+                        <span data-translate="mutual_comparison_title">Viiveo et votre mutuelle : complémentaires</span>
+                    </h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-[600px]">
+                            <thead>
+                                <tr class="border-b border-blue-200">
+                                    <th class="text-left py-2 sm:py-3 px-2 sm:px-3 font-semibold text-gray-700 text-sm" data-translate="theme_col">Thème</th>
+                                    <th class="text-center py-2 sm:py-3 px-2 sm:px-3 font-semibold text-gray-700 text-sm" data-translate="mutual_col">Mutuelle</th>
+                                    <th class="text-center py-2 sm:py-3 px-2 sm:px-3 font-semibold text-gray-700 text-sm">Viiveo</th>
+                                    <th class="text-center py-2 sm:py-3 px-2 sm:px-3 font-semibold text-gray-700 text-sm" data-translate="complementarity_col">Complémentarité</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 text-sm">
+                                <tr class="border-b border-blue-100">
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3 font-medium" data-translate="health_reimbursements">Remboursements santé</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3" data-translate="mutual_health_yes">Oui (consultations, soins, médicaments)</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3" data-translate="viiveo_health_no">Non</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3" data-translate="health_complementarity">Viiveo ≠ système de santé : se place à côté</td>
+                                </tr>
+                                <tr class="border-b border-blue-100">
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3 font-medium" data-translate="home_help">Aides à domicile</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3" data-translate="mutual_home_limited">Très limitées ou indirectes</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3" data-translate="viiveo_home_complete">Complètes et à la demande (ménage, courses, aide ponctuelle)</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3 text-green-600">✅ <span data-translate="home_reinforces">Viiveo renforce l'action mutuelle</span></td>
+                                </tr>
+                                <tr class="border-b border-blue-100">
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3 font-medium" data-translate="prevention_wellness">Prévention / bien-être</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3" data-translate="mutual_prevention_limited">Quelques campagnes, stages, infos santé</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3" data-translate="viiveo_prevention_concrete">Interventions concrètes au quotidien</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3 text-green-600">✅ <span data-translate="prevention_transforms">Viiveo transforme la prévention en actions concrètes</span></td>
+                                </tr>
+                                <tr class="border-b border-blue-100">
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3 font-medium" data-translate="hospitalization_care">Hospitalisation / soins lourds</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3" data-translate="mutual_hospitalization_yes">Oui via assurances hospi</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3" data-translate="viiveo_hospitalization_no">Non</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3 text-red-600">❌ <span data-translate="hospitalization_out_scope">Hors champ Viiveo</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 sm:py-3 px-2 sm:px-3 font-medium" data-translate="human_relational_services">Services humains et relationnels</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3" data-translate="mutual_human_limited">Très peu (faible présence terrain)</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3" data-translate="viiveo_human_yes">Oui : humains qualifiés, sélectionnés, de confiance</td>
+                                    <td class="text-center py-2 sm:py-3 px-2 sm:px-3 text-green-600">✅ <span data-translate="human_differentiation">Différenciation forte</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sécurité Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="security_title">
+                    Accédez à Viiveo en toute confiance
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto" data-translate="security_subtitle">
+                    Chez Viiveo, votre sécurité et votre tranquillité d'esprit sont notre priorité. Que ce soit pour accéder aux services, effectuer un paiement ou choisir un prestataire, tout est pensé pour vous garantir une expérience fluide, sécurisée et fiable.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
+                <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-lg text-center card-hover">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                        <span class="text-2xl sm:text-3xl">📱</span>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-2" data-translate="qr_title">QR code personnel</h3>
+                    <div class="text-xs sm:text-sm text-green-600 font-semibold mb-3 sm:mb-4" data-translate="qr_badge">Gratuit efficace</div>
+                    <p class="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed" data-translate="qr_desc">Votre code unique pour accéder aux services</p>
+                    <button onclick="openModal('qr-modal')" class="text-yellow-600 font-semibold hover:text-yellow-700 transition-colors text-sm sm:text-base" data-translate="see_more">Voir</button>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-lg text-center card-hover">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                        <span class="text-2xl sm:text-3xl">🔒</span>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-2" data-translate="payment_title">Paiement sécurisé</h3>
+                    <div class="text-xs sm:text-sm text-green-600 font-semibold mb-3 sm:mb-4" data-translate="payment_badge">100% sécurisé</div>
+                    <p class="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed" data-translate="payment_desc">Transactions protégées par SSL</p>
+                    <button onclick="openModal('payment-modal')" class="text-yellow-600 font-semibold hover:text-yellow-700 transition-colors text-sm sm:text-base" data-translate="learn_more">En savoir plus</button>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-lg text-center card-hover">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                        <span class="text-2xl sm:text-3xl">✅</span>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-2" data-translate="providers_title">Prestataires vérifiés</h3>
+                    <div class="text-xs sm:text-sm text-green-600 font-semibold mb-3 sm:mb-4" data-translate="providers_badge">Qualité garantie</div>
+                    <p class="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed" data-translate="providers_desc">Nos prestataires sont contrôlés rigoureusement</p>
+                    <button onclick="openModal('providers-modal')" class="text-yellow-600 font-semibold hover:text-yellow-700 transition-colors text-sm sm:text-base" data-translate="discover_more">Découvrir</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="faq_title">
+                    Questions Fréquentes
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-translate="faq_subtitle">
+                    Tout ce que vous devez savoir sur nos formules
+                </p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                    <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFaq(this)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold text-gray-800" data-translate="faq1_question">
+                                Puis-je changer de formule à tout moment ?
+                            </h3>
+                            <svg class="w-6 h-6 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </button>
+                    <div class="hidden px-6 pb-6">
+                        <p class="text-gray-600 leading-relaxed" data-translate="faq1_answer">
+                            Absolument ! Vous pouvez modifier votre formule à tout moment depuis votre espace client. Les changements prennent effet dès le mois suivant, sans frais supplémentaires.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                    <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFaq(this)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold text-gray-800" data-translate="faq2_question">
+                                Y a-t-il un engagement de durée ?
+                            </h3>
+                            <svg class="w-6 h-6 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </button>
+                    <div class="hidden px-6 pb-6">
+                        <p class="text-gray-600 leading-relaxed" data-translate="faq2_answer">
+                            Non, toutes nos formules sont sans engagement. Vous pouvez résilier votre abonnement à tout moment avec un simple préavis de 30 jours.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                    <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFaq(this)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold text-gray-800" data-translate="faq3_question">
+                                Comment fonctionne la facturation ?
+                            </h3>
+                            <svg class="w-6 h-6 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </button>
+                    <div class="hidden px-6 pb-6">
+                        <p class="text-gray-600 leading-relaxed" data-translate="faq3_answer">
+                            La facturation est mensuelle et automatique. Vous recevez votre facture par email le 1er de chaque mois. Tous les moyens de paiement classiques sont acceptés.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6 text-center">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6" data-translate="cta_title">
+                    Prêt à commencer ?
+                </h2>
+                <p class="text-xl text-gray-600 mb-10 leading-relaxed" data-translate="cta_subtitle">
+                    Rejoignez des milliers de clients satisfaits et simplifiez votre quotidien dès aujourd'hui
+                </p>
+                <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                    <a href="https://tally.so/r/n0zM26" target="_blank" rel="noopener noreferrer"
+                       class="btn-primary text-white px-10 py-4 rounded-full text-lg font-semibold inline-block" data-translate="cta_start">
+                        Commencer maintenant
+                    </a>
+                    <a href="#" class="border-2 border-yellow-400 text-yellow-600 px-10 py-4 rounded-full text-lg font-semibold inline-block hover:bg-yellow-400 hover:text-white transition-all" data-translate="cta_demo">
+                        Voir la démo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-8">
+                    <span class="text-xl font-bold">Viiveo</span>
+                </div>
+                <p class="text-gray-400 text-center md:text-right" data-translate="footer_text">
+                    © 2024 Viiveo. Votre bien-être à domicile, notre priorité.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modales -->
+    <!-- Modal QR Code -->
+    <div id="qr-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4">
+            <div class="p-4 sm:p-6 lg:p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800" data-translate="qr_modal_title">QR Code Personnel Viiveo</h2>
+                    <button onclick="closeModal('qr-modal')" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                </div>
+                
+                <div class="text-center mb-8">
+                    <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-4xl">📱</span>
+                    </div>
+                    <div class="bg-gray-100 p-6 rounded-2xl mb-6">
+                        <div class="w-32 h-32 bg-white border-2 border-gray-300 rounded-lg mx-auto flex items-center justify-center">
+                            <span class="text-xs text-gray-500" data-translate="qr_sample">QR Code<br>Exemple</span>
                         </div>
                     </div>
                 </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3" data-translate="qr_what_title">Qu'est-ce que le QR Code Viiveo ?</h3>
+                        <p class="text-gray-600 leading-relaxed" data-translate="qr_what_desc">
+                            Votre QR Code personnel est un identifiant unique qui vous permet d'accéder rapidement et facilement à tous les services Viiveo. Il remplace les mots de passe complexes et simplifie votre expérience.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3" data-translate="qr_how_title">Comment ça fonctionne ?</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-xs font-bold text-yellow-600">1</span>
+                                </div>
+                                <p class="text-gray-600" data-translate="qr_step1">Recevez votre QR Code unique par email après inscription</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-xs font-bold text-yellow-600">2</span>
+                                </div>
+                                <p class="text-gray-600" data-translate="qr_step2">Imprimez-le ou gardez-le sur votre téléphone</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-xs font-bold text-yellow-600">3</span>
+                                </div>
+                                <p class="text-gray-600" data-translate="qr_step3">Présentez-le au prestataire pour valider l'intervention</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3" data-translate="qr_advantages_title">Avantages</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-green-500">✓</span>
+                                <span class="text-gray-600" data-translate="qr_adv1">Accès instantané</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-green-500">✓</span>
+                                <span class="text-gray-600" data-translate="qr_adv2">Aucun mot de passe</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-green-500">✓</span>
+                                <span class="text-gray-600" data-translate="qr_adv3">100% sécurisé</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-green-500">✓</span>
+                                <span class="text-gray-600" data-translate="qr_adv4">Facile à utiliser</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button onclick="closeModal('qr-modal')" class="btn-primary text-white px-8 py-3 rounded-full font-semibold" data-translate="close_modal">
+                        Fermer
+                    </button>
+                </div>
             </div>
-        </section>
+        </div>
     </div>
 
-    <!-- Footer -->
-    <div class="viiveo-footer" id="contact">
-        <footer>
-            <img src="https://i.postimg.cc/VNqjxcQX/logo-viiveo-2.png" alt="viiveo Logo">
-            <div class="contact-info">
-                <p>info@viiveo.com</p>
-                <p>+32 475 32 51 27</p>
+    <!-- Modal Paiement -->
+    <div id="payment-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4">
+            <div class="p-4 sm:p-6 lg:p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800" data-translate="payment_modal_title">Paiement 100% Sécurisé</h2>
+                    <button onclick="closeModal('payment-modal')" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                </div>
+                
+                <div class="text-center mb-8">
+                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-4xl">🔒</span>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3" data-translate="payment_security_title">Sécurité de vos transactions</h3>
+                        <p class="text-gray-600 leading-relaxed" data-translate="payment_security_desc">
+                            Chez Viiveo, la sécurité de vos paiements est notre priorité absolue. Nous utilisons les technologies de cryptage les plus avancées pour protéger vos données financières.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3" data-translate="payment_methods_title">Moyens de paiement acceptés</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl mb-2">💳</div>
+                                <span class="text-sm text-gray-600" data-translate="payment_card">Carte bancaire</span>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl mb-2">🏦</div>
+                                <span class="text-sm text-gray-600" data-translate="payment_transfer">Virement</span>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl mb-2">📱</div>
+                                <span class="text-sm text-gray-600" data-translate="payment_mobile">Paiement mobile</span>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg text-center">
+                                <div class="text-2xl mb-2">💰</div>
+                                <span class="text-sm text-gray-600" data-translate="payment_paypal">PayPal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3" data-translate="payment_protection_title">Protection garantie</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start space-x-3">
+                                <span class="text-green-500 mt-1">🛡️</span>
+                                <div>
+                                    <p class="font-medium text-gray-800" data-translate="payment_ssl_title">Cryptage SSL 256 bits</p>
+                                    <p class="text-gray-600 text-sm" data-translate="payment_ssl_desc">Même niveau de sécurité que les banques</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <span class="text-green-500 mt-1">🔐</span>
+                                <div>
+                                    <p class="font-medium text-gray-800" data-translate="payment_pci_title">Certification PCI DSS</p>
+                                    <p class="text-gray-600 text-sm" data-translate="payment_pci_desc">Standard de sécurité international</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <span class="text-green-500 mt-1">🏛️</span>
+                                <div>
+                                    <p class="font-medium text-gray-800" data-translate="payment_bank_title">Partenaires bancaires agréés</p>
+                                    <p class="text-gray-600 text-sm" data-translate="payment_bank_desc">Transactions via des établissements certifiés</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <div class="flex items-start space-x-3">
+                            <span class="text-blue-500 mt-1">ℹ️</span>
+                            <div>
+                                <p class="font-medium text-blue-800" data-translate="payment_info_title">Information importante</p>
+                                <p class="text-blue-700 text-sm" data-translate="payment_info_desc">
+                                    Vos données de paiement ne sont jamais stockées sur nos serveurs. Elles sont directement transmises à nos partenaires bancaires sécurisés.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button onclick="closeModal('payment-modal')" class="btn-primary text-white px-8 py-3 rounded-full font-semibold" data-translate="close_modal">
+                        Fermer
+                    </button>
+                </div>
             </div>
-            <div class="social-icons">
-                <a href="https://www.facebook.com/viiveo.be?locale=fr_FR" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-facebook" style="color: #3b5998;"></i>
-                </a>
-                <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-linkedin" style="color: #0077b5;"></i>
-                </a>
-                <a href="https://wa.me/+32475325127" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-whatsapp" style="color: #25D366;"></i>
-                </a>
-            </div>
-            <hr>
-            <p class="copyright">
-                Copyright © Viiveo 2025
-            </p>
-        </footer>
+        </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Modal Prestataires -->
+    <div id="providers-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4">
+            <div class="p-4 sm:p-6 lg:p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800" data-translate="providers_modal_title">Prestataires Vérifiés</h2>
+                    <button onclick="closeModal('providers-modal')" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                </div>
+                
+                <div class="text-center mb-8">
+                    <div class="w-24 h-24 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-4xl">✅</span>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3" data-translate="providers_selection_title">Sélection rigoureuse</h3>
+                        <p class="text-gray-600 leading-relaxed" data-translate="providers_selection_desc">
+                            Tous nos prestataires passent par un processus de sélection strict pour garantir la qualité des services et votre sécurité. Nous vérifions leurs compétences, leur expérience et leurs références.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3" data-translate="providers_verification_title">Processus de vérification</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-sm font-bold text-purple-600">1</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-800" data-translate="providers_step1_title">Vérification d'identité</p>
+                                    <p class="text-gray-600 text-sm" data-translate="providers_step1_desc">Contrôle des pièces d'identité et du casier judiciaire</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-sm font-bold text-purple-600">2</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-800" data-translate="providers_step2_title">Validation des compétences</p>
+                                    <p class="text-gray-600 text-sm" data-translate="providers_step2_desc">Vérification des diplômes et certifications professionnelles</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-sm font-bold text-purple-600">3</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-800" data-translate="providers_step3_title">Test pratique</p>
+                                    <p class="text-gray-600 text-sm" data-translate="providers_step3_desc">Évaluation des compétences techniques et relationnelles</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-sm font-bold text-purple-600">4</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-800" data-translate="providers_step4_title">Formation Viiveo</p>
+                                    <p class="text-gray-600 text-sm" data-translate="providers_step4_desc">Formation aux standards et procédures Viiveo</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3" data-translate="providers_guarantees_title">Nos garanties</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-green-500">✓</span>
+                                <span class="text-gray-600" data-translate="providers_guarantee1">Assurance responsabilité civile</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-green-500">✓</span>
+                                <span class="text-gray-600" data-translate="providers_guarantee2">Formation continue</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-green-500">✓</span>
+                                <span class="text-gray-600" data-translate="providers_guarantee3">Évaluation régulière</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-green-500">✓</span>
+                                <span class="text-gray-600" data-translate="providers_guarantee4">Support 24/7</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <div class="flex items-start space-x-3">
+                            <span class="text-green-500 mt-1">⭐</span>
+                            <div>
+                                <p class="font-medium text-green-800" data-translate="providers_rating_title">Note moyenne de nos prestataires</p>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <div class="flex text-yellow-400">
+                                        <span>★★★★★</span>
+                                    </div>
+                                    <span class="text-green-700 font-semibold">4.8/5</span>
+                                    <span class="text-green-600 text-sm" data-translate="providers_rating_desc">(basé sur +2000 avis clients)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button onclick="closeModal('providers-modal')" class="btn-primary text-white px-8 py-3 rounded-full font-semibold" data-translate="close_modal">
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        lucide.createIcons();
+        // Fonctions pour les modales
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Fermer les modales en cliquant sur l'arrière-plan
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('fixed') && e.target.classList.contains('inset-0')) {
+                const modalId = e.target.id;
+                if (modalId) {
+                    closeModal(modalId);
+                }
+            }
+        });
+
+        // Fermer les modales avec la touche Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modals = ['qr-modal', 'payment-modal', 'providers-modal'];
+                modals.forEach(modalId => {
+                    if (!document.getElementById(modalId).classList.contains('hidden')) {
+                        closeModal(modalId);
+                    }
+                });
+            }
+        });
+
+        // Traductions multilingues
+        const translations = {
+            fr: {
+                nav_home: "Accueil",
+                nav_services: "Nos Services",
+                nav_formules: "Formules",
+                nav_how: "Comment ça fonctionne ?",
+                nav_credits: "Acheter des crédits",
+                nav_contact: "Contact",
+                hero_title: "L'assistance à domicile simple, humaine et connectée",
+                hero_subtitle: "Des services pour vous accompagner à chaque étape de la vie, à la maison. Pour les personnes âgées, isolées ou en perte d'autonomie – et pour leurs proches.",
+                hero_discover: "Découvrir nos services",
+                hero_pricing: "Voir nos tarifs",
+                target_title: "À qui s'adresse Viiveo ?",
+                target_subtitle: "Viiveo offre des solutions adaptées à différents profils pour faciliter le maintien à domicile.",
+                target1_title: "Personnes âgées",
+                target1_desc: "Autonomes ou dépendantes, pour maintenir votre indépendance à domicile.",
+                target2_title: "Proches aidants",
+                target2_desc: "Organisez facilement l'aide pour vos proches, même à distance.",
+                target3_title: "Professionnels du soin",
+                target3_desc: "Rejoignez notre réseau et développez votre activité auprès de nouveaux clients.",
+                target4_title: "Communes / CPAS",
+                target4_desc: "Offrez des solutions d'assistance innovantes aux habitants de votre commune.",
+                how_title: "Comment ça fonctionne ?",
+                how_subtitle: "Viiveo simplifie l'accès à des services de qualité, à domicile, en quelques étapes simples.",
+                step1_title: "Remplissez un formulaire",
+                step1_desc: "Décrivez votre besoin via notre formulaire en ligne. Nous vous accompagnons si nécessaire.",
+                step2_title: "Nous trouvons un prestataire",
+                step2_desc: "Un professionnel qualifié vous est attribué, selon vos préférences et disponibilités.",
+                step3_title: "Suivi et validation",
+                step3_desc: "Suivez l'intervention depuis votre espace client, validez et évaluez la prestation.",
+                credits_title: "Achetez vos crédits Viiveo",
+                credits_subtitle: "Les crédits vous permettent de commander tous les services Viiveo. Leur valeur est dégressive : plus vous achetez, moins chaque crédit vous coûte.",
+                pack1_title: "Pack Essentiel",
+                pack1_credits: "50 crédits",
+                pack1_price: "1€ / crédit",
+                pack1_validity: "Valide 6 mois",
+                pack2_title: "Pack Confort",
+                pack2_credits: "100 crédits",
+                pack2_price: "0,95€ / crédit",
+                pack2_validity: "Valide 12 mois",
+                pack3_title: "Pack Premium",
+                pack3_credits: "200 crédits",
+                pack3_price: "0,90€ / crédit",
+                pack3_validity: "Valide 18 mois",
+                buy_pack: "Acheter",
+                popular: "⭐ POPULAIRE",
+                pricing_examples: "Tarifs détaillés par service",
+                service_col: "Service",
+                base_rate_col: "Base horaire",
+                remarks_col: "Remarques spécifiques",
+                service_cleaning: "Aide ménagère",
+                cleaning_remarks: "Inclut nettoyage courant, repassage léger, etc.",
+                service_shopping: "Courses à domicile",
+                shopping_remarks: "Temps de trajet inclus dans l'heure.",
+                service_hairdressing: "Coiffure à domicile",
+                hairdressing_remarks: "Dépend du type de coupe / brushing / soins. Voir détails ci-dessous.",
+                service_gardening: "Jardinage",
+                gardening_remarks: "Taille de haies, tonte, désherbage simple.",
+                service_transport: "Transport accompagné",
+                transport_remarks: "Inclut l'aller-retour + temps d'attente éventuel.",
+                service_assistance: "Assistance / Secours",
+                assistance_remarks: "Services de type aide ponctuelle urgente ou soutien.",
+                hairdressing_detail_title: "Détail des prestations coiffure",
+                service_detail_col: "Prestation",
+                credits_estimated_col: "Crédits estimés",
+                duration_col: "Durée estimée",
+                hair_cut_short: "Coupe femme courte",
+                hair_cut_short_remarks: "Shampoing + coupe + brushing simple",
+                hair_cut_long: "Coupe femme mi-longue ou longue",
+                hair_cut_long_remarks: "Avec brushing soigné",
+                hair_brushing: "Brushing seul",
+                hair_brushing_remarks: "Selon la longueur",
+                hair_cut_men: "Coupe homme",
+                hair_cut_child: "Coupe enfant",
+                hair_cut_child_remarks: "Jusqu'à 12 ans",
+                hair_coloring: "Coloration (racines) + brushing",
+                hair_coloring_remarks: "Hors soin spécifique",
+                hair_highlights: "Mèches / balayage + coupe + brushing",
+                hair_highlights_remarks: "À estimer avec le prestataire au cas par cas",
+                mutual_comparison_title: "Viiveo et votre mutuelle : complémentaires",
+                theme_col: "Thème",
+                mutual_col: "Mutuelle",
+                complementarity_col: "Complémentarité",
+                health_reimbursements: "Remboursements santé",
+                mutual_health_yes: "Oui (consultations, soins, médicaments)",
+                viiveo_health_no: "Non",
+                health_complementarity: "Viiveo ≠ système de santé : se place à côté",
+                home_help: "Aides à domicile",
+                mutual_home_limited: "Très limitées ou indirectes",
+                viiveo_home_complete: "Complètes et à la demande (ménage, courses, aide ponctuelle)",
+                home_reinforces: "Viiveo renforce l'action mutuelle",
+                prevention_wellness: "Prévention / bien-être",
+                mutual_prevention_limited: "Quelques campagnes, stages, infos santé",
+                viiveo_prevention_concrete: "Interventions concrètes au quotidien",
+                prevention_transforms: "Viiveo transforme la prévention en actions concrètes",
+                hospitalization_care: "Hospitalisation / soins lourds",
+                mutual_hospitalization_yes: "Oui via assurances hospi",
+                viiveo_hospitalization_no: "Non",
+                hospitalization_out_scope: "Hors champ Viiveo",
+                human_relational_services: "Services humains et relationnels",
+                mutual_human_limited: "Très peu (faible présence terrain)",
+                viiveo_human_yes: "Oui : humains qualifiés, sélectionnés, de confiance",
+                human_differentiation: "Différenciation forte",
+                security_title: "Accédez à Viiveo en toute confiance",
+                security_subtitle: "Chez Viiveo, votre sécurité et votre tranquillité d'esprit sont notre priorité. Que ce soit pour accéder aux services, effectuer un paiement ou choisir un prestataire, tout est pensé pour vous garantir une expérience fluide, sécurisée et fiable.",
+                qr_title: "QR code personnel",
+                qr_badge: "Gratuit efficace",
+                qr_desc: "Votre code unique pour accéder aux services",
+                payment_title: "Paiement sécurisé",
+                payment_badge: "100% sécurisé",
+                payment_desc: "Transactions protégées par SSL",
+                providers_title: "Prestataires vérifiés",
+                providers_badge: "Qualité garantie",
+                providers_desc: "Nos prestataires sont contrôlés rigoureusement",
+                see_more: "Voir",
+                learn_more: "En savoir plus",
+                discover_more: "Découvrir",
+                faq_title: "Questions Fréquentes",
+                faq_subtitle: "Tout ce que vous devez savoir sur nos formules",
+                faq1_question: "Puis-je changer de formule à tout moment ?",
+                faq1_answer: "Absolument ! Vous pouvez modifier votre formule à tout moment depuis votre espace client. Les changements prennent effet dès le mois suivant, sans frais supplémentaires.",
+                faq2_question: "Y a-t-il un engagement de durée ?",
+                faq2_answer: "Non, toutes nos formules sont sans engagement. Vous pouvez résilier votre abonnement à tout moment avec un simple préavis de 30 jours.",
+                faq3_question: "Comment fonctionne la facturation ?",
+                faq3_answer: "La facturation est mensuelle et automatique. Vous recevez votre facture par email le 1er de chaque mois. Tous les moyens de paiement classiques sont acceptés.",
+                cta_title: "Prêt à commencer ?",
+                cta_subtitle: "Rejoignez des milliers de clients satisfaits et simplifiez votre quotidien dès aujourd'hui",
+                cta_start: "Commencer maintenant",
+                cta_demo: "Voir la démo",
+                footer_text: "© 2024 Viiveo. Votre bien-être à domicile, notre priorité.",
+                qr_modal_title: "QR Code Personnel Viiveo",
+                qr_sample: "QR Code<br>Exemple",
+                qr_what_title: "Qu'est-ce que le QR Code Viiveo ?",
+                qr_what_desc: "Votre QR Code personnel est un identifiant unique qui vous permet d'accéder rapidement et facilement à tous les services Viiveo. Il remplace les mots de passe complexes et simplifie votre expérience.",
+                qr_how_title: "Comment ça fonctionne ?",
+                qr_step1: "Recevez votre QR Code unique par email après inscription",
+                qr_step2: "Imprimez-le ou gardez-le sur votre téléphone",
+                qr_step3: "Présentez-le au prestataire pour valider l'intervention",
+                qr_advantages_title: "Avantages",
+                qr_adv1: "Accès instantané",
+                qr_adv2: "Aucun mot de passe",
+                qr_adv3: "100% sécurisé",
+                qr_adv4: "Facile à utiliser",
+                payment_modal_title: "Paiement 100% Sécurisé",
+                payment_security_title: "Sécurité de vos transactions",
+                payment_security_desc: "Chez Viiveo, la sécurité de vos paiements est notre priorité absolue. Nous utilisons les technologies de cryptage les plus avancées pour protéger vos données financières.",
+                payment_methods_title: "Moyens de paiement acceptés",
+                payment_card: "Carte bancaire",
+                payment_transfer: "Virement",
+                payment_mobile: "Paiement mobile",
+                payment_paypal: "PayPal",
+                payment_protection_title: "Protection garantie",
+                payment_ssl_title: "Cryptage SSL 256 bits",
+                payment_ssl_desc: "Même niveau de sécurité que les banques",
+                payment_pci_title: "Certification PCI DSS",
+                payment_pci_desc: "Standard de sécurité international",
+                payment_bank_title: "Partenaires bancaires agréés",
+                payment_bank_desc: "Transactions via des établissements certifiés",
+                payment_info_title: "Information importante",
+                payment_info_desc: "Vos données de paiement ne sont jamais stockées sur nos serveurs. Elles sont directement transmises à nos partenaires bancaires sécurisés.",
+                providers_modal_title: "Prestataires Vérifiés",
+                providers_selection_title: "Sélection rigoureuse",
+                providers_selection_desc: "Tous nos prestataires passent par un processus de sélection strict pour garantir la qualité des services et votre sécurité. Nous vérifions leurs compétences, leur expérience et leurs références.",
+                providers_verification_title: "Processus de vérification",
+                providers_step1_title: "Vérification d'identité",
+                providers_step1_desc: "Contrôle des pièces d'identité et du casier judiciaire",
+                providers_step2_title: "Validation des compétences",
+                providers_step2_desc: "Vérification des diplômes et certifications professionnelles",
+                providers_step3_title: "Test pratique",
+                providers_step3_desc: "Évaluation des compétences techniques et relationnelles",
+                providers_step4_title: "Formation Viiveo",
+                providers_step4_desc: "Formation aux standards et procédures Viiveo",
+                providers_guarantees_title: "Nos garanties",
+                providers_guarantee1: "Assurance responsabilité civile",
+                providers_guarantee2: "Formation continue",
+                providers_guarantee3: "Évaluation régulière",
+                providers_guarantee4: "Support 24/7",
+                providers_rating_title: "Note moyenne de nos prestataires",
+                providers_rating_desc: "(basé sur +2000 avis clients)",
+                close_modal: "Fermer"
+            },
+            nl: {
+                nav_home: "Home",
+                nav_services: "Onze Diensten",
+                nav_formules: "Formules",
+                nav_how: "Hoe werkt het?",
+                nav_credits: "Credits kopen",
+                nav_contact: "Contact",
+                hero_title: "Eenvoudige, menselijke en verbonden thuiszorg",
+                hero_subtitle: "Diensten om u bij elke stap van het leven thuis te begeleiden. Voor ouderen, geïsoleerde of afhankelijke personen – en voor hun naasten.",
+                hero_discover: "Ontdek onze diensten",
+                hero_pricing: "Bekijk onze tarieven",
+                target_title: "Voor wie is Viiveo?",
+                target_subtitle: "Viiveo biedt aangepaste oplossingen voor verschillende profielen om thuisblijven te vergemakkelijken.",
+                target1_title: "Ouderen",
+                target1_desc: "Zelfstandig of afhankelijk, om uw onafhankelijkheid thuis te behouden.",
+                target2_title: "Mantelzorgers",
+                target2_desc: "Organiseer eenvoudig hulp voor uw naasten, zelfs op afstand.",
+                target3_title: "Zorgprofessionals",
+                target3_desc: "Sluit u aan bij ons netwerk en ontwikkel uw activiteit bij nieuwe klanten.",
+                target4_title: "Gemeenten / OCMW",
+                target4_desc: "Bied innovatieve assistentieoplossingen aan de inwoners van uw gemeente.",
+                how_title: "Hoe werkt het?",
+                how_subtitle: "Viiveo vereenvoudigt de toegang tot kwaliteitsdiensten thuis in enkele eenvoudige stappen.",
+                step1_title: "Vul een formulier in",
+                step1_desc: "Beschrijf uw behoefte via ons online formulier. Wij begeleiden u indien nodig.",
+                step2_title: "Wij vinden een dienstverlener",
+                step2_desc: "Een gekwalificeerde professional wordt aan u toegewezen, volgens uw voorkeuren en beschikbaarheid.",
+                step3_title: "Opvolging en validatie",
+                step3_desc: "Volg de interventie vanuit uw klantruimte, valideer en evalueer de dienstverlening.",
+                credits_title: "Koop uw Viiveo credits",
+                credits_subtitle: "Credits stellen u in staat om alle Viiveo-diensten te bestellen. Hun waarde is degressief: hoe meer u koopt, hoe minder elke credit kost.",
+                pack1_title: "Essentieel Pakket",
+                pack1_credits: "50 credits",
+                pack1_price: "1€ / credit",
+                pack1_validity: "Geldig 6 maanden",
+                pack2_title: "Comfort Pakket",
+                pack2_credits: "100 credits",
+                pack2_price: "0,95€ / credit",
+                pack2_validity: "Geldig 12 maanden",
+                pack3_title: "Premium Pakket",
+                pack3_credits: "200 credits",
+                pack3_price: "0,90€ / credit",
+                pack3_validity: "Geldig 18 maanden",
+                buy_pack: "Kopen",
+                popular: "⭐ POPULAIR",
+                pricing_examples: "Gedetailleerde tarieven per dienst",
+                service_col: "Dienst",
+                base_rate_col: "Uurtarief",
+                remarks_col: "Specifieke opmerkingen",
+                service_cleaning: "Huishoudelijke hulp",
+                cleaning_remarks: "Inclusief gewone schoonmaak, licht strijken, enz.",
+                service_shopping: "Boodschappen aan huis",
+                shopping_remarks: "Reistijd inbegrepen in het uur.",
+                service_hairdressing: "Kapper aan huis",
+                hairdressing_remarks: "Afhankelijk van het type knipbeurt / föhnen / verzorging. Zie details hieronder.",
+                service_gardening: "Tuinieren",
+                gardening_remarks: "Heggen snoeien, maaien, eenvoudig onkruid wieden.",
+                service_transport: "Begeleide vervoer",
+                transport_remarks: "Inclusief heen- en terugreis + eventuele wachttijd.",
+                service_assistance: "Assistentie / Hulp",
+                assistance_remarks: "Diensten zoals eenmalige urgente hulp of ondersteuning.",
+                hairdressing_detail_title: "Detail kapperdiensten",
+                service_detail_col: "Dienst",
+                credits_estimated_col: "Geschatte credits",
+                duration_col: "Geschatte duur",
+                hair_cut_short: "Damesknipbeurt kort",
+                hair_cut_short_remarks: "Shampoo + knippen + eenvoudig föhnen",
+                hair_cut_long: "Damesknipbeurt middellang of lang",
+                hair_cut_long_remarks: "Met verzorgd föhnen",
+                hair_brushing: "Alleen föhnen",
+                hair_brushing_remarks: "Volgens de lengte",
+                hair_cut_men: "Herenknipbeurt",
+                hair_cut_child: "Kinderknipbeurt",
+                hair_cut_child_remarks: "Tot 12 jaar",
+                hair_coloring: "Kleuring (uitgroei) + föhnen",
+                hair_coloring_remarks: "Exclusief specifieke verzorging",
+                hair_highlights: "Highlights / balayage + knippen + föhnen",
+                hair_highlights_remarks: "Te schatten met de dienstverlener per geval",
+                mutual_comparison_title: "Viiveo en uw ziekenfonds: complementair",
+                theme_col: "Thema",
+                mutual_col: "Ziekenfonds",
+                complementarity_col: "Complementariteit",
+                health_reimbursements: "Gezondheidsvergoedingen",
+                mutual_health_yes: "Ja (consultaties, zorg, medicijnen)",
+                viiveo_health_no: "Nee",
+                health_complementarity: "Viiveo ≠ gezondheidssysteem: plaatst zich ernaast",
+                home_help: "Thuishulp",
+                mutual_home_limited: "Zeer beperkt of indirect",
+                viiveo_home_complete: "Volledig en op aanvraag (schoonmaak, boodschappen, eenmalige hulp)",
+                home_reinforces: "Viiveo versterkt de actie van het ziekenfonds",
+                prevention_wellness: "Preventie / welzijn",
+                mutual_prevention_limited: "Enkele campagnes, stages, gezondheidsinfo",
+                viiveo_prevention_concrete: "Concrete dagelijkse interventies",
+                prevention_transforms: "Viiveo transformeert preventie in concrete acties",
+                hospitalization_care: "Hospitalisatie / zware zorg",
+                mutual_hospitalization_yes: "Ja via hospitalisatieverzekeringen",
+                viiveo_hospitalization_no: "Nee",
+                hospitalization_out_scope: "Buiten Viiveo bereik",
+                human_relational_services: "Menselijke en relationele diensten",
+                mutual_human_limited: "Zeer weinig (weinig aanwezigheid ter plaatse)",
+                viiveo_human_yes: "Ja: gekwalificeerde, geselecteerde, betrouwbare mensen",
+                human_differentiation: "Sterke differentiatie",
+                security_title: "Toegang tot Viiveo met vertrouwen",
+                security_subtitle: "Bij Viiveo zijn uw veiligheid en gemoedsrust onze prioriteit. Of het nu gaat om toegang tot diensten, het uitvoeren van een betaling of het kiezen van een dienstverlener, alles is ontworpen om u een vlotte, veilige en betrouwbare ervaring te garanderen.",
+                qr_title: "Persoonlijke QR-code",
+                qr_badge: "Gratis efficiënt",
+                qr_desc: "Uw unieke code voor toegang tot diensten",
+                payment_title: "Veilige betaling",
+                payment_badge: "100% veilig",
+                payment_desc: "Transacties beschermd door SSL",
+                providers_title: "Geverifieerde dienstverleners",
+                providers_badge: "Kwaliteit gegarandeerd",
+                providers_desc: "Onze dienstverleners worden streng gecontroleerd",
+                see_more: "Bekijken",
+                learn_more: "Meer weten",
+                discover_more: "Ontdekken",
+                faq_title: "Veelgestelde Vragen",
+                faq_subtitle: "Alles wat u moet weten over onze formules",
+                faq1_question: "Kan ik op elk moment van formule veranderen?",
+                faq1_answer: "Absoluut! U kunt uw formule op elk moment wijzigen vanuit uw klantruimte. Wijzigingen gaan in vanaf de volgende maand, zonder extra kosten.",
+                faq2_question: "Is er een contractverplichting?",
+                faq2_answer: "Nee, al onze formules zijn zonder verplichting. U kunt uw abonnement op elk moment opzeggen met een eenvoudige opzegtermijn van 30 dagen.",
+                faq3_question: "Hoe werkt de facturering?",
+                faq3_answer: "De facturering is maandelijks en automatisch. U ontvangt uw factuur per email op de 1e van elke maand. Alle klassieke betaalmethoden worden geaccepteerd.",
+                cta_title: "Klaar om te beginnen?",
+                cta_subtitle: "Sluit u aan bij duizenden tevreden klanten en vereenvoudig uw dagelijks leven vandaag nog",
+                cta_start: "Nu beginnen",
+                cta_demo: "Bekijk de demo",
+                footer_text: "© 2024 Viiveo. Uw welzijn thuis, onze prioriteit.",
+                qr_modal_title: "Persoonlijke Viiveo QR-Code",
+                qr_sample: "QR-Code<br>Voorbeeld",
+                qr_what_title: "Wat is de Viiveo QR-Code?",
+                qr_what_desc: "Uw persoonlijke QR-Code is een unieke identificatie waarmee u snel en eenvoudig toegang krijgt tot alle Viiveo-diensten. Het vervangt complexe wachtwoorden en vereenvoudigt uw ervaring.",
+                qr_how_title: "Hoe werkt het?",
+                qr_step1: "Ontvang uw unieke QR-Code per email na registratie",
+                qr_step2: "Print hem uit of bewaar hem op uw telefoon",
+                qr_step3: "Toon hem aan de dienstverlener om de interventie te valideren",
+                qr_advantages_title: "Voordelen",
+                qr_adv1: "Directe toegang",
+                qr_adv2: "Geen wachtwoord",
+                qr_adv3: "100% veilig",
+                qr_adv4: "Eenvoudig te gebruiken",
+                payment_modal_title: "100% Veilige Betaling",
+                payment_security_title: "Veiligheid van uw transacties",
+                payment_security_desc: "Bij Viiveo is de veiligheid van uw betalingen onze absolute prioriteit. We gebruiken de meest geavanceerde encryptietechnologieën om uw financiële gegevens te beschermen.",
+                payment_methods_title: "Geaccepteerde betaalmethoden",
+                payment_card: "Bankkaart",
+                payment_transfer: "Overschrijving",
+                payment_mobile: "Mobiele betaling",
+                payment_paypal: "PayPal",
+                payment_protection_title: "Gegarandeerde bescherming",
+                payment_ssl_title: "SSL 256 bits encryptie",
+                payment_ssl_desc: "Hetzelfde veiligheidsniveau als banken",
+                payment_pci_title: "PCI DSS certificering",
+                payment_pci_desc: "Internationale veiligheidsstandaard",
+                payment_bank_title: "Erkende bankpartners",
+                payment_bank_desc: "Transacties via gecertificeerde instellingen",
+                payment_info_title: "Belangrijke informatie",
+                payment_info_desc: "Uw betalingsgegevens worden nooit opgeslagen op onze servers. Ze worden rechtstreeks doorgestuurd naar onze beveiligde bankpartners.",
+                providers_modal_title: "Geverifieerde Dienstverleners",
+                providers_selection_title: "Strenge selectie",
+                providers_selection_desc: "Al onze dienstverleners doorlopen een strikt selectieproces om de kwaliteit van diensten en uw veiligheid te garanderen. We verifiëren hun vaardigheden, ervaring en referenties.",
+                providers_verification_title: "Verificatieproces",
+                providers_step1_title: "Identiteitsverificatie",
+                providers_step1_desc: "Controle van identiteitspapieren en strafblad",
+                providers_step2_title: "Validatie van vaardigheden",
+                providers_step2_desc: "Verificatie van diploma's en professionele certificeringen",
+                providers_step3_title: "Praktische test",
+                providers_step3_desc: "Evaluatie van technische en relationele vaardigheden",
+                providers_step4_title: "Viiveo training",
+                providers_step4_desc: "Training in Viiveo standaarden en procedures",
+                providers_guarantees_title: "Onze garanties",
+                providers_guarantee1: "Aansprakelijkheidsverzekering",
+                providers_guarantee2: "Continue training",
+                providers_guarantee3: "Regelmatige evaluatie",
+                providers_guarantee4: "24/7 ondersteuning",
+                providers_rating_title: "Gemiddelde beoordeling van onze dienstverleners",
+                providers_rating_desc: "(gebaseerd op +2000 klantbeoordelingen)",
+                close_modal: "Sluiten"
+            },
+            en: {
+                nav_home: "Home",
+                nav_services: "Our Services",
+                nav_formules: "Plans",
+                nav_how: "How it works?",
+                nav_credits: "Buy credits",
+                nav_contact: "Contact",
+                hero_title: "Simple, human and connected home assistance",
+                hero_subtitle: "Services to accompany you at every stage of life, at home. For elderly, isolated or dependent people – and for their loved ones.",
+                hero_discover: "Discover our services",
+                hero_pricing: "View our rates",
+                target_title: "Who is Viiveo for?",
+                target_subtitle: "Viiveo offers tailored solutions for different profiles to facilitate staying at home.",
+                target1_title: "Elderly people",
+                target1_desc: "Independent or dependent, to maintain your independence at home.",
+                target2_title: "Caregivers",
+                target2_desc: "Easily organize help for your loved ones, even remotely.",
+                target3_title: "Care professionals",
+                target3_desc: "Join our network and develop your activity with new clients.",
+                target4_title: "Municipalities / CPAS",
+                target4_desc: "Offer innovative assistance solutions to the residents of your municipality.",
+                how_title: "How does it work?",
+                how_subtitle: "Viiveo simplifies access to quality services at home in a few simple steps.",
+                step1_title: "Fill out a form",
+                step1_desc: "Describe your need via our online form. We accompany you if necessary.",
+                step2_title: "We find a provider",
+                step2_desc: "A qualified professional is assigned to you, according to your preferences and availability.",
+                step3_title: "Follow-up and validation",
+                step3_desc: "Follow the intervention from your client area, validate and evaluate the service.",
+                credits_title: "Buy your Viiveo credits",
+                credits_subtitle: "Credits allow you to order all Viiveo services. Their value is degressive: the more you buy, the less each credit costs.",
+                pack1_title: "Essential Pack",
+                pack1_credits: "50 credits",
+                pack1_price: "1€ / credit",
+                pack1_validity: "Valid 6 months",
+                pack2_title: "Comfort Pack",
+                pack2_credits: "100 credits",
+                pack2_price: "0.95€ / credit",
+                pack2_validity: "Valid 12 months",
+                pack3_title: "Premium Pack",
+                pack3_credits: "200 credits",
+                pack3_price: "0.90€ / credit",
+                pack3_validity: "Valid 18 months",
+                buy_pack: "Buy",
+                popular: "⭐ POPULAR",
+                pricing_examples: "Detailed rates by service",
+                service_col: "Service",
+                base_rate_col: "Hourly rate",
+                remarks_col: "Specific remarks",
+                service_cleaning: "Household help",
+                cleaning_remarks: "Includes regular cleaning, light ironing, etc.",
+                service_shopping: "Home shopping",
+                shopping_remarks: "Travel time included in the hour.",
+                service_hairdressing: "Home hairdressing",
+                hairdressing_remarks: "Depends on the type of cut / blow-dry / care. See details below.",
+                service_gardening: "Gardening",
+                gardening_remarks: "Hedge trimming, mowing, simple weeding.",
+                service_transport: "Accompanied transport",
+                transport_remarks: "Includes round trip + possible waiting time.",
+                service_assistance: "Assistance / Help",
+                assistance_remarks: "Services like urgent one-time help or support.",
+                hairdressing_detail_title: "Hairdressing services detail",
+                service_detail_col: "Service",
+                credits_estimated_col: "Estimated credits",
+                duration_col: "Estimated duration",
+                hair_cut_short: "Women's short haircut",
+                hair_cut_short_remarks: "Shampoo + cut + simple blow-dry",
+                hair_cut_long: "Women's medium or long haircut",
+                hair_cut_long_remarks: "With careful blow-dry",
+                hair_brushing: "Blow-dry only",
+                hair_brushing_remarks: "According to length",
+                hair_cut_men: "Men's haircut",
+                hair_cut_child: "Children's haircut",
+                hair_cut_child_remarks: "Up to 12 years",
+                hair_coloring: "Coloring (roots) + blow-dry",
+                hair_coloring_remarks: "Excluding specific care",
+                hair_highlights: "Highlights / balayage + cut + blow-dry",
+                hair_highlights_remarks: "To be estimated with the provider case by case",
+                mutual_comparison_title: "Viiveo and your mutual insurance: complementary",
+                theme_col: "Theme",
+                mutual_col: "Mutual insurance",
+                complementarity_col: "Complementarity",
+                health_reimbursements: "Health reimbursements",
+                mutual_health_yes: "Yes (consultations, care, medications)",
+                viiveo_health_no: "No",
+                health_complementarity: "Viiveo ≠ health system: positioned alongside",
+                home_help: "Home assistance",
+                mutual_home_limited: "Very limited or indirect",
+                viiveo_home_complete: "Complete and on demand (cleaning, shopping, one-time help)",
+                home_reinforces: "Viiveo reinforces mutual action",
+                prevention_wellness: "Prevention / wellness",
+                mutual_prevention_limited: "Some campaigns, courses, health info",
+                viiveo_prevention_concrete: "Concrete daily interventions",
+                prevention_transforms: "Viiveo transforms prevention into concrete actions",
+                hospitalization_care: "Hospitalization / heavy care",
+                mutual_hospitalization_yes: "Yes via hospitalization insurance",
+                viiveo_hospitalization_no: "No",
+                hospitalization_out_scope: "Outside Viiveo scope",
+                human_relational_services: "Human and relational services",
+                mutual_human_limited: "Very few (low field presence)",
+                viiveo_human_yes: "Yes: qualified, selected, trusted people",
+                human_differentiation: "Strong differentiation",
+                security_title: "Access Viiveo with confidence",
+                security_subtitle: "At Viiveo, your security and peace of mind are our priority. Whether accessing services, making a payment or choosing a provider, everything is designed to guarantee you a smooth, secure and reliable experience.",
+                qr_title: "Personal QR code",
+                qr_badge: "Free efficient",
+                qr_desc: "Your unique code to access services",
+                payment_title: "Secure payment",
+                payment_badge: "100% secure",
+                payment_desc: "Transactions protected by SSL",
+                providers_title: "Verified providers",
+                providers_badge: "Quality guaranteed",
+                providers_desc: "Our providers are rigorously controlled",
+                see_more: "View",
+                learn_more: "Learn more",
+                discover_more: "Discover",
+                faq_title: "Frequently Asked Questions",
+                faq_subtitle: "Everything you need to know about our plans",
+                faq1_question: "Can I change plans at any time?",
+                faq1_answer: "Absolutely! You can modify your plan at any time from your client area. Changes take effect from the following month, with no additional fees.",
+                faq2_question: "Is there a contract commitment?",
+                faq2_answer: "No, all our plans are without commitment. You can cancel your subscription at any time with a simple 30-day notice.",
+                faq3_question: "How does billing work?",
+                faq3_answer: "Billing is monthly and automatic. You receive your invoice by email on the 1st of each month. All classic payment methods are accepted.",
+                cta_title: "Ready to get started?",
+                cta_subtitle: "Join thousands of satisfied customers and simplify your daily life today",
+                cta_start: "Start now",
+                cta_demo: "View demo",
+                footer_text: "© 2024 Viiveo. Your home well-being, our priority.",
+                qr_modal_title: "Personal Viiveo QR Code",
+                qr_sample: "QR Code<br>Example",
+                qr_what_title: "What is the Viiveo QR Code?",
+                qr_what_desc: "Your personal QR Code is a unique identifier that allows you to quickly and easily access all Viiveo services. It replaces complex passwords and simplifies your experience.",
+                qr_how_title: "How does it work?",
+                qr_step1: "Receive your unique QR Code by email after registration",
+                qr_step2: "Print it or keep it on your phone",
+                qr_step3: "Show it to the provider to validate the intervention",
+                qr_advantages_title: "Advantages",
+                qr_adv1: "Instant access",
+                qr_adv2: "No password",
+                qr_adv3: "100% secure",
+                qr_adv4: "Easy to use",
+                payment_modal_title: "100% Secure Payment",
+                payment_security_title: "Security of your transactions",
+                payment_security_desc: "At Viiveo, the security of your payments is our absolute priority. We use the most advanced encryption technologies to protect your financial data.",
+                payment_methods_title: "Accepted payment methods",
+                payment_card: "Bank card",
+                payment_transfer: "Transfer",
+                payment_mobile: "Mobile payment",
+                payment_paypal: "PayPal",
+                payment_protection_title: "Guaranteed protection",
+                payment_ssl_title: "SSL 256 bit encryption",
+                payment_ssl_desc: "Same security level as banks",
+                payment_pci_title: "PCI DSS certification",
+                payment_pci_desc: "International security standard",
+                payment_bank_title: "Approved banking partners",
+                payment_bank_desc: "Transactions via certified institutions",
+                payment_info_title: "Important information",
+                payment_info_desc: "Your payment data is never stored on our servers. It is directly transmitted to our secure banking partners.",
+                providers_modal_title: "Verified Providers",
+                providers_selection_title: "Rigorous selection",
+                providers_selection_desc: "All our providers go through a strict selection process to guarantee service quality and your security. We verify their skills, experience and references.",
+                providers_verification_title: "Verification process",
+                providers_step1_title: "Identity verification",
+                providers_step1_desc: "Control of identity documents and criminal record",
+                providers_step2_title: "Skills validation",
+                providers_step2_desc: "Verification of diplomas and professional certifications",
+                providers_step3_title: "Practical test",
+                providers_step3_desc: "Evaluation of technical and relational skills",
+                providers_step4_title: "Viiveo training",
+                providers_step4_desc: "Training in Viiveo standards and procedures",
+                providers_guarantees_title: "Our guarantees",
+                providers_guarantee1: "Civil liability insurance",
+                providers_guarantee2: "Continuous training",
+                providers_guarantee3: "Regular evaluation",
+                providers_guarantee4: "24/7 support",
+                providers_rating_title: "Average rating of our providers",
+                providers_rating_desc: "(based on +2000 customer reviews)",
+                close_modal: "Close"
+            },
+            de: {
+                nav_home: "Startseite",
+                nav_services: "Unsere Dienstleistungen",
+                nav_formules: "Tarife",
+                nav_how: "Wie funktioniert es?",
+                nav_credits: "Credits kaufen",
+                nav_contact: "Kontakt",
+                hero_title: "Einfache, menschliche und vernetzte Hausbetreuung",
+                hero_subtitle: "Dienstleistungen, die Sie in jeder Lebensphase zu Hause begleiten. Für ältere, isolierte oder pflegebedürftige Menschen – und für ihre Angehörigen.",
+                hero_discover: "Entdecken Sie unsere Dienstleistungen",
+                hero_pricing: "Unsere Tarife ansehen",
+                target_title: "Für wen ist Viiveo?",
+                target_subtitle: "Viiveo bietet maßgeschneiderte Lösungen für verschiedene Profile, um das Verbleiben zu Hause zu erleichtern.",
+                target1_title: "Ältere Menschen",
+                target1_desc: "Selbstständig oder pflegebedürftig, um Ihre Unabhängigkeit zu Hause zu bewahren.",
+                target2_title: "Pflegende Angehörige",
+                target2_desc: "Organisieren Sie einfach Hilfe für Ihre Angehörigen, auch aus der Ferne.",
+                target3_title: "Pflegefachkräfte",
+                target3_desc: "Treten Sie unserem Netzwerk bei und entwickeln Sie Ihre Tätigkeit mit neuen Kunden.",
+                target4_title: "Gemeinden / CPAS",
+                target4_desc: "Bieten Sie innovative Unterstützungslösungen für die Bewohner Ihrer Gemeinde.",
+                how_title: "Wie funktioniert es?",
+                how_subtitle: "Viiveo vereinfacht den Zugang zu Qualitätsdienstleistungen zu Hause in wenigen einfachen Schritten.",
+                step1_title: "Formular ausfüllen",
+                step1_desc: "Beschreiben Sie Ihren Bedarf über unser Online-Formular. Wir begleiten Sie bei Bedarf.",
+                step2_title: "Wir finden einen Anbieter",
+                step2_desc: "Ein qualifizierter Fachmann wird Ihnen entsprechend Ihren Präferenzen und Verfügbarkeiten zugewiesen.",
+                step3_title: "Nachverfolgung und Validierung",
+                step3_desc: "Verfolgen Sie die Intervention von Ihrem Kundenbereich aus, validieren und bewerten Sie die Dienstleistung.",
+                credits_title: "Kaufen Sie Ihre Viiveo-Credits",
+                credits_subtitle: "Credits ermöglichen es Ihnen, alle Viiveo-Dienstleistungen zu bestellen. Ihr Wert ist degressiv: Je mehr Sie kaufen, desto weniger kostet jeder Credit.",
+                pack1_title: "Essential Paket",
+                pack1_credits: "50 Credits",
+                pack1_price: "1€ / Credit",
+                pack1_validity: "Gültig 6 Monate",
+                pack2_title: "Komfort Paket",
+                pack2_credits: "100 Credits",
+                pack2_price: "0,95€ / Credit",
+                pack2_validity: "Gültig 12 Monate",
+                pack3_title: "Premium Paket",
+                pack3_credits: "200 Credits",
+                pack3_price: "0,90€ / Credit",
+                pack3_validity: "Gültig 18 Monate",
+                buy_pack: "Kaufen",
+                popular: "⭐ BELIEBT",
+                pricing_examples: "Detaillierte Tarife nach Dienstleistung",
+                service_col: "Dienstleistung",
+                base_rate_col: "Stundensatz",
+                remarks_col: "Spezifische Bemerkungen",
+                service_cleaning: "Haushaltshilfe",
+                cleaning_remarks: "Einschließlich normaler Reinigung, leichtes Bügeln, etc.",
+                service_shopping: "Einkaufen zu Hause",
+                shopping_remarks: "Reisezeit in der Stunde enthalten.",
+                service_hairdressing: "Friseur zu Hause",
+                hairdressing_remarks: "Abhängig von der Art des Schnitts / Föhnens / Pflege. Siehe Details unten.",
+                service_gardening: "Gartenarbeit",
+                gardening_remarks: "Heckenschnitt, Mähen, einfaches Unkrautjäten.",
+                service_transport: "Begleiteter Transport",
+                transport_remarks: "Einschließlich Hin- und Rückfahrt + eventuelle Wartezeit.",
+                service_assistance: "Unterstützung / Hilfe",
+                assistance_remarks: "Dienstleistungen wie dringende einmalige Hilfe oder Unterstützung.",
+                hairdressing_detail_title: "Details der Friseurdienstleistungen",
+                service_detail_col: "Dienstleistung",
+                credits_estimated_col: "Geschätzte Credits",
+                duration_col: "Geschätzte Dauer",
+                hair_cut_short: "Damenhaarschnitt kurz",
+                hair_cut_short_remarks: "Shampoo + Schnitt + einfaches Föhnen",
+                hair_cut_long: "Damenhaarschnitt mittellang oder lang",
+                hair_cut_long_remarks: "Mit sorgfältigem Föhnen",
+                hair_brushing: "Nur Föhnen",
+                hair_brushing_remarks: "Je nach Länge",
+                hair_cut_men: "Herrenhaarschnitt",
+                hair_cut_child: "Kinderhaarschnitt",
+                hair_cut_child_remarks: "Bis 12 Jahre",
+                hair_coloring: "Färbung (Ansätze) + Föhnen",
+                hair_coloring_remarks: "Ohne spezielle Pflege",
+                hair_highlights: "Strähnchen / Balayage + Schnitt + Föhnen",
+                hair_highlights_remarks: "Mit dem Anbieter von Fall zu Fall zu schätzen",
+                mutual_comparison_title: "Viiveo und Ihre Krankenkasse: ergänzend",
+                theme_col: "Thema",
+                mutual_col: "Krankenkasse",
+                complementarity_col: "Komplementarität",
+                health_reimbursements: "Gesundheitserstattungen",
+                mutual_health_yes: "Ja (Konsultationen, Pflege, Medikamente)",
+                viiveo_health_no: "Nein",
+                health_complementarity: "Viiveo ≠ Gesundheitssystem: positioniert sich daneben",
+                home_help: "Hausbetreuung",
+                mutual_home_limited: "Sehr begrenzt oder indirekt",
+                viiveo_home_complete: "Vollständig und auf Abruf (Reinigung, Einkaufen, einmalige Hilfe)",
+                home_reinforces: "Viiveo verstärkt die Krankenkassen-Aktion",
+                prevention_wellness: "Prävention / Wohlbefinden",
+                mutual_prevention_limited: "Einige Kampagnen, Kurse, Gesundheitsinfos",
+                viiveo_prevention_concrete: "Konkrete tägliche Interventionen",
+                prevention_transforms: "Viiveo verwandelt Prävention in konkrete Aktionen",
+                hospitalization_care: "Krankenhausaufenthalt / schwere Pflege",
+                mutual_hospitalization_yes: "Ja über Krankenhausversicherungen",
+                viiveo_hospitalization_no: "Nein",
+                hospitalization_out_scope: "Außerhalb des Viiveo-Bereichs",
+                human_relational_services: "Menschliche und relationale Dienstleistungen",
+                mutual_human_limited: "Sehr wenige (geringe Feldpräsenz)",
+                viiveo_human_yes: "Ja: qualifizierte, ausgewählte, vertrauenswürdige Menschen",
+                human_differentiation: "Starke Differenzierung",
+                security_title: "Zugang zu Viiveo mit Vertrauen",
+                security_subtitle: "Bei Viiveo sind Ihre Sicherheit und Ihr Seelenfrieden unsere Priorität. Ob beim Zugang zu Dienstleistungen, bei einer Zahlung oder bei der Auswahl eines Anbieters, alles ist darauf ausgelegt, Ihnen eine reibungslose, sichere und zuverlässige Erfahrung zu garantieren.",
+                qr_title: "Persönlicher QR-Code",
+                qr_badge: "Kostenlos effizient",
+                qr_desc: "Ihr einzigartiger Code für den Zugang zu Dienstleistungen",
+                payment_title: "Sichere Zahlung",
+                payment_badge: "100% sicher",
+                payment_desc: "Transaktionen durch SSL geschützt",
+                providers_title: "Verifizierte Anbieter",
+                providers_badge: "Qualität garantiert",
+                providers_desc: "Unsere Anbieter werden streng kontrolliert",
+                see_more: "Ansehen",
+                learn_more: "Mehr erfahren",
+                discover_more: "Entdecken",
+                faq_title: "Häufig gestellte Fragen",
+                faq_subtitle: "Alles, was Sie über unsere Tarife wissen müssen",
+                faq1_question: "Kann ich jederzeit den Tarif wechseln?",
+                faq1_answer: "Absolut! Sie können Ihren Tarif jederzeit über Ihren Kundenbereich ändern. Änderungen treten ab dem folgenden Monat in Kraft, ohne zusätzliche Gebühren.",
+                faq2_question: "Gibt es eine Vertragsbindung?",
+                faq2_answer: "Nein, alle unsere Tarife sind ohne Bindung. Sie können Ihr Abonnement jederzeit mit einer einfachen Frist von 30 Tagen kündigen.",
+                faq3_question: "Wie funktioniert die Abrechnung?",
+                faq3_answer: "Die Abrechnung erfolgt monatlich und automatisch. Sie erhalten Ihre Rechnung per E-Mail am 1. jeden Monats. Alle klassischen Zahlungsmethoden werden akzeptiert.",
+                cta_title: "Bereit anzufangen?",
+                cta_subtitle: "Schließen Sie sich Tausenden zufriedener Kunden an und vereinfachen Sie Ihr tägliches Leben noch heute",
+                cta_start: "Jetzt starten",
+                cta_demo: "Demo ansehen",
+                footer_text: "© 2024 Viiveo. Ihr Wohlbefinden zu Hause, unsere Priorität.",
+                qr_modal_title: "Persönlicher Viiveo QR-Code",
+                qr_sample: "QR-Code<br>Beispiel",
+                qr_what_title: "Was ist der Viiveo QR-Code?",
+                qr_what_desc: "Ihr persönlicher QR-Code ist eine eindeutige Kennung, mit der Sie schnell und einfach auf alle Viiveo-Dienstleistungen zugreifen können. Er ersetzt komplexe Passwörter und vereinfacht Ihre Erfahrung.",
+                qr_how_title: "Wie funktioniert es?",
+                qr_step1: "Erhalten Sie Ihren einzigartigen QR-Code per E-Mail nach der Registrierung",
+                qr_step2: "Drucken Sie ihn aus oder bewahren Sie ihn auf Ihrem Telefon auf",
+                qr_step3: "Zeigen Sie ihn dem Anbieter, um die Intervention zu validieren",
+                qr_advantages_title: "Vorteile",
+                qr_adv1: "Sofortiger Zugang",
+                qr_adv2: "Kein Passwort",
+                qr_adv3: "100% sicher",
+                qr_adv4: "Einfach zu verwenden",
+                payment_modal_title: "100% Sichere Zahlung",
+                payment_security_title: "Sicherheit Ihrer Transaktionen",
+                payment_security_desc: "Bei Viiveo ist die Sicherheit Ihrer Zahlungen unsere absolute Priorität. Wir verwenden die fortschrittlichsten Verschlüsselungstechnologien, um Ihre Finanzdaten zu schützen.",
+                payment_methods_title: "Akzeptierte Zahlungsmethoden",
+                payment_card: "Bankkarte",
+                payment_transfer: "Überweisung",
+                payment_mobile: "Mobile Zahlung",
+                payment_paypal: "PayPal",
+                payment_protection_title: "Garantierter Schutz",
+                payment_ssl_title: "SSL 256-Bit-Verschlüsselung",
+                payment_ssl_desc: "Gleiches Sicherheitsniveau wie Banken",
+                payment_pci_title: "PCI DSS-Zertifizierung",
+                payment_pci_desc: "Internationaler Sicherheitsstandard",
+                payment_bank_title: "Zugelassene Bankpartner",
+                payment_bank_desc: "Transaktionen über zertifizierte Institutionen",
+                payment_info_title: "Wichtige Information",
+                payment_info_desc: "Ihre Zahlungsdaten werden niemals auf unseren Servern gespeichert. Sie werden direkt an unsere sicheren Bankpartner übertragen.",
+                providers_modal_title: "Verifizierte Anbieter",
+                providers_selection_title: "Strenge Auswahl",
+                providers_selection_desc: "Alle unsere Anbieter durchlaufen einen strengen Auswahlprozess, um die Servicequalität und Ihre Sicherheit zu gewährleisten. Wir überprüfen ihre Fähigkeiten, Erfahrungen und Referenzen.",
+                providers_verification_title: "Verifizierungsprozess",
+                providers_step1_title: "Identitätsverifizierung",
+                providers_step1_desc: "Kontrolle der Ausweisdokumente und des Führungszeugnisses",
+                providers_step2_title: "Fähigkeitsvalidierung",
+                providers_step2_desc: "Überprüfung von Diplomen und beruflichen Zertifizierungen",
+                providers_step3_title: "Praktischer Test",
+                providers_step3_desc: "Bewertung technischer und relationaler Fähigkeiten",
+                providers_step4_title: "Viiveo-Schulung",
+                providers_step4_desc: "Schulung in Viiveo-Standards und -Verfahren",
+                providers_guarantees_title: "Unsere Garantien",
+                providers_guarantee1: "Haftpflichtversicherung",
+                providers_guarantee2: "Kontinuierliche Schulung",
+                providers_guarantee3: "Regelmäßige Bewertung",
+                providers_guarantee4: "24/7 Support",
+                providers_rating_title: "Durchschnittliche Bewertung unserer Anbieter",
+                providers_rating_desc: "(basierend auf +2000 Kundenbewertungen)",
+                close_modal: "Schließen"
+            }
+        };
+
+        let currentLanguage = 'fr';
+
+        // Fonction pour changer la langue
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Mettre à jour tous les éléments avec data-translate
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            // Mettre à jour le sélecteur de langue
+            const flags = { fr: '🇫🇷', nl: '🇳🇱', en: '🇬🇧', de: '🇩🇪' };
+            const codes = { fr: 'FR', nl: 'NL', en: 'EN', de: 'DE' };
+            
+            document.getElementById('current-flag').textContent = flags[lang];
+            const codeElement = document.querySelector('#language-button .hidden');
+            if (codeElement) {
+                codeElement.textContent = codes[lang];
+            }
+
+            // Mettre à jour les options actives
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-lang') === lang) {
+                    option.classList.add('active');
+                }
+            });
+
+            // Sauvegarder la préférence
+            localStorage.setItem('viiveo-language', lang);
+        }
+
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('svg');
+            
+            // Toggle content visibility
+            content.classList.toggle('hidden');
+            
+            // Rotate icon
+            if (content.classList.contains('hidden')) {
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Charger la langue sauvegardée
+            const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
+            if (savedLanguage !== 'fr') {
+                changeLanguage(savedLanguage);
+            }
+
+            // Gestion du sélecteur de langue
+            const languageButton = document.getElementById('language-button');
+            const languageDropdown = document.getElementById('language-dropdown');
+            
+            if (languageButton && languageDropdown) {
+                languageButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    languageDropdown.classList.toggle('hidden');
+                });
+
+                // Fermer le dropdown quand on clique ailleurs
+                document.addEventListener('click', function() {
+                    languageDropdown.classList.add('hidden');
+                });
+
+                // Gestion des options de langue
+                document.querySelectorAll('.language-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const lang = this.getAttribute('data-lang');
+                        changeLanguage(lang);
+                        languageDropdown.classList.add('hidden');
+                    });
+                });
+            }
+
+            // Gestion du menu mobile
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+
+                // Fermer le menu mobile quand on clique sur un lien
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.add('hidden');
+                    });
+                });
+            }
+        });
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9010d685b729',t:'MTc1OTE2MDI1Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9872e601e0e7b9b3',t:'MTc1OTIyNjY5MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
