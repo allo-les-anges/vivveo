@@ -123,33 +123,95 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Bouton Maison (accueil) - Style moderne */
-        .menu-bubble {
+        /* Menu hamburger principal */
+        .main-menu {
             position: fixed;
             top: 1.5rem;
             right: 1.5rem;
+            z-index: 9999;
+        }
+
+        .main-hamburger {
             width: 4rem;
             height: 4rem;
-            background: var(--card-bg);
             border-radius: 50%;
-            box-shadow: var(--shadow-medium);
+            border: 2px solid var(--card-border);
+            background: var(--card-bg);
+            color: #8b7355;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(15px);
             display: flex;
             align-items: center;
             justify-content: center;
-            text-decoration: none;
-            z-index: 9999;
-            transition: var(--transition);
-            color: #b8860b;
-            font-size: 1.5rem;
-            backdrop-filter: blur(15px);
-            border: 2px solid var(--card-border);
+            box-shadow: var(--shadow-medium);
         }
 
-        .menu-bubble:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: var(--shadow-heavy);
+        .main-hamburger:hover {
             background: var(--primary-gradient);
             color: white;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .main-dropdown {
+            position: absolute;
+            top: 5rem;
+            right: 0;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-heavy);
+            border: 2px solid var(--card-border);
+            backdrop-filter: blur(20px);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition);
+            min-width: 280px;
+        }
+
+        .main-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .menu-btn {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: #8b7355;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1rem;
+            text-align: left;
+        }
+
+        .menu-btn:first-child {
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .menu-btn:last-child {
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+
+        .menu-btn:hover {
+            background: var(--primary-gradient);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .menu-btn i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
         }
 
         /* Container principal - Design moderne */
@@ -845,6 +907,228 @@
             50% { transform: translateY(-20px) rotate(5deg); }
         }
 
+        /* Styles pour les modales */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(245, 241, 232, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-heavy);
+            border: 2px solid var(--card-border);
+            backdrop-filter: blur(20px);
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            padding: 2rem 2.5rem 1rem 2.5rem;
+            border-bottom: 2px solid #f0ead6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--primary-gradient);
+            border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #8b7355;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--primary-gradient);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 2rem 2.5rem;
+        }
+
+        /* Styles pour les formulaires */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #8b7355;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid #e8dcc6;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: rgba(255, 253, 248, 0.8);
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+            background: rgba(255, 253, 248, 1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #f0ead6;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-heavy);
+            background: var(--accent-gradient);
+        }
+
+        .btn-secondary {
+            background: var(--grey-gradient);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-heavy);
+            opacity: 0.9;
+        }
+
+        /* Modale de bienvenue */
+        .welcome-modal {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow-heavy);
+            border: 2px solid var(--card-border);
+            backdrop-filter: blur(20px);
+            z-index: 10001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .welcome-modal.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .welcome-modal h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .welcome-modal p {
+            color: #8b7355;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
         /* Responsive design amélioré */
         @media (max-width: 1200px) {
             .main-container {
@@ -920,12 +1204,25 @@
                 font-size: 0.9rem;
             }
 
-            .menu-bubble {
+            .main-menu {
                 top: 1rem;
-                right: 5rem;
+                right: 1rem;
+            }
+
+            .main-hamburger {
                 width: 3rem;
                 height: 3rem;
-                font-size: 1.1rem;
+                font-size: 1rem;
+            }
+
+            .main-dropdown {
+                top: 4rem;
+                min-width: 250px;
+            }
+
+            .menu-btn {
+                padding: 0.8rem 1.2rem;
+                font-size: 0.9rem;
             }
 
             .welcome-modal {
@@ -1049,10 +1346,26 @@
         </div>
     </div>
 
-    <!-- Bouton Maison (accueil) -->
-    <a href="https://allo-les-anges.github.io/vivveo/" class="menu-bubble" aria-label="Accueil" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-home"></i>
-    </a>
+    <!-- Menu hamburger principal (visible après connexion) -->
+    <div class="main-menu" id="mainMenu" style="display: none;">
+        <button class="main-hamburger" onclick="toggleMainMenu()" aria-label="Menu principal">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="main-dropdown" id="mainDropdown">
+            <button class="menu-btn" onclick="showClosedMissions()">
+                <i class="fas fa-check-circle"></i>
+                <span data-translate="closed_missions">Missions clôturées</span>
+            </button>
+            <button class="menu-btn" onclick="showEditProfile()">
+                <i class="fas fa-user-edit"></i>
+                <span data-translate="edit_profile">Modifier mes données</span>
+            </button>
+            <button class="menu-btn" onclick="window.open('https://allo-les-anges.github.io/vivveo/', '_blank')">
+                <i class="fas fa-home"></i>
+                <span data-translate="home">Accueil</span>
+            </button>
+        </div>
+    </div>
 
     <!-- Overlay de chargement global -->
     <div class="loading-overlay" id="globalLoader">
@@ -1300,7 +1613,31 @@
                 server_error: "Erreur de communication avec le serveur.",
                 loading_wait: "Veuillez patienter...",
                 loading_data: "Chargement des données",
-                loading_validation: "Validation en cours"
+                loading_validation: "Validation en cours",
+                closed_missions: "Missions clôturées",
+                edit_profile: "Modifier mes données",
+                home: "Accueil",
+                closed_missions_title: "Missions clôturées",
+                edit_profile_title: "Modifier mes données personnelles",
+                client_name: "Nom",
+                client_firstname: "Prénom",
+                client_email: "Email",
+                client_password: "Nouveau mot de passe",
+                client_address: "Adresse",
+                client_city: "Ville",
+                client_postal: "Code postal",
+                client_phone: "Téléphone",
+                tutor_name: "Nom du tuteur",
+                tutor_firstname: "Prénom du tuteur",
+                tutor_address: "Adresse du tuteur",
+                tutor_city: "Ville du tuteur",
+                tutor_postal: "Code postal du tuteur",
+                tutor_phone: "Téléphone du tuteur",
+                save_changes: "Enregistrer",
+                cancel: "Annuler",
+                changes_saved: "Modifications enregistrées avec succès !",
+                welcome_modal_title: "Bienvenue dans votre interface client",
+                welcome_modal_text: "Accédez à vos missions et gérez votre profil"
             },
             nl: {
                 welcome_title: "Viiveo Klant Interface",
@@ -1337,7 +1674,31 @@
                 server_error: "Servercommunicatiefout.",
                 loading_wait: "Even geduld...",
                 loading_data: "Gegevens laden",
-                loading_validation: "Validatie bezig"
+                loading_validation: "Validatie bezig",
+                closed_missions: "Afgesloten missies",
+                edit_profile: "Mijn gegevens wijzigen",
+                home: "Home",
+                closed_missions_title: "Afgesloten missies",
+                edit_profile_title: "Mijn persoonlijke gegevens wijzigen",
+                client_name: "Naam",
+                client_firstname: "Voornaam",
+                client_email: "Email",
+                client_password: "Nieuw wachtwoord",
+                client_address: "Adres",
+                client_city: "Stad",
+                client_postal: "Postcode",
+                client_phone: "Telefoon",
+                tutor_name: "Naam voogd",
+                tutor_firstname: "Voornaam voogd",
+                tutor_address: "Adres voogd",
+                tutor_city: "Stad voogd",
+                tutor_postal: "Postcode voogd",
+                tutor_phone: "Telefoon voogd",
+                save_changes: "Opslaan",
+                cancel: "Annuleren",
+                changes_saved: "Wijzigingen succesvol opgeslagen!",
+                welcome_modal_title: "Welkom in uw klant interface",
+                welcome_modal_text: "Toegang tot uw missies en beheer uw profiel"
             },
             de: {
                 welcome_title: "Viiveo Kunden Interface",
@@ -1374,7 +1735,31 @@
                 server_error: "Server-Kommunikationsfehler.",
                 loading_wait: "Bitte warten...",
                 loading_data: "Daten werden geladen",
-                loading_validation: "Validierung läuft"
+                loading_validation: "Validierung läuft",
+                closed_missions: "Abgeschlossene Missionen",
+                edit_profile: "Meine Daten ändern",
+                home: "Startseite",
+                closed_missions_title: "Abgeschlossene Missionen",
+                edit_profile_title: "Meine persönlichen Daten ändern",
+                client_name: "Name",
+                client_firstname: "Vorname",
+                client_email: "Email",
+                client_password: "Neues Passwort",
+                client_address: "Adresse",
+                client_city: "Stadt",
+                client_postal: "Postleitzahl",
+                client_phone: "Telefon",
+                tutor_name: "Name des Vormunds",
+                tutor_firstname: "Vorname des Vormunds",
+                tutor_address: "Adresse des Vormunds",
+                tutor_city: "Stadt des Vormunds",
+                tutor_postal: "Postleitzahl des Vormunds",
+                tutor_phone: "Telefon des Vormunds",
+                save_changes: "Speichern",
+                cancel: "Abbrechen",
+                changes_saved: "Änderungen erfolgreich gespeichert!",
+                welcome_modal_title: "Willkommen in Ihrer Kunden-Schnittstelle",
+                welcome_modal_text: "Zugriff auf Ihre Missionen und Profilverwaltung"
             },
             en: {
                 welcome_title: "Viiveo Client Interface",
@@ -1411,7 +1796,31 @@
                 server_error: "Server communication error.",
                 loading_wait: "Please wait...",
                 loading_data: "Loading data",
-                loading_validation: "Validation in progress"
+                loading_validation: "Validation in progress",
+                closed_missions: "Closed missions",
+                edit_profile: "Edit my data",
+                home: "Home",
+                closed_missions_title: "Closed missions",
+                edit_profile_title: "Edit my personal data",
+                client_name: "Name",
+                client_firstname: "First name",
+                client_email: "Email",
+                client_password: "New password",
+                client_address: "Address",
+                client_city: "City",
+                client_postal: "Postal code",
+                client_phone: "Phone",
+                tutor_name: "Guardian name",
+                tutor_firstname: "Guardian first name",
+                tutor_address: "Guardian address",
+                tutor_city: "Guardian city",
+                tutor_postal: "Guardian postal code",
+                tutor_phone: "Guardian phone",
+                save_changes: "Save",
+                cancel: "Cancel",
+                changes_saved: "Changes saved successfully!",
+                welcome_modal_title: "Welcome to your client interface",
+                welcome_modal_text: "Access your missions and manage your profile"
             }
         };
 
@@ -1685,7 +2094,6 @@
 
         async function saveProfile() {
             const form = document.getElementById('editProfileForm');
-            const formData = new FormData(form);
             const saveButton = form.querySelector('button[type="submit"]');
             const originalText = saveButton.textContent;
             
@@ -1693,18 +2101,57 @@
             showButtonLoader(saveButton, originalText);
             
             try {
-                // Simuler la sauvegarde (à remplacer par l'appel API réel)
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                // Récupérer les données du formulaire selon la structure Google Sheets
+                const profileData = {
+                    prenom: document.getElementById('clientFirstname').value,
+                    nom: document.getElementById('clientName').value,
+                    adresse: document.getElementById('clientAddress').value,
+                    telephone: document.getElementById('clientPhone').value,
+                    email: document.getElementById('clientEmail').value,
+                    prenomTuteur: document.getElementById('tutorFirstname').value,
+                    nomTuteur: document.getElementById('tutorName').value,
+                    adresseTuteur: document.getElementById('tutorAddress').value,
+                    telephoneTuteur: document.getElementById('tutorPhone').value,
+                    emailTuteur: '', // Pas dans le formulaire mais dans la structure
+                    photoUrl: '', // Pas modifiable dans ce formulaire
+                    specialites: '', // Pas modifiable dans ce formulaire
+                    commentaire: '', // Pas modifiable dans ce formulaire
+                    rgpd: '', // Pas modifiable dans ce formulaire
+                    motDePasse: document.getElementById('clientPassword').value || '', // Optionnel
+                    ville: document.getElementById('clientCity').value,
+                    codePostal: document.getElementById('clientPostal').value,
+                    villeTuteur: document.getElementById('tutorCity').value,
+                    codePostalTuteur: document.getElementById('tutorPostal').value
+                };
+
+                // Appel API pour sauvegarder les modifications
+                const response = await fetch(`${webAppUrl}?type=updateClientProfile&email=${encodeURIComponent(currentClientData.client.email)}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(profileData)
+                });
+
+                const result = await response.json();
                 
                 hideGlobalLoader();
                 hideButtonLoader(saveButton, originalText);
                 
-                alert(translations[currentLanguage].changes_saved);
-                closeModal('editProfileModal');
+                if (result.success) {
+                    // Mettre à jour les données locales
+                    Object.assign(currentClientData.client, profileData);
+                    
+                    alert(translations[currentLanguage].changes_saved);
+                    closeModal('editProfileModal');
+                } else {
+                    alert(result.message || translations[currentLanguage].server_error);
+                }
                 
             } catch (error) {
                 hideGlobalLoader();
                 hideButtonLoader(saveButton, originalText);
+                console.error('Erreur lors de la sauvegarde:', error);
                 alert(translations[currentLanguage].server_error);
             }
         }
@@ -2003,5 +2450,5 @@
           }
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9098864db729',t:'MTc1OTE2MDI3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98744cd63099b9b3',t:'MTc1OTI0MTM4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9098864db729',t:'MTc1OTE2MDI3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98745e75d30bb9b3',t:'MTc1OTI0MjExMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
