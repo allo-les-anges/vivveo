@@ -11,63 +11,154 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #f5f1e8 0%, #e8dcc6 50%, #d4a574 100%);
             min-height: 100vh;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', 'Poppins', sans-serif;
+            color: #4a4237;
         }
 
-        /* Bouton Maison (accueil) */
+        /* Sélecteur de langue */
+        .language-selector {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 9999;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .lang-btn {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            border: 2px solid var(--card-border);
+            background: var(--card-bg);
+            color: #8b7355;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lang-btn:hover, .lang-btn.active {
+            background: var(--primary-gradient);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Variables CSS pour cohérence - Palette Jaune, Gris, Vieux Rose */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            --accent-gradient: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+            --rose-gradient: linear-gradient(135deg, #d4a574 0%, #c49a7b 100%);
+            --grey-gradient: linear-gradient(135deg, #8b8680 0%, #6b645f 100%);
+            --card-bg: rgba(255, 253, 248, 0.95);
+            --card-border: rgba(212, 175, 55, 0.2);
+            --shadow-light: 0 4px 6px -1px rgba(212, 175, 55, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-medium: 0 10px 15px -3px rgba(212, 175, 55, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-heavy: 0 25px 50px -12px rgba(212, 175, 55, 0.3);
+            --border-radius: 1.25rem;
+            --border-radius-lg: 2rem;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Bouton Maison (accueil) - Style moderne */
         .menu-bubble {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 48px;
-            height: 48px;
-            background-color: white;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 4rem;
+            height: 4rem;
+            background: var(--card-bg);
             border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--shadow-medium);
             display: flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
             z-index: 9999;
-            transition: background-color 0.3s ease;
-            color: #333;
-            font-size: 20px;
+            transition: var(--transition);
+            color: #b8860b;
+            font-size: 1.5rem;
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--card-border);
         }
 
         .menu-bubble:hover {
-            background-color: #f2f2f2;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-heavy);
+            background: var(--primary-gradient);
+            color: white;
         }
 
-        /* Container principal */
+        /* Container principal - Design moderne */
         .main-container {
             padding: 2rem;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
+        /* Section d'accueil modernisée */
         .welcome-section {
-            background: white;
-            border-radius: 2rem;
-            padding: 3rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: var(--card-bg);
+            border-radius: var(--border-radius-lg);
+            padding: 4rem 3rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-heavy);
             text-align: center;
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--card-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--primary-gradient);
+        }
+
+        .welcome-section::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+            height: 100px;
+            background: var(--rose-gradient);
+            border-radius: 50%;
+            opacity: 0.1;
         }
 
         .welcome-section h1 {
-            color: #4a90e2;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            text-shadow: 0 2px 4px rgba(212, 175, 55, 0.2);
         }
 
         .welcome-section p {
-            color: #666;
-            font-size: 1.2rem;
+            color: #8b7355;
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin: 0;
         }
 
-        /* Styles pour l'embed 2 - Connexion */
+        /* Styles pour l'embed 2 - Connexion modernisée */
         #background-wrapper {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -89,157 +180,551 @@
         }
 
         #login {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-heavy);
             width: 90%;
-            max-width: 400px;
+            max-width: 450px;
             box-sizing: border-box;
             z-index: 10;
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--card-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--primary-gradient);
+        }
+
+        #login::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 150px;
+            height: 150px;
+            background: var(--rose-gradient);
+            border-radius: 50%;
+            opacity: 0.08;
         }
 
         #login h2 {
-            margin-bottom: 15px;
-            font-weight: 700;
-            font-size: 28px;
-            color: #2563A0;
+            margin-bottom: 2.5rem;
+            font-weight: 800;
+            font-size: 2.2rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-align: center;
+            letter-spacing: -0.025em;
+            position: relative;
+            z-index: 2;
         }
 
         #login input[type="email"],
         #login input[type="password"] {
             width: 100%;
-            padding: 14px 16px;
-            margin-bottom: 20px;
-            border: 1.8px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.8rem;
+            border: 2px solid #e8dcc6;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            transition: var(--transition);
+            background: rgba(255, 253, 248, 0.8);
+            box-sizing: border-box;
+            position: relative;
+            z-index: 2;
+        }
+
+        #login input[type="email"]:focus,
+        #login input[type="password"]:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+            background: rgba(255, 253, 248, 1);
         }
 
         #login button {
             width: 100%;
-            background: #2563A0;
+            background: var(--primary-gradient);
             color: white;
-            font-size: 17px;
-            font-weight: 600;
-            padding: 14px 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 1.2rem;
             border: none;
-            border-radius: 10px;
+            border-radius: var(--border-radius);
             cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            z-index: 2;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        #login button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-heavy);
+            background: var(--accent-gradient);
         }
 
         #message {
-            margin-top: 12px;
-            color: #d32f2f;
+            margin-top: 1rem;
+            color: #dc2626;
             font-weight: 600;
             text-align: center;
+            font-size: 0.95rem;
         }
 
+        /* Loader modernisé */
         #loader {
             display: none;
-            margin-top: 12px;
+            margin-top: 1.5rem;
             text-align: center;
-            color: #2563A0;
+            color: #4a90e2;
+            font-weight: 500;
         }
 
-        /* Styles pour l'interface client */
+        /* Interface client modernisée */
         #client-area {
-            background: rgba(255, 255, 255, 0.85);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            background: var(--card-bg);
+            padding: 4rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-heavy);
             width: 95%;
-            max-width: 1000px;
-            margin-top: 30px;
+            max-width: 1300px;
+            margin-top: 2rem;
             text-align: center;
             display: none;
             z-index: 10;
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--card-border);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        #client-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--primary-gradient);
+        }
+
+        #client-area::after {
+            content: '';
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 120px;
+            height: 120px;
+            background: var(--rose-gradient);
+            border-radius: 50%;
+            opacity: 0.08;
         }
 
         #welcome-msg {
-            font-size: 34px;
-            font-weight: 700;
-            color: #CF94B4;
-            margin-bottom: 20px;
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2.5rem;
+            letter-spacing: -0.025em;
+            position: relative;
+            z-index: 2;
         }
 
         #client-photo {
-            width: 160px;
-            height: 160px;
+            width: 12rem;
+            height: 12rem;
             border-radius: 50%;
             object-fit: cover;
-            margin: 0 auto 20px;
+            margin: 0 auto 2.5rem;
             display: block;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-heavy);
+            border: 4px solid #d4af37;
+            transition: var(--transition);
+            position: relative;
+            z-index: 2;
+        }
+
+        #client-photo:hover {
+            transform: scale(1.08) rotate(2deg);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.4);
+            border-color: #ffd700;
         }
 
         #client-area h3 {
-            font-size: 26px;
-            color: #CF94B4;
+            font-size: 2rem;
+            background: var(--rose-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        #client-area h4 {
+            font-size: 1.8rem;
+            background: var(--grey-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            margin: 3rem 0 2rem 0;
+            position: relative;
+            z-index: 2;
         }
 
         .action-buttons {
-            margin-bottom: 20px;
+            margin-bottom: 3rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
         }
 
         .action-buttons button {
-            background-color: #2563A0;
+            background: var(--rose-gradient);
             color: white;
-            padding: 10px 16px;
-            margin: 5px;
-            font-size: 15px;
+            padding: 1.2rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 2px solid transparent;
+        }
+
+        .action-buttons button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--shadow-heavy);
+            background: var(--primary-gradient);
+            border-color: #d4af37;
         }
 
         #client-area p {
-            font-size: 16px;
-            margin: 8px 0;
+            font-size: 1.3rem;
+            margin: 1.5rem 0;
+            color: #8b7355;
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
         }
 
         .table-wrapper {
             overflow-x: auto;
-            margin-top: 20px;
+            margin-top: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-heavy);
+            border: 2px solid var(--card-border);
+            position: relative;
+            z-index: 2;
         }
 
         #demandesTable {
             width: 100%;
             border-collapse: collapse;
-            min-width: 600px;
+            min-width: 700px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
         }
 
         #demandesTable th, #demandesTable td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            font-size: 14px;
+            border: none;
+            padding: 1.5rem 1rem;
+            font-size: 1rem;
+            border-bottom: 2px solid #f0ead6;
         }
 
         #demandesTable th {
-            background-color: #CF94B4;
-            color: #000;
+            background: var(--grey-gradient);
+            color: white;
             text-align: center;
-            font-weight: bold;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.9rem;
         }
 
         #demandesTable td {
             text-align: center;
+            color: #6b5b47;
+            font-weight: 500;
+        }
+
+        #demandesTable tbody tr:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(212, 165, 116, 0.05) 100%);
+            transform: scale(1.01);
+            transition: var(--transition);
+        }
+
+        #demandesTable tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Animations d'entrée */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-section,
+        #login {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Illustrations décoratives */
+        .illustration {
+            position: absolute;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .illustration-1 {
+            top: 10%;
+            left: 5%;
+            font-size: 4rem;
+            color: #d4af37;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .illustration-2 {
+            top: 60%;
+            right: 8%;
+            font-size: 3.5rem;
+            color: #c49a7b;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        .illustration-3 {
+            bottom: 15%;
+            left: 10%;
+            font-size: 3rem;
+            color: #8b8680;
+            animation: float 7s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* Responsive design amélioré */
+        @media (max-width: 1200px) {
+            .main-container {
+                padding: 1.5rem;
+            }
+            
+            .welcome-section h1 {
+                font-size: 3rem;
+            }
+            
+            #welcome-msg {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .welcome-section {
+                padding: 2rem 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .welcome-section h1 {
+                font-size: 2.25rem;
+            }
+
+            .welcome-section p {
+                font-size: 1.1rem;
+            }
+
+            .language-selector {
+                top: 1rem;
+                left: 1rem;
+                flex-direction: column;
+            }
+
+            .lang-btn {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 0.8rem;
+            }
+
+            .menu-bubble {
+                top: 1rem;
+                right: 1rem;
+                width: 3rem;
+                height: 3rem;
+                font-size: 1.1rem;
+            }
+
+            #login {
+                padding: 2rem 1.5rem;
+                max-width: 350px;
+                margin: 0 1rem;
+            }
+
+            #login h2 {
+                font-size: 1.75rem;
+            }
+
+            #login input[type="email"],
+            #login input[type="password"] {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            #client-area {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+
+            #welcome-msg {
+                font-size: 1.8rem;
+            }
+
+            #client-photo {
+                width: 8rem;
+                height: 8rem;
+            }
+
+            #client-area h3 {
+                font-size: 1.5rem;
+            }
+
+            #client-area h4 {
+                font-size: 1.4rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .action-buttons button {
+                width: 100%;
+                max-width: 280px;
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .table-wrapper {
+                margin-top: 1.5rem;
+            }
+
+            #demandesTable th, #demandesTable td {
+                padding: 1rem 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .illustration {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .welcome-section {
+                padding: 1.5rem 1rem;
+            }
+            
+            .welcome-section h1 {
+                font-size: 1.8rem;
+            }
+
+            #login {
+                padding: 1.5rem 1rem;
+                max-width: 320px;
+            }
+
+            #client-area {
+                padding: 1.5rem 1rem;
+            }
+
+            #welcome-msg {
+                font-size: 1.5rem;
+            }
+
+            #client-photo {
+                width: 6rem;
+                height: 6rem;
+            }
+
+            #demandesTable {
+                min-width: 500px;
+            }
+
+            #demandesTable th, #demandesTable td {
+                padding: 0.8rem 0.3rem;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Sélecteur de langue -->
+    <div class="language-selector">
+        <button class="lang-btn active" onclick="changeLanguage('fr')" data-lang="fr">FR</button>
+        <button class="lang-btn" onclick="changeLanguage('nl')" data-lang="nl">NL</button>
+        <button class="lang-btn" onclick="changeLanguage('de')" data-lang="de">DE</button>
+        <button class="lang-btn" onclick="changeLanguage('en')" data-lang="en">EN</button>
+    </div>
+
     <!-- Bouton Maison (accueil) -->
     <a href="https://allo-les-anges.github.io/vivveo/" class="menu-bubble" aria-label="Accueil" target="_blank" rel="noopener noreferrer">
         <i class="fas fa-home"></i>
     </a>
 
     <div class="main-container">
+        <!-- Illustrations décoratives -->
+        <div class="illustration illustration-1">
+            <i class="fas fa-user-tie"></i>
+        </div>
+        <div class="illustration illustration-2">
+            <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="illustration illustration-3">
+            <i class="fas fa-handshake"></i>
+        </div>
+
         <div class="welcome-section">
-            <h1>Interface Client Viiveo</h1>
-            <p>Bienvenue dans votre espace personnel</p>
+            <h1 data-translate="welcome_title">Interface Client Viiveo</h1>
+            <p data-translate="welcome_subtitle">Bienvenue dans votre espace personnel</p>
         </div>
         
         <!-- Embed 2 - Formulaire de connexion -->
@@ -247,38 +732,38 @@
         
         <div id="login-container">
             <form id="login" onsubmit="event.preventDefault(); login();">
-                <h2>Connexion à votre interface client</h2>
-                <input type="email" id="email" placeholder="Votre e-mail" autocomplete="username" />
-                <input type="password" id="password" placeholder="Mot de passe" autocomplete="current-password" />
-                <button type="submit">Se connecter</button>
+                <h2 data-translate="login_title">Connexion à votre interface client</h2>
+                <input type="email" id="email" data-translate-placeholder="email_placeholder" placeholder="Votre e-mail" autocomplete="username" />
+                <input type="password" id="password" data-translate-placeholder="password_placeholder" placeholder="Mot de passe" autocomplete="current-password" />
+                <button type="submit" data-translate="login_button">Se connecter</button>
                 <div id="message"></div>
-                <div id="loader">Connexion en cours...</div>
+                <div id="loader" data-translate="loading">Connexion en cours...</div>
             </form>
         </div>
         
         <!-- Embed 2 partie 2 - Interface client -->
         <div id="client-area">
-            <div id="welcome-msg">Bienvenue dans votre interface client</div>
+            <div id="welcome-msg" data-translate="client_welcome">Bienvenue dans votre interface client</div>
             <img id="client-photo" src="" alt="Photo du client" />
-            <h3>Bienvenue <span id="prenomClient"></span> !</h3>
-            <p>Crédits disponibles : <strong><span id="creditsClient"></span></strong></p>
+            <h3><span data-translate="welcome_user">Bienvenue</span> <span id="prenomClient"></span> !</h3>
+            <p><span data-translate="credits_available">Crédits disponibles</span> : <strong><span id="creditsClient"></span></strong></p>
 
             <div class="action-buttons">
-                <button onclick="rechargerCredits()">Recharger mes crédits</button>
-                <button onclick="voirRapports()">Voir mes rapports de visites</button>
+                <button onclick="rechargerCredits()" data-translate="recharge_credits">Recharger mes crédits</button>
+                <button onclick="voirRapports()" data-translate="view_reports">Voir mes rapports de visites</button>
             </div>
 
-            <h4>Vos demandes :</h4>
+            <h4 data-translate="your_requests">Vos demandes :</h4>
             <div class="table-wrapper">
                 <table id="demandesTable">
                     <thead>
                         <tr>
-                            <th>Date demande</th>
-                            <th>Service</th>
-                            <th>Intervention</th>
-                            <th>Heure</th>
-                            <th>Tâche</th>
-                            <th>Statut</th>
+                            <th data-translate="request_date">Date demande</th>
+                            <th data-translate="service">Service</th>
+                            <th data-translate="intervention">Intervention</th>
+                            <th data-translate="time">Heure</th>
+                            <th data-translate="task">Tâche</th>
+                            <th data-translate="status">Statut</th>
                         </tr>
                     </thead>
                     <tbody id="demandesTableBody"></tbody>
@@ -291,6 +776,185 @@
 
     <script>
         const webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
+
+        // Système de traduction multilingue
+        const translations = {
+            fr: {
+                welcome_title: "Interface Client Viiveo",
+                welcome_subtitle: "Bienvenue dans votre espace personnel",
+                login_title: "Connexion à votre interface client",
+                email_placeholder: "Votre e-mail",
+                password_placeholder: "Mot de passe",
+                login_button: "Se connecter",
+                loading: "Connexion en cours...",
+                client_welcome: "Bienvenue dans votre interface client",
+                welcome_user: "Bienvenue",
+                credits_available: "Crédits disponibles",
+                recharge_credits: "Recharger mes crédits",
+                view_reports: "Voir mes rapports de visites",
+                your_requests: "Vos demandes :",
+                request_date: "Date demande",
+                service: "Service",
+                intervention: "Intervention",
+                time: "Heure",
+                task: "Tâche",
+                status: "Statut",
+                validated: "Validée",
+                confirmed: "Confirmée",
+                refused: "Refusée",
+                completed: "Terminée",
+                validate: "Valider",
+                no_requests: "Aucune demande trouvée.",
+                fill_fields: "Merci de remplir tous les champs.",
+                connection_error: "Erreur de connexion, veuillez réessayer plus tard.",
+                payment_redirect: "Redirection vers la page de paiement (à configurer avec Stripe ou autre).",
+                reports_coming: "Fonction de consultation des rapports à venir.",
+                confirm_validation: "Confirmez-vous que cette prestation a bien été réalisée ?",
+                validation_success: "Merci ! Votre validation a bien été enregistrée.",
+                server_error: "Erreur de communication avec le serveur."
+            },
+            nl: {
+                welcome_title: "Viiveo Klant Interface",
+                welcome_subtitle: "Welkom in uw persoonlijke ruimte",
+                login_title: "Inloggen op uw klant interface",
+                email_placeholder: "Uw e-mail",
+                password_placeholder: "Wachtwoord",
+                login_button: "Inloggen",
+                loading: "Verbinding maken...",
+                client_welcome: "Welkom in uw klant interface",
+                welcome_user: "Welkom",
+                credits_available: "Beschikbare credits",
+                recharge_credits: "Mijn credits opladen",
+                view_reports: "Mijn bezoekrapporten bekijken",
+                your_requests: "Uw aanvragen:",
+                request_date: "Aanvraagdatum",
+                service: "Service",
+                intervention: "Interventie",
+                time: "Tijd",
+                task: "Taak",
+                status: "Status",
+                validated: "Gevalideerd",
+                confirmed: "Bevestigd",
+                refused: "Geweigerd",
+                completed: "Voltooid",
+                validate: "Valideren",
+                no_requests: "Geen aanvragen gevonden.",
+                fill_fields: "Vul alle velden in.",
+                connection_error: "Verbindingsfout, probeer het later opnieuw.",
+                payment_redirect: "Doorverwijzing naar betaalpagina (te configureren met Stripe of andere).",
+                reports_coming: "Rapportconsultatiefunctie binnenkort beschikbaar.",
+                confirm_validation: "Bevestigt u dat deze dienst is uitgevoerd?",
+                validation_success: "Dank u! Uw validatie is geregistreerd.",
+                server_error: "Servercommunicatiefout."
+            },
+            de: {
+                welcome_title: "Viiveo Kunden Interface",
+                welcome_subtitle: "Willkommen in Ihrem persönlichen Bereich",
+                login_title: "Anmeldung zu Ihrer Kunden-Schnittstelle",
+                email_placeholder: "Ihre E-Mail",
+                password_placeholder: "Passwort",
+                login_button: "Anmelden",
+                loading: "Verbindung wird hergestellt...",
+                client_welcome: "Willkommen in Ihrer Kunden-Schnittstelle",
+                welcome_user: "Willkommen",
+                credits_available: "Verfügbare Credits",
+                recharge_credits: "Meine Credits aufladen",
+                view_reports: "Meine Besuchsberichte anzeigen",
+                your_requests: "Ihre Anfragen:",
+                request_date: "Anfragedatum",
+                service: "Service",
+                intervention: "Intervention",
+                time: "Zeit",
+                task: "Aufgabe",
+                status: "Status",
+                validated: "Validiert",
+                confirmed: "Bestätigt",
+                refused: "Abgelehnt",
+                completed: "Abgeschlossen",
+                validate: "Validieren",
+                no_requests: "Keine Anfragen gefunden.",
+                fill_fields: "Bitte füllen Sie alle Felder aus.",
+                connection_error: "Verbindungsfehler, versuchen Sie es später erneut.",
+                payment_redirect: "Weiterleitung zur Zahlungsseite (mit Stripe oder anderen zu konfigurieren).",
+                reports_coming: "Berichtskonsultationsfunktion demnächst verfügbar.",
+                confirm_validation: "Bestätigen Sie, dass diese Dienstleistung erbracht wurde?",
+                validation_success: "Danke! Ihre Validierung wurde registriert.",
+                server_error: "Server-Kommunikationsfehler."
+            },
+            en: {
+                welcome_title: "Viiveo Client Interface",
+                welcome_subtitle: "Welcome to your personal space",
+                login_title: "Login to your client interface",
+                email_placeholder: "Your email",
+                password_placeholder: "Password",
+                login_button: "Login",
+                loading: "Connecting...",
+                client_welcome: "Welcome to your client interface",
+                welcome_user: "Welcome",
+                credits_available: "Available credits",
+                recharge_credits: "Recharge my credits",
+                view_reports: "View my visit reports",
+                your_requests: "Your requests:",
+                request_date: "Request date",
+                service: "Service",
+                intervention: "Intervention",
+                time: "Time",
+                task: "Task",
+                status: "Status",
+                validated: "Validated",
+                confirmed: "Confirmed",
+                refused: "Refused",
+                completed: "Completed",
+                validate: "Validate",
+                no_requests: "No requests found.",
+                fill_fields: "Please fill in all fields.",
+                connection_error: "Connection error, please try again later.",
+                payment_redirect: "Redirect to payment page (to be configured with Stripe or other).",
+                reports_coming: "Report consultation feature coming soon.",
+                confirm_validation: "Do you confirm that this service has been completed?",
+                validation_success: "Thank you! Your validation has been recorded.",
+                server_error: "Server communication error."
+            }
+        };
+
+        let currentLanguage = 'fr';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Mettre à jour les boutons de langue
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Traduire tous les éléments
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.dataset.translate;
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            // Traduire les placeholders
+            document.querySelectorAll('[data-translate-placeholder]').forEach(element => {
+                const key = element.dataset.translatePlaceholder;
+                if (translations[lang] && translations[lang][key]) {
+                    element.placeholder = translations[lang][key];
+                }
+            });
+
+            // Sauvegarder la langue choisie
+            localStorage.setItem('viiveo-language', lang);
+        }
+
+        // Charger la langue sauvegardée au démarrage
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLang = localStorage.getItem('viiveo-language') || 'fr';
+            changeLanguage(savedLang);
+        });
 
         function formatDateOrTime(dateString) {
           if (!dateString) return "";
@@ -319,7 +983,7 @@
 
           if (!email || !password) {
             loaderEl.style.display = "none";
-            messageEl.textContent = "Merci de remplir tous les champs.";
+            messageEl.textContent = translations[currentLanguage].fill_fields;
             return;
           }
 
@@ -330,7 +994,7 @@
             loaderEl.style.display = "none";
 
             if (!data.success) {
-              messageEl.textContent = data.message || "Erreur lors de la connexion.";
+              messageEl.textContent = data.message || translations[currentLanguage].connection_error;
               return;
             }
 
@@ -352,7 +1016,7 @@
               const td = document.createElement("td");
               td.colSpan = 6;
               td.style.textAlign = "center";
-              td.textContent = "Aucune demande trouvée.";
+              td.textContent = translations[currentLanguage].no_requests;
               tr.appendChild(td);
               tbody.appendChild(tr);
             } else {
@@ -361,40 +1025,98 @@
                 
                 if (d.validationClient === "validée") {
                   statutHtml = `<span style="
-                    padding: 4px 10px;
-                    border-radius: 12px;
+                    padding: 0.6rem 1.2rem;
+                    border-radius: 2rem;
                     color: white;
-                    font-weight: 600;
-                    background-color: #4CAF50;">
-                    ✔ Validée
+                    font-weight: 700;
+                    font-size: 0.9rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                    background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+                    box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+                    border: 2px solid #ffd700;">
+                    ✔ ${translations[currentLanguage].validated}
                   </span>`;
                 } else {
                   const statut = (d.statut || "").toLowerCase();
-                  const color = statut === "confirmée" ? "#4CAF50"
-                    : statut === "refusée" ? "#F44336"
-                    : statut === "terminée" ? "#2196F3"
-                    : "#FFC107";
+                  let badgeStyle = "";
+                  
+                  if (statut === "confirmée") {
+                    badgeStyle = `
+                      padding: 0.6rem 1.2rem;
+                      border-radius: 2rem;
+                      color: white;
+                      font-weight: 700;
+                      font-size: 0.9rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.1em;
+                      background: linear-gradient(135deg, #d4a574 0%, #c49a7b 100%);
+                      box-shadow: 0 6px 16px rgba(212, 165, 116, 0.4);
+                      border: 2px solid #e6b885;
+                    `;
+                  } else if (statut === "refusée") {
+                    badgeStyle = `
+                      padding: 0.6rem 1.2rem;
+                      border-radius: 2rem;
+                      color: white;
+                      font-weight: 700;
+                      font-size: 0.9rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.1em;
+                      background: linear-gradient(135deg, #8b8680 0%, #6b645f 100%);
+                      box-shadow: 0 6px 16px rgba(139, 134, 128, 0.4);
+                      border: 2px solid #a8a29e;
+                    `;
+                  } else if (statut === "terminée") {
+                    badgeStyle = `
+                      padding: 0.6rem 1.2rem;
+                      border-radius: 2rem;
+                      color: white;
+                      font-weight: 700;
+                      font-size: 0.9rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.1em;
+                      background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+                      box-shadow: 0 6px 16px rgba(255, 215, 0, 0.4);
+                      border: 2px solid #ffe55c;
+                    `;
+                  } else {
+                    badgeStyle = `
+                      padding: 0.6rem 1.2rem;
+                      border-radius: 2rem;
+                      color: white;
+                      font-weight: 700;
+                      font-size: 0.9rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.1em;
+                      background: linear-gradient(135deg, #d4a574 0%, #c49a7b 100%);
+                      box-shadow: 0 6px 16px rgba(212, 165, 116, 0.4);
+                      border: 2px solid #e6b885;
+                    `;
+                  }
 
-                  statutHtml = `<span style="
-                    padding: 4px 10px;
-                    border-radius: 12px;
-                    color: white;
-                    font-weight: 600;
-                    background-color: ${color};">
+                  statutHtml = `<span style="${badgeStyle}">
                     ${d.statut || ""}
                   </span>`;
 
                   if (statut === "terminée") {
                     statutHtml += `<br><button style="
-                      margin-top: 5px;
-                      background-color: #4CAF50;
+                      margin-top: 1rem;
+                      background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
                       color: white;
-                      padding: 6px 12px;
-                      border: none;
-                      border-radius: 6px;
-                      font-size: 13px;
-                      cursor: pointer;"
-                      onclick="validerPrestationDepuisClient('${d.idMission}')">Valider</button>`;
+                      padding: 0.7rem 1.3rem;
+                      border: 2px solid #ffd700;
+                      border-radius: 1rem;
+                      font-size: 0.9rem;
+                      font-weight: 700;
+                      cursor: pointer;
+                      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                      box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
+                      text-transform: uppercase;
+                      letter-spacing: 0.05em;"
+                      onmouseover="this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 12px 24px rgba(212, 175, 55, 0.5)'; this.style.background='linear-gradient(135deg, #ffd700 0%, #ffb347 100%)';"
+                      onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 6px 12px rgba(212, 175, 55, 0.3)'; this.style.background='linear-gradient(135deg, #d4af37 0%, #b8860b 100%)';"
+                      onclick="validerPrestationDepuisClient('${d.idMission}')">✓ ${translations[currentLanguage].validate}</button>`;
                   }
                 }
 
@@ -416,37 +1138,37 @@
 
           } catch (err) {
             loaderEl.style.display = "none";
-            messageEl.textContent = "Erreur de connexion, veuillez réessayer plus tard.";
+            messageEl.textContent = translations[currentLanguage].connection_error;
             console.error(err);
           }
         }
 
         function rechargerCredits() {
-          alert("Redirection vers la page de paiement (à configurer avec Stripe ou autre).");
+          alert(translations[currentLanguage].payment_redirect);
         }
 
         function voirRapports() {
-          alert("Fonction de consultation des rapports à venir.");
+          alert(translations[currentLanguage].reports_coming);
         }
 
         async function validerPrestationDepuisClient(idMission) {
-          const confirmMsg = "Confirmez-vous que cette prestation a bien été réalisée ?";
+          const confirmMsg = translations[currentLanguage].confirm_validation;
           if (!confirm(confirmMsg)) return;
 
           try {
             const res = await fetch(`${webAppUrl}?type=validerPrestationClient&id=${encodeURIComponent(idMission)}`);
             const data = await res.json();
             if (data.success) {
-              alert("Merci ! Votre validation a bien été enregistrée.");
+              alert(translations[currentLanguage].validation_success);
               location.reload();
             } else {
               alert("Erreur : " + (data.error || "inconnue"));
             }
           } catch (err) {
             console.error(err);
-            alert("Erreur de communication avec le serveur.");
+            alert(translations[currentLanguage].server_error);
           }
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9098864db729',t:'MTc1OTE2MDI3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9098864db729',t:'MTc1OTE2MDI3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9873a05ca4457638',t:'MTc1OTIzNDMyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
