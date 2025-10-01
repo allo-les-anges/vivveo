@@ -59,8 +59,8 @@
             font-weight: 800;
         }
 
+        /* Ajout de position: relative pour que le loader absolu se positionne correctement */
         .viiveo-login {
-            /* IMPORTANT: Ajout de position: relative pour que le loader absolu se positionne correctement */
             position: relative; 
         }
 
@@ -122,7 +122,6 @@
             top: 1.5rem;
             right: 6rem;
             z-index: 9999;
-            /* display: none; -> Laissez la gestion en JS pour être sûr de la désactivation initiale */
         }
 
         /* Style des barres du hamburger */
@@ -136,7 +135,7 @@
             left: auto !important;
         }
 
-        /* --- LOADER ÉLÉGANT (Modifié pour être au-dessus du formulaire) --- */
+        /* --- LOADER ÉLÉGANT --- */
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -156,13 +155,12 @@
             /* Fond semi-transparent pour cacher le formulaire en dessous */
             background-color: rgba(255, 255, 255, 0.9); 
             border-radius: var(--border-radius-lg);
-            z-index: 10; /* Assure qu'il est au-dessus du formulaire */
+            z-index: 10;
         }
 
         #loader {
             width: 3rem;
             height: 3rem;
-            /* Couleurs adaptées au contexte clair */
             border: 4px solid rgba(102, 126, 234, 0.3); 
             border-top: 4px solid var(--primary-color);
             border-radius: 50%;
@@ -322,13 +320,13 @@
     </div>
 
     <script>
-        // Variables globales (utilisées par votre viiveo-app.js)
+        // Variables globales
         window.webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
         window.currentEmail = null;
         window.currentPrenom = null;
         window.currentNom = null;
 
-        // Fonction pour initialiser les données du prestataire (appelée par viiveo-app.js)
+        // Fonction pour initialiser les données du prestataire
         window.setPrestataireData = function(email, prenom, nom) {
             if (typeof email === 'string' && email.includes('@')) {
                 window.currentEmail = email;
@@ -339,29 +337,24 @@
                 console.error("Erreur: L'email du prestataire fourni n'est pas valide.");
             }
         };
-
-        // --- NOUVEAUX AJOUTS POUR LE LOADER ET LA CONNEXION ---
         
-        /**
-         * @function showLoader
-         * Affiche le loader durant la phase de connexion.
-         */
+        // --- GESTION DU LOADER ---
+        
         function showLoader(message = "Connexion en cours...") {
             document.getElementById('loader-message').textContent = message;
             document.getElementById('loader-wrapper').style.display = 'flex';
         }
 
-        /**
-         * @function hideLoader
-         * Masque le loader.
-         */
         function hideLoader() {
             document.getElementById('loader-wrapper').style.display = 'none';
         }
 
+        // --- GESTION DE L'AUTHENTIFICATION ---
+        
         /**
          * @function handleLogin
          * Appelée à la soumission du formulaire de connexion.
+         * Lance le loader puis appelle la fonction d'authentification réelle.
          */
         function handleLogin() {
             const email = document.getElementById('email').value;
@@ -371,36 +364,27 @@
             messageElement.textContent = '';
 
             if (email && password) {
+                // 1. Afficher le loader
                 showLoader("Vérification des identifiants...");
                 
-                // Ici, vous appelez probablement une fonction de votre viiveo-app.js
-                // qui fait l'appel réel au serveur (e.g., Google Apps Script)
-                
-                // Exemple d'appel simulé (à remplacer par votre logique viiveo-app.js) :
+                // 2. Tenter l'authentification via viiveo-app.js
                 if (typeof window.viiveoLogin === 'function') {
-                     // Assurez-vous que viiveoLogin masque le loader en cas d'erreur/succès
-                    window.viiveoLogin(email, password); 
+                    window.viiveoLogin(email, password); // <- C'est l'appel à votre logique de BDD
                 } else {
-                    // Simulation si viiveo-app.js n'est pas chargé
-                    setTimeout(() => {
-                        if (email === "test@prestataire.com" && password === "test") {
-                            window.handleSuccessfulLogin(email, "Testeur", "Prestataire");
-                        } else {
-                            window.handleLoginError("Email ou mot de passe incorrect.");
-                        }
-                    }, 1500); 
+                    // Message d'erreur si la fonction n'est pas trouvée (mauvais chargement de viiveo-app.js)
+                    window.handleLoginError("Erreur d'initialisation : La fonction d'authentification n'est pas disponible.");
                 }
             } else {
-                handleLoginError("Veuillez saisir votre email et votre mot de passe.");
+                window.handleLoginError("Veuillez saisir votre email et votre mot de passe.");
             }
         }
         
         /**
          * @function handleLoginError
-         * Appelée par viiveo-app.js ou en cas d'erreur de validation.
+         * Appelée par viiveo-app.js en cas d'échec de l'authentification.
          */
         window.handleLoginError = function(error) {
-            hideLoader();
+            hideLoader(); // Masquer le loader
             const messageElement = document.getElementById('message');
             messageElement.textContent = error;
             messageElement.style.visibility = 'visible';
@@ -422,7 +406,7 @@
             document.getElementById('main-missions-display').style.display = 'block';
             document.getElementById('actions-section').style.display = 'block';
             
-            // 3. AFFICHAGE DU MENU HAMBURGER
+            // 3. Rendre le menu Hamburger visible (corrigé)
             document.getElementById('menu-container').style.display = 'block'; 
 
             // 4. Mettre à jour le message d'accueil
@@ -432,7 +416,8 @@
             welcomeP.textContent = `Gérez vos missions Viiveo.`;
         }
         
-        // --- NOUVELLE FONCTION : Basculer la visibilité du mot de passe ---
+        // --- UTILITAIRES ---
+
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
             const toggleIcon = document.getElementById('togglePassword');
@@ -448,7 +433,6 @@
             }
         }
 
-        // Fonctions pour le menu hamburger (logique inchangée)
         function showHistorique() {
             alert("Affichage de l'historique des prestations.");
             closeMenu();
