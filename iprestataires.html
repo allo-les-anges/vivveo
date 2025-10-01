@@ -1,609 +1,388 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interface Prestataire - Viiveo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Embed 3 - Ressources externes -->
-    <link rel="stylesheet" href="https://allo-les-anges.github.io/viiveo-tableauxviiveo-tableaux-prestataire/viiveo-styles.css">
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <script src="https://allo-les-anges.github.io/viiveo-tableauxviiveo-tableaux-prestataire/viiveo-app.js"></script>
-    <style>
-        body {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            font-family: 'Inter', 'Poppins', sans-serif;
-            color: #1f2937;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface Prestataire - Viiveo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://allo-les-anges.github.io/viiveo-tableauxviiveo-tableaux-prestataire/viiveo-styles.css">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://allo-les-anges.github.io/viiveo-tableauxviiveo-tableaux-prestataire/viiveo-app.js"></script>
 
-        /* Variables CSS pour cohérence */
-        :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --accent-gradient: linear-gradient(135deg, #fde047 0%, #facc15 100%);
-            --card-bg: rgba(255, 255, 255, 0.95);
-            --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            --border-radius: 1rem;
-            --border-radius-lg: 1.5rem;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    <style>
+        /* --- VARIABLES ET STYLES DE BASE --- */
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --primary-gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            --accent-gradient: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --border-radius-lg: 1.5rem;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-        /* Bouton Maison (accueil) - Style moderne */
-        .menu-bubble {
-            position: fixed;
-            top: 1.5rem;
-            right: 1.5rem;
-            width: 3.5rem;
-            height: 3.5rem;
-            background: var(--card-bg);
-            border-radius: 50%;
-            box-shadow: var(--shadow-medium);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            z-index: 9999;
-            transition: var(--transition);
-            color: #4f46e5;
-            font-size: 1.25rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            color: #1f2937;
+        }
 
-        .menu-bubble:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-heavy);
-            background: rgba(255, 255, 255, 1);
-        }
+        .main-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-        /* Container principal - Design moderne */
-        .main-container {
-            padding: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+        /* --- COMPOSANTS DE L'INTERFACE --- */
+        .welcome-section, .viiveo-login, .embed-section, .viiveo-missions {
+            background: var(--card-bg);
+            border-radius: var(--border-radius-lg);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-medium);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
-        /* Section d'accueil modernisée */
-        .welcome-section {
-            background: var(--card-bg);
-            border-radius: 2rem;
-            padding: 4rem 3rem;
-            margin-bottom: 3rem;
-            box-shadow: var(--shadow-heavy);
-            text-align: center;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
+        .welcome-section h1 {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3rem;
+            font-weight: 800;
+        }
 
-        .welcome-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--accent-gradient);
-        }
+        .viiveo-login button {
+            background: var(--primary-gradient);
+            transition: var(--transition);
+        }
+        .viiveo-login button:hover {
+             transform: translateY(-2px);
+             box-shadow: var(--shadow-heavy);
+        }
+        
+        /* Conteneur pour le champ mot de passe + icône */
+        .password-container {
+            position: relative;
+            margin-bottom: 1rem; /* Ajout d'une marge pour séparer de l'email */
+        }
+        
+        .password-container input {
+            padding-right: 3rem !important; /* Laisse de l'espace pour l'icône */
+        }
+        
+        /* Icône Œil */
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #9ca3af; /* Couleur neutre */
+            transition: color 0.2s;
+            font-size: 1.25rem;
+        }
+        
+        .toggle-password:hover {
+            color: var(--primary-color);
+        }
 
-        .welcome-section h1 {
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            font-weight: 800;
-            letter-spacing: -0.025em;
-        }
+        /* --- BOUTON MAISON & MENU HAMBURGER (Optimisation position) --- */
+        .menu-bubble {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 9999;
+            width: 3.5rem;
+            height: 3.5rem;
+            background: var(--card-bg);
+            border-radius: 50%;
+            box-shadow: var(--shadow-medium);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
 
-        .welcome-section p {
-            color: #6b7280;
-            font-size: 1.25rem;
-            font-weight: 500;
-            margin: 0;
-        }
+        /* Conteneur Hamburger: Invisible par défaut */
+        #menu-container {
+            position: fixed;
+            top: 1.5rem;
+            right: 6rem; /* Décalé à gauche du bouton Maison */
+            z-index: 9999;
+        }
 
-        /* Cards et sections modernisées */
-        .embed-section {
-            background: var(--card-bg);
-            border-radius: var(--border-radius-lg);
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-medium);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+        /* Style des barres du hamburger */
+        #menu-container label span {
+            background: var(--primary-color) !important;
+        }
 
-        .embed-section h2 {
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            font-weight: 700;
-        }
+        /* Menu déroulant */
+        #menu {
+            right: 40px; /* Aligne le menu à droite du bouton hamburger */
+            left: auto !important;
+        }
 
-        /* Grille d'actions modernisée */
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
+        /* --- LOADER ÉLÉGANT --- */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #loader-wrapper {
+            display: none;
+            text-align: center;
+            padding: 2rem 0;
+            margin: 0 auto;
+            max-width: 400px;
+        }
 
-        .action-card {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 2.5rem 2rem;
-            text-align: center;
-            box-shadow: var(--shadow-light);
-            transition: var(--transition);
-            cursor: pointer;
-            border: 1px solid rgba(229, 231, 235, 0.8);
-            position: relative;
-            overflow: hidden;
-        }
+        #loader {
+            width: 3rem;
+            height: 3rem;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            animation: spin 0.8s ease-in-out infinite;
+            margin: 0 auto;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        }
+        
+        #loader-message {
+            color: white;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
 
-        .action-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--accent-gradient);
-            transform: scaleX(0);
-            transition: var(--transition);
-        }
-
-        .action-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-heavy);
-            border-color: rgba(102, 126, 234, 0.3);
-        }
-
-        .action-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .action-card i {
-            font-size: 3.5rem;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-
-        .action-card h3 {
-            color: #1f2937;
-            margin-bottom: 0.75rem;
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .action-card p {
-            color: #6b7280;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin: 0;
-        }
-
-        /* Formulaire de connexion modernisé */
-        .viiveo-login {
-            background: var(--card-bg);
-            border-radius: var(--border-radius-lg);
-            padding: 2.5rem;
-            box-shadow: var(--shadow-medium);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .viiveo-login input {
-            width: 100%;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            box-sizing: border-box;
-            border: 2px solid #e5e7eb;
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-            transition: var(--transition);
-            background: white;
-        }
-
-        .viiveo-login input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .viiveo-login button {
-            width: 100%;
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            padding: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: var(--border-radius);
-            font-size: 1rem;
-            transition: var(--transition);
-            box-shadow: var(--shadow-light);
-        }
-
-        .viiveo-login button:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
-        }
-
-        /* Interface des missions modernisée */
-        .viiveo-missions {
-            background: var(--card-bg);
-            border-radius: var(--border-radius-lg);
-            padding: 2.5rem;
-            box-shadow: var(--shadow-medium);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .viiveo-missions h3 {
-            color: #1f2937;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid #f3f4f6;
-        }
-
-        /* Badges de statut modernisés */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .status-active {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-        }
-
-        .status-pending {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-        }
-
-        .status-completed {
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-        }
-
-        /* Loader modernisé */
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        #loader {
-            margin: 2rem auto;
-            width: 3rem;
-            height: 3rem;
-            border: 3px solid #f3f4f6;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        /* Menu hamburger modernisé */
-        #menu-toggle:checked + label + #menu {
-            display: block !important;
-        }
-
-        #menu-toggle:checked + label span:nth-child(1) {
-            transform: translateY(11px) rotate(45deg);
-        }
-
-        #menu-toggle:checked + label span:nth-child(2) {
-            opacity: 0;
-        }
-
-        #menu-toggle:checked + label span:nth-child(3) {
-            transform: translateY(-11px) rotate(-45deg);
-        }
-
-        #menu {
-            background: var(--card-bg);
-            border: 1px solid rgba(229, 231, 235, 0.8);
-            border-radius: var(--border-radius);
-            padding: 1rem 1.5rem;
-            box-shadow: var(--shadow-medium);
-            backdrop-filter: blur(10px);
-        }
-
-        #menu a {
-            font-weight: 600;
-            color: #374151;
-            text-decoration: none;
-            padding: 0.75rem 0;
-            display: inline-block;
-            transition: var(--transition);
-        }
-
-        #menu a:hover {
-            color: #667eea;
-        }
-
-        /* Tableaux responsifs */
-        .table-wrapper {
-            width: 95vw;
-            max-width: 1600px;
-            aspect-ratio: 16 / 9;
-            margin: 2rem auto;
-            overflow-x: auto;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-light);
-        }
-
-        .table-wrapper table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: auto;
-            background: white;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .main-container {
-                padding: 1rem;
-            }
-            
-            .welcome-section {
-                padding: 2.5rem 2rem;
-                margin-bottom: 2rem;
-            }
-            
-            .welcome-section h1 {
-                font-size: 2.25rem;
-            }
-            
-            .action-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .table-wrapper {
-                width: 95%;
-                aspect-ratio: auto;
-            }
-
-            .table-wrapper table {
-                font-size: 14px;
-            }
-
-            .menu-bubble {
-                top: 1rem;
-                right: 1rem;
-                width: 3rem;
-                height: 3rem;
-            }
-        }
-
-        /* Animations d'entrée */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .welcome-section,
-        .embed-section,
-        .action-card {
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        /* Styles pour les titres de section */
-        h2 {
-            font-weight: 700;
-            letter-spacing: -0.025em;
-        }
-
-        /* Amélioration des contrastes */
-        .viiveo-missions h3 {
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-    </style>
+        /* --- MEDIA QUERIES (Responsif) --- */
+        @media (max-width: 768px) {
+            .menu-bubble { top: 1rem; right: 1rem; }
+            #menu-container { right: 5.5rem; top: 1rem; }
+            .welcome-section h1 { font-size: 2.25rem; }
+            .action-grid { grid-template-columns: 1fr; }
+        }
+        
+        /* Styles pour les actions et missions (basés sur les variables) */
+        .embed-section h2, .viiveo-missions h3, .action-card i {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .action-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-heavy);
+        }
+        .action-card::before {
+            background: var(--accent-gradient);
+        }
+    </style>
 </head>
 <body>
-    <!-- Embed 4 - Bouton Maison (accueil) amélioré -->
-    <a href="https://viiveo.carrd.co/" class="menu-bubble" aria-label="Accueil" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-home"></i> <!-- Icône maison -->
-    </a>
+    <a href="https://viiveo.carrd.co/" class="menu-bubble" aria-label="Accueil" target="_blank" rel="noopener noreferrer">
+        <i class="fas fa-home"></i>
+    </a>
 
-    <div class="main-container">
-        <div class="welcome-section">
-            <h1><i class="fas fa-user-tie"></i> Interface Prestataire Viiveo</h1>
-            <p>Gérez vos missions et interventions en toute simplicité</p>
-        </div>
+    <div class="main-container">
+        <div class="welcome-section" style="text-align: center;">
+            <h1><i class="fas fa-user-tie"></i> Interface Prestataire Viiveo</h1>
+            <p>Gérez vos missions et interventions en toute simplicité</p>
+        </div>
 
-        <!-- Embed 2 - Menu hamburger -->
-        <div id="menu-container" style="display: none; position: fixed; top: 1rem; right: 1rem; z-index: 999;">
-            <input type="checkbox" id="menu-toggle" style="display:none;">
-            <label for="menu-toggle" style="cursor:pointer; display:inline-block; width:30px; height:25px; position:relative;">
-                <span style="background:#ec4899; display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:0; left:0; transition:0.3s;"></span>
-                <span style="background:#ec4899; display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:11px; left:0; transition:0.3s;"></span>
-                <span style="background:#ec4899; display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:22px; left:0; transition:0.3s;"></span>
-            </label>
-            <nav id="menu" style="
-                display:none;
-                position:absolute;
-                top:0;
-                /* Modifier left à right ici pour que le menu s'ouvre depuis la droite */
-                left:40px; /* Ajustez cette valeur si nécessaire pour l'espacement */
-                background:#fff;
-                border:1px solid #ddd;
-                border-radius:8px;
-                padding:0.5em 1em;
-                box-shadow:0 0 10px rgba(0,0,0,0.1);
-                white-space: nowrap;
-                ">
-                <ul style="
-                    display:flex;
-                    gap:1rem;
-                    list-style:none;
-                    margin:0;
-                    padding:0;
-                    ">
-                    <li><a href="#" style="font-weight:bold; color:#333; text-decoration:none; padding:0.5em 0; display:inline-block;" onclick="showMesDonnees(); closeMenu()">Mes données</a></li>
-                    <li><a href="#" style="font-weight:bold; color:#333; text-decoration:none; padding:0.5em 0; display:inline-block;" onclick="showHistorique(); closeMenu()">Historique des Prestations</a></li>
-                </ul>
-            </nav>
-        </div>
+        <div id="menu-container" style="display: none;">
+            <input type="checkbox" id="menu-toggle" style="display:none;">
+            <label for="menu-toggle" style="cursor:pointer; display:inline-block; width:30px; height:25px; position:relative;">
+                <span style="display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:0; left:0; transition:0.3s;"></span>
+                <span style="display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:11px; left:0; transition:0.3s;"></span>
+                <span style="display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:22px; left:0; transition:0.3s;"></span>
+            </label>
+            <nav id="menu" style="
+                display:none;
+                position:absolute;
+                top:0;
+                right:40px; 
+                left:auto; 
+                background:#fff;
+                border:1px solid #ddd;
+                border-radius:8px;
+                padding:0.5em 1em;
+                box-shadow:0 0 10px rgba(0,0,0,0.1);
+                white-space: nowrap;
+                ">
+                <ul style="
+                    display:flex;
+                    gap:1rem;
+                    list-style:none;
+                    margin:0;
+                    padding:0;
+                    ">
+                    <li><a href="#" onclick="showMesDonnees(); closeMenu()">Mes données</a></li>
+                    <li><a href="#" onclick="showHistorique(); closeMenu()">Historique des Prestations</a></li>
+                </ul>
+            </nav>
+        </div>
 
-        <!-- Section de connexion -->
-        <h2 style="text-align:center; font-weight:bold; margin-top:3rem;">Connexion</h2>
-        <div id="login-section" class="viiveo-login" style="max-width:400px; margin:1rem auto;">
-            <form id="loginForm" onsubmit="event.preventDefault(); handleLogin();">
-                <input type="email" id="email" placeholder="E-mail" autocomplete="username" required style="width:100%; padding:0.5rem; margin-bottom:0.75rem; box-sizing:border-box;">
-                <input type="password" id="password" placeholder="Mot de passe" autocomplete="current-password" required style="width:100%; padding:0.5rem; margin-bottom:0.75rem; box-sizing:border-box;">
-                <button type="submit" style="width:100%; background:#ec4899; color:#fff; border:none; padding:0.75rem; font-weight:bold; cursor:pointer; border-radius:4px;">Connexion</button>
-                <div id="message" style="color:red; margin-top:0.5em; visibility:hidden;"></div>
-            </form>
-        </div>
-        
-        <div id="loader" style="display:none; margin: 2rem auto; width:50px; height:50px; border:6px solid #f8d3e5; border-top:6px solid #ec4899; border-radius:50%; animation:spin 1s linear infinite;"></div>
+        <h2 style="text-align:center; font-weight:bold; margin-top:3rem;">Connexion</h2>
+        <div id="login-section" class="viiveo-login" style="max-width:400px; margin:1rem auto;">
+            <form id="loginForm" onsubmit="event.preventDefault(); handleLogin();">
+                <input type="email" id="email" placeholder="E-mail" autocomplete="username" required style="width:100%; padding:1rem; margin-bottom:1rem; box-sizing:border-box;">
+                
+                <div class="password-container">
+                    <input type="password" id="password" placeholder="Mot de passe" autocomplete="current-password" required style="width:100%; padding:1rem; box-sizing:border-box;">
+                    <i class="fas fa-eye toggle-password" id="togglePassword" onclick="togglePasswordVisibility()"></i>
+                </div>
+                
+                <button type="submit" style="width:100%; color:white; border:none; padding:1rem; font-weight:600; cursor:pointer; border-radius:1rem;">Connexion</button>
+                <div id="message" style="color:red; margin-top:0.5em; visibility:hidden;"></div>
+            </form>
+        </div>
+        
+        <div id="loader-wrapper">
+            <div id="loader"></div>
+            <div id="loader-message">Connexion en cours...</div>
+        </div>
 
-        <!-- Interface des missions -->
-        <div id="main-missions-display" class="viiveo-missions" style="display: none; max-width: 900px; margin: 1rem auto; padding: 1rem;">
-            <div id="global-loader" style="display: none; text-align: center; padding: 20px; font-size: 1.2em; color: #555;">
-                Chargement des missions en cours...
-            </div>
+        <div id="main-missions-display" class="viiveo-missions" style="display: none; max-width: 900px; margin: 1rem auto;">
+            <div id="global-loader" style="display: none; text-align: center; padding: 20px; font-size: 1.2em; color: #555;">
+                Chargement des missions en cours...
+            </div>
 
-            <div id="missions-attente-container">
-                <h3>Missions en attente de validation</h3>
-                <div id="missions-attente"></div>
-            </div>
+            <div id="missions-attente-container">
+                <h3>Missions en attente de validation</h3>
+                <div id="missions-attente"></div>
+            </div>
 
-            <div id="missions-planifiees">
-                <h3>Missions planifiées (validées / confirmées)</h3>
-                <div id="missions-a-venir"></div>
-            </div>
+            <div id="missions-planifiees">
+                <h3>Missions planifiées (validées / confirmées)</h3>
+                <div id="missions-a-venir"></div>
+            </div>
 
-            <div id="missions-en-cours-container">
-                <h3>Missions en cours</h3>
-                <div id="missions-en-cours"></div>
-            </div>
+            <div id="missions-en-cours-container">
+                <h3>Missions en cours</h3>
+                <div id="missions-en-cours"></div>
+            </div>
 
-            <div id="missions-terminees-container">
-                <h3>Missions terminées</h3>
-                <div id="missions-terminees"></div>
-            </div>
-        </div>
+            <div id="missions-terminees-container">
+                <h3>Missions terminées</h3>
+                <div id="missions-terminees"></div>
+            </div>
+        </div>
 
-        <!-- Section Actions disponibles - Visible uniquement après connexion -->
-        <div id="actions-section" class="embed-section" style="display: none;">
-            <h2><i class="fas fa-tools"></i> Actions disponibles</h2>
-            <div class="action-grid">
-                <div class="action-card">
-                    <i class="fas fa-calendar-check"></i>
-                    <h3>Mes missions</h3>
-                    <p>Consulter et gérer vos missions assignées</p>
-                </div>
-                
-                <div class="action-card">
-                    <i class="fas fa-clock"></i>
-                    <h3>Planning</h3>
-                    <p>Visualiser votre planning d'interventions</p>
-                </div>
-                
-                <div class="action-card">
-                    <i class="fas fa-file-alt"></i>
-                    <h3>Rapports</h3>
-                    <p>Créer et envoyer vos rapports d'intervention</p>
-                </div>
-                
-                <div class="action-card">
-                    <i class="fas fa-user-circle"></i>
-                    <h3>Profil</h3>
-                    <p>Gérer vos informations personnelles</p>
-                </div>
-            </div>
-        </div>
-    </div>
+        <div id="actions-section" class="embed-section" style="display: none; max-width: 900px; margin: 1rem auto;">
+            <h2><i class="fas fa-tools"></i> Actions disponibles</h2>
+            <div class="action-grid">
+                <div class="action-card">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3>Mes missions</h3>
+                    <p>Consulter et gérer vos missions assignées</p>
+                </div>
+                
+                <div class="action-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Planning</h3>
+                    <p>Visualiser votre planning d'interventions</p>
+                </div>
+                
+                <div class="action-card">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>Rapports</h3>
+                    <p>Créer et envoyer vos rapports d'intervention</p>
+                </div>
+                
+                <div class="action-card">
+                    <i class="fas fa-user-circle"></i>
+                    <h3>Profil</h3>
+                    <p>Gérer vos informations personnelles</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <!-- Placeholder pour les autres embeds -->
-        <div id="embed-container">
-            <!-- Les autres embeds seront ajoutés ici -->
-        </div>
-    </div>
+    <script>
+        // Variables globales (utilisées par votre viiveo-app.js)
+        window.webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
+        window.currentEmail = null;
+        window.currentPrenom = null;
+        window.currentNom = null;
 
-    <!-- Embed 1 - Script de configuration -->
-    <script>
-        window.webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
+        // Fonction pour initialiser les données du prestataire (appelée par viiveo-app.js)
+        window.setPrestataireData = function(email, prenom, nom) {
+            if (typeof email === 'string' && email.includes('@')) {
+                window.currentEmail = email;
+                window.currentPrenom = prenom || '';
+                window.currentNom = nom || '';
+                console.log(`Prestataire connecté : ${window.currentPrenom} ${window.currentNom} (${window.currentEmail})`);
+            } else {
+                console.error("Erreur: L'email du prestataire fourni n'est pas valide.");
+            }
+        };
 
-        window.currentEmail = null;
-        window.currentPrenom = null;
-        window.currentNom = null;
+        /**
+         * @function handleSuccessfulLogin
+         * Appelée par viiveo-app.js après une authentification réussie.
+         * Elle gère l'affichage des éléments post-connexion (y compris le menu hamburger).
+         */
+        window.handleSuccessfulLogin = function(email, prenom, nom) {
+            window.setPrestataireData(email, prenom, nom);
 
-        window.setPrestataireData = function(email, prenom, nom) {
-            if (!email) {
-                return;
-            }
+            // 1. Masquer le formulaire de connexion et le loader
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('loader-wrapper').style.display = 'none';
 
-            if (typeof email === 'string' && email.includes('@')) {
-                window.currentEmail = email;
-                window.currentPrenom = prenom || '';
-                window.currentNom = nom || '';
-                console.log(`Prestataire connecté : ${window.currentPrenom} ${window.currentNom} (${window.currentEmail})`);
-            } else {
-                console.error("Erreur: L'email du prestataire fourni n'est pas valide (format incorrect).");
-            }
-        };
+            // 2. Afficher les sections du prestataire, y compris le menu hamburger
+            document.getElementById('main-missions-display').style.display = 'block';
+            document.getElementById('actions-section').style.display = 'block';
+            document.getElementById('menu-container').style.display = 'block'; // AFFICHAGE DU MENU HAMBURGER
 
-        // Initialisation de la page
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Interface prestataire initialisée');
-            console.log('URL de l\'API:', window.webAppUrl);
-        });
+            // 3. Mettre à jour le message d'accueil
+            const welcomeTitle = document.querySelector('.welcome-section h1');
+            const welcomeP = document.querySelector('.welcome-section p');
+            welcomeTitle.innerHTML = `<i class="fas fa-user-tie"></i> Bienvenue, ${prenom} !`;
+            welcomeP.textContent = `Gérez vos missions Viiveo.`;
+        }
+        
+        // --- NOUVELLE FONCTION : Basculer la visibilité du mot de passe ---
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('togglePassword');
+            
+            // Bascule entre 'password' et 'text'
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash'); // Icône pour masquer
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye'); // Icône pour afficher
+            }
+        }
 
-        // Embed 3 - Fonctions pour menu hamburger
-        function showHistorique() {
-            document.getElementById('section-terminees').style.display = 'block';
-        }
+        // Fonctions pour le menu hamburger (logique inchangée)
+        function showHistorique() {
+            alert("Affichage de l'historique des prestations.");
+            closeMenu();
+        }
 
-        function showMesDonnees() {
-            alert("Fonctionnalité 'Mes données' à venir.");
-        }
+        function showMesDonnees() {
+            alert("Fonctionnalité 'Mes données' à venir.");
+            closeMenu();
+        }
 
-        function closeMenu() {
-            document.getElementById('menu-toggle').checked = false;
-        }
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9218b5dfb729',t:'MTc1OTE2MDMzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98737daf1346d251',t:'MTc1OTIzMjkwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+        function closeMenu() {
+            document.getElementById('menu-toggle').checked = false;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Interface prestataire initialisée');
+        });
+    </script>
+</body>
 </html>
