@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Embed 3 - Ressources externes -->
     <link rel="stylesheet" href="https://allo-les-anges.github.io/viiveo-tableauxviiveo-tableaux-prestataire/viiveo-styles.css">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="https://allo-les-anges.github.io/viiveo-tableauxviiveo-tableaux-prestataire/viiveo-app.js"></script>
@@ -405,6 +404,12 @@
                 width: 3rem;
                 height: 3rem;
             }
+
+            /* Ajustement de la position du menu hamburger sur mobile */
+            #menu-container {
+                top: 1rem !important;
+                right: 5rem !important; /* Laisse de la place au bouton Maison */
+            }
         }
 
         /* Animations d'entrée */
@@ -441,10 +446,8 @@
     </style>
 </head>
 <body>
-    <!-- Embed 4 - Bouton Maison (accueil) amélioré -->
     <a href="https://viiveo.carrd.co/" class="menu-bubble" aria-label="Accueil" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-home"></i> <!-- Icône maison -->
-    </a>
+        <i class="fas fa-home"></i> </a>
 
     <div class="main-container">
         <div class="welcome-section">
@@ -452,20 +455,18 @@
             <p>Gérez vos missions et interventions en toute simplicité</p>
         </div>
 
-        <!-- Embed 2 - Menu hamburger -->
-        <div id="menu-container" style="display: none; position: fixed; top: 1rem; right: 1rem; z-index: 999;">
+        <div id="menu-container" style="display: none; position: fixed; top: 1.5rem; right: 6rem; z-index: 9999;">
             <input type="checkbox" id="menu-toggle" style="display:none;">
             <label for="menu-toggle" style="cursor:pointer; display:inline-block; width:30px; height:25px; position:relative;">
-                <span style="background:#ec4899; display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:0; left:0; transition:0.3s;"></span>
-                <span style="background:#ec4899; display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:11px; left:0; transition:0.3s;"></span>
-                <span style="background:#ec4899; display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:22px; left:0; transition:0.3s;"></span>
+                <span style="background:#4f46e5; display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:0; left:0; transition:0.3s;"></span>
+                <span style="background:#4f46e5; display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:11px; left:0; transition:0.3s;"></span>
+                <span style="background:#4f46e5; display:block; height:3px; width:100%; border-radius:2px; position:absolute; top:22px; left:0; transition:0.3s;"></span>
             </label>
             <nav id="menu" style="
                 display:none;
                 position:absolute;
                 top:0;
-                /* Modifier left à right ici pour que le menu s'ouvre depuis la droite */
-                left:40px; /* Ajustez cette valeur si nécessaire pour l'espacement */
+                left:40px; 
                 background:#fff;
                 border:1px solid #ddd;
                 border-radius:8px;
@@ -486,21 +487,19 @@
             </nav>
         </div>
 
-        <!-- Section de connexion -->
         <h2 style="text-align:center; font-weight:bold; margin-top:3rem;">Connexion</h2>
         <div id="login-section" class="viiveo-login" style="max-width:400px; margin:1rem auto;">
             <form id="loginForm" onsubmit="event.preventDefault(); handleLogin();">
                 <input type="email" id="email" placeholder="E-mail" autocomplete="username" required style="width:100%; padding:0.5rem; margin-bottom:0.75rem; box-sizing:border-box;">
                 <input type="password" id="password" placeholder="Mot de passe" autocomplete="current-password" required style="width:100%; padding:0.5rem; margin-bottom:0.75rem; box-sizing:border-box;">
-                <button type="submit" style="width:100%; background:#ec4899; color:#fff; border:none; padding:0.75rem; font-weight:bold; cursor:pointer; border-radius:4px;">Connexion</button>
+                <button type="submit" style="width:100%; background:var(--primary-gradient); color:#fff; border:none; padding:0.75rem; font-weight:bold; cursor:pointer; border-radius:4px;">Connexion</button>
                 <div id="message" style="color:red; margin-top:0.5em; visibility:hidden;"></div>
             </form>
         </div>
         
-        <div id="loader" style="display:none; margin: 2rem auto; width:50px; height:50px; border:6px solid #f8d3e5; border-top:6px solid #ec4899; border-radius:50%; animation:spin 1s linear infinite;"></div>
+        <div id="loader" style="display:none; margin: 2rem auto; width:50px; height:50px; border:6px solid #f3f4f6; border-top:6px solid #667eea; border-radius:50%; animation:spin 1s linear infinite;"></div>
 
-        <!-- Interface des missions -->
-        <div id="main-missions-display" class="viiveo-missions" style="display: none; max-width: 900px; margin: 1rem auto; padding: 1rem;">
+        <div id="main-missions-display" class="viiveo-missions" style="display: none; max-width: 900px; margin: 1rem auto; padding: 2.5rem;">
             <div id="global-loader" style="display: none; text-align: center; padding: 20px; font-size: 1.2em; color: #555;">
                 Chargement des missions en cours...
             </div>
@@ -526,8 +525,7 @@
             </div>
         </div>
 
-        <!-- Section Actions disponibles - Visible uniquement après connexion -->
-        <div id="actions-section" class="embed-section" style="display: none;">
+        <div id="actions-section" class="embed-section" style="display: none; max-width: 900px; margin: 1rem auto;">
             <h2><i class="fas fa-tools"></i> Actions disponibles</h2>
             <div class="action-grid">
                 <div class="action-card">
@@ -555,15 +553,11 @@
                 </div>
             </div>
         </div>
-    </div>
-
-        <!-- Placeholder pour les autres embeds -->
+        
         <div id="embed-container">
-            <!-- Les autres embeds seront ajoutés ici -->
-        </div>
+            </div>
     </div>
 
-    <!-- Embed 1 - Script de configuration -->
     <script>
         window.webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
 
@@ -572,29 +566,69 @@
         window.currentNom = null;
 
         window.setPrestataireData = function(email, prenom, nom) {
-            if (!email) {
-                return;
-            }
-
             if (typeof email === 'string' && email.includes('@')) {
                 window.currentEmail = email;
                 window.currentPrenom = prenom || '';
                 window.currentNom = nom || '';
                 console.log(`Prestataire connecté : ${window.currentPrenom} ${window.currentNom} (${window.currentEmail})`);
             } else {
-                console.error("Erreur: L'email du prestataire fourni n'est pas valide (format incorrect).");
+                console.error("Erreur: L'email du prestataire fourni n'est pas valide.");
             }
         };
 
-        // Initialisation de la page
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Interface prestataire initialisée');
-            console.log('URL de l\'API:', window.webAppUrl);
-        });
+        // Fonction simulée pour le succès de la connexion (Affiche les sections cachées)
+        function handleSuccessfulLogin(email, prenom, nom) {
+            // 1. Définir les données de l'utilisateur
+            window.setPrestataireData(email, prenom, nom);
 
-        // Embed 3 - Fonctions pour menu hamburger
+            // 2. Masquer le formulaire de connexion
+            document.getElementById('login-section').style.display = 'none';
+
+            // 3. Afficher les sections du prestataire
+            document.getElementById('main-missions-display').style.display = 'block';
+            document.getElementById('actions-section').style.display = 'block';
+
+            // 4. Afficher le menu hamburger (Correction principale)
+            document.getElementById('menu-container').style.display = 'block';
+            
+            // 5. Mettre à jour le message d'accueil (Optionnel)
+            const welcomeTitle = document.querySelector('.welcome-section h1');
+            const welcomeP = document.querySelector('.welcome-section p');
+            welcomeTitle.innerHTML = `<i class="fas fa-user-tie"></i> Bienvenue, ${prenom} !`;
+            welcomeP.textContent = `Gérez vos missions Viiveo.`;
+
+            // Ici, vous appelleriez la fonction pour charger les missions
+            // loadPrestataireMissions(email);
+        }
+
+        // Fonction simulée de gestion de connexion (appellera votre API)
+        function handleLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const messageElement = document.getElementById('message');
+            const loader = document.getElementById('loader');
+
+            loader.style.display = 'block';
+            messageElement.style.visibility = 'hidden';
+
+            // --- SIMULATION D'APPEL À L'API BACKEND (window.webAppUrl) ---
+            setTimeout(() => {
+                loader.style.display = 'none';
+                
+                // Exemple de succès (remplacez par la vraie logique API)
+                if (email === "prestataire@viiveo.com" && password === "demo") {
+                    handleSuccessfulLogin(email, "Jean", "Dupont");
+                } else {
+                    messageElement.textContent = "Identifiants incorrects.";
+                    messageElement.style.visibility = 'visible';
+                }
+            }, 1500); // Délai de 1.5s pour simuler un appel réseau
+        }
+
+        // Fonctions pour menu hamburger
         function showHistorique() {
-            document.getElementById('section-terminees').style.display = 'block';
+            // Logique pour afficher l'historique (potentiellement une autre section ou un tableau)
+            alert("Affichage de l'historique des prestations.");
         }
 
         function showMesDonnees() {
@@ -604,6 +638,12 @@
         function closeMenu() {
             document.getElementById('menu-toggle').checked = false;
         }
+
+        // Initialisation de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Interface prestataire initialisée');
+        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9218b5dfb729',t:'MTc1OTE2MDMzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98737daf1346d251',t:'MTc1OTIzMjkwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986c9218b5dfb729',t:'MTc1OTE2MDMzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98737daf1346d251',t:'MTc1OTIzMjkwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
