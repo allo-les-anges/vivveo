@@ -185,15 +185,6 @@
             border-radius: 0.5rem;
             box-sizing: border-box;
         }
-        /* Style spécifique pour le champ du mot de passe du profil */
-        #prestataire-profile-section .profile-password-container input {
-            padding-right: 3rem !important;
-            margin-bottom: 0 !important; /* Retiré pour le conteneur englobant */
-        }
-        #prestataire-profile-section .profile-password-container {
-            margin-bottom: 1rem;
-        }
-
         .profile-section-title {
             background: var(--primary-gradient);
             -webkit-background-clip: text;
@@ -296,16 +287,16 @@
 
         <h2 style="text-align:center; font-weight:bold; margin-top:3rem;">Connexion</h2>
         <div id="login-section" class="viiveo-login" style="max-width:400px; margin:1rem auto;">
-            <form id="loginForm" onsubmit="event.preventDefault(); window.login()">
+            <form id="loginForm" onsubmit="event.preventDefault(); logIn()">
                 <input type="email" id="email" placeholder="E-mail" autocomplete="username" required style="width:100%; padding:1rem; margin-bottom:1rem; box-sizing:border-box;">
                 
                 <div class="password-container">
                     <input type="password" id="password" placeholder="Mot de passe" autocomplete="current-password" required style="width:100%; padding:1rem; box-sizing:border-box;">
-                    <i class="fas fa-eye toggle-password" id="togglePassword" onclick="togglePasswordVisibility('password', 'togglePassword')"></i>
+                    <i class="fas fa-eye toggle-password" id="togglePassword" onclick="togglePasswordVisibility()"></i>
                 </div>
                 
                 <button type="submit" style="width:100%; color:white; border:none; padding:1rem; font-weight:600; cursor:pointer; border-radius:1rem;">Connexion</button>
-                <div id="message" class="mt-2 text-center" style="color:red; visibility:hidden;"></div>
+                <div id="message" style="color:red; margin-top:0.5em; visibility:hidden;"></div>
             </form>
         </div>
         
@@ -365,10 +356,7 @@
                 <textarea id="profile-comment" rows="3"></textarea>
                 
                 <label for="profile-password">Changer de mot de passe (laissez vide si inchangé)</label>
-                <div class="password-container profile-password-container">
-                    <input type="password" id="profile-password" placeholder="Nouveau mot de passe">
-                    <i class="fas fa-eye toggle-password" id="toggleProfilePassword" onclick="togglePasswordVisibility('profile-password', 'toggleProfilePassword')"></i>
-                </div>
+                <input type="password" id="profile-password" placeholder="Nouveau mot de passe">
 
                 <div class="flex items-center mb-4 mt-2">
                     <input type="checkbox" id="profile-rgpd" required class="mr-2">
@@ -405,9 +393,6 @@
         window.currentPrenom = null;
         window.currentNom = null;
         
-        // Supposition: La fonction 'login' est définie dans viiveo-app.js et déclenchée par l'événement de soumission du formulaire de connexion.
-        // Si elle n'est pas définie, vous devrez l'implémenter ou vous assurer qu'elle est bien chargée.
-
         // --- Fonctions de Simulation (à connecter à votre viiveo-app.js) ---
 
         /**
@@ -500,4 +485,173 @@
                         const innerDiv = targetContainer.querySelector('div');
                         if (innerDiv) innerDiv.innerHTML = `<p class="text-gray-500">Liste des missions de type **${filterType.replace('_', ' ')}** chargée pour ${email}.</p>`;
                     }
-                    show(document.getElementById('
+                    show(document.getElementById('main-missions-display'), true);
+                }, 1500); // 1.5s de chargement
+            };
+        }
+
+
+        /**
+         * @function window.show
+         * Utilitaire pour afficher/masquer un élément. Est utilisé par viiveo-app.js.
+         */
+        window.show = function(element, shouldShow) {
+            if (element) {
+                const displayValue = shouldShow ? 'flex' : 'none';
+                
+                if (element.id === 'loader') {
+                    const wrapper = document.getElementById('loader-wrapper');
+                    if (wrapper) wrapper.style.display = shouldShow ? 'flex' : 'none';
+                } else if (element.id === 'login-section') {
+                    element.style.display = shouldShow ? 'block' : 'none';
+                    const menuBubble = document.getElementById('menu-bubble-container');
+                    if (menuBubble) menuBubble.style.display = shouldShow ? 'none' : 'flex';
+                } else {
+                    element.style.display = shouldShow ? 'block' : 'none';
+                }
+            }
+        };
+
+        /**
+         * Masque toutes les sections de contenu principal
+         */
+        function hideAllSections() {
+            document.getElementById('main-missions-display').style.display = 'none';
+            document.getElementById('prestataire-profile-section').style.display = 'none';
+            document.getElementById('actions-section').style.display = 'none'; // Gardé masqué
+        }
+
+        /**
+         * Masque tous les conteneurs individuels de missions
+         */
+        function hideAllMissionContainers() {
+            document.getElementById('missions-attente-container').style.display = 'none';
+            document.getElementById('missions-planifiees-container').style.display = 'none';
+            document.getElementById('missions-terminees-container').style.display = 'none';
+        }
+
+        /**
+         * @function setPrestataireData
+         * Stocke les données du prestataire et met à jour l'affichage d'accueil.
+         */
+        window.setPrestataireData = function(email, prenom, nom) {
+            if (typeof email === 'string' && email.includes('@')) {
+                window.currentEmail = email;
+                window.currentPrenom = prenom || '';
+                window.currentNom = nom || '';
+                
+                const welcomeTitle = document.querySelector('.welcome-section h1');
+                const welcomeP = document.querySelector('.welcome-section p');
+                welcomeTitle.innerHTML = `<i class="fas fa-user-tie"></i> Bienvenue, ${window.currentPrenom || 'Prestataire'} !`;
+                welcomeP.textContent = `Gérez vos missions Viiveo.`;
+                
+                document.getElementById('menu-bubble-container').style.display = 'flex'; 
+
+            } else {
+                console.error("Erreur: L'email du prestataire fourni n'est pas valide.");
+            }
+        };
+
+
+        // ===============================================
+        // LOGIQUE D'INTERFACE SPÉCIFIQUE AU HTML (Menu)
+        // ===============================================
+
+        /**
+         * Affiche les missions 'En attente de validation'.
+         */
+        function showMissions() {
+            if (!window.currentEmail) { alert("Veuillez vous connecter."); return; }
+            hideAllSections();
+            window.loadFilteredMissions(window.currentEmail, 'en_attente');
+        }
+
+        /**
+         * Affiche les missions 'Planifiées/Confirmées'.
+         */
+        function showPlanning() {
+            if (!window.currentEmail) { alert("Veuillez vous connecter."); return; }
+            hideAllSections();
+            window.loadFilteredMissions(window.currentEmail, 'planifiees');
+        }
+        
+        /**
+         * Affiche les missions 'Terminées'.
+         */
+        function showHistorique() {
+            if (!window.currentEmail) { alert("Veuillez vous connecter."); return; }
+            hideAllSections();
+            window.loadFilteredMissions(window.currentEmail, 'terminees');
+        }
+
+        /**
+         * Affiche la section 'Profil' et charge les données.
+         */
+        function showProfil() {
+            if (!window.currentEmail) { alert("Veuillez vous connecter."); return; }
+            hideAllSections();
+            document.getElementById('prestataire-profile-section').style.display = 'block';
+            
+            show(document.getElementById('loader'), true);
+            // Charge les données du profil depuis la DB (simulé)
+            window.loadProfileData(window.currentEmail); 
+        }
+
+        // Fonctions pour les autres liens (gardées pour la cohérence du menu)
+        function showRapports() { alert("Navigation vers 'Rapports' (fonctionnalité à développer)."); }
+        function showMesDonnees() { alert("Fonctionnalité 'Mes données' (similaire à Profil, à fusionner ou définir)."); }
+
+        // --- Fonctions utilitaires ---
+        
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('togglePassword');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        function logout() {
+            window.currentEmail = null;
+            document.getElementById('login-section').style.display = 'block';
+            hideAllSections();
+            hideAllMissionContainers();
+            document.getElementById('menu-bubble-container').style.display = 'none'; 
+            document.querySelector('.welcome-section h1').innerHTML = `<i class="fas fa-user-tie"></i> Interface Prestataire Viiveo`;
+            document.querySelector('.welcome-section p').textContent = `Gérez vos missions et interventions en toute simplicité`;
+            closeMenu();
+        }
+
+        function closeMenu() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const menu = document.getElementById('menu');
+
+            if (menuToggle) menuToggle.checked = false;
+            setTimeout(() => { if (menu) menu.style.display = 'none'; }, 300); 
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Logique pour ouvrir/fermer la navigation hamburger
+            const menuToggle = document.getElementById('menu-toggle');
+            const menu = document.getElementById('menu');
+
+            if (menuToggle && menu) {
+                menuToggle.addEventListener('change', function() {
+                    if (this.checked) {
+                        menu.style.display = 'block';
+                    } else {
+                        setTimeout(() => { menu.style.display = 'none'; }, 300); 
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
