@@ -307,9 +307,9 @@
         </div>
     </div>
 
-    <script>
+<script>
         // =========================================================================
-        // LOGIQUE DE CONNEXION ET DE GESTION DE L'INTERFACE (Corrigée)
+        // LOGIQUE DE CONNEXION ET DE GESTION DE L'INTERFACE (Corrigée pour viiveo-app.js)
         // =========================================================================
         
         // Variables globales (utilisées par votre viiveo-app.js)
@@ -317,93 +317,80 @@
         window.currentEmail = null;
         window.currentPrenom = null;
         window.currentNom = null;
-
-        /**
-         * @function handleLogin (AJOUTÉE)
-         * Appelée par le formulaire. Elle affiche le loader et appelle viiveoLogin (dans viiveo-app.js).
-         */
-        function handleLogin() {
-            const emailInput = document.getElementById('email').value;
-            const passwordInput = document.getElementById('password').value;
-            const loaderWrapper = document.getElementById('loader-wrapper');
-            const loginSection = document.getElementById('login-section');
-            const errorMessage = document.getElementById('message');
-
-            // 1. Masquer le formulaire et afficher le loader
-            loginSection.style.display = 'none';
-            loaderWrapper.style.display = 'block';
-            errorMessage.textContent = '';
-            errorMessage.style.visibility = 'hidden';
-
-            // 2. Appel de la fonction de connexion (viiveoLogin DOIT être dans viiveo-app.js)
-            if (typeof window.viiveoLogin === 'function') {
-                window.viiveoLogin(emailInput, passwordInput);
-            } else {
-                console.error("Erreur: La fonction window.viiveoLogin n'est pas définie. Vérifiez viiveo-app.js.");
-                // Si viiveo-app.js est manquant/cassé, on affiche une erreur et on masque le loader
-                window.handleLoginError("Erreur interne: Le module de connexion est introuvable.");
-            }
-        }
+        
+        // ===============================================
+        // FONCTIONS D'INTERFACE UTILISÉES PAR viiveo-app.js
+        // ===============================================
         
         /**
-         * @function handleLoginError (AJOUTÉE)
-         * Appelée par viiveo-app.js en cas d'échec de l'authentification.
+         * @function window.show
+         * Utilitaire pour afficher/masquer un élément.
+         * Est utilisée par handleLogin() dans viiveo-app.js
          */
-        window.handleLoginError = function(message) {
-            const loaderWrapper = document.getElementById('loader-wrapper');
-            const loginSection = document.getElementById('login-section');
-            const errorMessage = document.getElementById('message');
-
-            // 1. Masquer le loader et réafficher le formulaire
-            loaderWrapper.style.display = 'none';
-            loginSection.style.display = 'block';
-
-            // 2. Afficher le message d'erreur
-            errorMessage.textContent = message;
-            errorMessage.style.visibility = 'visible';
+        window.show = function(element, shouldShow) {
+            if (element) {
+                element.style.display = shouldShow ? 'block' : 'none';
+            }
         };
 
+        /**
+         * @function tempDisable
+         * Utilitaire pour désactiver un bouton temporairement.
+         * Est utilisée par handleLogin() dans viiveo-app.js
+         */
+        window.tempDisable = function(button, duration) {
+            if (button) {
+                button.disabled = true;
+                setTimeout(() => {
+                    button.disabled = false;
+                }, duration);
+            }
+        };
 
-        // Fonction pour initialiser les données du prestataire (appelée par viiveo-app.js)
+        /**
+         * @function setPrestataireData
+         * Stocke les données du prestataire et met à jour l'affichage d'accueil.
+         * Est utilisée par handleLogin() dans viiveo-app.js
+         */
         window.setPrestataireData = function(email, prenom, nom) {
             if (typeof email === 'string' && email.includes('@')) {
                 window.currentEmail = email;
                 window.currentPrenom = prenom || '';
                 window.currentNom = nom || '';
                 console.log(`Prestataire connecté : ${window.currentPrenom} ${window.currentNom} (${window.currentEmail})`);
+                
+                // Mise à jour de l'affichage d'accueil
+                const welcomeTitle = document.querySelector('.welcome-section h1');
+                const welcomeP = document.querySelector('.welcome-section p');
+                welcomeTitle.innerHTML = `<i class="fas fa-user-tie"></i> Bienvenue, ${window.currentPrenom || 'Prestataire'} !`;
+                welcomeP.textContent = `Gérez vos missions Viiveo.`;
+                document.getElementById('menu-container').style.display = 'block'; // AFFICHAGE DU MENU HAMBURGER
+                
             } else {
                 console.error("Erreur: L'email du prestataire fourni n'est pas valide.");
             }
         };
 
         /**
-         * @function handleSuccessfulLogin (Corrigée pour s'assurer du masquage/affichage)
-         * Appelée par viiveo-app.js après une authentification réussie.
+         * @function openModalStartPrestation (À définir pour viiveo-app.js)
          */
-        window.handleSuccessfulLogin = function(email, prenom, nom) {
-            window.setPrestataireData(email, prenom, nom);
+        window.openModalStartPrestation = function(missionId, prenom, nom) {
+            alert(`Début de la mission ${missionId} pour ${prenom} ${nom}. (Lancement de la modale QR non implémenté ici)`);
+            // Ici, vous ajouteriez le code pour afficher la modale QR et lancer le scanner.
+        };
 
-            // 1. Masquer le formulaire de connexion et le loader
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('loader-wrapper').style.display = 'none';
+        /**
+         * @function openModalCloturerPrestation (À définir pour viiveo-app.js)
+         */
+        window.openModalCloturerPrestation = function(missionId, prenom, nom) {
+            alert(`Clôture de la mission ${missionId} pour ${prenom} ${nom}. (Lancement de la modale QR non implémenté ici)`);
+            // Ici, vous ajouteriez le code pour afficher la modale QR et lancer le scanner.
+        };
 
-            // 2. Afficher les sections du prestataire, y compris le menu hamburger
-            document.getElementById('main-missions-display').style.display = 'block';
-            document.getElementById('actions-section').style.display = 'block';
-            document.getElementById('menu-container').style.display = 'block'; // AFFICHAGE DU MENU HAMBURGER
+        // ===============================================
+        // LOGIQUE D'INTERFACE SPÉCIFIQUE AU HTML
+        // ===============================================
 
-            // 3. Mettre à jour le message d'accueil
-            const welcomeTitle = document.querySelector('.welcome-section h1');
-            const welcomeP = document.querySelector('.welcome-section p');
-            welcomeTitle.innerHTML = `<i class="fas fa-user-tie"></i> Bienvenue, ${prenom} !`;
-            welcomeP.textContent = `Gérez vos missions Viiveo.`;
-            
-            // 4. Charger les missions si la fonction existe (doit être dans viiveo-app.js)
-            if (typeof window.loadMissions === 'function') {
-                window.loadMissions(email);
-            }
-        }
-        
         // --- Fonction : Basculer la visibilité du mot de passe ---
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
@@ -423,34 +410,38 @@
         // Fonctions pour le menu hamburger (logique inchangée)
         function showHistorique() {
             alert("Affichage de l'historique des prestations.");
-            // Logique réelle pour afficher l'historique ici...
             closeMenu();
         }
 
         function showMesDonnees() {
             alert("Fonctionnalité 'Mes données' à venir.");
-            // Logique réelle pour afficher les données ici...
             closeMenu();
         }
 
         function closeMenu() {
-            document.getElementById('menu-toggle').checked = false;
-             // Cache la nav manuellement si elle est gérée par le JS (ou laissez le CSS le gérer)
-            document.getElementById('menu').style.display = 'none';
+            const menuToggle = document.getElementById('menu-toggle');
+            const menu = document.getElementById('menu');
+
+            if (menuToggle) menuToggle.checked = false;
+            if (menu) menu.style.display = 'none'; 
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Interface prestataire initialisée');
             
-            // Logique pour ouvrir/fermer la navigation hamburger (car elle est positionnée de manière absolue)
-            document.getElementById('menu-toggle').addEventListener('change', function() {
-                const menu = document.getElementById('menu');
-                if (this.checked) {
-                    menu.style.display = 'block';
-                } else {
-                    menu.style.display = 'none';
-                }
-            });
+            // Logique pour ouvrir/fermer la navigation hamburger
+            const menuToggle = document.getElementById('menu-toggle');
+            const menu = document.getElementById('menu');
+
+            if (menuToggle && menu) {
+                menuToggle.addEventListener('change', function() {
+                    if (this.checked) {
+                        menu.style.display = 'block';
+                    } else {
+                        menu.style.display = 'none';
+                    }
+                });
+            }
         });
     </script>
 </body>
