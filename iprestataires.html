@@ -95,12 +95,13 @@
             color: var(--primary-color);
         }
 
-        /* --- BOUTON MAISON & MENU HAMBURGER (Nouveaux Styles) --- */
+        /* --- BOUTON BULLE DROITE (Hamburger Uniquement) --- */
         
-        /* Style général des bulles */
+        /* Style général de la bulle unique */
         .menu-bubble {
             position: fixed;
             top: 1.5rem;
+            right: 1.5rem; /* Position à droite */
             z-index: 9999;
             width: 3.5rem;
             height: 3.5rem;
@@ -116,43 +117,25 @@
         .menu-bubble:hover {
             transform: scale(1.05);
         }
-        
-        /* Position de la bulle Maison (à droite) */
-        .right-bubble {
-            right: 1.5rem;
-            color: var(--primary-color);
-        }
 
-        /* Conteneur Hamburger (positionné à gauche) */
+        /* Conteneur Hamburger */
         #menu-container {
-            position: fixed;
-            top: 1.5rem;
-            left: 1.5rem; /* POSITIONNÉ À GAUCHE */
-            z-index: 9999;
-            /* Le display est géré par JS après connexion */
-        }
-
-        /* Bulle de fond pour le Hamburger */
-        .left-bubble {
-            width: 3.5rem;
-            height: 3.5rem;
-            background: var(--card-bg);
-            border-radius: 50%;
-            box-shadow: var(--shadow-medium);
-            display: flex;
+            width: 100%;
+            height: 100%;
+            display: flex; 
             align-items: center;
             justify-content: center;
-            transition: var(--transition);
         }
 
         /* Style des barres du hamburger (en JAUNE) */
         .hamburger-label .bar {
             display:block; 
             height:3px; 
-            width:100%; 
+            width:30px; /* Taille fixe pour les barres */
             border-radius:2px; 
             position:absolute; 
-            left:0; 
+            left:50%; /* Centrage dans la bulle */
+            transform: translateX(-50%);
             transition:0.3s;
             background: #facc15 !important; /* Jaune d'accentuation */
         }
@@ -163,19 +146,28 @@
 
         /* Styles pour la transformation en croix (optionnel) */
         #menu-toggle:checked + .hamburger-label .bar-top {
-            transform: rotate(45deg) translate(5px, 5px);
+            transform: translateX(-50%) rotate(45deg) translate(5px, 5px);
         }
         #menu-toggle:checked + .hamburger-label .bar-middle {
             opacity: 0;
         }
         #menu-toggle:checked + .hamburger-label .bar-bottom {
-            transform: rotate(-45deg) translate(5px, -5px);
+            transform: translateX(-50%) rotate(-45deg) translate(5px, -5px);
         }
-        
+
         /* Menu déroulant */
         #menu {
-             right: auto !important; /* Annule le style inline si nécessaire */
-             left: 1.5rem; /* Aligné avec la bulle de gauche */
+            position: absolute;
+            top: 45px; /* Décalé sous la bulle */
+            right: 0; /* Alignement à droite de la bulle */
+            left: auto !important;
+            background:var(--card-bg);
+            border:1px solid rgba(0,0,0,0.1);
+            border-radius:8px;
+            padding:0.5em 1em;
+            box-shadow:var(--shadow-medium);
+            white-space: nowrap;
+            z-index: 9998;
         }
 
         /* --- LOADER ÉLÉGANT (Amélioré) --- */
@@ -187,22 +179,21 @@
         #loader-wrapper {
             display: none;
             text-align: center;
-            padding: 4rem 0; /* Plus d'espace */
+            padding: 4rem 0;
             margin: 0 auto;
             max-width: 400px;
         }
 
         #loader {
-            width: 4rem; /* Plus grand */
+            width: 4rem; 
             height: 4rem; 
-            /* Utilisation d'un gradient pour un effet plus doux */
             border: 5px solid rgba(255, 255, 255, 0.2); 
             border-top: 5px solid #fff; 
             border-left: 5px solid #fff;
             border-radius: 50%;
             animation: spin 0.8s ease-in-out infinite;
             margin: 0 auto;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4); /* Effet lumineux */
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4); 
         }
         
         #loader-message {
@@ -215,15 +206,14 @@
 
         /* --- MEDIA QUERIES (Responsif) --- */
         @media (max-width: 768px) {
-            .menu-bubble { top: 1rem; }
-            .right-bubble { right: 1rem; }
-            #menu-container { left: 1rem; top: 1rem; }
-            #menu { 
-                left: 50px !important; /* Décale le menu pour qu'il soit plus lisible sur mobile */
-                top: 50px !important;
+            .menu-bubble { 
+                top: 1rem;
+                right: 1rem;
             }
             .welcome-section h1 { font-size: 2.25rem; }
-            .action-grid { grid-template-columns: 1fr; }
+            #menu {
+                top: 50px;
+            }
         }
         
         /* Styles pour les actions et missions (basés sur les variables) */
@@ -243,43 +233,43 @@
     </style>
 </head>
 <body>
-    <a href="https://viiveo.carrd.co/" class="menu-bubble right-bubble" aria-label="Accueil" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-home"></i>
-    </a>
+    <div class="menu-bubble" style="display: none;" id="menu-bubble-container">
+        <div id="menu-container">
+            <input type="checkbox" id="menu-toggle" style="display:none;">
+            <label for="menu-toggle" class="hamburger-label" style="cursor:pointer; display:inline-block; width:100%; height:100%; position:relative;">
+                <span class="bar bar-top"></span>
+                <span class="bar bar-middle"></span>
+                <span class="bar bar-bottom"></span>
+            </label>
+            <nav id="menu" style="display:none;">
+                <ul style="
+                    display:flex;
+                    flex-direction: column; 
+                    gap:0.5rem;
+                    list-style:none;
+                    margin:0;
+                    padding:0;
+                    ">
+                    <li><a href="https://allo-les-anges.github.io/vivveo/" target="_blank" rel="noopener noreferrer" class="menu-link"><i class="fas fa-home mr-2"></i> Accueil Viiveo</a></li>
+                    
+                    <hr style="border-color:#ddd; margin: 0.5rem 0;">
 
-    <div id="menu-container" style="display: none;" class="left-bubble">
-        <input type="checkbox" id="menu-toggle" style="display:none;">
-        <label for="menu-toggle" class="hamburger-label" style="cursor:pointer; display:inline-block; width:30px; height:25px; position:relative;">
-            <span class="bar bar-top"></span>
-            <span class="bar bar-middle"></span>
-            <span class="bar bar-bottom"></span>
-        </label>
-        <nav id="menu" style="
-            display:none;
-            position:absolute;
-            top: 40px; 
-            left: 0; 
-            background:var(--card-bg);
-            border:1px solid rgba(0,0,0,0.1);
-            border-radius:8px;
-            padding:0.5em 1em;
-            box-shadow:var(--shadow-medium);
-            white-space: nowrap;
-            z-index: 9998; 
-            ">
-            <ul style="
-                display:flex;
-                flex-direction: column; 
-                gap:0.5rem;
-                list-style:none;
-                margin:0;
-                padding:0;
-                ">
-                <li><a href="#" onclick="showMesDonnees(); closeMenu()" class="menu-link">Mes données</a></li>
-                <li><a href="#" onclick="showHistorique(); closeMenu()" class="menu-link">Historique des Prestations</a></li>
-                <li><a href="#" onclick="logout(); closeMenu()" class="menu-link logout-link">Déconnexion</a></li> 
-            </ul>
-        </nav>
+                    <li><a href="#" onclick="showMissions(); closeMenu()" class="menu-link"><i class="fas fa-calendar-check mr-2"></i> Mes missions</a></li>
+                    <li><a href="#" onclick="showPlanning(); closeMenu()" class="menu-link"><i class="fas fa-clock mr-2"></i> Planning</a></li>
+                    <li><a href="#" onclick="showRapports(); closeMenu()" class="menu-link"><i class="fas fa-file-alt mr-2"></i> Rapports</a></li>
+                    <li><a href="#" onclick="showProfil(); closeMenu()" class="menu-link"><i class="fas fa-user-circle mr-2"></i> Profil</a></li>
+                    
+                    <hr style="border-color:#ddd; margin: 0.5rem 0;">
+                    
+                    <li><a href="#" onclick="showMesDonnees(); closeMenu()" class="menu-link">Mes données</a></li>
+                    <li><a href="#" onclick="showHistorique(); closeMenu()" class="menu-link">Historique des Prestations</a></li>
+                    
+                    <hr style="border-color:#ddd; margin: 0.5rem 0;">
+
+                    <li><a href="#" onclick="logout(); closeMenu()" class="menu-link logout-link text-red-500 font-semibold"><i class="fas fa-sign-out-alt mr-2"></i> Déconnexion</a></li> 
+                </ul>
+            </nav>
+        </div>
     </div>
 
     <div class="main-container">
@@ -334,34 +324,8 @@
             </div>
         </div>
 
-        <div id="actions-section" class="embed-section" style="display: none; max-width: 900px; margin: 1rem auto;">
-            <h2><i class="fas fa-tools"></i> Actions disponibles</h2>
-            <div class="action-grid">
-                <div class="action-card">
-                    <i class="fas fa-calendar-check"></i>
-                    <h3>Mes missions</h3>
-                    <p>Consulter et gérer vos missions assignées</p>
-                </div>
-                
-                <div class="action-card">
-                    <i class="fas fa-clock"></i>
-                    <h3>Planning</h3>
-                    <p>Visualiser votre planning d'interventions</p>
-                </div>
-                
-                <div class="action-card">
-                    <i class="fas fa-file-alt"></i>
-                    <h3>Rapports</h3>
-                    <p>Créer et envoyer vos rapports d'intervention</p>
-                </div>
-                
-                <div class="action-card">
-                    <i class="fas fa-user-circle"></i>
-                    <h3>Profil</h3>
-                    <p>Gérer vos informations personnelles</p>
-                </div>
+        <div id="actions-section" class="embed-section" style="display: none;">
             </div>
-        </div>
     </div>
 
     <script>
@@ -381,8 +345,21 @@
          */
         window.show = function(element, shouldShow) {
             if (element) {
-                // Utilise flex pour le loader pour le centrage, et block pour les autres éléments de contenu
-                element.style.display = shouldShow ? (element.id.includes('loader') ? 'flex' : 'block') : 'none';
+                // Gère l'affichage du loader-wrapper et du menu
+                const displayValue = shouldShow ? (element.id === 'menu-container' ? 'flex' : 'block') : 'none';
+                
+                if (element.id === 'loader') {
+                    // On agit sur le wrapper du loader
+                    const wrapper = document.getElementById('loader-wrapper');
+                    if (wrapper) wrapper.style.display = shouldShow ? 'flex' : 'none';
+                } else if (element.id === 'login-section') {
+                    element.style.display = displayValue;
+                    // On masque/affiche la bulle hamburger en même temps que le login (mais uniquement si on est connecté/déconnecté)
+                    const menuBubble = document.getElementById('menu-bubble-container');
+                    if (menuBubble) menuBubble.style.display = shouldShow ? 'none' : 'flex';
+                } else if (element.id === 'main-missions-display') {
+                    element.style.display = displayValue;
+                }
             }
         };
 
@@ -416,10 +393,12 @@
                 const welcomeP = document.querySelector('.welcome-section p');
                 welcomeTitle.innerHTML = `<i class="fas fa-user-tie"></i> Bienvenue, ${window.currentPrenom || 'Prestataire'} !`;
                 welcomeP.textContent = `Gérez vos missions Viiveo.`;
-                document.getElementById('menu-container').style.display = 'block'; // AFFICHAGE DU MENU HAMBURGER
                 
-                // Affichage des sections une fois connecté
-                document.getElementById('actions-section').style.display = 'block';
+                // AFFICHAGE DU MENU HAMBURGER (dans la bulle à droite)
+                document.getElementById('menu-bubble-container').style.display = 'flex'; 
+
+                // L'ancienne section d'actions est masquée définitivement
+                document.getElementById('actions-section').style.display = 'none';
 
             } else {
                 console.error("Erreur: L'email du prestataire fourni n'est pas valide.");
@@ -444,25 +423,29 @@
 
         /**
          * @function createAndInjectModalHtml (Simulée pour éviter une erreur)
-         * Cette fonction est appelée par viiveo-app.js mais n'est pas définie dans votre code fourni.
          */
         window.createAndInjectModalHtml = function() {
-            console.log("createAndInjectModalHtml: La fonction d'injection de la modale est appelée. Assurez-vous d'avoir le code HTML de la modale.");
-            // Logique réelle d'injection du HTML de la modale
+            console.log("createAndInjectModalHtml: La fonction d'injection de la modale est appelée.");
         };
 
         /**
          * @function initializeModalListeners (Simulée pour éviter une erreur)
-         * Cette fonction est appelée par viiveo-app.js mais n'est pas définie dans votre code fourni.
          */
         window.initializeModalListeners = function() {
             console.log("initializeModalListeners: La fonction d'écouteurs de la modale est appelée.");
-            // Logique réelle d'attachement des événements aux boutons de la modale
         };
 
         // ===============================================
-        // LOGIQUE D'INTERFACE SPÉCIFIQUE AU HTML
+        // LOGIQUE D'INTERFACE SPÉCIFIQUE AU HTML (Menu)
         // ===============================================
+
+        // --- Fonctions de Navigation (Actions disponibles) ---
+        function showMissions() { alert("Navigation vers 'Mes missions' (Affichage de main-missions-display)."); /* Ici, vous afficherez la bonne section */ }
+        function showPlanning() { alert("Navigation vers 'Planning'."); }
+        function showRapports() { alert("Navigation vers 'Rapports'."); }
+        function showProfil() { alert("Navigation vers 'Profil'."); }
+        function showHistorique() { alert("Affichage de l'historique des prestations."); }
+        function showMesDonnees() { alert("Fonctionnalité 'Mes données' à venir."); }
 
         // --- Fonction : Basculer la visibilité du mot de passe ---
         function togglePasswordVisibility() {
@@ -480,25 +463,13 @@
             }
         }
 
-        // Fonctions pour le menu hamburger
-        function showHistorique() {
-            alert("Affichage de l'historique des prestations.");
-            closeMenu();
-        }
-
-        function showMesDonnees() {
-            alert("Fonctionnalité 'Mes données' à venir.");
-            closeMenu();
-        }
-
         function logout() {
-            alert("Déconnexion...");
-            // Logique de déconnexion : recharger la page et masquer les éléments
+            // Logique de déconnexion
             window.currentEmail = null;
             document.getElementById('login-section').style.display = 'block';
             document.getElementById('main-missions-display').style.display = 'none';
             document.getElementById('actions-section').style.display = 'none';
-            document.getElementById('menu-container').style.display = 'none';
+            document.getElementById('menu-bubble-container').style.display = 'none'; // MASQUER LA BULLE
             document.querySelector('.welcome-section h1').innerHTML = `<i class="fas fa-user-tie"></i> Interface Prestataire Viiveo`;
             document.querySelector('.welcome-section p').textContent = `Gérez vos missions et interventions en toute simplicité`;
             closeMenu();
@@ -509,8 +480,8 @@
             const menu = document.getElementById('menu');
 
             if (menuToggle) menuToggle.checked = false;
-            // Utilise un petit délai pour la transition
-            setTimeout(() => { if (menu) menu.style.display = 'none'; }, 100); 
+            // Délai pour laisser la transition CSS se faire
+            setTimeout(() => { if (menu) menu.style.display = 'none'; }, 300); 
         }
 
         document.addEventListener('DOMContentLoaded', function() {
