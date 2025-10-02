@@ -95,7 +95,7 @@
             color: var(--primary-color);
         }
 
-        /* --- BOUTON MAISON & MENU HAMBURGER (Nouveaux Styles) --- */
+        /* --- BOUTONS BULLE DROITE (Maison & Hamburger) --- */
         
         /* Style général des bulles */
         .menu-bubble {
@@ -117,29 +117,30 @@
             transform: scale(1.05);
         }
         
-        /* Position de la bulle Maison (à droite) */
-        .right-bubble {
+        /* Conteneur global pour les bulles à droite */
+        #right-menu-group {
+            position: fixed;
+            top: 1.5rem;
             right: 1.5rem;
+            z-index: 9999;
+            display: flex;
+            gap: 1rem; /* Espace entre les deux bulles */
+        }
+        
+        /* Style pour l'icône Maison (première bulle) */
+        .home-bubble {
             color: var(--primary-color);
         }
 
-        /* Conteneur Hamburger (positionné à gauche) */
+        /* Conteneur Hamburger (deuxième bulle) */
         #menu-container {
-            position: fixed;
-            top: 1.5rem;
-            left: 1.5rem; /* POSITIONNÉ À GAUCHE */
-            z-index: 9999;
-            /* Le display est géré par JS après connexion */
-        }
-
-        /* Bulle de fond pour le Hamburger */
-        .left-bubble {
+            /* Pas de position:fixed ici, il est contenu dans #right-menu-group */
             width: 3.5rem;
             height: 3.5rem;
             background: var(--card-bg);
             border-radius: 50%;
             box-shadow: var(--shadow-medium);
-            display: flex;
+            display: flex; /* Géré par JS après connexion */
             align-items: center;
             justify-content: center;
             transition: var(--transition);
@@ -171,11 +172,20 @@
         #menu-toggle:checked + .hamburger-label .bar-bottom {
             transform: rotate(-45deg) translate(5px, -5px);
         }
-        
+
         /* Menu déroulant */
         #menu {
-             right: auto !important; /* Annule le style inline si nécessaire */
-             left: 1.5rem; /* Aligné avec la bulle de gauche */
+            position: absolute;
+            top: 45px; /* Décalé sous la bulle */
+            right: 0; /* Alignement à droite de la bulle */
+            left: auto !important;
+            background:var(--card-bg);
+            border:1px solid rgba(0,0,0,0.1);
+            border-radius:8px;
+            padding:0.5em 1em;
+            box-shadow:var(--shadow-medium);
+            white-space: nowrap;
+            z-index: 9998;
         }
 
         /* --- LOADER ÉLÉGANT (Amélioré) --- */
@@ -187,22 +197,21 @@
         #loader-wrapper {
             display: none;
             text-align: center;
-            padding: 4rem 0; /* Plus d'espace */
+            padding: 4rem 0;
             margin: 0 auto;
             max-width: 400px;
         }
 
         #loader {
-            width: 4rem; /* Plus grand */
+            width: 4rem; 
             height: 4rem; 
-            /* Utilisation d'un gradient pour un effet plus doux */
             border: 5px solid rgba(255, 255, 255, 0.2); 
             border-top: 5px solid #fff; 
             border-left: 5px solid #fff;
             border-radius: 50%;
             animation: spin 0.8s ease-in-out infinite;
             margin: 0 auto;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4); /* Effet lumineux */
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4); 
         }
         
         #loader-message {
@@ -215,15 +224,16 @@
 
         /* --- MEDIA QUERIES (Responsif) --- */
         @media (max-width: 768px) {
-            .menu-bubble { top: 1rem; }
-            .right-bubble { right: 1rem; }
-            #menu-container { left: 1rem; top: 1rem; }
-            #menu { 
-                left: 50px !important; /* Décale le menu pour qu'il soit plus lisible sur mobile */
-                top: 50px !important;
+            #right-menu-group { 
+                top: 1rem;
+                right: 1rem;
+                gap: 0.5rem; 
             }
             .welcome-section h1 { font-size: 2.25rem; }
             .action-grid { grid-template-columns: 1fr; }
+            #menu {
+                top: 50px;
+            }
         }
         
         /* Styles pour les actions et missions (basés sur les variables) */
@@ -243,43 +253,33 @@
     </style>
 </head>
 <body>
-    <a href="https://viiveo.carrd.co/" class="menu-bubble right-bubble" aria-label="Accueil" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-home"></i>
-    </a>
+    <div id="right-menu-group">
+        <a href="https://viiveo.carrd.co/" class="menu-bubble home-bubble" aria-label="Accueil" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-home"></i>
+        </a>
 
-    <div id="menu-container" style="display: none;" class="left-bubble">
-        <input type="checkbox" id="menu-toggle" style="display:none;">
-        <label for="menu-toggle" class="hamburger-label" style="cursor:pointer; display:inline-block; width:30px; height:25px; position:relative;">
-            <span class="bar bar-top"></span>
-            <span class="bar bar-middle"></span>
-            <span class="bar bar-bottom"></span>
-        </label>
-        <nav id="menu" style="
-            display:none;
-            position:absolute;
-            top: 40px; 
-            left: 0; 
-            background:var(--card-bg);
-            border:1px solid rgba(0,0,0,0.1);
-            border-radius:8px;
-            padding:0.5em 1em;
-            box-shadow:var(--shadow-medium);
-            white-space: nowrap;
-            z-index: 9998; 
-            ">
-            <ul style="
-                display:flex;
-                flex-direction: column; 
-                gap:0.5rem;
-                list-style:none;
-                margin:0;
-                padding:0;
-                ">
-                <li><a href="#" onclick="showMesDonnees(); closeMenu()" class="menu-link">Mes données</a></li>
-                <li><a href="#" onclick="showHistorique(); closeMenu()" class="menu-link">Historique des Prestations</a></li>
-                <li><a href="#" onclick="logout(); closeMenu()" class="menu-link logout-link">Déconnexion</a></li> 
-            </ul>
-        </nav>
+        <div id="menu-container" style="display: none;">
+            <input type="checkbox" id="menu-toggle" style="display:none;">
+            <label for="menu-toggle" class="hamburger-label" style="cursor:pointer; display:inline-block; width:30px; height:25px; position:relative;">
+                <span class="bar bar-top"></span>
+                <span class="bar bar-middle"></span>
+                <span class="bar bar-bottom"></span>
+            </label>
+            <nav id="menu" style="display:none;">
+                <ul style="
+                    display:flex;
+                    flex-direction: column; 
+                    gap:0.5rem;
+                    list-style:none;
+                    margin:0;
+                    padding:0;
+                    ">
+                    <li><a href="#" onclick="showMesDonnees(); closeMenu()" class="menu-link">Mes données</a></li>
+                    <li><a href="#" onclick="showHistorique(); closeMenu()" class="menu-link">Historique des Prestations</a></li>
+                    <li><a href="#" onclick="logout(); closeMenu()" class="menu-link logout-link">Déconnexion</a></li> 
+                </ul>
+            </nav>
+        </div>
     </div>
 
     <div class="main-container">
@@ -381,8 +381,14 @@
          */
         window.show = function(element, shouldShow) {
             if (element) {
-                // Utilise flex pour le loader pour le centrage, et block pour les autres éléments de contenu
-                element.style.display = shouldShow ? (element.id.includes('loader') ? 'flex' : 'block') : 'none';
+                // Utilise flex pour le loader pour le centrage, et block/flex pour les autres éléments de contenu
+                if (element.id === 'loader') {
+                    // Le loader est contenu dans loader-wrapper, donc on gère son parent
+                    const wrapper = document.getElementById('loader-wrapper');
+                    if (wrapper) wrapper.style.display = shouldShow ? 'flex' : 'none';
+                } else {
+                    element.style.display = shouldShow ? 'block' : 'none';
+                }
             }
         };
 
@@ -416,8 +422,8 @@
                 const welcomeP = document.querySelector('.welcome-section p');
                 welcomeTitle.innerHTML = `<i class="fas fa-user-tie"></i> Bienvenue, ${window.currentPrenom || 'Prestataire'} !`;
                 welcomeP.textContent = `Gérez vos missions Viiveo.`;
-                document.getElementById('menu-container').style.display = 'block'; // AFFICHAGE DU MENU HAMBURGER
-                
+                document.getElementById('menu-container').style.display = 'flex'; // AFFICHAGE DU MENU HAMBURGER
+
                 // Affichage des sections une fois connecté
                 document.getElementById('actions-section').style.display = 'block';
 
@@ -444,20 +450,16 @@
 
         /**
          * @function createAndInjectModalHtml (Simulée pour éviter une erreur)
-         * Cette fonction est appelée par viiveo-app.js mais n'est pas définie dans votre code fourni.
          */
         window.createAndInjectModalHtml = function() {
-            console.log("createAndInjectModalHtml: La fonction d'injection de la modale est appelée. Assurez-vous d'avoir le code HTML de la modale.");
-            // Logique réelle d'injection du HTML de la modale
+            console.log("createAndInjectModalHtml: La fonction d'injection de la modale est appelée.");
         };
 
         /**
          * @function initializeModalListeners (Simulée pour éviter une erreur)
-         * Cette fonction est appelée par viiveo-app.js mais n'est pas définie dans votre code fourni.
          */
         window.initializeModalListeners = function() {
             console.log("initializeModalListeners: La fonction d'écouteurs de la modale est appelée.");
-            // Logique réelle d'attachement des événements aux boutons de la modale
         };
 
         // ===============================================
