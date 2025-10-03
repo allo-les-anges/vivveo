@@ -14,7 +14,7 @@
     <script src="https://allo-les-anges.github.io/viiveo-tableauxviiveo-tableaux-prestataire/viiveo-app.js"></script>
 
     <style>
-        /* --- VARIABLES ET STYLES DE BASE --- */
+        /* --- VARIABLES ET STYLES DE BASE (Gardés intacts) --- */
         :root {
             --primary-color: #667eea;
             --secondary-color: #764ba2;
@@ -266,6 +266,7 @@
 
                     <li><a href="#" onclick="showMissions(); closeMenu()" class="menu-link"><i class="fas fa-calendar-check mr-2"></i> Mes missions (En attente)</a></li>
                     <li><a href="#" onclick="showPlanning(); closeMenu()" class="menu-link"><i class="fas fa-clock mr-2"></i> Planning (Confirmé)</a></li>
+                    <li><a href="#" onclick="showEnCours(); closeMenu()" class="menu-link"><i class="fas fa-play-circle mr-2"></i> Missions en cours</a></li>
                     <li><a href="#" onclick="showHistorique(); closeMenu()" class="menu-link">Historique (Terminé)</a></li>
                     <li><a href="#" onclick="showProfil(); closeMenu()" class="menu-link"><i class="fas fa-user-circle mr-2"></i> Profil</a></li>
                     <li><a href="#" onclick="showRapports(); closeMenu()" class="menu-link"><i class="fas fa-file-alt mr-2"></i> Rapports</a></li>
@@ -287,7 +288,7 @@
 
         <h2 style="text-align:center; font-weight:bold; margin-top:3rem;">Connexion</h2>
         <div id="login-section" class="viiveo-login" style="max-width:400px; margin:1rem auto;">
-            <form id="loginForm" onsubmit="event.preventDefault(); logIn()">
+            <form id="loginForm" onsubmit="event.preventDefault()"> 
                 <input type="email" id="email" placeholder="E-mail" autocomplete="username" required style="width:100%; padding:1rem; margin-bottom:1rem; box-sizing:border-box;">
                 
                 <div class="password-container">
@@ -320,6 +321,10 @@
                 <div id="missions-a-venir"></div>
             </div>
 
+            <div id="missions-en-cours-container" style="display: none;">
+                <h3>Missions actuellement en cours</h3>
+                <div id="missions-en-cours"></div> 
+            </div>
             <div id="missions-terminees-container" style="display: none;">
                 <h3>Historique des Missions Terminées</h3>
                 <div id="missions-terminees"></div>
@@ -340,7 +345,8 @@
                     </div>
                 </div>
                 <label for="profile-email">Email</label>
-                <input type="email" id="profile-email" disabled> <label for="profile-phone">Téléphone</label>
+                <input type="email" id="profile-email" disabled> 
+                <label for="profile-phone">Téléphone</label>
                 <input type="tel" id="profile-phone">
                 
                 <label for="profile-address">Adresse complète</label>
@@ -465,6 +471,8 @@
         }
 
         // On suppose que viiveo-app.js expose une fonction pour charger des missions filtrées
+        // Votre fonction loadMissions dans viiveo-app.js charge TOUT puis filtre, mais nous gardons
+        // ces fonctions de navigation pour le menu.
         if (typeof window.loadFilteredMissions === 'undefined') {
             window.loadFilteredMissions = function(email, filterType) {
                 console.warn(`[APP] Fonction loadFilteredMissions non trouvée dans viiveo-app.js. Simule le chargement pour: ${filterType}`);
@@ -472,6 +480,7 @@
                 const containerId = 
                     filterType === 'en_attente' ? 'missions-attente-container' :
                     filterType === 'planifiees' ? 'missions-planifiees-container' :
+                    filterType === 'en_cours' ? 'missions-en-cours-container' : // Ajout du filtre
                     'missions-terminees-container'; // Terminées
 
                 show(document.getElementById('loader'), true);
@@ -499,13 +508,18 @@
             if (element) {
                 const displayValue = shouldShow ? 'flex' : 'none';
                 
-                if (element.id === 'loader') {
+                // Le loader dans viiveo-app.js est géré par l'ID 'loader'
+                if (element.id === 'loader') { 
                     const wrapper = document.getElementById('loader-wrapper');
                     if (wrapper) wrapper.style.display = shouldShow ? 'flex' : 'none';
-                } else if (element.id === 'login-section') {
-                    element.style.display = shouldShow ? 'block' : 'none';
+                } else if (element.id === 'login-section' || element.classList.contains('viiveo-login')) {
+                    const loginSection = document.getElementById('login-section');
+                    if(loginSection) loginSection.style.display = shouldShow ? 'block' : 'none';
                     const menuBubble = document.getElementById('menu-bubble-container');
                     if (menuBubble) menuBubble.style.display = shouldShow ? 'none' : 'flex';
+                } else if (element.classList.contains('viiveo-missions') || element.id === 'main-missions-display') {
+                    // Les missions sont affichées en 'block'
+                    element.style.display = shouldShow ? 'block' : 'none'; 
                 } else {
                     element.style.display = shouldShow ? 'block' : 'none';
                 }
@@ -527,6 +541,7 @@
         function hideAllMissionContainers() {
             document.getElementById('missions-attente-container').style.display = 'none';
             document.getElementById('missions-planifiees-container').style.display = 'none';
+            document.getElementById('missions-en-cours-container').style.display = 'none'; // Ajouté
             document.getElementById('missions-terminees-container').style.display = 'none';
         }
 
@@ -563,7 +578,14 @@
         function showMissions() {
             if (!window.currentEmail) { alert("Veuillez vous connecter."); return; }
             hideAllSections();
-            window.loadFilteredMissions(window.currentEmail, 'en_attente');
+            // L'appel direct à loadMissions rechargera tout, puis il faudra filtrer.
+            // Pour le menu, on va simuler le filtrage ou appeler loadMissions pour que le JS prenne la main.
+            window.loadMissions(window.currentEmail); // Appelle la fonction principale de viiveo-app.js
+            // Une fois que window.loadMissions est terminé, il affichera automatiquement #missions-attente.
+            // Pour être cohérent avec le menu, on s'assure que le bon container est affiché si loadMissions ne le fait pas.
+            // On masque les autres conteneurs de missions avant le rechargement.
+            hideAllMissionContainers();
+            document.getElementById('missions-attente-container').style.display = 'block';
         }
 
         /**
@@ -572,7 +594,20 @@
         function showPlanning() {
             if (!window.currentEmail) { alert("Veuillez vous connecter."); return; }
             hideAllSections();
-            window.loadFilteredMissions(window.currentEmail, 'planifiees');
+            window.loadMissions(window.currentEmail);
+            hideAllMissionContainers();
+            document.getElementById('missions-planifiees-container').style.display = 'block';
+        }
+
+        /**
+         * Affiche les missions 'En Cours'.
+         */
+        function showEnCours() {
+            if (!window.currentEmail) { alert("Veuillez vous connecter."); return; }
+            hideAllSections();
+            window.loadMissions(window.currentEmail);
+            hideAllMissionContainers();
+            document.getElementById('missions-en-cours-container').style.display = 'block';
         }
         
         /**
@@ -581,7 +616,9 @@
         function showHistorique() {
             if (!window.currentEmail) { alert("Veuillez vous connecter."); return; }
             hideAllSections();
-            window.loadFilteredMissions(window.currentEmail, 'terminees');
+            window.loadMissions(window.currentEmail);
+            hideAllMissionContainers();
+            document.getElementById('missions-terminees-container').style.display = 'block';
         }
 
         /**
@@ -620,10 +657,17 @@
 
         function logout() {
             window.currentEmail = null;
-            document.getElementById('login-section').style.display = 'block';
+            window.currentPrenom = null;
+            window.currentNom = null;
+
+            // Masque la bulle et affiche la section de login
+            window.show(document.getElementById('login-section'), true);
+
             hideAllSections();
             hideAllMissionContainers();
             document.getElementById('menu-bubble-container').style.display = 'none'; 
+
+            // Réinitialiser le message de bienvenue
             document.querySelector('.welcome-section h1').innerHTML = `<i class="fas fa-user-tie"></i> Interface Prestataire Viiveo`;
             document.querySelector('.welcome-section p').textContent = `Gérez vos missions et interventions en toute simplicité`;
             closeMenu();
@@ -634,6 +678,7 @@
             const menu = document.getElementById('menu');
 
             if (menuToggle) menuToggle.checked = false;
+            // Un petit délai pour permettre à l'animation du menu de se faire avant de masquer l'élément
             setTimeout(() => { if (menu) menu.style.display = 'none'; }, 300); 
         }
 
