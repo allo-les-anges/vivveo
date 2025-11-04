@@ -107,6 +107,27 @@
         .mobile-menu.open {
             transform: translateY(0);
         }
+
+        /* Styles pour la vidéo de fond */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 0;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -117,7 +138,7 @@
                 <!-- Logo -->
                 <a href="index.html" class="flex items-center space-x-3">
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
-                </div>
+                </a>
                 
                 <!-- Navigation Desktop -->
                 <nav class="hidden lg:flex items-center space-x-8">
@@ -180,9 +201,16 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="relative text-white py-20 md:py-32 min-h-screen flex items-center" style="background-image: url('https://i.ibb.co/6cKXPCK5/Home-at-Home-2.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-        <div class="absolute inset-0 bg-black bg-opacity-5"></div>
+    <!-- Hero Section avec vidéo -->
+    <section class="relative text-white py-20 md:py-32 min-h-screen flex items-center overflow-hidden">
+        <!-- Vidéo de fond -->
+        <video autoplay muted loop playsinline class="video-background">
+            <source src="https://res.cloudinary.com/drn6w4nab/video/upload/v1762272446/WhatsApp_Vid%C3%A9o_2025-11-04_%C3%A0_17.07.07_504a66e1_dgnwfz.mp4" type="video/mp4">
+            Votre navigateur ne supporte pas la vidéo.
+        </video>
+        
+        <!-- Overlay sombre pour améliorer la lisibilité -->
+        <div class="video-overlay"></div>
         
         <div class="container mx-auto px-6 relative z-10">
             <div class="max-w-4xl mx-auto text-center">
@@ -193,11 +221,11 @@
                     La plateforme de services pour vivre sereinement sa retraite chez soi.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center">
-                    <a href="nos_services.html" class="btn-primary text-white px-8 md:px-10 py-4 md:py-5 rounded-full text-lg md:text-xl font-semibold inline-block shadow-2xl" data-translate="hero_signup">
-                        Découvrir nos services
+                    <a href="https://tally.so/r/n0zM26" target="_blank" class="btn-primary text-white px-8 md:px-10 py-4 md:py-5 rounded-full text-lg md:text-xl font-semibold inline-block shadow-2xl" data-translate="hero_signup">
+                        Inscription Client
                     </a>
-                    <a href="iclient.html" class="bg-white bg-opacity-80 backdrop-blur-sm border-2 border-gray-300 text-gray-800 px-8 md:px-10 py-4 md:py-5 rounded-full text-lg md:text-xl font-semibold inline-block hover:bg-white hover:bg-opacity-100 transition-all duration-300 shadow-2xl" data-translate="hero_client">
-                        Espace Client
+                    <a href="https://tally.so/r/mKA0xK" target="_blank" class="bg-white bg-opacity-80 backdrop-blur-sm border-2 border-gray-300 text-gray-800 px-8 md:px-10 py-4 md:py-5 rounded-full text-lg md:text-xl font-semibold inline-block hover:bg-white hover:bg-opacity-100 transition-all duration-300 shadow-2xl" data-translate="hero_prestataire">
+                        Inscription Prestataire
                     </a>
                 </div>
             </div>
@@ -237,8 +265,8 @@
                     <p class="text-gray-600 mb-6 leading-relaxed" data-translate="card2_desc">
                         Rejoignez notre réseau de professionnels qualifiés
                     </p>
-                    <a href="iprestataires.html" class="text-green-600 font-semibold hover:text-green-800 transition-colors inline-flex items-center" data-translate="card2_link">
-                        Espace Prestataire
+                    <a href="https://tally.so/r/mKA0xK" target="_blank" class="text-green-600 font-semibold hover:text-green-800 transition-colors inline-flex items-center" data-translate="card2_link">
+                        S'inscrire comme prestataire
                         <span class="ml-2">→</span>
                     </a>
                 </div>
@@ -271,11 +299,11 @@
                     Rejoignez des milliers de personnes qui ont choisi Viiveo pour leur bien-être à domicile
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="nos_services.html" class="btn-primary text-white px-8 md:px-10 py-3 md:py-4 rounded-full text-lg font-semibold inline-block" data-translate="cta_start">
-                        Commencer maintenant
+                    <a href="https://tally.so/r/n0zM26" target="_blank" class="btn-primary text-white px-8 md:px-10 py-3 md:py-4 rounded-full text-lg font-semibold inline-block" data-translate="cta_client">
+                        Inscription Client
                     </a>
-                    <a href="iclient.html" class="border-2 border-yellow-400 text-yellow-400 px-8 md:px-10 py-3 md:py-4 rounded-full text-lg font-semibold inline-block hover:bg-yellow-400 hover:text-white transition-all" data-translate="cta_access">
-                        Accès Client
+                    <a href="https://tally.so/r/mKA0xK" target="_blank" class="border-2 border-yellow-400 text-yellow-400 px-8 md:px-10 py-3 md:py-4 rounded-full text-lg font-semibold inline-block hover:bg-yellow-400 hover:text-white transition-all" data-translate="cta_prestataire">
+                        Inscription Prestataire
                     </a>
                 </div>
             </div>
@@ -356,8 +384,8 @@
                 // Hero
                 hero_title: "Et si vous restiez chez vous ?",
                 hero_subtitle: "La plateforme de services pour vivre sereinement sa retraite chez soi.",
-                hero_signup: "Découvrir nos services",
-                hero_client: "Espace Client",
+                hero_signup: "Inscription Client",
+                hero_prestataire: "Inscription Prestataire",
                 
                 // Services
                 services_title: "Nos Services",
@@ -367,7 +395,7 @@
                 card1_link: "Voir nos services",
                 card2_title: "Devenir Prestataire",
                 card2_desc: "Rejoignez notre réseau de professionnels qualifiés",
-                card2_link: "Espace Prestataire",
+                card2_link: "S'inscrire comme prestataire",
                 card3_title: "Nos Formules",
                 card3_desc: "Choisissez la formule qui correspond à vos besoins",
                 card3_link: "Voir nos formules",
@@ -375,8 +403,8 @@
                 // CTA
                 cta_title: "Prêt à vivre sereinement chez vous ?",
                 cta_subtitle: "Rejoignez des milliers de personnes qui ont choisi Viiveo pour leur bien-être à domicile",
-                cta_start: "Commencer maintenant",
-                cta_access: "Accès Client",
+                cta_client: "Inscription Client",
+                cta_prestataire: "Inscription Prestataire",
                 
                 // Footer
                 footer_desc: "Votre bien-être à domicile, notre priorité.",
@@ -394,8 +422,8 @@
                 nav_prestataires_space: "Dienstverlener Ruimte",
                 hero_title: "Wat als u thuis zou blijven?",
                 hero_subtitle: "Het dienstenplatform om sereen thuis te leven tijdens uw pensioen.",
-                hero_signup: "Ontdek onze diensten",
-                hero_client: "Klantenruimte",
+                hero_signup: "Klant Registratie",
+                hero_prestataire: "Dienstverlener Registratie",
                 services_title: "Onze Diensten",
                 services_subtitle: "Ontdek ons complete aanbod van diensten voor uw welzijn thuis",
                 card1_title: "Thuis Diensten",
@@ -403,14 +431,14 @@
                 card1_link: "Bekijk onze diensten",
                 card2_title: "Dienstverlener Worden",
                 card2_desc: "Word lid van ons netwerk van gekwalificeerde professionals",
-                card2_link: "Dienstverlener Ruimte",
+                card2_link: "Registreer als dienstverlener",
                 card3_title: "Onze Formules",
                 card3_desc: "Kies de formule die bij uw behoeften past",
                 card3_link: "Bekijk onze formules",
                 cta_title: "Klaar om sereen thuis te leven?",
                 cta_subtitle: "Sluit u aan bij duizenden mensen die Viiveo hebben gekozen voor hun welzijn thuis",
-                cta_start: "Nu beginnen",
-                cta_access: "Klant Toegang",
+                cta_client: "Klant Registratie",
+                cta_prestataire: "Dienstverlener Registratie",
                 footer_desc: "Uw welzijn thuis, onze prioriteit.",
                 footer_navigation: "Navigatie",
                 footer_spaces: "Ruimtes",
@@ -426,8 +454,8 @@
                 nav_prestataires_space: "Provider Space",
                 hero_title: "What if you stayed at home?",
                 hero_subtitle: "The service platform to live serenely at home during retirement.",
-                hero_signup: "Discover our services",
-                hero_client: "Client Space",
+                hero_signup: "Client Registration",
+                hero_prestataire: "Provider Registration",
                 services_title: "Our Services",
                 services_subtitle: "Discover our complete range of services designed for your home well-being",
                 card1_title: "Home Services",
@@ -435,14 +463,14 @@
                 card1_link: "View our services",
                 card2_title: "Become a Provider",
                 card2_desc: "Join our network of qualified professionals",
-                card2_link: "Provider Space",
+                card2_link: "Register as provider",
                 card3_title: "Our Plans",
                 card3_desc: "Choose the plan that matches your needs",
                 card3_link: "View our plans",
                 cta_title: "Ready to live serenely at home?",
                 cta_subtitle: "Join thousands of people who have chosen Viiveo for their home well-being",
-                cta_start: "Start now",
-                cta_access: "Client Access",
+                cta_client: "Client Registration",
+                cta_prestataire: "Provider Registration",
                 footer_desc: "Your home well-being, our priority.",
                 footer_navigation: "Navigation",
                 footer_spaces: "Spaces",
@@ -458,8 +486,8 @@
                 nav_prestataires_space: "Dienstleister Bereich",
                 hero_title: "Was wäre, wenn Sie zu Hause blieben?",
                 hero_subtitle: "Die Dienstleistungsplattform, um gelassen zu Hause im Ruhestand zu leben.",
-                hero_signup: "Unsere Dienstleistungen entdecken",
-                hero_client: "Kundenbereich",
+                hero_signup: "Kunden Registrierung",
+                hero_prestataire: "Dienstleister Registrierung",
                 services_title: "Unsere Dienstleistungen",
                 services_subtitle: "Entdecken Sie unser komplettes Angebot an Dienstleistungen für Ihr Wohlbefinden zu Hause",
                 card1_title: "Hausdienstleistungen",
@@ -467,14 +495,14 @@
                 card1_link: "Unsere Dienstleistungen ansehen",
                 card2_title: "Dienstleister werden",
                 card2_desc: "Treten Sie unserem Netzwerk qualifizierter Fachkräfte bei",
-                card2_link: "Dienstleister Bereich",
+                card2_link: "Als Dienstleister registrieren",
                 card3_title: "Unsere Tarife",
                 card3_desc: "Wählen Sie den Tarif, der Ihren Bedürfnissen entspricht",
                 card3_link: "Unsere Tarife ansehen",
                 cta_title: "Bereit, gelassen zu Hause zu leben?",
                 cta_subtitle: "Schließen Sie sich Tausenden von Menschen an, die Viiveo für ihr Wohlbefinden zu Hause gewählt haben",
-                cta_start: "Jetzt beginnen",
-                cta_access: "Kunden Zugang",
+                cta_client: "Kunden Registrierung",
+                cta_prestataire: "Dienstleister Registrierung",
                 footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
                 footer_navigation: "Navigation",
                 footer_spaces: "Bereiche",
