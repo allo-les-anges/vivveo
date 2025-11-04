@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nos Services - Viiveo</title>
+    <title>Espace Prestataire - Viiveo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -33,9 +33,8 @@
         }
         
         .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-            border-color: #fde047;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
         
         .btn-primary {
@@ -111,14 +110,119 @@
             transform: translateY(0);
         }
 
-        .service-emoji {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
+        /* Styles spécifiques à l'interface prestataire */
+        .provider-section {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 2px solid #fef3c7;
+        }
+
+        .provider-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fde047;
+            box-shadow: 0 8px 20px rgba(253, 224, 71, 0.3);
+        }
+
+        .mission-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 2px solid #fef3c7;
             transition: var(--transition);
         }
 
-        .card-hover:hover .service-emoji {
-            transform: scale(1.1) rotate(5deg);
+        .mission-card:hover {
+            border-color: #fde047;
+            transform: translateY(-2px);
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        .status-confirmed {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .status-in-progress {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .status-completed {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 2px solid #fef3c7;
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #facc15;
+            margin-bottom: 0.5rem;
+        }
+
+        .loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .loader-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #facc15;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .modal {
@@ -139,7 +243,7 @@
             padding: 0;
             border-radius: 1.5rem;
             width: 90%;
-            max-width: 600px;
+            max-width: 800px;
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: 0 25px 50px rgba(0,0,0,0.25);
@@ -213,41 +317,28 @@
             box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.1);
         }
 
-        .loader {
+        .tab-container {
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(5px);
         }
 
-        .loader-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        .tab-container.active {
+            display: block;
         }
 
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #facc15;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
+        .tab-button {
+            padding: 1rem 2rem;
+            border: none;
+            background: none;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .tab-button.active {
+            color: #facc15;
+            border-bottom-color: #facc15;
         }
     </style>
 </head>
@@ -264,11 +355,11 @@
                 <!-- Navigation Desktop -->
                 <nav class="hidden lg:flex items-center space-x-8">
                     <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
-                    <a href="nos_services.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_services">Services</a>
+                    <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
                     <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Formules</a>
                     <a href="infos_prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Prestataires</a>
                     <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_client">Espace Client</a>
-                    <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                    <a href="iprestataires.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </nav>
 
                 <!-- Sélecteur de langue -->
@@ -312,163 +403,149 @@
             <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
                 <div class="px-4 py-6 space-y-4">
                     <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
-                    <a href="nos_services.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_services">Services</a>
+                    <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
                     <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Formules</a>
                     <a href="infos_prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Prestataires</a>
                     <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
-                    <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                    <a href="iprestataires.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="relative py-16 md:py-24 bg-gradient-to-br from-yellow-50 to-yellow-100">
-        <div class="container mx-auto px-6 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6" data-translate="hero_title">
-                Nos Services à Domicile
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Section de connexion -->
+        <div id="login-section" class="provider-section max-w-md mx-auto text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6" data-translate="login_title">
+                Espace Prestataire Viiveo
             </h1>
-            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8" data-translate="hero_subtitle">
-                Découvrez notre gamme complète de services conçus pour votre confort et votre bien-être à domicile
+            <p class="text-gray-600 mb-8" data-translate="login_subtitle">
+                Connectez-vous pour gérer vos missions et interventions
             </p>
-            
-            <div class="mt-8">
-                <a href="infos_prestataires.html" class="btn-primary text-white px-8 py-4 rounded-full text-lg font-semibold inline-block shadow-lg" data-translate="prestataires_button">
-                    Découvrir nos prestataires
-                </a>
-            </div>
+
+            <form id="login-form" onsubmit="event.preventDefault(); login();">
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Votre email" required 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Votre mot de passe" required
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                </div>
+                <button type="submit" class="btn-primary text-white w-full py-3 rounded-lg font-semibold text-lg">
+                    <span data-translate="login_button">Se connecter</span>
+                </button>
+                <div id="login-message" class="mt-4 text-red-500 text-sm hidden"></div>
+            </form>
         </div>
-    </section>
 
-    <!-- Services Grid -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                <!-- Aide ménagère -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('aide-menagere')">
-                    <div class="service-emoji">🧹</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_cleaning">Aide ménagère</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_cleaning_desc">
-                        Service de ménage professionnel pour un intérieur étincelant
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
-                        Demander ce service
-                    </button>
-                </div>
-
-                <!-- Courses à domicile -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('courses')">
-                    <div class="service-emoji">🛒</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_shopping">Courses à domicile</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_shopping_desc">
-                        Nous faisons vos courses et les livrons à votre porte
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
-                        Demander ce service
-                    </button>
-                </div>
-
-                <!-- Coiffure à domicile -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('coiffure')">
-                    <div class="service-emoji">💇</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_hairdressing">Coiffure à domicile</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_hairdressing_desc">
-                        Services de coiffure professionnels dans le confort de votre maison
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
-                        Demander ce service
-                    </button>
-                </div>
-
-                <!-- Jardinage -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('jardinage')">
-                    <div class="service-emoji">🌳</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_gardening">Jardinage</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_gardening_desc">
-                        Entretien complet de votre jardin et espaces verts
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
-                        Demander ce service
-                    </button>
-                </div>
-
-                <!-- Transport accompagné -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('transport')">
-                    <div class="service-emoji">🚗</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_transport">Transport accompagné</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_transport_desc">
-                        Accompagnement sécurisé pour tous vos déplacements
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
-                        Demander ce service
-                    </button>
-                </div>
-
-                <!-- Assistance / Secours -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('assistance')">
-                    <div class="service-emoji">🆘</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_assistance">Assistance / Secours</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_assistance_desc">
-                        Aide d'urgence et assistance pour situations délicates
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
-                        Demander ce service
-                    </button>
-                </div>
-
-                <!-- Homme à tout faire -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('homme-tout-faire')">
-                    <div class="service-emoji">🔧</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_handyman">Homme à tout faire</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_handyman_desc">
-                        Petits travaux et réparations diverses à domicile
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
-                        Demander ce service
-                    </button>
-                </div>
-
-                <!-- Visite bénévole -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('benevole')">
-                    <div class="service-emoji">❤️</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_volunteer">Visite bénévole</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_volunteer_desc">
-                        Compagnie et soutien moral par nos bénévoles dévoués
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
-                        Demander ce service
-                    </button>
-                </div>
-
-                <!-- Commande de repas -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('repas')">
-                    <div class="service-emoji">🍽️</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_meals">Commande de repas</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_meals_desc">
-                        Repas équilibrés livrés directement chez vous
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
-                        Demander ce service
-                    </button>
+        <!-- Interface prestataire (cachée par défaut) -->
+        <div id="provider-interface" class="hidden">
+            <!-- En-tête prestataire -->
+            <div class="provider-section">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="flex items-center space-x-6">
+                        <img id="provider-photo" src="https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png" 
+                             alt="Photo prestataire" class="provider-photo">
+                        <div class="text-left">
+                            <h2 class="text-2xl font-bold text-gray-800" data-translate="welcome">
+                                Bienvenue, <span id="provider-name">Prestataire</span> !
+                            </h2>
+                            <p class="text-gray-600" data-translate="specialty">
+                                Spécialité : <span id="provider-specialty" class="font-semibold">Aide ménagère</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <button onclick="showProfileModal()" class="border border-yellow-500 text-yellow-500 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-50 transition-colors mr-4" data-translate="edit_profile">
+                            Modifier profil
+                        </button>
+                        <button onclick="logout()" class="border border-red-500 text-red-500 px-6 py-3 rounded-lg font-semibold hover:bg-red-50 transition-colors" data-translate="logout">
+                            Déconnexion
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- CTA Section -->
-    <section class="py-16 bg-gradient-to-r from-yellow-400 to-yellow-500">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-translate="cta_title">
-                Besoin d'un service spécifique ?
-            </h2>
-            <p class="text-xl text-yellow-100 mb-8 max-w-2xl mx-auto" data-translate="cta_subtitle">
-                Contactez-nous pour discuter de vos besoins particuliers
-            </p>
-            <a href="infos_prestataires.html" class="bg-white text-yellow-600 px-8 py-4 rounded-full text-lg font-semibold inline-block hover:bg-gray-100 transition-all shadow-lg" data-translate="cta_button">
-                Contacter nos prestataires
-            </a>
+            <!-- Statistiques -->
+            <div class="provider-section">
+                <h3 class="text-xl font-bold text-gray-800 mb-6" data-translate="statistics">
+                    Mes Statistiques
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="stats-card">
+                        <div class="stats-number" id="stats-pending">0</div>
+                        <div class="text-gray-600 font-semibold" data-translate="missions_pending">Missions en attente</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number" id="stats-confirmed">0</div>
+                        <div class="text-gray-600 font-semibold" data-translate="missions_confirmed">Missions confirmées</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number" id="stats-progress">0</div>
+                        <div class="text-gray-600 font-semibold" data-translate="missions_progress">En cours</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number" id="stats-completed">0</div>
+                        <div class="text-gray-600 font-semibold" data-translate="missions_completed">Terminées</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation par onglets -->
+            <div class="provider-section">
+                <div class="border-b border-gray-200 mb-6">
+                    <div class="flex space-x-8">
+                        <button class="tab-button active" onclick="showTab('pending')" data-translate="tab_pending">
+                            En Attente
+                        </button>
+                        <button class="tab-button" onclick="showTab('confirmed')" data-translate="tab_confirmed">
+                            Confirmées
+                        </button>
+                        <button class="tab-button" onclick="showTab('progress')" data-translate="tab_progress">
+                            En Cours
+                        </button>
+                        <button class="tab-button" onclick="showTab('completed')" data-translate="tab_completed">
+                            Terminées
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Onglet Missions en attente -->
+                <div id="tab-pending" class="tab-container active">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="pending_missions">Missions en attente de validation</h4>
+                    <div id="pending-missions-list">
+                        <!-- Missions en attente chargées dynamiquement -->
+                    </div>
+                </div>
+
+                <!-- Onglet Missions confirmées -->
+                <div id="tab-confirmed" class="tab-container">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="confirmed_missions">Missions planifiées</h4>
+                    <div id="confirmed-missions-list">
+                        <!-- Missions confirmées chargées dynamiquement -->
+                    </div>
+                </div>
+
+                <!-- Onglet Missions en cours -->
+                <div id="tab-progress" class="tab-container">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="progress_missions">Missions en cours</h4>
+                    <div id="progress-missions-list">
+                        <!-- Missions en cours chargées dynamiquement -->
+                    </div>
+                </div>
+
+                <!-- Onglet Missions terminées -->
+                <div id="tab-completed" class="tab-container">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="completed_missions">Missions terminées</h4>
+                    <div id="completed-missions-list">
+                        <!-- Missions terminées chargées dynamiquement -->
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
 
     <!-- Footer Commun -->
     <footer class="bg-gray-800 text-white py-12">
@@ -533,11 +610,57 @@
     <div id="loader" class="loader">
         <div class="loader-content">
             <div class="spinner"></div>
-            <p data-translate="loading_text">Envoi en cours...</p>
+            <p data-translate="loading">Chargement...</p>
+        </div>
+    </div>
+
+    <!-- Modal de profil -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-2xl font-bold" data-translate="profile_title">Mon Profil</h2>
+                <span class="close" onclick="closeModal('profile-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="profile-form">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="form-group">
+                            <label data-translate="first_name">Prénom</label>
+                            <input type="text" id="profile-firstname" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-translate="last_name">Nom</label>
+                            <input type="text" id="profile-lastname" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-translate="email">Email</label>
+                        <input type="email" id="profile-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-translate="phone">Téléphone</label>
+                        <input type="tel" id="profile-phone">
+                    </div>
+                    <div class="form-group">
+                        <label data-translate="specialties">Spécialités</label>
+                        <input type="text" id="profile-specialties" placeholder="Aide ménagère, Jardinage, etc.">
+                    </div>
+                    <div class="form-group">
+                        <label data-translate="description">Description</label>
+                        <textarea id="profile-description" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary text-white w-full py-3 rounded-lg font-semibold" data-translate="save_profile">
+                        Enregistrer les modifications
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
     <script>
+        // URL de votre API (identique à l'ancien code)
+        const API_BASE_URL = 'https://gaetano1747.gm-harchies.workers.dev';
+
         // Traductions multilingues
         const translations = {
             fr: {
@@ -549,36 +672,47 @@
                 nav_client: "Espace Client",
                 nav_prestataires_space: "Espace Prestataire",
                 
-                // Hero
-                hero_title: "Nos Services à Domicile",
-                hero_subtitle: "Découvrez notre gamme complète de services conçus pour votre confort et votre bien-être à domicile",
-                prestataires_button: "Découvrir nos prestataires",
+                // Login
+                login_title: "Espace Prestataire Viiveo",
+                login_subtitle: "Connectez-vous pour gérer vos missions et interventions",
+                login_button: "Se connecter",
                 
-                // Services
-                service_cleaning: "Aide ménagère",
-                service_cleaning_desc: "Service de ménage professionnel pour un intérieur étincelant",
-                service_shopping: "Courses à domicile",
-                service_shopping_desc: "Nous faisons vos courses et les livrons à votre porte",
-                service_hairdressing: "Coiffure à domicile",
-                service_hairdressing_desc: "Services de coiffure professionnels dans le confort de votre maison",
-                service_gardening: "Jardinage",
-                service_gardening_desc: "Entretien complet de votre jardin et espaces verts",
-                service_transport: "Transport accompagné",
-                service_transport_desc: "Accompagnement sécurisé pour tous vos déplacements",
-                service_assistance: "Assistance / Secours",
-                service_assistance_desc: "Aide d'urgence et assistance pour situations délicates",
-                service_handyman: "Homme à tout faire",
-                service_handyman_desc: "Petits travaux et réparations diverses à domicile",
-                service_volunteer: "Visite bénévole",
-                service_volunteer_desc: "Compagnie et soutien moral par nos bénévoles dévoués",
-                service_meals: "Commande de repas",
-                service_meals_desc: "Repas équilibrés livrés directement chez vous",
-                service_button: "Demander ce service",
+                // Interface prestataire
+                welcome: "Bienvenue",
+                specialty: "Spécialité",
+                edit_profile: "Modifier profil",
+                logout: "Déconnexion",
+                statistics: "Mes Statistiques",
+                missions_pending: "Missions en attente",
+                missions_confirmed: "Missions confirmées",
+                missions_progress: "En cours",
+                missions_completed: "Terminées",
                 
-                // CTA
-                cta_title: "Besoin d'un service spécifique ?",
-                cta_subtitle: "Contactez-nous pour discuter de vos besoins particuliers",
-                cta_button: "Contacter nos prestataires",
+                // Onglets
+                tab_pending: "En Attente",
+                tab_confirmed: "Confirmées",
+                tab_progress: "En Cours",
+                tab_completed: "Terminées",
+                
+                // Titres des onglets
+                pending_missions: "Missions en attente de validation",
+                confirmed_missions: "Missions planifiées",
+                progress_missions: "Missions en cours",
+                completed_missions: "Missions terminées",
+                
+                // Éléments de mission
+                mission_service: "Service",
+                mission_client: "Client",
+                mission_date: "Date",
+                mission_time: "Heure",
+                mission_address: "Adresse",
+                mission_credits: "Crédits",
+                mission_accept: "Accepter",
+                mission_refuse: "Refuser",
+                mission_start: "Démarrer",
+                mission_complete: "Terminer",
+                mission_details: "Détails",
+                no_missions: "Aucune mission disponible",
                 
                 // Footer
                 footer_desc: "Votre bien-être à domicile, notre priorité.",
@@ -587,23 +721,28 @@
                 footer_contact: "Contact",
                 footer_copyright: "© 2024 Viiveo. Tous droits réservés.",
                 
-                // Formulaires
-                loading_text: "Envoi en cours...",
-                form_title: "Demande de service",
-                form_password: "Mot de passe",
-                form_firstname: "Prénom",
-                form_lastname: "Nom",
-                form_address: "Adresse complète",
-                form_email: "Email",
-                form_service: "Service",
-                form_date: "Date souhaitée",
-                form_time: "Heure de passage souhaitée",
-                form_provider: "Choisir un prestataire (optionnel)",
-                form_no_preference: "Pas de préférence",
-                form_comment: "Commentaire",
-                form_submit: "Envoyer la demande",
-                form_success: "Demande envoyée avec succès !",
-                form_error: "Erreur lors de l'envoi de la demande."
+                // Loader
+                loading: "Chargement...",
+                
+                // Modal profil
+                profile_title: "Mon Profil",
+                first_name: "Prénom",
+                last_name: "Nom",
+                email: "Email",
+                phone: "Téléphone",
+                specialties: "Spécialités",
+                description: "Description",
+                save_profile: "Enregistrer les modifications",
+                
+                // Messages
+                login_success: "Connexion réussie !",
+                login_error: "Email ou mot de passe incorrect",
+                mission_accepted: "Mission acceptée avec succès !",
+                mission_started: "Mission démarrée !",
+                mission_completed: "Mission terminée !",
+                profile_updated: "Profil mis à jour avec succès !",
+                error_loading_missions: "Erreur lors du chargement des missions",
+                no_missions_found: "Aucune mission trouvée"
             },
             nl: {
                 nav_home: "Home",
@@ -612,52 +751,60 @@
                 nav_prestataires: "Dienstverleners",
                 nav_client: "Klantenruimte",
                 nav_prestataires_space: "Dienstverlener Ruimte",
-                hero_title: "Onze Thuis Diensten",
-                hero_subtitle: "Ontdek ons complete aanbod van diensten ontworpen voor uw comfort en welzijn thuis",
-                prestataires_button: "Ontdek onze dienstverleners",
-                service_cleaning: "Schoonmaakhulp",
-                service_cleaning_desc: "Professionele schoonmaakdienst voor een stralend interieur",
-                service_shopping: "Boodschappen aan huis",
-                service_shopping_desc: "Wij doen uw boodschappen en bezorgen ze aan uw deur",
-                service_hairdressing: "Kapper aan huis",
-                service_hairdressing_desc: "Professionele kappersdiensten in het comfort van uw huis",
-                service_gardening: "Tuinonderhoud",
-                service_gardening_desc: "Volledig onderhoud van uw tuin en groene ruimtes",
-                service_transport: "Begeleid vervoer",
-                service_transport_desc: "Veilige begeleiding voor al uw verplaatsingen",
-                service_assistance: "Assistentie / Hulp",
-                service_assistance_desc: "Spoedhulp en ondersteuning voor delicate situaties",
-                service_handyman: "Klusjesman",
-                service_handyman_desc: "Kleine werkzaamheden en diverse reparaties aan huis",
-                service_volunteer: "Vrijwilligersbezoek",
-                service_volunteer_desc: "Gezelschap en morele steun door onze toegewijde vrijwilligers",
-                service_meals: "Maaltijdbestelling",
-                service_meals_desc: "Gezonde maaltijden rechtstreeks bij u thuis bezorgd",
-                service_button: "Deze dienst aanvragen",
-                cta_title: "Heeft u een specifieke dienst nodig?",
-                cta_subtitle: "Neem contact met ons op om uw specifieke behoeften te bespreken",
-                cta_button: "Contacteer onze dienstverleners",
+                login_title: "Viiveo Dienstverlener Ruimte",
+                login_subtitle: "Log in om uw missies en interventies te beheren",
+                login_button: "Inloggen",
+                welcome: "Welkom",
+                specialty: "Specialiteit",
+                edit_profile: "Profiel bewerken",
+                logout: "Uitloggen",
+                statistics: "Mijn Statistieken",
+                missions_pending: "Missies in afwachting",
+                missions_confirmed: "Bevestigde missies",
+                missions_progress: "Bezig",
+                missions_completed: "Voltooid",
+                tab_pending: "In Afwachting",
+                tab_confirmed: "Bevestigd",
+                tab_progress: "Bezig",
+                tab_completed: "Voltooid",
+                pending_missions: "Missies in afwachting van validatie",
+                confirmed_missions: "Geplande missies",
+                progress_missions: "Lopende missies",
+                completed_missions: "Voltooide missies",
+                mission_service: "Dienst",
+                mission_client: "Klant",
+                mission_date: "Datum",
+                mission_time: "Tijd",
+                mission_address: "Adres",
+                mission_credits: "Credits",
+                mission_accept: "Accepteren",
+                mission_refuse: "Weigeren",
+                mission_start: "Starten",
+                mission_complete: "Voltooien",
+                mission_details: "Details",
+                no_missions: "Geen missies beschikbaar",
                 footer_desc: "Uw welzijn thuis, onze prioriteit.",
                 footer_navigation: "Navigatie",
                 footer_spaces: "Ruimtes",
                 footer_contact: "Contact",
                 footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden.",
-                loading_text: "Verzending bezig...",
-                form_title: "Dienstaangevraag",
-                form_password: "Wachtwoord",
-                form_firstname: "Voornaam",
-                form_lastname: "Achternaam",
-                form_address: "Volledig adres",
-                form_email: "E-mail",
-                form_service: "Dienst",
-                form_date: "Gewenste datum",
-                form_time: "Gewenste tijdstip",
-                form_provider: "Kies een dienstverlener (optioneel)",
-                form_no_preference: "Geen voorkeur",
-                form_comment: "Opmerking",
-                form_submit: "Aanvraag verzenden",
-                form_success: "Aanvraag succesvol verzonden!",
-                form_error: "Fout bij het verzenden van de aanvraag."
+                loading: "Laden...",
+                profile_title: "Mijn Profiel",
+                first_name: "Voornaam",
+                last_name: "Achternaam",
+                email: "E-mail",
+                phone: "Telefoon",
+                specialties: "Specialiteiten",
+                description: "Beschrijving",
+                save_profile: "Wijzigingen opslaan",
+                login_success: "Login geslaagd!",
+                login_error: "E-mail of wachtwoord onjuist",
+                mission_accepted: "Missie succesvol geaccepteerd!",
+                mission_started: "Missie gestart!",
+                mission_completed: "Missie voltooid!",
+                profile_updated: "Profiel succesvol bijgewerkt!",
+                error_loading_missions: "Fout bij het laden van missies",
+                no_missions_found: "Geen missies gevonden"
             },
             en: {
                 nav_home: "Home",
@@ -666,52 +813,60 @@
                 nav_prestataires: "Providers",
                 nav_client: "Client Space",
                 nav_prestataires_space: "Provider Space",
-                hero_title: "Our Home Services",
-                hero_subtitle: "Discover our complete range of services designed for your comfort and home well-being",
-                prestataires_button: "Discover our providers",
-                service_cleaning: "Household help",
-                service_cleaning_desc: "Professional cleaning service for a sparkling interior",
-                service_shopping: "Home shopping",
-                service_shopping_desc: "We do your shopping and deliver it to your door",
-                service_hairdressing: "Home hairdressing",
-                service_hairdressing_desc: "Professional hairdressing services in the comfort of your home",
-                service_gardening: "Gardening",
-                service_gardening_desc: "Complete maintenance of your garden and green spaces",
-                service_transport: "Accompanied transport",
-                service_transport_desc: "Safe accompaniment for all your travels",
-                service_assistance: "Assistance / Help",
-                service_assistance_desc: "Emergency aid and support for delicate situations",
-                service_handyman: "Handyman",
-                service_handyman_desc: "Small jobs and various home repairs",
-                service_volunteer: "Volunteer visit",
-                service_volunteer_desc: "Company and moral support by our dedicated volunteers",
-                service_meals: "Meal order",
-                service_meals_desc: "Balanced meals delivered directly to your home",
-                service_button: "Request this service",
-                cta_title: "Need a specific service?",
-                cta_subtitle: "Contact us to discuss your specific needs",
-                cta_button: "Contact our providers",
+                login_title: "Viiveo Provider Space",
+                login_subtitle: "Log in to manage your missions and interventions",
+                login_button: "Log in",
+                welcome: "Welcome",
+                specialty: "Specialty",
+                edit_profile: "Edit profile",
+                logout: "Logout",
+                statistics: "My Statistics",
+                missions_pending: "Pending missions",
+                missions_confirmed: "Confirmed missions",
+                missions_progress: "In progress",
+                missions_completed: "Completed",
+                tab_pending: "Pending",
+                tab_confirmed: "Confirmed",
+                tab_progress: "In Progress",
+                tab_completed: "Completed",
+                pending_missions: "Missions pending validation",
+                confirmed_missions: "Scheduled missions",
+                progress_missions: "Ongoing missions",
+                completed_missions: "Completed missions",
+                mission_service: "Service",
+                mission_client: "Client",
+                mission_date: "Date",
+                mission_time: "Time",
+                mission_address: "Address",
+                mission_credits: "Credits",
+                mission_accept: "Accept",
+                mission_refuse: "Refuse",
+                mission_start: "Start",
+                mission_complete: "Complete",
+                mission_details: "Details",
+                no_missions: "No missions available",
                 footer_desc: "Your home well-being, our priority.",
                 footer_navigation: "Navigation",
                 footer_spaces: "Spaces",
                 footer_contact: "Contact",
                 footer_copyright: "© 2024 Viiveo. All rights reserved.",
-                loading_text: "Sending in progress...",
-                form_title: "Service request",
-                form_password: "Password",
-                form_firstname: "First name",
-                form_lastname: "Last name",
-                form_address: "Complete address",
-                form_email: "Email",
-                form_service: "Service",
-                form_date: "Desired date",
-                form_time: "Desired time",
-                form_provider: "Choose a provider (optional)",
-                form_no_preference: "No preference",
-                form_comment: "Comment",
-                form_submit: "Send request",
-                form_success: "Request sent successfully!",
-                form_error: "Error sending request."
+                loading: "Loading...",
+                profile_title: "My Profile",
+                first_name: "First name",
+                last_name: "Last name",
+                email: "Email",
+                phone: "Phone",
+                specialties: "Specialties",
+                description: "Description",
+                save_profile: "Save changes",
+                login_success: "Login successful!",
+                login_error: "Incorrect email or password",
+                mission_accepted: "Mission accepted successfully!",
+                mission_started: "Mission started!",
+                mission_completed: "Mission completed!",
+                profile_updated: "Profile updated successfully!",
+                error_loading_missions: "Error loading missions",
+                no_missions_found: "No missions found"
             },
             de: {
                 nav_home: "Startseite",
@@ -720,56 +875,65 @@
                 nav_prestataires: "Dienstleister",
                 nav_client: "Kundenbereich",
                 nav_prestataires_space: "Dienstleister Bereich",
-                hero_title: "Unsere Hausdienstleistungen",
-                hero_subtitle: "Entdecken Sie unser komplettes Dienstleistungsangebot für Ihren Komfort und Ihr Wohlbefinden zu Hause",
-                prestataires_button: "Unsere Dienstleister entdecken",
-                service_cleaning: "Haushaltshilfe",
-                service_cleaning_desc: "Professioneller Reinigungsservice für ein strahlendes Interieur",
-                service_shopping: "Einkaufen nach Hause",
-                service_shopping_desc: "Wir erledigen Ihre Einkäufe und liefern sie an Ihre Tür",
-                service_hairdressing: "Friseur zu Hause",
-                service_hairdressing_desc: "Professionelle Friseurdienste im Komfort Ihres Zuhauses",
-                service_gardening: "Gartenarbeit",
-                service_gardening_desc: "Komplette Pflege Ihres Gartens und Ihrer Grünflächen",
-                service_transport: "Begleiteter Transport",
-                service_transport_desc: "Sichere Begleitung für alle Ihre Fahrten",
-                service_assistance: "Assistenz / Hilfe",
-                service_assistance_desc: "Notfallhilfe und Unterstützung in heiklen Situationen",
-                service_handyman: "Handwerker",
-                service_handyman_desc: "Kleine Arbeiten und verschiedene Hausreparaturen",
-                service_volunteer: "Freiwilligenbesuch",
-                service_volunteer_desc: "Gesellschaft und moralische Unterstützung durch unsere engagierten Freiwilligen",
-                service_meals: "Essensbestellung",
-                service_meals_desc: "Ausgewogene Mahlzeiten direkt zu Ihnen nach Hause geliefert",
-                service_button: "Diesen Service anfordern",
-                cta_title: "Benötigen Sie einen bestimmten Service?",
-                cta_subtitle: "Kontaktieren Sie uns, um Ihre spezifischen Bedürfnisse zu besprechen",
-                cta_button: "Unsere Dienstleister kontaktieren",
+                login_title: "Viiveo Dienstleister Bereich",
+                login_subtitle: "Melden Sie sich an, um Ihre Missionen und Interventionen zu verwalten",
+                login_button: "Anmelden",
+                welcome: "Willkommen",
+                specialty: "Spezialität",
+                edit_profile: "Profil bearbeiten",
+                logout: "Abmelden",
+                statistics: "Meine Statistiken",
+                missions_pending: "Ausstehende Missionen",
+                missions_confirmed: "Bestätigte Missionen",
+                missions_progress: "In Bearbeitung",
+                missions_completed: "Abgeschlossen",
+                tab_pending: "Ausstehend",
+                tab_confirmed: "Bestätigt",
+                tab_progress: "In Bearbeitung",
+                tab_completed: "Abgeschlossen",
+                pending_missions: "Missionen zur Validierung ausstehend",
+                confirmed_missions: "Geplante Missionen",
+                progress_missions: "Laufende Missionen",
+                completed_missions: "Abgeschlossene Missionen",
+                mission_service: "Dienstleistung",
+                mission_client: "Kunde",
+                mission_date: "Datum",
+                mission_time: "Zeit",
+                mission_address: "Adresse",
+                mission_credits: "Credits",
+                mission_accept: "Akzeptieren",
+                mission_refuse: "Ablehnen",
+                mission_start: "Starten",
+                mission_complete: "Abschließen",
+                mission_details: "Details",
+                no_missions: "Keine Missionen verfügbar",
                 footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
                 footer_navigation: "Navigation",
                 footer_spaces: "Bereiche",
                 footer_contact: "Kontakt",
                 footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten.",
-                loading_text: "Sendung läuft...",
-                form_title: "Dienstanfrage",
-                form_password: "Passwort",
-                form_firstname: "Vorname",
-                form_lastname: "Nachname",
-                form_address: "Vollständige Adresse",
-                form_email: "E-Mail",
-                form_service: "Dienstleistung",
-                form_date: "Gewünschtes Datum",
-                form_time: "Gewünschte Uhrzeit",
-                form_provider: "Dienstleister wählen (optional)",
-                form_no_preference: "Keine Präferenz",
-                form_comment: "Kommentar",
-                form_submit: "Anfrage senden",
-                form_success: "Anfrage erfolgreich gesendet!",
-                form_error: "Fehler beim Senden der Anfrage."
+                loading: "Laden...",
+                profile_title: "Mein Profil",
+                first_name: "Vorname",
+                last_name: "Nachname",
+                email: "E-Mail",
+                phone: "Telefon",
+                specialties: "Spezialitäten",
+                description: "Beschreibung",
+                save_profile: "Änderungen speichern",
+                login_success: "Anmeldung erfolgreich!",
+                login_error: "Falsche E-Mail oder Passwort",
+                mission_accepted: "Mission erfolgreich akzeptiert!",
+                mission_started: "Mission gestartet!",
+                mission_completed: "Mission abgeschlossen!",
+                profile_updated: "Profil erfolgreich aktualisiert!",
+                error_loading_missions: "Fehler beim Laden der Missionen",
+                no_missions_found: "Keine Missionen gefunden"
             }
         };
 
         let currentLanguage = 'fr';
+        let currentProvider = null;
 
         function changeLanguage(lang) {
             currentLanguage = lang;
@@ -800,148 +964,361 @@
             localStorage.setItem('viiveo-language', lang);
         }
 
-        // Gestion des modales et formulaires
-        const services = {
-            'aide-menagere': { name: 'Aide ménagère', key: 'service_cleaning' },
-            'courses': { name: 'Courses à domicile', key: 'service_shopping' },
-            'coiffure': { name: 'Coiffure à domicile', key: 'service_hairdressing' },
-            'jardinage': { name: 'Jardinage', key: 'service_gardening' },
-            'transport': { name: 'Transport accompagné', key: 'service_transport' },
-            'assistance': { name: 'Assistance / Secours', key: 'service_assistance' },
-            'homme-tout-faire': { name: 'Homme à tout faire', key: 'service_handyman' },
-            'benevole': { name: 'Visite bénévole', key: 'service_volunteer' },
-            'repas': { name: 'Commande de repas', key: 'service_meals' }
-        };
-
-        function openModal(serviceId) {
-            const service = services[serviceId];
-            if (!service) return;
-
-            const modalHTML = `
-                <div class="modal" id="modal-${serviceId}">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 class="text-2xl font-bold">${translations[currentLanguage].form_title} : ${translations[currentLanguage][service.key]}</h2>
-                            <span class="close" onclick="closeModal('${serviceId}')">&times;</span>
-                        </div>
-                        <div class="modal-body">
-                            <form id="form-${serviceId}" onsubmit="submitForm(event, '${serviceId}')">
-                                <div class="form-group">
-                                    <label>${translations[currentLanguage].form_password}</label>
-                                    <input type="password" name="password" required>
-                                </div>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="form-group">
-                                        <label>${translations[currentLanguage].form_firstname}</label>
-                                        <input type="text" name="prenom" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>${translations[currentLanguage].form_lastname}</label>
-                                        <input type="text" name="nom" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label>${translations[currentLanguage].form_address}</label>
-                                    <input type="text" name="adresse" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label>${translations[currentLanguage].form_email}</label>
-                                    <input type="email" name="email" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label>${translations[currentLanguage].form_service}</label>
-                                    <input type="text" name="service" value="${service.name}" readonly>
-                                </div>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="form-group">
-                                        <label>${translations[currentLanguage].form_date}</label>
-                                        <input type="date" name="date" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>${translations[currentLanguage].form_time}</label>
-                                        <input type="time" name="heure" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label>${translations[currentLanguage].form_provider}</label>
-                                    <select name="prestataire" id="select-${serviceId}">
-                                        <option value="">${translations[currentLanguage].form_no_preference}</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label>${translations[currentLanguage].form_comment}</label>
-                                    <textarea name="commentaire" rows="3"></textarea>
-                                </div>
-                                
-                                <input type="hidden" name="prenom_prestataire" value="">
-                                <input type="hidden" name="nom_prestataire" value="">
-                                
-                                <button type="submit" class="btn-primary text-white w-full py-4 rounded-xl font-semibold text-lg">
-                                    ${translations[currentLanguage].form_submit}
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            document.body.insertAdjacentHTML('beforeend', modalHTML);
-            document.getElementById(`modal-${serviceId}`).style.display = 'block';
-            loadPrestataires(serviceId, service.name);
-        }
-
-        function closeModal(serviceId) {
-            const modal = document.getElementById(`modal-${serviceId}`);
-            if (modal) {
-                modal.remove();
+        // Fonction pour récupérer les missions depuis l'API
+        async function fetchProviderMissions(providerEmail) {
+            try {
+                const response = await fetch(`${API_BASE_URL}?type=getProviderMissions&email=${encodeURIComponent(providerEmail)}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    return data.missions || [];
+                } else {
+                    console.error('Erreur dans la réponse:', data.error);
+                    return [];
+                }
+            } catch (error) {
+                console.error('Erreur lors de la récupération des missions:', error);
+                // En cas d'erreur, retourner des données simulées
+                return getMockMissions();
             }
         }
 
-        function loadPrestataires(serviceId, serviceName) {
-            const selectElement = document.getElementById(`select-${serviceId}`);
-            if (!selectElement) return;
-
-            // Simulation du chargement des prestataires
-            setTimeout(() => {
-                selectElement.innerHTML = `
-                    <option value="">${translations[currentLanguage].form_no_preference}</option>
-                    <option value="Marie Dubois">Marie Dubois</option>
-                    <option value="Jean Martin">Jean Martin</option>
-                    <option value="Sophie Lambert">Sophie Lambert</option>
-                `;
-            }, 500);
+        // Fonction pour mettre à jour le statut d'une mission
+        async function updateMissionStatus(missionId, newStatus) {
+            try {
+                const response = await fetch(`${API_BASE_URL}?type=updateMissionStatus&missionId=${missionId}&status=${newStatus}&providerEmail=${encodeURIComponent(currentProvider.email)}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                return data.success;
+            } catch (error) {
+                console.error('Erreur lors de la mise à jour de la mission:', error);
+                return false;
+            }
         }
 
-        async function submitForm(event, serviceId) {
-            event.preventDefault();
-            const form = event.target;
-            const submitButton = form.querySelector('button[type="submit"]');
-            
+        // Fonction pour authentifier le prestataire
+        async function authenticateProvider(email, password) {
+            try {
+                const response = await fetch(`${API_BASE_URL}?type=providerLogin&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Erreur lors de l\'authentification:', error);
+                return { success: false, error: 'Erreur de connexion' };
+            }
+        }
+
+        // Fonction de données simulées (fallback)
+        function getMockMissions() {
+            return {
+                pending: [
+                    {
+                        id: 1,
+                        service: "Aide ménagère",
+                        client: "Jean Dupont",
+                        date: "2024-01-15",
+                        time: "14:00",
+                        address: "15 Rue des Fleurs, 75001 Paris",
+                        credits: 20
+                    }
+                ],
+                confirmed: [
+                    {
+                        id: 2,
+                        service: "Courses à domicile",
+                        client: "Sophie Martin",
+                        date: "2024-01-16",
+                        time: "10:00",
+                        address: "22 Avenue Victor Hugo, 75016 Paris",
+                        credits: 18
+                    }
+                ],
+                progress: [
+                    {
+                        id: 3,
+                        service: "Jardinage",
+                        client: "Pierre Lambert",
+                        date: "2024-01-18",
+                        time: "09:00",
+                        address: "8 Rue de la Paix, 75002 Paris",
+                        credits: 25
+                    }
+                ],
+                completed: [
+                    {
+                        id: 4,
+                        service: "Aide ménagère",
+                        client: "Marie Curie",
+                        date: "2024-01-10",
+                        time: "15:00",
+                        address: "5 Avenue des Champs-Élysées, 75008 Paris",
+                        credits: 22
+                    }
+                ]
+            };
+        }
+
+        // Fonction de connexion
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('login-message');
+
             // Afficher le loader
             document.getElementById('loader').style.display = 'flex';
-            submitButton.disabled = true;
 
             try {
-                // Simulation d'envoi - À remplacer par votre API réelle
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                alert(translations[currentLanguage].form_success);
-                closeModal(serviceId);
-                form.reset();
-                
+                // Authentification via l'API
+                const authResult = await authenticateProvider(email, password);
+
+                if (authResult.success) {
+                    // Connexion réussie
+                    currentProvider = {
+                        email: email,
+                        name: authResult.prenom + ' ' + authResult.nom,
+                        specialty: authResult.specialite || "Aide ménagère, Courses",
+                        photo: authResult.photo || "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png"
+                    };
+
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('provider-interface').classList.remove('hidden');
+                    
+                    // Mettre à jour les informations prestataire
+                    document.getElementById('provider-name').textContent = currentProvider.name;
+                    document.getElementById('provider-specialty').textContent = currentProvider.specialty;
+                    document.getElementById('provider-photo').src = currentProvider.photo;
+
+                    // Charger les missions depuis l'API
+                    await loadProviderData();
+
+                    showNotification(translations[currentLanguage].login_success, 'success');
+                } else {
+                    throw new Error(authResult.error || 'Email ou mot de passe incorrect');
+                }
             } catch (error) {
-                alert(translations[currentLanguage].form_error);
+                message.textContent = error.message || translations[currentLanguage].login_error;
+                message.classList.remove('hidden');
             } finally {
                 document.getElementById('loader').style.display = 'none';
-                submitButton.disabled = false;
             }
+        }
+
+        // Fonction de déconnexion
+        function logout() {
+            currentProvider = null;
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('provider-interface').classList.add('hidden');
+            document.getElementById('login-form').reset();
+            document.getElementById('login-message').classList.add('hidden');
+        }
+
+        // Charger les données du prestataire depuis l'API
+        async function loadProviderData() {
+            // Afficher le loader
+            document.getElementById('loader').style.display = 'flex';
+
+            try {
+                // Récupérer les missions depuis l'API
+                const missions = await fetchProviderMissions(currentProvider.email);
+
+                // Mettre à jour les statistiques
+                updateStatistics(missions);
+
+                // Charger les missions pour chaque onglet
+                loadMissions('pending', missions.pending || []);
+                loadMissions('confirmed', missions.confirmed || []);
+                loadMissions('progress', missions.progress || []);
+                loadMissions('completed', missions.completed || []);
+
+            } catch (error) {
+                console.error('Erreur lors du chargement des données:', error);
+                showNotification(translations[currentLanguage].error_loading_missions, 'error');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+
+        // Mettre à jour les statistiques
+        function updateStatistics(missions) {
+            const pendingCount = (missions.pending || []).length;
+            const confirmedCount = (missions.confirmed || []).length;
+            const progressCount = (missions.progress || []).length;
+            const completedCount = (missions.completed || []).length;
+
+            document.getElementById('stats-pending').textContent = pendingCount;
+            document.getElementById('stats-confirmed').textContent = confirmedCount;
+            document.getElementById('stats-progress').textContent = progressCount;
+            document.getElementById('stats-completed').textContent = completedCount;
+        }
+
+        // Charger les missions par statut
+        function loadMissions(status, missions) {
+            const container = document.getElementById(`${status}-missions-list`);
+            
+            if (missions.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="text-6xl mb-4">😊</div>
+                        <h4 class="text-lg font-semibold text-gray-600 mb-2">${translations[currentLanguage].no_missions}</h4>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = missions.map(mission => `
+                    <div class="mission-card">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-800">${mission.service}</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2 text-sm text-gray-600">
+                                    <div>
+                                        <i class="fas fa-user mr-2"></i>
+                                        ${mission.client}
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-calendar mr-2"></i>
+                                        ${mission.date}
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-coins mr-2"></i>
+                                        ${mission.credits} crédits
+                                    </div>
+                                </div>
+                                <div class="mt-2 text-sm text-gray-500">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>
+                                    ${mission.address}
+                                </div>
+                            </div>
+                            <div class="mt-4 md:mt-0 md:ml-4 flex space-x-2">
+                                ${getMissionActions(status, mission.id)}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function getMissionActions(status, missionId) {
+            const actions = {
+                'pending': `
+                    <button onclick="acceptMission(${missionId})" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors">
+                        ${translations[currentLanguage].mission_accept}
+                    </button>
+                    <button onclick="refuseMission(${missionId})" class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition-colors">
+                        ${translations[currentLanguage].mission_refuse}
+                    </button>
+                `,
+                'confirmed': `
+                    <button onclick="startMission(${missionId})" class="btn-primary text-white px-4 py-2 rounded-lg font-semibold">
+                        ${translations[currentLanguage].mission_start}
+                    </button>
+                `,
+                'progress': `
+                    <button onclick="completeMission(${missionId})" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors">
+                        ${translations[currentLanguage].mission_complete}
+                    </button>
+                `,
+                'completed': `
+                    <button onclick="showMissionDetails(${missionId})" class="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                        ${translations[currentLanguage].mission_details}
+                    </button>
+                `
+            };
+            return actions[status] || '';
+        }
+
+        async function acceptMission(missionId) {
+            if (confirm("Accepter cette mission ?")) {
+                const success = await updateMissionStatus(missionId, 'confirmed');
+                if (success) {
+                    showNotification(translations[currentLanguage].mission_accepted, 'success');
+                    loadProviderData(); // Recharger les données
+                } else {
+                    showNotification("Erreur lors de l'acceptation de la mission", 'error');
+                }
+            }
+        }
+
+        async function refuseMission(missionId) {
+            if (confirm("Refuser cette mission ?")) {
+                const success = await updateMissionStatus(missionId, 'refused');
+                if (success) {
+                    showNotification("Mission refusée", 'info');
+                    loadProviderData(); // Recharger les données
+                } else {
+                    showNotification("Erreur lors du refus de la mission", 'error');
+                }
+            }
+        }
+
+        async function startMission(missionId) {
+            const success = await updateMissionStatus(missionId, 'in_progress');
+            if (success) {
+                showNotification(translations[currentLanguage].mission_started, 'success');
+                loadProviderData(); // Recharger les données
+            } else {
+                showNotification("Erreur lors du démarrage de la mission", 'error');
+            }
+        }
+
+        async function completeMission(missionId) {
+            const success = await updateMissionStatus(missionId, 'completed');
+            if (success) {
+                showNotification(translations[currentLanguage].mission_completed, 'success');
+                loadProviderData(); // Recharger les données
+            } else {
+                showNotification("Erreur lors de la finalisation de la mission", 'error');
+            }
+        }
+
+        function showMissionDetails(missionId) {
+            alert(`Détails de la mission #${missionId}`);
+        }
+
+        function showTab(tabName) {
+            // Désactiver tous les onglets
+            document.querySelectorAll('.tab-container').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Activer l'onglet sélectionné
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showProfileModal() {
+            // Pré-remplir le formulaire avec les données actuelles
+            if (currentProvider) {
+                document.getElementById('profile-firstname').value = currentProvider.name.split(' ')[0];
+                document.getElementById('profile-lastname').value = currentProvider.name.split(' ')[1];
+                document.getElementById('profile-email').value = currentProvider.email;
+                document.getElementById('profile-specialties').value = currentProvider.specialty;
+            }
+            document.getElementById('profile-modal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function showNotification(message, type = 'info') {
+            // Implémentation basique de notification
+            alert(message);
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -986,6 +1363,13 @@
                 if (event.target.classList.contains('modal')) {
                     event.target.style.display = 'none';
                 }
+            });
+
+            // Gestion du formulaire de profil
+            document.getElementById('profile-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                showNotification(translations[currentLanguage].profile_updated, 'success');
+                closeModal('profile-modal');
             });
         });
     </script>
