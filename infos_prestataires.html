@@ -569,6 +569,1125 @@
     </div>
 
     <script>
+        // URL de votre Google Apps Script
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec';
+
+        // Traductions multilingues
+        const translations = {
+            fr: {
+                // Navigation
+                nav_home: "Accueil",
+                nav_services: "Services",
+                nav_formules: "Formules",
+                nav_prestataires: "Prestataires",
+                nav_client: "Espace Client",
+                nav_prestataires_space: "Espace Prestataire",
+                
+                // Login
+                login_title: "Espace Client Viiveo",
+                login_subtitle: "Connectez-vous pour gérer vos services et crédits",
+                login_button: "Se connecter",
+                
+                // Interface client
+                welcome: "Bienvenue",
+                credits_available: "Crédits disponibles",
+                recharge_credits: "Recharger crédits",
+                logout: "Déconnexion",
+                quick_actions: "Actions Rapides",
+                new_request: "Nouvelle demande",
+                new_request_desc: "Demander un nouveau service",
+                history: "Historique",
+                history_desc: "Voir mes services passés",
+                profile: "Mon profil",
+                profile_desc: "Gérer mes informations",
+                current_services: "Mes Services en Cours",
+                service: "Service",
+                date: "Date",
+                prestataire: "Prestataire",
+                status: "Statut",
+                actions: "Actions",
+                no_services: "Aucun service en cours",
+                no_services_desc: "Demandez votre premier service !",
+                
+                // Statuts
+                status_pending: "En attente",
+                status_confirmed: "Confirmé",
+                status_in_progress: "En cours",
+                status_completed: "Terminé",
+                status_validated: "Validé",
+                
+                // Actions
+                action_validate: "Valider",
+                action_cancel: "Annuler",
+                action_details: "Détails",
+                
+                // Footer
+                footer_desc: "Votre bien-être à domicile, notre priorité.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Espaces",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. Tous droits réservés.",
+                
+                // Loader
+                loading: "Chargement...",
+                
+                // Modal recharge
+                recharge_title: "Recharger mes crédits",
+                pack_essential: "50 crédits",
+                pack_comfort: "100 crédits",
+                pack_premium: "200 crédits",
+                valid_6months: "Valide 6 mois",
+                valid_12months: "Valide 12 mois",
+                valid_18months: "Valide 18 mois",
+                proceed_payment: "Procéder au paiement",
+                
+                // Messages
+                login_success: "Connexion réussie !",
+                login_error: "Email ou mot de passe incorrect",
+                validation_success: "Service validé avec succès !",
+                recharge_success: "Redirection vers le paiement...",
+                error_loading_services: "Erreur lors du chargement des services",
+                no_services_found: "Aucun service trouvé"
+            },
+            nl: {
+                nav_home: "Home",
+                nav_services: "Diensten",
+                nav_formules: "Formules",
+                nav_prestataires: "Dienstverleners",
+                nav_client: "Klantenruimte",
+                nav_prestataires_space: "Dienstverlener Ruimte",
+                login_title: "Viiveo Klantenruimte",
+                login_subtitle: "Log in om uw diensten en credits te beheren",
+                login_button: "Inloggen",
+                welcome: "Welkom",
+                credits_available: "Beschikbare credits",
+                recharge_credits: "Credits opladen",
+                logout: "Uitloggen",
+                quick_actions: "Snelle Acties",
+                new_request: "Nieuwe aanvraag",
+                new_request_desc: "Vraag een nieuwe dienst aan",
+                history: "Geschiedenis",
+                history_desc: "Bekijk mijn vorige diensten",
+                profile: "Mijn profiel",
+                profile_desc: "Beheer mijn informatie",
+                current_services: "Mijn Lopende Diensten",
+                service: "Dienst",
+                date: "Datum",
+                prestataire: "Dienstverlener",
+                status: "Status",
+                actions: "Acties",
+                no_services: "Geen lopende diensten",
+                no_services_desc: "Vraag uw eerste dienst aan!",
+                status_pending: "In afwachting",
+                status_confirmed: "Bevestigd",
+                status_in_progress: "Bezig",
+                status_completed: "Voltooid",
+                status_validated: "Gevalideerd",
+                action_validate: "Valideren",
+                action_cancel: "Annuleren",
+                action_details: "Details",
+                footer_desc: "Uw welzijn thuis, onze prioriteit.",
+                footer_navigation: "Navigatie",
+                footer_spaces: "Ruimtes",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden.",
+                loading: "Laden...",
+                recharge_title: "Mijn credits opladen",
+                pack_essential: "50 credits",
+                pack_comfort: "100 credits",
+                pack_premium: "200 credits",
+                valid_6months: "Geldig 6 maanden",
+                valid_12months: "Geldig 12 maanden",
+                valid_18months: "Geldig 18 maanden",
+                proceed_payment: "Doorgaan naar betaling",
+                login_success: "Login geslaagd!",
+                login_error: "E-mail of wachtwoord onjuist",
+                validation_success: "Dienst succesvol gevalideerd!",
+                recharge_success: "Doorverwijzing naar betaling...",
+                error_loading_services: "Fout bij het laden van diensten",
+                no_services_found: "Geen diensten gevonden"
+            },
+            en: {
+                nav_home: "Home",
+                nav_services: "Services",
+                nav_formules: "Plans",
+                nav_prestataires: "Providers",
+                nav_client: "Client Space",
+                nav_prestataires_space: "Provider Space",
+                login_title: "Viiveo Client Space",
+                login_subtitle: "Log in to manage your services and credits",
+                login_button: "Log in",
+                welcome: "Welcome",
+                credits_available: "Available credits",
+                recharge_credits: "Recharge credits",
+                logout: "Logout",
+                quick_actions: "Quick Actions",
+                new_request: "New request",
+                new_request_desc: "Request a new service",
+                history: "History",
+                history_desc: "View my past services",
+                profile: "My profile",
+                profile_desc: "Manage my information",
+                current_services: "My Current Services",
+                service: "Service",
+                date: "Date",
+                prestataire: "Provider",
+                status: "Status",
+                actions: "Actions",
+                no_services: "No current services",
+                no_services_desc: "Request your first service!",
+                status_pending: "Pending",
+                status_confirmed: "Confirmed",
+                status_in_progress: "In progress",
+                status_completed: "Completed",
+                status_validated: "Validated",
+                action_validate: "Validate",
+                action_cancel: "Cancel",
+                action_details: "Details",
+                footer_desc: "Your home well-being, our priority.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Spaces",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. All rights reserved.",
+                loading: "Loading...",
+                recharge_title: "Recharge my credits",
+                pack_essential: "50 credits",
+                pack_comfort: "100 credits",
+                pack_premium: "200 credits",
+                valid_6months: "Valid 6 months",
+                valid_12months: "Valid 12 months",
+                valid_18months: "Valid 18 months",
+                proceed_payment: "Proceed to payment",
+                login_success: "Login successful!",
+                login_error: "Incorrect email or password",
+                validation_success: "Service validated successfully!",
+                recharge_success: "Redirecting to payment...",
+                error_loading_services: "Error loading services",
+                no_services_found: "No services found"
+            },
+            de: {
+                nav_home: "Startseite",
+                nav_services: "Dienstleistungen",
+                nav_formules: "Tarife",
+                nav_prestataires: "Dienstleister",
+                nav_client: "Kundenbereich",
+                nav_prestataires_space: "Dienstleister Bereich",
+                login_title: "Viiveo Kundenbereich",
+                login_subtitle: "Melden Sie sich an, um Ihre Dienstleistungen und Credits zu verwalten",
+                login_button: "Anmelden",
+                welcome: "Willkommen",
+                credits_available: "Verfügbare Credits",
+                recharge_credits: "Credits aufladen",
+                logout: "Abmelden",
+                quick_actions: "Schnellaktionen",
+                new_request: "Neue Anfrage",
+                new_request_desc: "Neue Dienstleistung anfordern",
+                history: "Verlauf",
+                history_desc: "Meine vergangenen Dienstleistungen anzeigen",
+                profile: "Mein Profil",
+                profile_desc: "Meine Informationen verwalten",
+                current_services: "Meine Laufenden Dienstleistungen",
+                service: "Dienstleistung",
+                date: "Datum",
+                prestataire: "Dienstleister",
+                status: "Status",
+                actions: "Aktionen",
+                no_services: "Keine laufenden Dienstleistungen",
+                no_services_desc: "Fordern Sie Ihre erste Dienstleistung an!",
+                status_pending: "Ausstehend",
+                status_confirmed: "Bestätigt",
+                status_in_progress: "In Bearbeitung",
+                status_completed: "Abgeschlossen",
+                status_validated: "Validiert",
+                action_validate: "Validieren",
+                action_cancel: "Abbrechen",
+                action_details: "Details",
+                footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Bereiche",
+                footer_contact: "Kontakt",
+                footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten.",
+                loading: "Laden...",
+                recharge_title: "Meine Credits aufladen",
+                pack_essential: "50 Credits",
+                pack_comfort: "100 Credits",
+                pack_premium: "200 Credits",
+                valid_6months: "Gültig 6 Monate",
+                valid_12months: "Gültig 12 Monate",
+                valid_18months: "Gültig 18 Monate",
+                proceed_payment: "Zur Zahlung fortfahren",
+                login_success: "Anmeldung erfolgreich!",
+                login_error: "Falsche E-Mail oder Passwort",
+                validation_success: "Dienstleistung erfolgreich validiert!",
+                recharge_success: "Weiterleitung zur Zahlung...",
+                error_loading_services: "Fehler beim Laden der Dienstleistungen",
+                no_services_found: "Keine Dienstleistungen gefunden"
+            }
+        };
+
+        let currentLanguage = 'fr';
+        let currentClient = null;
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            const flags = { fr: '🇫🇷', nl: '🇳🇱', en: '🇬🇧', de: '🇩🇪' };
+            const codes = { fr: 'FR', nl: 'NL', en: 'EN', de: 'DE' };
+            
+            document.getElementById('current-flag').textContent = flags[lang];
+            const codeElement = document.querySelector('#language-button .hidden');
+            if (codeElement) {
+                codeElement.textContent = codes[lang];
+            }
+
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-lang') === lang) {
+                    option.classList.add('active');
+                }
+            });
+
+            localStorage.setItem('viiveo-language', lang);
+        }
+
+        // Fonction pour récupérer les services depuis Google Sheets
+        async function fetchClientServices(clientEmail) {
+            try {
+                const response = await fetch(`${GOOGLE_SCRIPT_URL}?type=getClientServices&email=${encodeURIComponent(clientEmail)}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    return data.services || [];
+                } else {
+                    console.error('Erreur dans la réponse:', data.error);
+                    return [];
+                }
+            } catch (error) {
+                console.error('Erreur lors de la récupération des services:', error);
+                // En cas d'erreur, retourner des données simulées
+                return getSimulatedServices();
+            }
+        }
+
+        // Fonction de données simulées (fallback)
+        function getSimulatedServices() {
+            return [
+                {
+                    id: 1,
+                    service: "Aide ménagère",
+                    date: "2024-01-15",
+                    prestataire: "Marie Dubois",
+                    status: "completed",
+                    credits: 20
+                },
+                {
+                    id: 2,
+                    service: "Courses à domicile",
+                    date: "2024-01-18",
+                    prestataire: "Jean Martin",
+                    status: "in_progress",
+                    credits: 18
+                },
+                {
+                    id: 3,
+                    service: "Jardinage",
+                    date: "2024-01-20",
+                    prestataire: "Sophie Lambert",
+                    status: "confirmed",
+                    credits: 25
+                }
+            ];
+        }
+
+        // Fonction de connexion
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('login-message');
+
+            // Afficher le loader
+            document.getElementById('loader').style.display = 'flex';
+
+            try {
+                // Simulation de connexion - À remplacer par votre API réelle
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Vérification basique (dans la réalité, cela serait fait par l'API)
+                if (email && password) {
+                    // Connexion réussie
+                    currentClient = {
+                        email: email,
+                        name: "Jean Dupont",
+                        credits: 150,
+                        photo: "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png"
+                    };
+
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('client-interface').classList.remove('hidden');
+                    
+                    // Mettre à jour les informations client
+                    document.getElementById('client-name').textContent = currentClient.name;
+                    document.getElementById('client-credits').textContent = currentClient.credits;
+                    document.getElementById('client-photo').src = currentClient.photo;
+
+                    // Charger les services depuis Google Sheets
+                    await loadClientServices();
+
+                    showNotification(translations[currentLanguage].login_success, 'success');
+                } else {
+                    throw new Error('Invalid credentials');
+                }
+            } catch (error) {
+                message.textContent = translations[currentLanguage].login_error;
+                message.classList.remove('hidden');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+
+        // Fonction de déconnexion
+        function logout() {
+            currentClient = null;
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('client-interface').classList.add('hidden');
+            document.getElementById('login-form').reset();
+            document.getElementById('login-message').classList.add('hidden');
+        }
+
+        // Charger les services du client depuis Google Sheets
+        async function loadClientServices() {
+            const tableBody = document.getElementById('services-table-body');
+            const noServices = document.getElementById('no-services');
+
+            // Afficher le loader
+            document.getElementById('loader').style.display = 'flex';
+
+            try {
+                // Récupérer les services depuis Google Sheets
+                const services = await fetchClientServices(currentClient.email);
+
+                if (services.length === 0) {
+                    tableBody.innerHTML = '';
+                    noServices.classList.remove('hidden');
+                } else {
+                    noServices.classList.add('hidden');
+                    tableBody.innerHTML = services.map(service => `
+                        <tr class="border-b border-gray-200 hover:bg-yellow-50">
+                            <td class="px-4 py-3">${service.service}</td>
+                            <td class="px-4 py-3">${service.date}</td>
+                            <td class="px-4 py-3">${service.prestataire}</td>
+                            <td class="px-4 py-3">
+                                <span class="status-badge ${getStatusClass(service.status)}">
+                                    ${getStatusText(service.status)}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                ${service.status === 'completed' ? 
+                                    `<button onclick="validateService(${service.id})" class="text-green-600 hover:text-green-800 font-semibold text-sm">
+                                        ${translations[currentLanguage].action_validate}
+                                    </button>` : 
+                                    `<button onclick="showServiceDetails(${service.id})" class="text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                                        ${translations[currentLanguage].action_details}
+                                    </button>`
+                                }
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Erreur lors du chargement des services:', error);
+                showNotification(translations[currentLanguage].error_loading_services, 'error');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+
+        function getStatusClass(status) {
+            const classes = {
+                'pending': 'status-pending',
+                'confirmed': 'status-confirmed',
+                'in_progress': 'status-pending',
+                'completed': 'status-validated'
+            };
+            return classes[status] || 'status-pending';
+        }
+
+        function getStatusText(status) {
+            const texts = {
+                'pending': translations[currentLanguage].status_pending,
+                'confirmed': translations[currentLanguage].status_confirmed,
+                'in_progress': translations[currentLanguage].status_in_progress,
+                'completed': translations[currentLanguage].status_completed
+            };
+            return texts[status] || translations[currentLanguage].status_pending;
+        }
+
+        function validateService(serviceId) {
+            if (confirm(translations[currentLanguage].validation_success)) {
+                showNotification(translations[currentLanguage].validation_success, 'success');
+                // Recharger les services
+                loadClientServices();
+            }
+        }
+
+        function showServiceDetails(serviceId) {
+            alert(`Détails du service #${serviceId} - ${translations[currentLanguage].action_details}`);
+        }
+
+        function showRechargeModal() {
+            document.getElementById('recharge-modal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function showServiceRequest() {
+            window.location.href = 'nos_services.html';
+        }
+
+        function showHistory() {
+            alert(translations[currentLanguage].history);
+        }
+
+        function showProfile() {
+            alert(translations[currentLanguage].profile);
+        }
+
+        function showNotification(message, type = 'info') {
+            // Implémentation basique de notification
+            alert(message);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
+            changeLanguage(savedLanguage);
+
+            // Gestion du sélecteur de langue
+            const languageButton = document.getElementById('language-button');
+            const languageDropdown = document.getElementById('language-dropdown');
+            
+            if (languageButton && languageDropdown) {
+                languageButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    languageDropdown.classList.toggle('hidden');
+                });
+
+                document.addEventListener('click', function() {
+                    languageDropdown.classList.add('hidden');
+                });
+
+                document.querySelectorAll('.language-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const lang = this.getAttribute('data-lang');
+                        changeLanguage(lang);
+                        languageDropdown.classList.add('hidden');
+                    });
+                });
+            }
+
+            // Menu mobile
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('open');
+                });
+            }
+
+            // Fermer les modales en cliquant à l'extérieur
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Client - Viiveo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #facc15;
+            --primary-dark: #eab308;
+            --secondary-color: #1f2937;
+            --light-color: #f8fafc;
+            --text-color: #374151;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #fefce8 0%, #fef3c7 50%, #fef9c3 100%);
+            min-height: 100vh;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+        }
+        
+        .card-hover {
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            transition: var(--transition);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(253, 224, 71, 0.4);
+        }
+
+        .language-selector {
+            position: relative;
+        }
+        
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 50;
+            min-width: 150px;
+        }
+        
+        .language-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .language-option:hover {
+            background-color: #f9fafb;
+        }
+        
+        .language-option.active {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.open {
+            transform: translateY(0);
+        }
+
+        /* Styles spécifiques à l'interface client */
+        .client-section {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 2px solid #fef3c7;
+        }
+
+        .client-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fde047;
+            box-shadow: 0 8px 20px rgba(253, 224, 71, 0.3);
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .status-validated {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        .status-confirmed {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .table-hover tr {
+            transition: var(--transition);
+        }
+
+        .table-hover tr:hover {
+            background-color: #fffbeb;
+        }
+
+        .loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .loader-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #facc15;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 1.5rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            padding: 2rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+            color: white;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close:hover {
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Commun -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
+                </a>
+                
+                <!-- Navigation Desktop -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
+                    <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
+                    <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Formules</a>
+                    <a href="infos_prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="iclient.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                </nav>
+
+                <!-- Sélecteur de langue -->
+                <div class="language-selector">
+                    <button id="language-button" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <span id="current-flag">🇫🇷</span>
+                        <span class="hidden sm:inline text-sm font-medium">FR</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="language-dropdown" class="language-dropdown hidden">
+                        <div class="language-option active" data-lang="fr">
+                            <span>🇫🇷</span>
+                            <span>Français</span>
+                        </div>
+                        <div class="language-option" data-lang="nl">
+                            <span>🇳🇱</span>
+                            <span>Nederlands</span>
+                        </div>
+                        <div class="language-option" data-lang="en">
+                            <span>🇬🇧</span>
+                            <span>English</span>
+                        </div>
+                        <div class="language-option" data-lang="de">
+                            <span>🇩🇪</span>
+                            <span>Deutsch</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Mobile -->
+                <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg hover:bg-gray-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Menu Mobile -->
+            <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
+                <div class="px-4 py-6 space-y-4">
+                    <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
+                    <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
+                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Formules</a>
+                    <a href="infos_prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="iclient.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Section de connexion -->
+        <div id="login-section" class="client-section max-w-md mx-auto text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6" data-translate="login_title">
+                Espace Client Viiveo
+            </h1>
+            <p class="text-gray-600 mb-8" data-translate="login_subtitle">
+                Connectez-vous pour gérer vos services et crédits
+            </p>
+
+            <form id="login-form" onsubmit="event.preventDefault(); login();">
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Votre email" required 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Votre mot de passe" required
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                </div>
+                <button type="submit" class="btn-primary text-white w-full py-3 rounded-lg font-semibold text-lg">
+                    <span data-translate="login_button">Se connecter</span>
+                </button>
+                <div id="login-message" class="mt-4 text-red-500 text-sm hidden"></div>
+            </form>
+        </div>
+
+        <!-- Interface client (cachée par défaut) -->
+        <div id="client-interface" class="hidden">
+            <!-- En-tête client -->
+            <div class="client-section text-center">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="flex items-center space-x-6">
+                        <img id="client-photo" src="https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png" 
+                             alt="Photo client" class="client-photo">
+                        <div class="text-left">
+                            <h2 class="text-2xl font-bold text-gray-800" data-translate="welcome">
+                                Bienvenue, <span id="client-name">Client</span> !
+                            </h2>
+                            <p class="text-gray-600" data-translate="credits_available">
+                                Crédits disponibles : <span id="client-credits" class="font-bold text-yellow-600">0</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <button onclick="showRechargeModal()" class="btn-primary text-white px-6 py-3 rounded-lg font-semibold mr-4" data-translate="recharge_credits">
+                            Recharger crédits
+                        </button>
+                        <button onclick="logout()" class="border border-yellow-500 text-yellow-500 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-50 transition-colors" data-translate="logout">
+                            Déconnexion
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions rapides -->
+            <div class="client-section">
+                <h3 class="text-xl font-bold text-gray-800 mb-6" data-translate="quick_actions">
+                    Actions Rapides
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button onclick="showServiceRequest()" class="card-hover bg-white p-6 rounded-xl border border-gray-200 text-center hover:border-yellow-300">
+                        <div class="text-4xl mb-4">📋</div>
+                        <h4 class="font-semibold text-gray-800 mb-2" data-translate="new_request">Nouvelle demande</h4>
+                        <p class="text-gray-600 text-sm" data-translate="new_request_desc">Demander un nouveau service</p>
+                    </button>
+                    <button onclick="showHistory()" class="card-hover bg-white p-6 rounded-xl border border-gray-200 text-center hover:border-yellow-300">
+                        <div class="text-4xl mb-4">📊</div>
+                        <h4 class="font-semibold text-gray-800 mb-2" data-translate="history">Historique</h4>
+                        <p class="text-gray-600 text-sm" data-translate="history_desc">Voir mes services passés</p>
+                    </button>
+                    <button onclick="showProfile()" class="card-hover bg-white p-6 rounded-xl border border-gray-200 text-center hover:border-yellow-300">
+                        <div class="text-4xl mb-4">👤</div>
+                        <h4 class="font-semibold text-gray-800 mb-2" data-translate="profile">Mon profil</h4>
+                        <p class="text-gray-600 text-sm" data-translate="profile_desc">Gérer mes informations</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Services en cours -->
+            <div class="client-section">
+                <h3 class="text-xl font-bold text-gray-800 mb-6" data-translate="current_services">
+                    Mes Services en Cours
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full table-hover">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600" data-translate="service">Service</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600" data-translate="date">Date</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600" data-translate="prestataire">Prestataire</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600" data-translate="status">Statut</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600" data-translate="actions">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="services-table-body">
+                            <!-- Les services seront chargés dynamiquement -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="no-services" class="text-center py-8 hidden">
+                    <div class="text-6xl mb-4">😊</div>
+                    <h4 class="text-lg font-semibold text-gray-600 mb-2" data-translate="no_services">Aucun service en cours</h4>
+                    <p class="text-gray-500" data-translate="no_services_desc">Demandez votre premier service !</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Commun -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Logo et description -->
+                <div class="md:col-span-1">
+                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-10 mb-4">
+                    <p class="text-gray-300 text-sm" data-translate="footer_desc">
+                        Votre bien-être à domicile, notre priorité.
+                    </p>
+                </div>
+
+                <!-- Navigation -->
+                <div>
+                    <h4 class="font-semibold mb-4" data-translate="footer_navigation">Navigation</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="index.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_home">Accueil</a></li>
+                        <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_services">Services</a></li>
+                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_formules">Formules</a></li>
+                        <li><a href="infos_prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Prestataires</a></li>
+                    </ul>
+                </div>
+
+                <!-- Espaces -->
+                <div>
+                    <h4 class="font-semibold mb-4" data-translate="footer_spaces">Espaces</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="iclient.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_client">Espace Client</a></li>
+                        <li><a href="iprestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-semibold mb-4" data-translate="footer_contact">Contact</h4>
+                    <div class="text-sm text-gray-300 space-y-2">
+                        <p>info@viiveo.com</p>
+                        <p>+32 475 32 51 27</p>
+                        <div class="flex space-x-4 mt-2">
+                            <a href="https://www.facebook.com/viiveo.be" class="hover:text-yellow-400 transition-colors">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/danydecarpentrie" class="hover:text-yellow-400 transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="https://wa.me/+32475325127" class="hover:text-yellow-400 transition-colors">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p data-translate="footer_copyright">© 2024 Viiveo. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p data-translate="loading">Chargement...</p>
+        </div>
+    </div>
+
+    <!-- Modal de recharge -->
+    <div id="recharge-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-2xl font-bold" data-translate="recharge_title">Recharger mes crédits</h2>
+                <span class="close" onclick="closeModal('recharge-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="card-hover bg-white p-4 rounded-xl border-2 border-gray-200 text-center cursor-pointer hover:border-yellow-400">
+                        <div class="text-2xl font-bold text-yellow-600 mb-2">50€</div>
+                        <div class="text-sm text-gray-600 mb-2" data-translate="pack_essential">50 crédits</div>
+                        <div class="text-xs text-gray-500" data-translate="valid_6months">Valide 6 mois</div>
+                    </div>
+                    <div class="card-hover bg-white p-4 rounded-xl border-2 border-yellow-400 text-center cursor-pointer">
+                        <div class="text-2xl font-bold text-yellow-600 mb-2">95€</div>
+                        <div class="text-sm text-gray-600 mb-2" data-translate="pack_comfort">100 crédits</div>
+                        <div class="text-xs text-gray-500" data-translate="valid_12months">Valide 12 mois</div>
+                    </div>
+                    <div class="card-hover bg-white p-4 rounded-xl border-2 border-gray-200 text-center cursor-pointer hover:border-yellow-400">
+                        <div class="text-2xl font-bold text-yellow-600 mb-2">180€</div>
+                        <div class="text-sm text-gray-600 mb-2" data-translate="pack_premium">200 crédits</div>
+                        <div class="text-xs text-gray-500" data-translate="valid_18months">Valide 18 mois</div>
+                    </div>
+                </div>
+                <button class="btn-primary text-white w-full py-3 rounded-lg font-semibold" data-translate="proceed_payment">
+                    Procéder au paiement
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
         // Traductions multilingues
         const translations = {
             fr: {
