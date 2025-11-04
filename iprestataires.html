@@ -3,731 +3,1255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interface Prestataire - Viiveo</title>
+    <title>Espace Prestataire - Viiveo</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <link rel="stylesheet" href="https://allo-les-anges.github.io/viiveo-tableauxviiveo-tableaux-prestataire/viiveo-styles.css">
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    
-    <script src="https://allo-les-anges.github.io/viiveo-tableauxviiveo-tableaux-prestataire/viiveo-app.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- VARIABLES ET STYLES DE BASE (Gardés intacts) --- */
         :root {
-            --primary-color: #667eea;
-            --secondary-color: #764ba2;
-            --primary-gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            --accent-gradient: linear-gradient(135deg, #fde047 0%, #facc15 100%);
-            --card-bg: rgba(255, 255, 255, 0.95);
-            --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            --border-radius-lg: 1.5rem;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --primary-color: #facc15;
+            --primary-dark: #eab308;
+            --secondary-color: #1f2937;
+            --light-color: #f8fafc;
+            --text-color: #374151;
+            --transition: all 0.3s ease;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--primary-gradient);
+            color: var(--text-color);
+            background: linear-gradient(135deg, #fefce8 0%, #fef3c7 50%, #fef9c3 100%);
             min-height: 100vh;
-            color: #1f2937;
         }
 
-        .main-container {
-            padding: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
+        .gradient-bg {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
         }
-
-        /* --- COMPOSANTS DE L'INTERFACE (Gardés intacts) --- */
-        .welcome-section, .viiveo-login, .embed-section, .viiveo-missions, #prestataire-profile-section {
-            background: var(--card-bg);
-            border-radius: var(--border-radius-lg);
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-medium);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        
+        .card-hover {
+            transition: var(--transition);
+            border: 2px solid transparent;
         }
-
-        .welcome-section h1 {
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 3rem;
-            font-weight: 800;
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
-
-        .viiveo-login button {
-            background: var(--primary-gradient);
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
             transition: var(--transition);
         }
-        .viiveo-login button:hover {
+        
+        .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-heavy);
-        }
-        
-        /* Conteneur pour le champ mot de passe + icône */
-        .password-container {
-            position: relative;
-            margin-bottom: 1rem;
-        }
-        
-        .password-container input {
-            padding-right: 3rem !important;
-        }
-        
-        /* Icône Œil */
-        .toggle-password {
-            position: absolute;
-            top: 50%;
-            right: 15px;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #9ca3af;
-            transition: color 0.2s;
-            font-size: 1.25rem;
-        }
-        
-        .toggle-password:hover {
-            color: var(--primary-color);
+            box-shadow: 0 10px 25px rgba(253, 224, 71, 0.4);
         }
 
-        /* --- BOUTON MENU HAMBURGER (SANS BULLE) --- */
+        .language-selector {
+            position: relative;
+        }
         
-        .menu-bubble {
-            position: fixed;
-            top: 1.5rem;
-            right: 1.5rem; 
-            z-index: 9999;
-            width: 3.5rem;
-            height: 3.5rem;
-            /* Lignes modifiées pour retirer l'aspect de bulle */
-            /* background: var(--card-bg); */ 
-            /* border-radius: 50%; */
-            /* box-shadow: var(--shadow-medium); */
-            /* Fin des lignes modifiées */
-            background: transparent; /* Assure la transparence */
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 50;
+            min-width: 150px;
+        }
+        
+        .language-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .language-option:hover {
+            background-color: #f9fafb;
+        }
+        
+        .language-option.active {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .nav-link {
+            position: relative;
             transition: var(--transition);
-            font-size: 1.25rem;
-        }
-        .menu-bubble:hover {
-            transform: scale(1.05);
         }
 
-        #menu-container {
-            width: 100%;
-            height: 100%;
-            display: flex; 
-            align-items: center;
-            justify-content: center;
-        }
-
-        .hamburger-label .bar {
-            display:block; 
-            height:3px; 
-            width:30px; 
-            border-radius:2px; 
-            position:absolute; 
-            left:50%; 
-            transform: translateX(-50%);
-            transition:0.3s;
-            background: #facc15 !important; 
-        }
-
-        .hamburger-label .bar-top { top:0; }
-        .hamburger-label .bar-middle { top:11px; }
-        .hamburger-label .bar-bottom { top:22px; }
-
-        #menu-toggle:checked + .hamburger-label .bar-top {
-            transform: translateX(-50%) rotate(45deg) translate(5px, 5px);
-        }
-        #menu-toggle:checked + .hamburger-label .bar-middle {
-            opacity: 0;
-        }
-        #menu-toggle:checked + .hamburger-label .bar-bottom {
-            transform: translateX(-50%) rotate(-45deg) translate(5px, -5px);
-        }
-
-        #menu {
+        .nav-link:after {
+            content: '';
             position: absolute;
-            top: 45px; 
-            right: 0; 
-            left: auto !important;
-            background:var(--card-bg);
-            border:1px solid rgba(0,0,0,0.1);
-            border-radius:8px;
-            padding:0.5em 1em;
-            box-shadow:var(--shadow-medium);
-            white-space: nowrap;
-            z-index: 9998;
-        }
-        
-        /* Styles spécifiques au Profil (Gardés intacts) */
-        #prestataire-profile-section label {
-            font-weight: 600;
-            display: block;
-            margin-bottom: 0.25rem;
-            color: #374151;
-        }
-        #prestataire-profile-section input:not([type="checkbox"]), #prestataire-profile-section textarea, #prestataire-profile-section select {
-            width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.5rem;
-            box-sizing: border-box;
-        }
-        .profile-section-title {
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
         }
 
-        /* --- LOADER ÉLÉGANT : Styles pour centrage sur l'écran (Gardés intacts) --- */
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .nav-link:hover:after {
+            width: 100%;
         }
-        
-        #loader-wrapper {
-            /* NOUVEAU : Position fixe sur tout l'écran */
-            position: fixed; 
+
+        .mobile-menu {
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.open {
+            transform: translateY(0);
+        }
+
+        /* Styles spécifiques à l'interface prestataire */
+        .provider-section {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 2px solid #fef3c7;
+        }
+
+        .provider-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fde047;
+            box-shadow: 0 8px 20px rgba(253, 224, 71, 0.3);
+        }
+
+        .mission-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 2px solid #fef3c7;
+            transition: var(--transition);
+        }
+
+        .mission-card:hover {
+            border-color: #fde047;
+            transform: translateY(-2px);
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        .status-confirmed {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .status-in-progress {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .status-completed {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 2px solid #fef3c7;
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #facc15;
+            margin-bottom: 0.5rem;
+        }
+
+        .loader {
+            display: none;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-            z-index: 10000; /* Assure qu'il est au-dessus de tout */
-            display: none; 
-            /* Centrage du contenu */
-            align-items: center; 
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
             justify-content: center;
-            flex-direction: column;
+            backdrop-filter: blur(5px);
         }
 
-        #loader {
-            width: 4rem; 
-            height: 4rem; 
-            border: 5px solid rgba(255, 255, 255, 0.2); 
-            border-top: 5px solid #fff; /* White spinner */
-            border-left: 5px solid #fff;
+        .loader-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #facc15;
             border-radius: 50%;
-            animation: spin 0.8s ease-in-out infinite;
-            margin: 0; 
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4); 
-        }
-        
-        #loader-message {
-            color: white;
-            margin-top: 1.5rem;
-            font-weight: 600;
-            font-size: 1.1rem;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
         }
 
-        /* --- MEDIA QUERIES (Responsif) - Gardés intacts --- */
-        @media (max-width: 768px) {
-            .menu-bubble { 
-                top: 1rem;
-                right: 1rem;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 1.5rem;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
             }
-            .welcome-section h1 { font-size: 2.25rem; }
-            #menu {
-                top: 50px;
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
             }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            padding: 2rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+            color: white;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close:hover {
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.1);
+        }
+
+        .tab-container {
+            display: none;
+        }
+
+        .tab-container.active {
+            display: block;
+        }
+
+        .tab-button {
+            padding: 1rem 2rem;
+            border: none;
+            background: none;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button.active {
+            color: #facc15;
+            border-bottom-color: #facc15;
         }
     </style>
 </head>
 <body>
-    <div class="menu-bubble" style="display: none;" id="menu-bubble-container">
-        <div id="menu-container">
-            <input type="checkbox" id="menu-toggle" style="display:none;">
-            <label for="menu-toggle" class="hamburger-label" style="cursor:pointer; display:inline-block; width:100%; height:100%; position:relative;">
-                <span class="bar bar-top"></span>
-                <span class="bar bar-middle"></span>
-                <span class="bar bar-bottom"></span>
-            </label>
-            <nav id="menu" style="display:none;">
-                <ul style="
-                    display:flex;
-                    flex-direction: column; 
-                    gap:0.5rem;
-                    list-style:none;
-                    margin:0;
-                    padding:0;
-                    ">
-                    <li><a href="https://allo-les-anges.github.io/vivveo/" target="_blank" rel="noopener noreferrer" class="menu-link"><i class="fas fa-home mr-2"></i> Accueil Viiveo</a></li>
-                    
-                    <hr style="border-color:#ddd; margin: 0.5rem 0;">
+    <!-- Header Commun -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
+                </a>
+                
+                <!-- Navigation Desktop -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
+                    <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
+                    <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Formules</a>
+                    <a href="infos_prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                </nav>
 
-                    <li><a href="#" onclick="showMissions(); closeMenu()" class="menu-link"><i class="fas fa-calendar-check mr-2"></i> Mes missions (En attente)</a></li>
-                    <li><a href="#" onclick="showPlanning(); closeMenu()" class="menu-link"><i class="fas fa-clock mr-2"></i> Planning (Confirmé)</a></li>
-                    <li><a href="#" onclick="showEnCours(); closeMenu()" class="menu-link"><i class="fas fa-play-circle mr-2"></i> Missions en cours</a></li>
-                    <li><a href="#" onclick="showHistorique(); closeMenu()" class="menu-link">Historique (Terminé)</a></li>
-                    <li><a href="#" onclick="showProfil(); closeMenu()" class="menu-link"><i class="fas fa-user-circle mr-2"></i> Profil</a></li>
-                    <li><a href="#" onclick="showRapports(); closeMenu()" class="menu-link"><i class="fas fa-file-alt mr-2"></i> Rapports</a></li>
-                    <li><a href="#" onclick="showMesDonnees(); closeMenu()" class="menu-link">Mes données</a></li>
-                    
-                    <hr style="border-color:#ddd; margin: 0.5rem 0;">
+                <!-- Sélecteur de langue -->
+                <div class="language-selector">
+                    <button id="language-button" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <span id="current-flag">🇫🇷</span>
+                        <span class="hidden sm:inline text-sm font-medium">FR</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="language-dropdown" class="language-dropdown hidden">
+                        <div class="language-option active" data-lang="fr">
+                            <span>🇫🇷</span>
+                            <span>Français</span>
+                        </div>
+                        <div class="language-option" data-lang="nl">
+                            <span>🇳🇱</span>
+                            <span>Nederlands</span>
+                        </div>
+                        <div class="language-option" data-lang="en">
+                            <span>🇬🇧</span>
+                            <span>English</span>
+                        </div>
+                        <div class="language-option" data-lang="de">
+                            <span>🇩🇪</span>
+                            <span>Deutsch</span>
+                        </div>
+                    </div>
+                </div>
 
-                    <li><a href="#" onclick="logout(); closeMenu()" class="menu-link logout-link text-red-500 font-semibold"><i class="fas fa-sign-out-alt mr-2"></i> Déconnexion</a></li> 
-                </ul>
-            </nav>
+                <!-- Menu Mobile -->
+                <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg hover:bg-gray-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Menu Mobile -->
+            <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
+                <div class="px-4 py-6 space-y-4">
+                    <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
+                    <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
+                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Formules</a>
+                    <a href="infos_prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Section de connexion -->
+        <div id="login-section" class="provider-section max-w-md mx-auto text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6" data-translate="login_title">
+                Espace Prestataire Viiveo
+            </h1>
+            <p class="text-gray-600 mb-8" data-translate="login_subtitle">
+                Connectez-vous pour gérer vos missions et interventions
+            </p>
+
+            <form id="login-form" onsubmit="event.preventDefault(); login();">
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Votre email" required 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Votre mot de passe" required
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                </div>
+                <button type="submit" class="btn-primary text-white w-full py-3 rounded-lg font-semibold text-lg">
+                    <span data-translate="login_button">Se connecter</span>
+                </button>
+                <div id="login-message" class="mt-4 text-red-500 text-sm hidden"></div>
+            </form>
+        </div>
+
+        <!-- Interface prestataire (cachée par défaut) -->
+        <div id="provider-interface" class="hidden">
+            <!-- En-tête prestataire -->
+            <div class="provider-section">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="flex items-center space-x-6">
+                        <img id="provider-photo" src="https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png" 
+                             alt="Photo prestataire" class="provider-photo">
+                        <div class="text-left">
+                            <h2 class="text-2xl font-bold text-gray-800" data-translate="welcome">
+                                Bienvenue, <span id="provider-name">Prestataire</span> !
+                            </h2>
+                            <p class="text-gray-600" data-translate="specialty">
+                                Spécialité : <span id="provider-specialty" class="font-semibold">Aide ménagère</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <button onclick="showProfileModal()" class="border border-yellow-500 text-yellow-500 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-50 transition-colors mr-4" data-translate="edit_profile">
+                            Modifier profil
+                        </button>
+                        <button onclick="logout()" class="border border-red-500 text-red-500 px-6 py-3 rounded-lg font-semibold hover:bg-red-50 transition-colors" data-translate="logout">
+                            Déconnexion
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="provider-section">
+                <h3 class="text-xl font-bold text-gray-800 mb-6" data-translate="statistics">
+                    Mes Statistiques
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="stats-card">
+                        <div class="stats-number" id="stats-pending">0</div>
+                        <div class="text-gray-600 font-semibold" data-translate="missions_pending">Missions en attente</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number" id="stats-confirmed">0</div>
+                        <div class="text-gray-600 font-semibold" data-translate="missions_confirmed">Missions confirmées</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number" id="stats-progress">0</div>
+                        <div class="text-gray-600 font-semibold" data-translate="missions_progress">En cours</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number" id="stats-completed">0</div>
+                        <div class="text-gray-600 font-semibold" data-translate="missions_completed">Terminées</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation par onglets -->
+            <div class="provider-section">
+                <div class="border-b border-gray-200 mb-6">
+                    <div class="flex space-x-8">
+                        <button class="tab-button active" onclick="showTab('pending')" data-translate="tab_pending">
+                            En Attente
+                        </button>
+                        <button class="tab-button" onclick="showTab('confirmed')" data-translate="tab_confirmed">
+                            Confirmées
+                        </button>
+                        <button class="tab-button" onclick="showTab('progress')" data-translate="tab_progress">
+                            En Cours
+                        </button>
+                        <button class="tab-button" onclick="showTab('completed')" data-translate="tab_completed">
+                            Terminées
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Onglet Missions en attente -->
+                <div id="tab-pending" class="tab-container active">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="pending_missions">Missions en attente de validation</h4>
+                    <div id="pending-missions-list">
+                        <!-- Missions en attente chargées dynamiquement -->
+                    </div>
+                </div>
+
+                <!-- Onglet Missions confirmées -->
+                <div id="tab-confirmed" class="tab-container">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="confirmed_missions">Missions planifiées</h4>
+                    <div id="confirmed-missions-list">
+                        <!-- Missions confirmées chargées dynamiquement -->
+                    </div>
+                </div>
+
+                <!-- Onglet Missions en cours -->
+                <div id="tab-progress" class="tab-container">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="progress_missions">Missions en cours</h4>
+                    <div id="progress-missions-list">
+                        <!-- Missions en cours chargées dynamiquement -->
+                    </div>
+                </div>
+
+                <!-- Onglet Missions terminées -->
+                <div id="tab-completed" class="tab-container">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="completed_missions">Missions terminées</h4>
+                    <div id="completed-missions-list">
+                        <!-- Missions terminées chargées dynamiquement -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="main-container">
-        <div class="welcome-section" style="text-align: center;">
-            <h1><i class="fas fa-user-tie"></i> Interface Prestataire Viiveo</h1>
-            <p>Gérez vos missions et interventions en toute simplicité</p>
-        </div>
-
-        <h2 style="text-align:center; font-weight:bold; margin-top:3rem;">Connexion</h2>
-        <div id="login-section" class="viiveo-login" style="max-width:400px; margin:1rem auto;">
-            <form id="loginForm" onsubmit="event.preventDefault()"> 
-                <input type="email" id="email" placeholder="E-mail" autocomplete="username" required style="width:100%; padding:1rem; margin-bottom:1rem; box-sizing:border-box;">
-                
-                <div class="password-container">
-                    <input type="password" id="password" placeholder="Mot de passe" autocomplete="current-password" required style="width:100%; padding:1rem; box-sizing:border-box;">
-                    <i class="fas fa-eye toggle-password" id="togglePassword" onclick="togglePasswordVisibility()"></i>
+    <!-- Footer Commun -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Logo et description -->
+                <div class="md:col-span-1">
+                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-10 mb-4">
+                    <p class="text-gray-300 text-sm" data-translate="footer_desc">
+                        Votre bien-être à domicile, notre priorité.
+                    </p>
                 </div>
-                
-                <button type="submit" style="width:100%; color:white; border:none; padding:1rem; font-weight:600; cursor:pointer; border-radius:1rem;">Connexion</button>
-                <div id="message" style="color:red; margin-top:0.5em; visibility:hidden;"></div>
-            </form>
-        </div>
-        
-        <div id="loader-wrapper">
-            <div id="loader"></div>
-            <div id="loader-message">Connexion en cours...</div>
-        </div>
 
-        <div id="main-missions-display" class="viiveo-missions" style="display: none; max-width: 900px; margin: 1rem auto;">
-            <div id="global-loader" style="display: none; text-align: center; padding: 20px; font-size: 1.2em; color: #555;">
-                Chargement des missions en cours...
-            </div>
-            
-            <div id="missions-attente-container" style="display: none;">
-                <h3>Missions en attente de validation</h3>
-                <div id="missions-attente"></div>
-            </div>
+                <!-- Navigation -->
+                <div>
+                    <h4 class="font-semibold mb-4" data-translate="footer_navigation">Navigation</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="index.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_home">Accueil</a></li>
+                        <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_services">Services</a></li>
+                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_formules">Formules</a></li>
+                        <li><a href="infos_prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Prestataires</a></li>
+                    </ul>
+                </div>
 
-            <div id="missions-planifiees-container" style="display: none;">
-                <h3>Missions planifiées (Validées / Confirmées)</h3>
-                <div id="missions-a-venir"></div>
-            </div>
+                <!-- Espaces -->
+                <div>
+                    <h4 class="font-semibold mb-4" data-translate="footer_spaces">Espaces</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="iclient.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_client">Espace Client</a></li>
+                        <li><a href="iprestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a></li>
+                    </ul>
+                </div>
 
-            <div id="missions-en-cours-container" style="display: none;">
-                <h3>Missions actuellement en cours</h3>
-                <div id="missions-en-cours"></div> 
-            </div>
-
-            <div id="missions-terminees-container" style="display: none;">
-                <h3>Historique des Missions Terminées</h3>
-                <div id="missions-terminees"></div>
-            </div>
-        </div>
-
-        <div id="prestataire-profile-section" style="display: none; max-width: 600px; margin: 1rem auto;">
-            <h2 class="profile-section-title"><i class="fas fa-user-circle mr-2"></i> Mon Profil</h2>
-            <form id="profile-form" onsubmit="event.preventDefault(); saveProfile()">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="profile-prenom">Prénom</label>
-                        <input type="text" id="profile-prenom" required>
-                    </div>
-                    <div>
-                        <label for="profile-nom">Nom</label>
-                        <input type="text" id="profile-nom" required>
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-semibold mb-4" data-translate="footer_contact">Contact</h4>
+                    <div class="text-sm text-gray-300 space-y-2">
+                        <p>info@viiveo.com</p>
+                        <p>+32 475 32 51 27</p>
+                        <div class="flex space-x-4 mt-2">
+                            <a href="https://www.facebook.com/viiveo.be" class="hover:text-yellow-400 transition-colors">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/danydecarpentrie" class="hover:text-yellow-400 transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="https://wa.me/+32475325127" class="hover:text-yellow-400 transition-colors">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <label for="profile-email">Email</label>
-                <input type="email" id="profile-email" disabled> 
-                <label for="profile-phone">Téléphone</label>
-                <input type="tel" id="profile-phone">
-                
-                <label for="profile-address">Adresse complète</label>
-                <input type="text" id="profile-address">
-                
-                <label for="profile-specialties">Spécialité(s)</label>
-                <input type="text" id="profile-specialties" placeholder="Ex: Peinture, Plomberie, Électricité">
-                
-                <label for="profile-availability">Disponibilité</label>
-                <input type="text" id="profile-availability" placeholder="Ex: Lundi au Vendredi, 8h-18h">
-
-                <label for="profile-comment">Commentaire / Bio</label>
-                <textarea id="profile-comment" rows="3"></textarea>
-                
-                <label for="profile-password">Changer de mot de passe (laissez vide si inchangé)</label>
-                <input type="password" id="profile-password" placeholder="Nouveau mot de passe">
-
-                <div class="flex items-center mb-4 mt-2">
-                    <input type="checkbox" id="profile-rgpd" required class="mr-2">
-                    <label for="profile-rgpd" style="display: inline; font-weight: 400;">J'accepte la politique de confidentialité (RGPD)</label>
-                </div>
-                
-                <div class="mb-4">
-                    <label>Photo de Profil (actuelle)</label>
-                    <div id="profile-photo-display" style="width: 100px; height: 100px; background-color: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; color: #666;">
-                        <i class="fas fa-camera"></i>
-                    </div>
-                    <input type="file" id="profile-photo-upload">
-                </div>
-                
-                <button type="submit" id="save-profile-btn" class="w-full text-white font-semibold p-3 rounded-xl transition" style="background: var(--primary-gradient);">
-                    <i class="fas fa-save mr-2"></i> Enregistrer les modifications
-                </button>
-                <div id="profile-message" class="mt-3 text-center" style="visibility:hidden;"></div>
-            </form>
-        </div>
-
-        <div id="actions-section" class="embed-section" style="display: none;">
             </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p data-translate="footer_copyright">© 2024 Viiveo. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p data-translate="loading">Chargement...</p>
+        </div>
+    </div>
+
+    <!-- Modal de profil -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-2xl font-bold" data-translate="profile_title">Mon Profil</h2>
+                <span class="close" onclick="closeModal('profile-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="profile-form">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="form-group">
+                            <label data-translate="first_name">Prénom</label>
+                            <input type="text" id="profile-firstname" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-translate="last_name">Nom</label>
+                            <input type="text" id="profile-lastname" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-translate="email">Email</label>
+                        <input type="email" id="profile-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-translate="phone">Téléphone</label>
+                        <input type="tel" id="profile-phone">
+                    </div>
+                    <div class="form-group">
+                        <label data-translate="specialties">Spécialités</label>
+                        <input type="text" id="profile-specialties" placeholder="Aide ménagère, Jardinage, etc.">
+                    </div>
+                    <div class="form-group">
+                        <label data-translate="description">Description</label>
+                        <textarea id="profile-description" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary text-white w-full py-3 rounded-lg font-semibold" data-translate="save_profile">
+                        Enregistrer les modifications
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script>
-        // =========================================================================
-        // DÉFINITIONS DES FONCTIONS D'INTERFACE UTILISÉES PAR viiveo-app.js
-        // =========================================================================
-        
-        // Variables globales (utilisées par votre viiveo-app.js)
-        window.webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
-        window.currentEmail = null;
-        window.currentPrenom = null;
-        window.currentNom = null;
-        
-        // --- Fonctions de Simulation (à connecter à votre viiveo-app.js) ---
-
-        /**
-         * @function loadProfileData (Simulée)
-         * Récupère les données du prestataire de la DB.
-         */
-        window.loadProfileData = function(email) {
-            console.log(`[APP] Chargement des données de profil pour: ${email}`);
-            
-            // Simuler la latence de chargement pour que le loader s'affiche
-            setTimeout(() => {
-                // Simulation de données récupérées
-                const simulatedData = {
-                    prenom: 'Jean-Paul',
-                    nom: 'Dubois',
-                    phone: '06 12 34 56 78',
-                    address: '15 Rue des Fleurs, 75001 Paris',
-                    specialties: 'Plomberie, Chauffage',
-                    availability: 'Lundi au vendredi, 9h-17h',
-                    comment: 'Prestataire certifié RGE avec 10 ans d\'expérience.',
-                    rgpd: true,
-                    photoUrl: null // URL de la photo
-                };
-
-                // Pré-remplir le formulaire
-                document.getElementById('profile-prenom').value = simulatedData.prenom;
-                document.getElementById('profile-nom').value = simulatedData.nom;
-                document.getElementById('profile-email').value = email;
-                document.getElementById('profile-phone').value = simulatedData.phone;
-                document.getElementById('profile-address').value = simulatedData.address;
-                document.getElementById('profile-specialties').value = simulatedData.specialties;
-                document.getElementById('profile-availability').value = simulatedData.availability;
-                document.getElementById('profile-comment').value = simulatedData.comment;
-                document.getElementById('profile-rgpd').checked = simulatedData.rgpd;
-
-                // Masquer le loader
-                show(document.getElementById('loader'), false);
-            }, 1000); // 1 seconde de simulation de chargement
-        };
-        
-        /**
-         * @function saveProfile (Simulée)
-         * Envoie les données du formulaire à la DB.
-         */
-        function saveProfile() {
-            const btn = document.getElementById('save-profile-btn');
-            const message = document.getElementById('profile-message');
-            
-            message.style.visibility = 'hidden';
-            btn.disabled = true;
-            btn.textContent = 'Sauvegarde en cours...';
-
-            // Simuler l'envoi à la DB (votre viiveo-app.js devrait gérer cela)
-            const updatedData = {
-                prenom: document.getElementById('profile-prenom').value,
-                nom: document.getElementById('profile-nom').value,
-                // etc.
-                password: document.getElementById('profile-password').value // mot de passe (s'il est renseigné)
-            };
-
-            console.log("[APP] Données du profil mises à jour:", updatedData);
-
-            setTimeout(() => {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-save mr-2"></i> Enregistrer les modifications';
-                message.textContent = "Profil mis à jour avec succès !";
-                message.className = 'mt-3 text-center text-green-600 font-semibold';
-                message.style.visibility = 'visible';
+        // Traductions multilingues
+        const translations = {
+            fr: {
+                // Navigation
+                nav_home: "Accueil",
+                nav_services: "Services",
+                nav_formules: "Formules",
+                nav_prestataires: "Prestataires",
+                nav_client: "Espace Client",
+                nav_prestataires_space: "Espace Prestataire",
                 
-                // Vider le champ mot de passe après sauvegarde
-                document.getElementById('profile-password').value = '';
-            }, 2000); // 2 secondes de simulation de latence DB
-        }
-
-        // On suppose que viiveo-app.js expose une fonction pour charger des missions filtrées
-        // NOTE: Cette fonction est conservée pour la compatibilité, mais l'affichage des missions se fait via loadMissions.
-        if (typeof window.loadFilteredMissions === 'undefined') {
-            window.loadFilteredMissions = function(email, filterType) {
-                console.warn(`[APP] Fonction loadFilteredMissions non trouvée dans viiveo-app.js. Simule le chargement pour: ${filterType}`);
+                // Login
+                login_title: "Espace Prestataire Viiveo",
+                login_subtitle: "Connectez-vous pour gérer vos missions et interventions",
+                login_button: "Se connecter",
                 
-                const containerId = 
-                    filterType === 'en_attente' ? 'missions-attente-container' :
-                    filterType === 'planifiees' ? 'missions-planifiees-container' :
-                    filterType === 'en_cours' ? 'missions-en-cours-container' : 
-                    'missions-terminees-container'; // Terminées
-
-                // Masquer les conteneurs existants et afficher le loader
-                hideAllMissionContainers();
-                show(document.getElementById('loader'), true); 
-
-                setTimeout(() => {
-                    show(document.getElementById('loader'), false);
-                    
-                    const targetContainer = document.getElementById(containerId);
-                    if (targetContainer) {
-                        targetContainer.style.display = 'block';
-                        const innerDiv = targetContainer.querySelector('div');
-                        if (innerDiv) innerDiv.innerHTML = `<p class="text-gray-500">Liste des missions de type **${filterType.replace('_', ' ')}** chargée pour ${email}.</p>`;
-                    }
-                    show(document.getElementById('main-missions-display'), true);
-                }, 1500); // 1.5s de chargement
-            };
-        }
-        
-        // La fonction `loadMissions` doit exister dans viiveo-app.js. 
-        // Si elle n'existe pas, nous la simulons pour que le menu fonctionne.
-        if (typeof window.loadMissions === 'undefined') {
-            window.loadMissions = function(email, filterType = 'en_attente') {
-                // Par défaut, nous allons charger les missions en attente après le login.
-                window.loadFilteredMissions(email, filterType);
+                // Interface prestataire
+                welcome: "Bienvenue",
+                specialty: "Spécialité",
+                edit_profile: "Modifier profil",
+                logout: "Déconnexion",
+                statistics: "Mes Statistiques",
+                missions_pending: "Missions en attente",
+                missions_confirmed: "Missions confirmées",
+                missions_progress: "En cours",
+                missions_completed: "Terminées",
+                
+                // Onglets
+                tab_pending: "En Attente",
+                tab_confirmed: "Confirmées",
+                tab_progress: "En Cours",
+                tab_completed: "Terminées",
+                
+                // Titres des onglets
+                pending_missions: "Missions en attente de validation",
+                confirmed_missions: "Missions planifiées",
+                progress_missions: "Missions en cours",
+                completed_missions: "Missions terminées",
+                
+                // Éléments de mission
+                mission_service: "Service",
+                mission_client: "Client",
+                mission_date: "Date",
+                mission_time: "Heure",
+                mission_address: "Adresse",
+                mission_credits: "Crédits",
+                mission_accept: "Accepter",
+                mission_refuse: "Refuser",
+                mission_start: "Démarrer",
+                mission_complete: "Terminer",
+                mission_details: "Détails",
+                no_missions: "Aucune mission disponible",
+                
+                // Footer
+                footer_desc: "Votre bien-être à domicile, notre priorité.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Espaces",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. Tous droits réservés.",
+                
+                // Loader
+                loading: "Chargement...",
+                
+                // Modal profil
+                profile_title: "Mon Profil",
+                first_name: "Prénom",
+                last_name: "Nom",
+                email: "Email",
+                phone: "Téléphone",
+                specialties: "Spécialités",
+                description: "Description",
+                save_profile: "Enregistrer les modifications",
+                
+                // Messages
+                login_success: "Connexion réussie !",
+                login_error: "Email ou mot de passe incorrect",
+                mission_accepted: "Mission acceptée avec succès !",
+                mission_started: "Mission démarrée !",
+                mission_completed: "Mission terminée !",
+                profile_updated: "Profil mis à jour avec succès !"
+            },
+            nl: {
+                nav_home: "Home",
+                nav_services: "Diensten",
+                nav_formules: "Formules",
+                nav_prestataires: "Dienstverleners",
+                nav_client: "Klantenruimte",
+                nav_prestataires_space: "Dienstverlener Ruimte",
+                login_title: "Viiveo Dienstverlener Ruimte",
+                login_subtitle: "Log in om uw missies en interventies te beheren",
+                login_button: "Inloggen",
+                welcome: "Welkom",
+                specialty: "Specialiteit",
+                edit_profile: "Profiel bewerken",
+                logout: "Uitloggen",
+                statistics: "Mijn Statistieken",
+                missions_pending: "Missies in afwachting",
+                missions_confirmed: "Bevestigde missies",
+                missions_progress: "Bezig",
+                missions_completed: "Voltooid",
+                tab_pending: "In Afwachting",
+                tab_confirmed: "Bevestigd",
+                tab_progress: "Bezig",
+                tab_completed: "Voltooid",
+                pending_missions: "Missies in afwachting van validatie",
+                confirmed_missions: "Geplande missies",
+                progress_missions: "Lopende missies",
+                completed_missions: "Voltooide missies",
+                mission_service: "Dienst",
+                mission_client: "Klant",
+                mission_date: "Datum",
+                mission_time: "Tijd",
+                mission_address: "Adres",
+                mission_credits: "Credits",
+                mission_accept: "Accepteren",
+                mission_refuse: "Weigeren",
+                mission_start: "Starten",
+                mission_complete: "Voltooien",
+                mission_details: "Details",
+                no_missions: "Geen missies beschikbaar",
+                footer_desc: "Uw welzijn thuis, onze prioriteit.",
+                footer_navigation: "Navigatie",
+                footer_spaces: "Ruimtes",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden.",
+                loading: "Laden...",
+                profile_title: "Mijn Profiel",
+                first_name: "Voornaam",
+                last_name: "Achternaam",
+                email: "E-mail",
+                phone: "Telefoon",
+                specialties: "Specialiteiten",
+                description: "Beschrijving",
+                save_profile: "Wijzigingen opslaan",
+                login_success: "Login geslaagd!",
+                login_error: "E-mail of wachtwoord onjuist",
+                mission_accepted: "Missie succesvol geaccepteerd!",
+                mission_started: "Missie gestart!",
+                mission_completed: "Missie voltooid!",
+                profile_updated: "Profiel succesvol bijgewerkt!"
+            },
+            en: {
+                nav_home: "Home",
+                nav_services: "Services",
+                nav_formules: "Plans",
+                nav_prestataires: "Providers",
+                nav_client: "Client Space",
+                nav_prestataires_space: "Provider Space",
+                login_title: "Viiveo Provider Space",
+                login_subtitle: "Log in to manage your missions and interventions",
+                login_button: "Log in",
+                welcome: "Welcome",
+                specialty: "Specialty",
+                edit_profile: "Edit profile",
+                logout: "Logout",
+                statistics: "My Statistics",
+                missions_pending: "Pending missions",
+                missions_confirmed: "Confirmed missions",
+                missions_progress: "In progress",
+                missions_completed: "Completed",
+                tab_pending: "Pending",
+                tab_confirmed: "Confirmed",
+                tab_progress: "In Progress",
+                tab_completed: "Completed",
+                pending_missions: "Missions pending validation",
+                confirmed_missions: "Scheduled missions",
+                progress_missions: "Ongoing missions",
+                completed_missions: "Completed missions",
+                mission_service: "Service",
+                mission_client: "Client",
+                mission_date: "Date",
+                mission_time: "Time",
+                mission_address: "Address",
+                mission_credits: "Credits",
+                mission_accept: "Accept",
+                mission_refuse: "Refuse",
+                mission_start: "Start",
+                mission_complete: "Complete",
+                mission_details: "Details",
+                no_missions: "No missions available",
+                footer_desc: "Your home well-being, our priority.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Spaces",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. All rights reserved.",
+                loading: "Loading...",
+                profile_title: "My Profile",
+                first_name: "First name",
+                last_name: "Last name",
+                email: "Email",
+                phone: "Phone",
+                specialties: "Specialties",
+                description: "Description",
+                save_profile: "Save changes",
+                login_success: "Login successful!",
+                login_error: "Incorrect email or password",
+                mission_accepted: "Mission accepted successfully!",
+                mission_started: "Mission started!",
+                mission_completed: "Mission completed!",
+                profile_updated: "Profile updated successfully!"
+            },
+            de: {
+                nav_home: "Startseite",
+                nav_services: "Dienstleistungen",
+                nav_formules: "Tarife",
+                nav_prestataires: "Dienstleister",
+                nav_client: "Kundenbereich",
+                nav_prestataires_space: "Dienstleister Bereich",
+                login_title: "Viiveo Dienstleister Bereich",
+                login_subtitle: "Melden Sie sich an, um Ihre Missionen und Interventionen zu verwalten",
+                login_button: "Anmelden",
+                welcome: "Willkommen",
+                specialty: "Spezialität",
+                edit_profile: "Profil bearbeiten",
+                logout: "Abmelden",
+                statistics: "Meine Statistiken",
+                missions_pending: "Ausstehende Missionen",
+                missions_confirmed: "Bestätigte Missionen",
+                missions_progress: "In Bearbeitung",
+                missions_completed: "Abgeschlossen",
+                tab_pending: "Ausstehend",
+                tab_confirmed: "Bestätigt",
+                tab_progress: "In Bearbeitung",
+                tab_completed: "Abgeschlossen",
+                pending_missions: "Missionen zur Validierung ausstehend",
+                confirmed_missions: "Geplante Missionen",
+                progress_missions: "Laufende Missionen",
+                completed_missions: "Abgeschlossene Missionen",
+                mission_service: "Dienstleistung",
+                mission_client: "Kunde",
+                mission_date: "Datum",
+                mission_time: "Zeit",
+                mission_address: "Adresse",
+                mission_credits: "Credits",
+                mission_accept: "Akzeptieren",
+                mission_refuse: "Ablehnen",
+                mission_start: "Starten",
+                mission_complete: "Abschließen",
+                mission_details: "Details",
+                no_missions: "Keine Missionen verfügbar",
+                footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Bereiche",
+                footer_contact: "Kontakt",
+                footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten.",
+                loading: "Laden...",
+                profile_title: "Mein Profil",
+                first_name: "Vorname",
+                last_name: "Nachname",
+                email: "E-Mail",
+                phone: "Telefon",
+                specialties: "Spezialitäten",
+                description: "Beschreibung",
+                save_profile: "Änderungen speichern",
+                login_success: "Anmeldung erfolgreich!",
+                login_error: "Falsche E-Mail oder Passwort",
+                mission_accepted: "Mission erfolgreich akzeptiert!",
+                mission_started: "Mission gestartet!",
+                mission_completed: "Mission abgeschlossen!",
+                profile_updated: "Profil erfolgreich aktualisiert!"
             }
-        }
+        };
 
+        let currentLanguage = 'fr';
+        let currentProvider = null;
 
-        /**
-         * @function window.show
-         * Utilitaire pour afficher/masquer un élément.
-         */
-        window.show = function(element, shouldShow) {
-            if (element) {
-                if (element.id === 'loader') { 
-                    // Gérer le loader via son wrapper pour le positionnement centré
-                    const wrapper = document.getElementById('loader-wrapper');
-                    if (wrapper) wrapper.style.display = shouldShow ? 'flex' : 'none';
-                } else if (element.id === 'login-section' || element.classList.contains('viiveo-login')) {
-                    const loginSection = document.getElementById('login-section');
-                    if(loginSection) loginSection.style.display = shouldShow ? 'block' : 'none';
-                    const menuBubble = document.getElementById('menu-bubble-container');
-                    // On ne change pas l'affichage du menu s'il est masqué par le login
-                    if (menuBubble && !shouldShow && window.currentEmail) menuBubble.style.display = 'flex';
-                    else if (menuBubble && shouldShow) menuBubble.style.display = 'none';
-                } else if (element.classList.contains('viiveo-missions') || element.id === 'main-missions-display') {
-                    element.style.display = shouldShow ? 'block' : 'none'; 
-                } else {
-                    element.style.display = shouldShow ? 'block' : 'none';
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
                 }
+            });
+
+            const flags = { fr: '🇫🇷', nl: '🇳🇱', en: '🇬🇧', de: '🇩🇪' };
+            const codes = { fr: 'FR', nl: 'NL', en: 'EN', de: 'DE' };
+            
+            document.getElementById('current-flag').textContent = flags[lang];
+            const codeElement = document.querySelector('#language-button .hidden');
+            if (codeElement) {
+                codeElement.textContent = codes[lang];
             }
-        };
 
-        /**
-         * Masque toutes les sections de contenu principal
-         */
-        function hideAllSections() {
-            document.getElementById('main-missions-display').style.display = 'none';
-            document.getElementById('prestataire-profile-section').style.display = 'none';
-            document.getElementById('actions-section').style.display = 'none'; 
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-lang') === lang) {
+                    option.classList.add('active');
+                }
+            });
+
+            localStorage.setItem('viiveo-language', lang);
         }
 
-        /**
-         * Masque tous les conteneurs individuels de missions
-         */
-        function hideAllMissionContainers() {
-            document.getElementById('missions-attente-container').style.display = 'none';
-            document.getElementById('missions-planifiees-container').style.display = 'none';
-            document.getElementById('missions-en-cours-container').style.display = 'none'; 
-            document.getElementById('missions-terminees-container').style.display = 'none';
-        }
+        // Fonction de connexion
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('login-message');
 
-        /**
-         * @function setPrestataireData
-         * Stocke les données du prestataire et met à jour l'affichage d'accueil.
-         */
-        window.setPrestataireData = function(email, prenom, nom) {
-            if (typeof email === 'string' && email.includes('@')) {
-                window.currentEmail = email;
-                window.currentPrenom = prenom || '';
-                window.currentNom = nom || '';
-                
-                const welcomeTitle = document.querySelector('.welcome-section h1');
-                const welcomeP = document.querySelector('.welcome-section p');
-                welcomeTitle.innerHTML = `<i class="fas fa-user-tie"></i> Bienvenue, ${window.currentPrenom || 'Prestataire'} !`;
-                welcomeP.textContent = `Gérez vos missions Viiveo.`;
-                
-                document.getElementById('menu-bubble-container').style.display = 'flex'; 
+            // Afficher le loader
+            document.getElementById('loader').style.display = 'flex';
 
-            } else {
-                console.error("Erreur: L'email du prestataire fourni n'est pas valide.");
-            }
-        };
+            try {
+                // Simulation de connexion - À remplacer par votre API réelle
+                await new Promise(resolve => setTimeout(resolve, 1500));
 
+                // Vérification basique (dans la réalité, cela serait fait par l'API)
+                if (email && password) {
+                    // Connexion réussie
+                    currentProvider = {
+                        email: email,
+                        name: "Marie Dubois",
+                        specialty: "Aide ménagère, Courses",
+                        photo: "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png"
+                    };
 
-        // ===============================================
-        // LOGIQUE D'INTERFACE SPÉCIFIQUE AU HTML (Menu)
-        // ===============================================
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('provider-interface').classList.remove('hidden');
+                    
+                    // Mettre à jour les informations prestataire
+                    document.getElementById('provider-name').textContent = currentProvider.name;
+                    document.getElementById('provider-specialty').textContent = currentProvider.specialty;
+                    document.getElementById('provider-photo').src = currentProvider.photo;
 
-        /**
-         * Affiche les missions 'En attente de validation'.
-         */
-        function showMissions() {
-            if (!window.currentEmail) { alert("Veuillez vous connecter."); return; }
-            closeMenu();
-            hideAllSections();
-            show(document.getElementById('loader'), true);
-            document.getElementById('loader-message').textContent = 'Chargement des missions en attente...';
-            
-            // Appelle la fonction de chargement globale (viiveo-app.js) qui devrait gérer l'affichage final
-            window.loadMissions(window.currentEmail, 'en_attente'); 
-        }
+                    // Charger les missions et statistiques
+                    loadProviderData();
 
-        /**
-         * Affiche les missions 'Planifiées/Confirmées'.
-         */
-        function showPlanning() {
-            if (!window.currentEmail) { alert("Veuillez vous connecter."); return; }
-            closeMenu();
-            hideAllSections();
-            show(document.getElementById('loader'), true);
-            document.getElementById('loader-message').textContent = 'Chargement du planning...';
-
-            window.loadMissions(window.currentEmail, 'planifiees');
-        }
-
-        /**
-         * Affiche les missions 'En Cours'.
-         */
-        function showEnCours() {
-            if (!window.currentEmail) { alert("Veuillez vous connecter."); return; }
-            closeMenu();
-            hideAllSections();
-            show(document.getElementById('loader'), true);
-            document.getElementById('loader-message').textContent = 'Chargement des missions en cours...';
-
-            window.loadMissions(window.currentEmail, 'en_cours');
-        }
-        
-        /**
-         * Affiche les missions 'Terminées'.
-         */
-        function showHistorique() {
-            if (!window.currentEmail) { alert("Veuillez vous connecter."); return; }
-            closeMenu();
-            hideAllSections();
-            show(document.getElementById('loader'), true);
-            document.getElementById('loader-message').textContent = 'Chargement de l\'historique...';
-
-            window.loadMissions(window.currentEmail, 'terminees');
-        }
-
-        /**
-         * Affiche la section 'Profil' et charge les données.
-         */
-        function showProfil() {
-            if (!window.currentEmail) { alert("Veuillez vous connecter."); return; }
-            closeMenu();
-            hideAllSections();
-            document.getElementById('prestataire-profile-section').style.display = 'block';
-            
-            show(document.getElementById('loader'), true);
-            document.getElementById('loader-message').textContent = 'Chargement du profil...';
-
-            // Charge les données du profil (la fonction loadProfileData gère le masquage du loader)
-            window.loadProfileData(window.currentEmail); 
-        }
-
-        // Fonctions pour les autres liens (gardées pour la cohérence du menu)
-        function showRapports() { 
-            closeMenu(); 
-            alert("Navigation vers 'Rapports' (fonctionnalité à développer)."); 
-        }
-        function showMesDonnees() { 
-            closeMenu(); 
-            alert("Fonctionnalité 'Mes données' (similaire à Profil, à fusionner ou définir)."); 
-        }
-
-        // --- Fonctions utilitaires (Gardées intactes ou ajustées pour `window.show`) ---
-        
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('password');
-            const toggleIcon = document.getElementById('togglePassword');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
+                    showNotification(translations[currentLanguage].login_success, 'success');
+                } else {
+                    throw new Error('Invalid credentials');
+                }
+            } catch (error) {
+                message.textContent = translations[currentLanguage].login_error;
+                message.classList.remove('hidden');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
             }
         }
 
+        // Fonction de déconnexion
         function logout() {
-            window.currentEmail = null;
-            window.currentPrenom = null;
-            window.currentNom = null;
-
-            // Masque la bulle et affiche la section de login
-            window.show(document.getElementById('login-section'), true);
-
-            hideAllSections();
-            hideAllMissionContainers();
-            document.getElementById('menu-bubble-container').style.display = 'none'; 
-
-            // Réinitialiser le message de bienvenue
-            document.querySelector('.welcome-section h1').innerHTML = `<i class="fas fa-user-tie"></i> Interface Prestataire Viiveo`;
-            document.querySelector('.welcome-section p').textContent = `Gérez vos missions et interventions en toute simplicité`;
-            closeMenu();
+            currentProvider = null;
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('provider-interface').classList.add('hidden');
+            document.getElementById('login-form').reset();
+            document.getElementById('login-message').classList.add('hidden');
         }
 
-        function closeMenu() {
-            const menuToggle = document.getElementById('menu-toggle');
-            const menu = document.getElementById('menu');
+        // Charger les données du prestataire
+        function loadProviderData() {
+            // Mettre à jour les statistiques
+            document.getElementById('stats-pending').textContent = '3';
+            document.getElementById('stats-confirmed').textContent = '5';
+            document.getElementById('stats-progress').textContent = '2';
+            document.getElementById('stats-completed').textContent = '12';
 
-            if (menuToggle) menuToggle.checked = false;
-            // Un petit délai pour permettre à l'animation du menu de se faire avant de masquer l'élément
-            setTimeout(() => { if (menu) menu.style.display = 'none'; }, 300); 
+            // Charger les missions pour chaque onglet
+            loadMissions('pending');
+            loadMissions('confirmed');
+            loadMissions('progress');
+            loadMissions('completed');
+        }
+
+        // Charger les missions par statut
+        function loadMissions(status) {
+            const container = document.getElementById(`${status}-missions-list`);
+            
+            // Missions simulées
+            const missions = getMockMissions(status);
+            
+            if (missions.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="text-6xl mb-4">😊</div>
+                        <h4 class="text-lg font-semibold text-gray-600 mb-2">${translations[currentLanguage].no_missions}</h4>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = missions.map(mission => `
+                    <div class="mission-card">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-semibold text-gray-800">${mission.service}</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2 text-sm text-gray-600">
+                                    <div>
+                                        <i class="fas fa-user mr-2"></i>
+                                        ${mission.client}
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-calendar mr-2"></i>
+                                        ${mission.date}
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-coins mr-2"></i>
+                                        ${mission.credits} crédits
+                                    </div>
+                                </div>
+                                <div class="mt-2 text-sm text-gray-500">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>
+                                    ${mission.address}
+                                </div>
+                            </div>
+                            <div class="mt-4 md:mt-0 md:ml-4 flex space-x-2">
+                                ${getMissionActions(status, mission.id)}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function getMockMissions(status) {
+            const baseMissions = [
+                {
+                    id: 1,
+                    service: "Aide ménagère",
+                    client: "Jean Dupont",
+                    date: "2024-01-15",
+                    time: "14:00",
+                    address: "15 Rue des Fleurs, 75001 Paris",
+                    credits: 20
+                },
+                {
+                    id: 2,
+                    service: "Courses à domicile",
+                    client: "Sophie Martin",
+                    date: "2024-01-16",
+                    time: "10:00",
+                    address: "22 Avenue Victor Hugo, 75016 Paris",
+                    credits: 18
+                },
+                {
+                    id: 3,
+                    service: "Jardinage",
+                    client: "Pierre Lambert",
+                    date: "2024-01-18",
+                    time: "09:00",
+                    address: "8 Rue de la Paix, 75002 Paris",
+                    credits: 25
+                }
+            ];
+
+            // Filtrer selon le statut (simulation)
+            return baseMissions.filter((_, index) => {
+                if (status === 'pending') return index === 0;
+                if (status === 'confirmed') return index === 1;
+                if (status === 'progress') return index === 2;
+                return index >= 3; // completed
+            });
+        }
+
+        function getMissionActions(status, missionId) {
+            const actions = {
+                'pending': `
+                    <button onclick="acceptMission(${missionId})" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors">
+                        ${translations[currentLanguage].mission_accept}
+                    </button>
+                    <button onclick="refuseMission(${missionId})" class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition-colors">
+                        ${translations[currentLanguage].mission_refuse}
+                    </button>
+                `,
+                'confirmed': `
+                    <button onclick="startMission(${missionId})" class="btn-primary text-white px-4 py-2 rounded-lg font-semibold">
+                        ${translations[currentLanguage].mission_start}
+                    </button>
+                `,
+                'progress': `
+                    <button onclick="completeMission(${missionId})" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors">
+                        ${translations[currentLanguage].mission_complete}
+                    </button>
+                `,
+                'completed': `
+                    <button onclick="showMissionDetails(${missionId})" class="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                        ${translations[currentLanguage].mission_details}
+                    </button>
+                `
+            };
+            return actions[status] || '';
+        }
+
+        function acceptMission(missionId) {
+            if (confirm("Accepter cette mission ?")) {
+                showNotification(translations[currentLanguage].mission_accepted, 'success');
+                loadProviderData(); // Recharger les données
+            }
+        }
+
+        function refuseMission(missionId) {
+            if (confirm("Refuser cette mission ?")) {
+                showNotification("Mission refusée", 'info');
+                loadProviderData(); // Recharger les données
+            }
+        }
+
+        function startMission(missionId) {
+            showNotification(translations[currentLanguage].mission_started, 'success');
+            loadProviderData(); // Recharger les données
+        }
+
+        function completeMission(missionId) {
+            showNotification(translations[currentLanguage].mission_completed, 'success');
+            loadProviderData(); // Recharger les données
+        }
+
+        function showMissionDetails(missionId) {
+            alert(`Détails de la mission #${missionId}`);
+        }
+
+        function showTab(tabName) {
+            // Désactiver tous les onglets
+            document.querySelectorAll('.tab-container').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Activer l'onglet sélectionné
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showProfileModal() {
+            // Pré-remplir le formulaire avec les données actuelles
+            if (currentProvider) {
+                document.getElementById('profile-firstname').value = currentProvider.name.split(' ')[0];
+                document.getElementById('profile-lastname').value = currentProvider.name.split(' ')[1];
+                document.getElementById('profile-email').value = currentProvider.email;
+                document.getElementById('profile-specialties').value = currentProvider.specialty;
+            }
+            document.getElementById('profile-modal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function showNotification(message, type = 'info') {
+            // Implémentation basique de notification
+            alert(message);
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Logique pour ouvrir/fermer la navigation hamburger
-            const menuToggle = document.getElementById('menu-toggle');
-            const menu = document.getElementById('menu');
+            const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
+            changeLanguage(savedLanguage);
 
-            if (menuToggle && menu) {
-                menuToggle.addEventListener('change', function() {
-                    if (this.checked) {
-                        menu.style.display = 'block';
-                    } else {
-                        setTimeout(() => { menu.style.display = 'none'; }, 300); 
-                    }
+            // Gestion du sélecteur de langue
+            const languageButton = document.getElementById('language-button');
+            const languageDropdown = document.getElementById('language-dropdown');
+            
+            if (languageButton && languageDropdown) {
+                languageButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    languageDropdown.classList.toggle('hidden');
+                });
+
+                document.addEventListener('click', function() {
+                    languageDropdown.classList.add('hidden');
+                });
+
+                document.querySelectorAll('.language-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const lang = this.getAttribute('data-lang');
+                        changeLanguage(lang);
+                        languageDropdown.classList.add('hidden');
+                    });
                 });
             }
+
+            // Menu mobile
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('open');
+                });
+            }
+
+            // Fermer les modales en cliquant à l'extérieur
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
+            });
+
+            // Gestion du formulaire de profil
+            document.getElementById('profile-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                showNotification(translations[currentLanguage].profile_updated, 'success');
+                closeModal('profile-modal');
+            });
         });
     </script>
 </body>
