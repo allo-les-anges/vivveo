@@ -3,833 +3,996 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viiveo - Nos Services</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-    <!-- Bouton Maison (accueil) -->
-    <a href="https://allo-les-anges.github.io/vivveo/" class="menu-bubble" aria-label="Accueil"> 
-        <i class="fas fa-home"></i>
-    </a>
-
-    <!-- Contenu principal -->
-    <div class="container">
-        <h1 style="text-align: center; margin: 40px 0; font-size: 2.5rem;">Nos Services à Domicile</h1>
-        
-        <div style="text-align: center; margin: 30px 0;">
-            <a href="https://allo-les-anges.github.io/vivveo/infos_prestataires.html" target="_blank" class="btn-presta">
-                En savoir plus sur nos prestataires ?
-            </a>
-        </div>
-        
-        <div class="grid-container">
-            <!-- Aide ménagère -->
-            <div class="card" onclick="openModal('modal-aide-menagere')">
-                <div style="font-size: 4rem; margin-bottom: 20px;">🧹</div>
-                <h3>Aide ménagère</h3>
-                <p>Service de ménage professionnel à domicile pour vous faciliter le quotidien</p>
-            </div>
-
-            <!-- Courses à domicile -->
-            <div class="card" onclick="openModal('modal-courses')">
-                <div style="font-size: 4rem; margin-bottom: 20px;">🛒</div>
-                <h3>Courses à domicile</h3>
-                <p>Nous faisons vos courses et vous les livrons directement chez vous</p>
-            </div>
-
-            <!-- Coiffure à domicile -->
-            <div class="card" onclick="openModal('modal-coiffure')">
-                <div style="font-size: 4rem; margin-bottom: 20px;">✂️</div>
-                <h3>Coiffure à domicile</h3>
-                <p>Services de coiffure professionnels dans le confort de votre domicile</p>
-            </div>
-
-            <!-- Jardinage -->
-            <div class="card" onclick="openModal('modal-jardinage')">
-                <div style="font-size: 4rem; margin-bottom: 20px;">🌱</div>
-                <h3>Jardinage</h3>
-                <p>Entretien de votre jardin et espaces verts par des professionnels</p>
-            </div>
-
-            <!-- Transport accompagné -->
-            <div class="card" onclick="openModal('modal-transport')">
-                <div style="font-size: 4rem; margin-bottom: 20px;">🚗</div>
-                <h3>Transport accompagné</h3>
-                <p>Service de transport avec accompagnement pour vos déplacements</p>
-            </div>
-
-            <!-- Assistance / Secours -->
-            <div class="card" onclick="openModal('modal-assistance')">
-                <div style="font-size: 4rem; margin-bottom: 20px;">🆘</div>
-                <h3>Assistance / Secours</h3>
-                <p>Aide d'urgence et assistance pour toutes situations délicates</p>
-            </div>
-
-            <!-- Homme à tout faire -->
-            <div class="card" onclick="openModal('modal-homme')">
-                <div style="font-size: 4rem; margin-bottom: 20px;">🔧</div>
-                <h3>Homme à tout faire</h3>
-                <p>Petits travaux et réparations diverses dans votre domicile</p>
-            </div>
-
-            <!-- Visite bénévole -->
-            <div class="card" onclick="openModal('modal-benevole')">
-                <div style="font-size: 4rem; margin-bottom: 20px;">❤️</div>
-                <h3>Visite bénévole</h3>
-                <p>Compagnie et soutien moral par nos bénévoles dévoués</p>
-            </div>
-
-            <!-- Livraison de repas -->
-            <div class="card" onclick="openModal('modal-repas')">
-                <div style="font-size: 4rem; margin-bottom: 20px;">🍽️</div>
-                <h3>Commande de repas</h3>
-                <p>Livraison de repas équilibrés et savoureux directement chez vous</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modales -->
-    <!-- Modal Aide ménagère -->
-    <div id="modal-aide-menagere" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal-aide-menagere')">&times;</span>
-            <form name="form-aide-menagere" method="POST">
-                <h2>Demande : Aide ménagère</h2>
-                <label>🔒 Mot de passe</label>
-                <input type="password" name="password" required>
-                <label>👤 Prénom</label>
-                <input type="text" name="prenom" required>
-                <label>👤 Nom</label>
-                <input type="text" name="nom" required>
-                <label>🏠 Adresse complète</label>
-                <input type="text" name="adresse" required>
-                <label>📧 Email</label>
-                <input type="email" name="email" required>
-                <label>🛎️ Nature du service</label>
-                <input type="text" name="service" value="Aide ménagère" readonly>
-                <label>📅 Date souhaitée</label>
-                <input type="date" name="date" required>
-                <label>⏰ Heure de passage souhaitée</label>
-                <input type="time" name="heure" required>
-                <label>🔽 Choisir un prestataire (optionnel)</label>
-                <select name="prestataire" id="select-prestataire-aide-menagere">
-                    <option value="" selected>Pas de préférence</option>
-                </select>
-                <label>📝 Commentaire</label>
-                <textarea name="commentaire"></textarea>
-                <input type="hidden" name="prenom_prestataire" value="">
-                <input type="hidden" name="nom_prestataire" value="">
-                <button type="submit">Envoyer la demande</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Courses -->
-    <div id="modal-courses" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal-courses')">&times;</span>
-            <form name="form-courses" method="POST">
-                <h2>Demande : Courses à domicile</h2>
-                <label>🔒 Mot de passe</label>
-                <input type="password" name="password" required>
-                <label>👤 Prénom</label>
-                <input type="text" name="prenom" required>
-                <label>👤 Nom</label>
-                <input type="text" name="nom" required>
-                <label>🏠 Adresse complète</label>
-                <input type="text" name="adresse" required>
-                <label>📧 Email</label>
-                <input type="email" name="email" required>
-                <label>🛎️ Nature du service</label>
-                <input type="text" name="service" value="Courses à domicile" readonly>
-                <label>📅 Date souhaitée</label>
-                <input type="date" name="date" required>
-                <label>⏰ Heure de passage souhaitée</label>
-                <input type="time" name="heure" required>
-                <label>🔽 Choisir un prestataire (optionnel)</label>
-                <select name="prestataire" id="select-prestataire-courses">
-                    <option value="" selected>Pas de préférence</option>
-                </select>
-                <label>📝 Commentaire</label>
-                <textarea name="commentaire"></textarea>
-                <input type="hidden" name="prenom_prestataire" value="">
-                <input type="hidden" name="nom_prestataire" value="">
-                <button type="submit">Envoyer la demande</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Coiffure -->
-    <div id="modal-coiffure" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal-coiffure')">&times;</span>
-            <form name="form-coiffure" method="POST">
-                <h2>Demande : Coiffure à domicile</h2>
-                <label>🔒 Mot de passe</label>
-                <input type="password" name="password" required>
-                <label>👤 Prénom</label>
-                <input type="text" name="prenom" required>
-                <label>👤 Nom</label>
-                <input type="text" name="nom" required>
-                <label>🏠 Adresse complète</label>
-                <input type="text" name="adresse" required>
-                <label>📧 Email</label>
-                <input type="email" name="email" required>
-                <label>🛎️ Nature du service</label>
-                <input type="text" name="service" value="Coiffure à domicile" readonly>
-                <label>📅 Date souhaitée</label>
-                <input type="date" name="date" required>
-                <label>⏰ Heure de passage souhaitée</label>
-                <input type="time" name="heure" required>
-                <label>🔽 Choisir un prestataire (optionnel)</label>
-                <select name="prestataire" id="select-prestataire-coiffure">
-                    <option value="" selected>Pas de préférence</option>
-                </select>
-                <label>📝 Commentaire</label>
-                <textarea name="commentaire"></textarea>
-                <input type="hidden" name="prenom_prestataire" value="">
-                <input type="hidden" name="nom_prestataire" value="">
-                <button type="submit">Envoyer la demande</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Jardinage -->
-    <div id="modal-jardinage" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal-jardinage')">&times;</span>
-            <form name="form-jardinage" method="POST">
-                <h2>Demande : Jardinage</h2>
-                <label>🔒 Mot de passe</label>
-                <input type="password" name="password" required>
-                <label>👤 Prénom</label>
-                <input type="text" name="prenom" required>
-                <label>👤 Nom</label>
-                <input type="text" name="nom" required>
-                <label>🏠 Adresse complète</label>
-                <input type="text" name="adresse" required>
-                <label>📧 Email</label>
-                <input type="email" name="email" required>
-                <label>🛎️ Nature du service</label>
-                <input type="text" name="service" value="Jardinage" readonly>
-                <label>📅 Date souhaitée</label>
-                <input type="date" name="date" required>
-                <label>⏰ Heure de passage souhaitée</label>
-                <input type="time" name="heure" required>
-                <label>🔽 Choisir un prestataire (optionnel)</label>
-                <select name="prestataire" id="select-prestataire-jardinage">
-                    <option value="" selected>Pas de préférence</option>
-                </select>
-                <label>📝 Commentaire</label>
-                <textarea name="commentaire"></textarea>
-                <input type="hidden" name="prenom_prestataire" value="">
-                <input type="hidden" name="nom_prestataire" value="">
-                <button type="submit">Envoyer la demande</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Transport -->
-    <div id="modal-transport" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal-transport')">&times;</span>
-            <form name="form-transport" method="POST">
-                <h2>Demande : Transport accompagné</h2>
-                <label>🔒 Mot de passe</label>
-                <input type="password" name="password" required>
-                <label>👤 Prénom</label>
-                <input type="text" name="prenom" required>
-                <label>👤 Nom</label>
-                <input type="text" name="nom" required>
-                <label>🏠 Adresse complète</label>
-                <input type="text" name="adresse" required>
-                <label>📧 Email</label>
-                <input type="email" name="email" required>
-                <label>🛎️ Nature du service</label>
-                <input type="text" name="service" value="Transport accompagné" readonly>
-                <label>📅 Date souhaitée</label>
-                <input type="date" name="date" required>
-                <label>⏰ Heure de passage souhaitée</label>
-                <input type="time" name="heure" required>
-                <label>🔽 Choisir un prestataire (optionnel)</label>
-                <select name="prestataire" id="select-prestataire-transport">
-                    <option value="" selected>Pas de préférence</option>
-                </select>
-                <label>📝 Commentaire</label>
-                <textarea name="commentaire"></textarea>
-                <input type="hidden" name="prenom_prestataire" value="">
-                <input type="hidden" name="nom_prestataire" value="">
-                <button type="submit">Envoyer la demande</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Assistance -->
-    <div id="modal-assistance" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal-assistance')">&times;</span>
-            <form name="form-assistance" method="POST">
-                <h2>Demande : Assistance / Secours</h2>
-                <label>🔒 Mot de passe</label>
-                <input type="password" name="password" required>
-                <label>👤 Prénom</label>
-                <input type="text" name="prenom" required>
-                <label>👤 Nom</label>
-                <input type="text" name="nom" required>
-                <label>🏠 Adresse complète</label>
-                <input type="text" name="adresse" required>
-                <label>📧 Email</label>
-                <input type="email" name="email" required>
-                <label>🛎️ Nature du service</label>
-                <input type="text" name="service" value="Assistance / Secours" readonly>
-                <label>📅 Date souhaitée</label>
-                <input type="date" name="date" required>
-                <label>⏰ Heure de passage souhaitée</label>
-                <input type="time" name="heure" required>
-                <label>🔽 Choisir un prestataire (optionnel)</label>
-                <select name="prestataire" id="select-prestataire-assistance">
-                    <option value="" selected>Pas de préférence</option>
-                </select>
-                <label>📝 Commentaire</label>
-                <textarea name="commentaire"></textarea>
-                <input type="hidden" name="prenom_prestataire" value="">
-                <input type="hidden" name="nom_prestataire" value="">
-                <button type="submit">Envoyer la demande</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Homme à tout faire -->
-    <div id="modal-homme" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal-homme')">&times;</span>
-            <form name="form-homme" method="POST">
-                <h2>Demande : Homme à tout faire</h2>
-                <label>🔒 Mot de passe</label>
-                <input type="password" name="password" required>
-                <label>👤 Prénom</label>
-                <input type="text" name="prenom" required>
-                <label>👤 Nom</label>
-                <input type="text" name="nom" required>
-                <label>🏠 Adresse complète</label>
-                <input type="text" name="adresse" required>
-                <label>📧 Email</label>
-                <input type="email" name="email" required>
-                <label>🛎️ Nature du service</label>
-                <input type="text" name="service" value="Homme à tout faire" readonly>
-                <label>📅 Date souhaitée</label>
-                <input type="date" name="date" required>
-                <label>⏰ Heure de passage souhaitée</label>
-                <input type="time" name="heure" required>
-                <label>🔽 Choisir un prestataire (optionnel)</label>
-                <select name="prestataire" id="select-prestataire-homme">
-                    <option value="" selected>Pas de préférence</option>
-                </select>
-                <label>📝 Commentaire</label>
-                <textarea name="commentaire"></textarea>
-                <input type="hidden" name="prenom_prestataire" value="">
-                <input type="hidden" name="nom_prestataire" value="">
-                <button type="submit">Envoyer la demande</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Bénévole -->
-    <div id="modal-benevole" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal-benevole')">&times;</span>
-            <form name="form-benevole" method="POST">
-                <h2>Demande : Visite bénévole</h2>
-                <label>🔒 Mot de passe</label>
-                <input type="password" name="password" required>
-                <label>👤 Prénom</label>
-                <input type="text" name="prenom" required>
-                <label>👤 Nom</label>
-                <input type="text" name="nom" required>
-                <label>🏠 Adresse complète</label>
-                <input type="text" name="adresse" required>
-                <label>📧 Email</label>
-                <input type="email" name="email" required>
-                <label>🛎️ Nature du service</label>
-                <input type="text" name="service" value="Visite bénévole" readonly>
-                <label>📅 Date souhaitée</label>
-                <input type="date" name="date" required>
-                <label>⏰ Heure de passage souhaitée</label>
-                <input type="time" name="heure" required>
-                <label>🔽 Choisir un prestataire (optionnel)</label>
-                <select name="prestataire" id="select-prestataire-benevole">
-                    <option value="" selected>Pas de préférence</option>
-                </select>
-                <label>📝 Commentaire</label>
-                <textarea name="commentaire"></textarea>
-                <input type="hidden" name="prenom_prestataire" value="">
-                <input type="hidden" name="nom_prestataire" value="">
-                <button type="submit">Envoyer la demande</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Repas -->
-    <div id="modal-repas" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modal-repas')">&times;</span>
-            <form name="form-repas" method="POST">
-                <h2>Demande : Commande de repas</h2>
-                <label>🔒 Mot de passe</label>
-                <input type="password" name="password" required>
-                <label>👤 Prénom</label>
-                <input type="text" name="prenom" required>
-                <label>👤 Nom</label>
-                <input type="text" name="nom" required>
-                <label>🏠 Adresse complète</label>
-                <input type="text" name="adresse" required>
-                <label>📧 Email</label>
-                <input type="email" name="email" required>
-                <label>🛎️ Nature du service</label>
-                <input type="text" name="service" value="Commande de repas" readonly>
-                <label>📅 Date souhaitée</label>
-                <input type="date" name="date" required>
-                <label>⏰ Heure de passage souhaitée</label>
-                <input type="time" name="heure" required>
-                <label>🔽 Choisir un prestataire (optionnel)</label>
-                <select name="prestataire" id="select-prestataire-repas">
-                    <option value="" selected>Pas de préférence</option>
-                </select>
-                <label>📝 Commentaire</label>
-                <textarea name="commentaire"></textarea>
-                <input type="hidden" name="prenom_prestataire" value="">
-                <input type="hidden" name="nom_prestataire" value="">
-                <button type="submit">Envoyer la demande</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <img src="https://i.postimg.cc/VNqjxcQX/logo-viiveo-2.png" alt="viiveo Logo">
-        <div class="contact-info">
-            <p>info@viiveo.com</p>
-            <p>+32 475 32 51 27</p>
-        </div>
-        <div class="social-icons">
-            <a href="https://www.facebook.com/viiveo.be?locale=fr_FR" target="_blank">
-                <i class="fab fa-facebook" style="color: #3b5998;"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/danydecarpentrie" target="_blank">
-                <i class="fab fa-linkedin" style="color: #0077b5;"></i>
-            </a>
-            <a href="https://wa.me/+32475325127" target="_blank">
-                <i class="fab fa-whatsapp" style="color: #25D366;"></i>
-            </a>
-        </div>
-        <hr>
-        <p class="copyright">Copyright © Viiveo 2025</p>
-    </footer>
-
-    <!-- Loader (optionnel) -->
-    <div class="viiveo-loader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
-        <div style="background: white; padding: 20px; border-radius: 10px; text-align: center;">
-            <div style="border: 4px solid #f3f3f3; border-top: 4px solid #006E90; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 10px;"></div>
-            <p>Envoi en cours...</p>
-        </div>
-    </div>
-
+    <title>Nos Services - Viiveo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #facc15;
+            --primary-dark: #eab308;
+            --secondary-color: #1f2937;
+            --light-color: #f8fafc;
+            --text-color: #374151;
+            --transition: all 0.3s ease;
+        }
+
         body {
-            box-sizing: border-box;
             font-family: 'Inter', sans-serif;
-            background-image: url('https://res.cloudinary.com/drn6w4nab/image/upload/v1759138967/viiveo_bkg_servives_sbzzec.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            margin: 0;
-            padding: 0;
-            color: #1e1e1e;
-            font-size: 1.2rem;
-            line-height: 1.7;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #fefce8 0%, #fef3c7 50%, #fef9c3 100%);
+            min-height: 100vh;
         }
 
-        h1, h2, h3 {
-            font-weight: 700;
-            color: #1e1e1e;
+        .gradient-bg {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+        }
+        
+        .card-hover {
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            border-color: #fde047;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            transition: var(--transition);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(253, 224, 71, 0.4);
         }
 
-        .menu-bubble {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 48px;
-            height: 48px;
-            background-color: white;
-            border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        .language-selector {
+            position: relative;
+        }
+        
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 50;
+            min-width: 150px;
+        }
+        
+        .language-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            z-index: 9999;
-            transition: background-color 0.3s ease;
-            color: #333;
-            font-size: 20px;
+            gap: 0.5rem;
+        }
+        
+        .language-option:hover {
+            background-color: #f9fafb;
+        }
+        
+        .language-option.active {
+            background-color: #fef3c7;
+            color: #92400e;
         }
 
-        .menu-bubble:hover {
-            background-color: #f2f2f2;
+        /* Navigation unifiée */
+        .nav-link {
+            position: relative;
+            transition: var(--transition);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
         }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 40px;
-            max-width: 1200px;
-            margin: 60px auto;
-            padding: 0 20px;
+        .nav-link:hover:after {
+            width: 100%;
         }
 
-        .card {
-            background-color: rgba(255, 255, 255, 0.85);
-            border: 2px solid #dbe3e7;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        .mobile-menu {
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
         }
 
-        .card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        .mobile-menu.open {
+            transform: translateY(0);
         }
 
-        .card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
+        /* Styles spécifiques aux services */
+        .service-emoji {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
         }
 
-        .card p {
-            font-size: 1.1rem;
-            color: #444;
+        .card-hover:hover .service-emoji {
+            transform: scale(1.1) rotate(5deg);
         }
 
+        /* Modales */
         .modal {
             display: none;
             position: fixed;
-            z-index: 9999;
+            z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.6);
-            padding-top: 60px;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
-            background-color: #ffffff;
-            margin: auto;
-            padding: 40px;
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 1.5rem;
             width: 90%;
             max-width: 600px;
-            border-radius: 14px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            padding: 2rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+            color: white;
             position: relative;
         }
 
         .close {
             position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 32px;
-            color: #666;
-            cursor: pointer;
-        }
-
-        form label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 6px;
-            margin-top: 16px;
-        }
-
-        form input,
-        form textarea,
-        form select {
-            width: 100%;
-            padding: 14px;
-            font-size: 1.1rem;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            margin-top: 6px;
-            box-sizing: border-box;
-        }
-
-        form input:focus,
-        form textarea:focus,
-        form select:focus {
-            outline: none;
-            border-color: #006E90;
-            box-shadow: 0 0 0 3px rgba(0, 110, 144, 0.2);
-        }
-
-        form button {
-            display: block;
-            width: 100%;
-            background-color: #006E90;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
             color: white;
-            font-size: 1.2rem;
-            font-weight: bold;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
             cursor: pointer;
-            margin-top: 24px;
-            transition: background-color 0.3s ease;
+            transition: var(--transition);
         }
 
-        form button:hover {
-            background-color: #004e66;
+        .close:hover {
+            transform: scale(1.1);
         }
 
-        footer {
-            width: 90%;
-            max-width: 1150px;
-            margin: 60px auto 0 auto;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 20px;
-            font-family: 'Inter', sans-serif;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.05);
-            text-align: center;
+        .modal-body {
+            padding: 2rem;
         }
 
-        footer img {
-            max-width: 180px;
-            height: auto;
-            margin-bottom: 10px;
+        .form-group {
+            margin-bottom: 1.5rem;
         }
 
-        footer .contact-info p {
-            color: #555;
-            font-size: 14px;
-            margin: 2px 0;
-        }
-
-        footer .social-icons {
-            margin-top: 10px;
-        }
-
-        footer .social-icons a {
-            margin: 0 10px;
-            text-decoration: none;
-        }
-
-        footer .social-icons i {
-            font-size: 30px;
-        }
-
-        footer hr {
-            margin: 20px auto;
-            width: 80%;
-            border: 0;
-            border-top: 1px solid #ccc;
-        }
-
-        footer .copyright {
-            font-size: 12px;
-            color: #999;
-            margin-top: 10px;
-        }
-
-        .btn-presta {
-            display: inline-block;
-            background-color: #006E90;
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 10px;
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
             font-weight: 600;
-            font-size: 1.1rem;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 110, 144, 0.3);
+            color: #374151;
         }
 
-        .btn-presta:hover {
-            background-color: #004e66;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 110, 144, 0.4);
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.1);
+        }
+
+        .loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .loader-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #facc15;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        @media (max-width: 600px) {
-            body {
-                font-size: 1.1rem;
-            }
-
-            form button {
-                font-size: 1.1rem;
-                padding: 12px;
-            }
-        }
     </style>
+</head>
+<body>
+    <!-- Header Commun -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
+                </a>
+                
+                <!-- Navigation Desktop -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
+                    <a href="nos_services.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_services">Services</a>
+                    <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Formules</a>
+                    <a href="infos_prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                </nav>
+
+                <!-- Sélecteur de langue -->
+                <div class="language-selector">
+                    <button id="language-button" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <span id="current-flag">🇫🇷</span>
+                        <span class="hidden sm:inline text-sm font-medium">FR</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="language-dropdown" class="language-dropdown hidden">
+                        <div class="language-option active" data-lang="fr">
+                            <span>🇫🇷</span>
+                            <span>Français</span>
+                        </div>
+                        <div class="language-option" data-lang="nl">
+                            <span>🇳🇱</span>
+                            <span>Nederlands</span>
+                        </div>
+                        <div class="language-option" data-lang="en">
+                            <span>🇬🇧</span>
+                            <span>English</span>
+                        </div>
+                        <div class="language-option" data-lang="de">
+                            <span>🇩🇪</span>
+                            <span>Deutsch</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Mobile -->
+                <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg hover:bg-gray-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Menu Mobile -->
+            <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
+                <div class="px-4 py-6 space-y-4">
+                    <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
+                    <a href="nos_services.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_services">Services</a>
+                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Formules</a>
+                    <a href="infos_prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative py-16 md:py-24 bg-gradient-to-br from-yellow-50 to-yellow-100">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6" data-translate="hero_title">
+                Nos Services à Domicile
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8" data-translate="hero_subtitle">
+                Découvrez notre gamme complète de services conçus pour votre confort et votre bien-être à domicile
+            </p>
+            
+            <div class="mt-8">
+                <a href="infos_prestataires.html" class="btn-primary text-white px-8 py-4 rounded-full text-lg font-semibold inline-block shadow-lg" data-translate="prestataires_button">
+                    Découvrir nos prestataires
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                <!-- Aide ménagère -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('aide-menagere')">
+                    <div class="service-emoji">🧹</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_cleaning">Aide ménagère</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_cleaning_desc">
+                        Service de ménage professionnel pour un intérieur étincelant
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
+                        Demander ce service
+                    </button>
+                </div>
+
+                <!-- Courses à domicile -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('courses')">
+                    <div class="service-emoji">🛒</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_shopping">Courses à domicile</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_shopping_desc">
+                        Nous faisons vos courses et les livrons à votre porte
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
+                        Demander ce service
+                    </button>
+                </div>
+
+                <!-- Coiffure à domicile -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('coiffure')">
+                    <div class="service-emoji">💇</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_hairdressing">Coiffure à domicile</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_hairdressing_desc">
+                        Services de coiffure professionnels dans le confort de votre maison
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
+                        Demander ce service
+                    </button>
+                </div>
+
+                <!-- Jardinage -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('jardinage')">
+                    <div class="service-emoji">🌳</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_gardening">Jardinage</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_gardening_desc">
+                        Entretien complet de votre jardin et espaces verts
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
+                        Demander ce service
+                    </button>
+                </div>
+
+                <!-- Transport accompagné -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('transport')">
+                    <div class="service-emoji">🚗</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_transport">Transport accompagné</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_transport_desc">
+                        Accompagnement sécurisé pour tous vos déplacements
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
+                        Demander ce service
+                    </button>
+                </div>
+
+                <!-- Assistance / Secours -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('assistance')">
+                    <div class="service-emoji">🆘</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_assistance">Assistance / Secours</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_assistance_desc">
+                        Aide d'urgence et assistance pour situations délicates
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
+                        Demander ce service
+                    </button>
+                </div>
+
+                <!-- Homme à tout faire -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('homme-tout-faire')">
+                    <div class="service-emoji">🔧</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_handyman">Homme à tout faire</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_handyman_desc">
+                        Petits travaux et réparations diverses à domicile
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
+                        Demander ce service
+                    </button>
+                </div>
+
+                <!-- Visite bénévole -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('benevole')">
+                    <div class="service-emoji">❤️</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_volunteer">Visite bénévole</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_volunteer_desc">
+                        Compagnie et soutien moral par nos bénévoles dévoués
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
+                        Demander ce service
+                    </button>
+                </div>
+
+                <!-- Commande de repas -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('repas')">
+                    <div class="service-emoji">🍽️</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_meals">Commande de repas</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_meals_desc">
+                        Repas équilibrés livrés directement chez vous
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="service_button">
+                        Demander ce service
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-r from-yellow-400 to-yellow-500">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-translate="cta_title">
+                Besoin d'un service spécifique ?
+            </h2>
+            <p class="text-xl text-yellow-100 mb-8 max-w-2xl mx-auto" data-translate="cta_subtitle">
+                Contactez-nous pour discuter de vos besoins particuliers
+            </p>
+            <a href="infos_prestataires.html" class="bg-white text-yellow-600 px-8 py-4 rounded-full text-lg font-semibold inline-block hover:bg-gray-100 transition-all shadow-lg" data-translate="cta_button">
+                Contacter nos prestataires
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer Commun -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Logo et description -->
+                <div class="md:col-span-1">
+                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-10 mb-4">
+                    <p class="text-gray-300 text-sm" data-translate="footer_desc">
+                        Votre bien-être à domicile, notre priorité.
+                    </p>
+                </div>
+
+                <!-- Navigation -->
+                <div>
+                    <h4 class="font-semibold mb-4" data-translate="footer_navigation">Navigation</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="index.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_home">Accueil</a></li>
+                        <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_services">Services</a></li>
+                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_formules">Formules</a></li>
+                        <li><a href="infos_prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Prestataires</a></li>
+                    </ul>
+                </div>
+
+                <!-- Espaces -->
+                <div>
+                    <h4 class="font-semibold mb-4" data-translate="footer_spaces">Espaces</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="iclient.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_client">Espace Client</a></li>
+                        <li><a href="iprestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-semibold mb-4" data-translate="footer_contact">Contact</h4>
+                    <div class="text-sm text-gray-300 space-y-2">
+                        <p>info@viiveo.com</p>
+                        <p>+32 475 32 51 27</p>
+                        <div class="flex space-x-4 mt-2">
+                            <a href="https://www.facebook.com/viiveo.be" class="hover:text-yellow-400 transition-colors">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/danydecarpentrie" class="hover:text-yellow-400 transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="https://wa.me/+32475325127" class="hover:text-yellow-400 transition-colors">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p data-translate="footer_copyright">© 2024 Viiveo. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p data-translate="loading_text">Envoi en cours...</p>
+        </div>
+    </div>
+
+    <!-- Modales seront générées dynamiquement par JavaScript -->
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const baseUrl = "https://gaetano1747.gm-harchies.workers.dev";
-            const loader = document.querySelector(".viiveo-loader");
+        // Traductions multilingues
+        const translations = {
+            fr: {
+                // Navigation
+                nav_home: "Accueil",
+                nav_services: "Services",
+                nav_formules: "Formules",
+                nav_prestataires: "Prestataires",
+                nav_client: "Espace Client",
+                nav_prestataires_space: "Espace Prestataire",
+                
+                // Hero
+                hero_title: "Nos Services à Domicile",
+                hero_subtitle: "Découvrez notre gamme complète de services conçus pour votre confort et votre bien-être à domicile",
+                prestataires_button: "Découvrir nos prestataires",
+                
+                // Services
+                service_cleaning: "Aide ménagère",
+                service_cleaning_desc: "Service de ménage professionnel pour un intérieur étincelant",
+                service_shopping: "Courses à domicile",
+                service_shopping_desc: "Nous faisons vos courses et les livrons à votre porte",
+                service_hairdressing: "Coiffure à domicile",
+                service_hairdressing_desc: "Services de coiffure professionnels dans le confort de votre maison",
+                service_gardening: "Jardinage",
+                service_gardening_desc: "Entretien complet de votre jardin et espaces verts",
+                service_transport: "Transport accompagné",
+                service_transport_desc: "Accompagnement sécurisé pour tous vos déplacements",
+                service_assistance: "Assistance / Secours",
+                service_assistance_desc: "Aide d'urgence et assistance pour situations délicates",
+                service_handyman: "Homme à tout faire",
+                service_handyman_desc: "Petits travaux et réparations diverses à domicile",
+                service_volunteer: "Visite bénévole",
+                service_volunteer_desc: "Compagnie et soutien moral par nos bénévoles dévoués",
+                service_meals: "Commande de repas",
+                service_meals_desc: "Repas équilibrés livrés directement chez vous",
+                service_button: "Demander ce service",
+                
+                // CTA
+                cta_title: "Besoin d'un service spécifique ?",
+                cta_subtitle: "Contactez-nous pour discuter de vos besoins particuliers",
+                cta_button: "Contacter nos prestataires",
+                
+                // Footer
+                footer_desc: "Votre bien-être à domicile, notre priorité.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Espaces",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. Tous droits réservés.",
+                
+                // Formulaires
+                loading_text: "Envoi en cours...",
+                form_title: "Demande de service",
+                form_password: "Mot de passe",
+                form_firstname: "Prénom",
+                form_lastname: "Nom",
+                form_address: "Adresse complète",
+                form_email: "Email",
+                form_service: "Service",
+                form_date: "Date souhaitée",
+                form_time: "Heure de passage souhaitée",
+                form_provider: "Choisir un prestataire (optionnel)",
+                form_no_preference: "Pas de préférence",
+                form_comment: "Commentaire",
+                form_submit: "Envoyer la demande",
+                form_success: "Demande envoyée avec succès !",
+                form_error: "Erreur lors de l'envoi de la demande."
+            },
+            nl: {
+                nav_home: "Home",
+                nav_services: "Diensten",
+                nav_formules: "Formules",
+                nav_prestataires: "Dienstverleners",
+                nav_client: "Klantenruimte",
+                nav_prestataires_space: "Dienstverlener Ruimte",
+                hero_title: "Onze Thuis Diensten",
+                hero_subtitle: "Ontdek ons complete aanbod van diensten ontworpen voor uw comfort en welzijn thuis",
+                prestataires_button: "Ontdek onze dienstverleners",
+                service_cleaning: "Schoonmaakhulp",
+                service_cleaning_desc: "Professionele schoonmaakdienst voor een stralend interieur",
+                service_shopping: "Boodschappen aan huis",
+                service_shopping_desc: "Wij doen uw boodschappen en bezorgen ze aan uw deur",
+                service_hairdressing: "Kapper aan huis",
+                service_hairdressing_desc: "Professionele kappersdiensten in het comfort van uw huis",
+                service_gardening: "Tuinonderhoud",
+                service_gardening_desc: "Volledig onderhoud van uw tuin en groene ruimtes",
+                service_transport: "Begeleid vervoer",
+                service_transport_desc: "Veilige begeleiding voor al uw verplaatsingen",
+                service_assistance: "Assistentie / Hulp",
+                service_assistance_desc: "Spoedhulp en ondersteuning voor delicate situaties",
+                service_handyman: "Klusjesman",
+                service_handyman_desc: "Kleine werkzaamheden en diverse reparaties aan huis",
+                service_volunteer: "Vrijwilligersbezoek",
+                service_volunteer_desc: "Gezelschap en morele steun door onze toegewijde vrijwilligers",
+                service_meals: "Maaltijdbestelling",
+                service_meals_desc: "Gezonde maaltijden rechtstreeks bij u thuis bezorgd",
+                service_button: "Deze dienst aanvragen",
+                cta_title: "Heeft u een specifieke dienst nodig?",
+                cta_subtitle: "Neem contact met ons op om uw specifieke behoeften te bespreken",
+                cta_button: "Contacteer onze dienstverleners",
+                footer_desc: "Uw welzijn thuis, onze prioriteit.",
+                footer_navigation: "Navigatie",
+                footer_spaces: "Ruimtes",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden.",
+                loading_text: "Verzending bezig...",
+                form_title: "Dienstaangevraag",
+                form_password: "Wachtwoord",
+                form_firstname: "Voornaam",
+                form_lastname: "Achternaam",
+                form_address: "Volledig adres",
+                form_email: "E-mail",
+                form_service: "Dienst",
+                form_date: "Gewenste datum",
+                form_time: "Gewenste tijdstip",
+                form_provider: "Kies een dienstverlener (optioneel)",
+                form_no_preference: "Geen voorkeur",
+                form_comment: "Opmerking",
+                form_submit: "Aanvraag verzenden",
+                form_success: "Aanvraag succesvol verzonden!",
+                form_error: "Fout bij het verzenden van de aanvraag."
+            },
+            en: {
+                nav_home: "Home",
+                nav_services: "Services",
+                nav_formules: "Plans",
+                nav_prestataires: "Providers",
+                nav_client: "Client Space",
+                nav_prestataires_space: "Provider Space",
+                hero_title: "Our Home Services",
+                hero_subtitle: "Discover our complete range of services designed for your comfort and home well-being",
+                prestataires_button: "Discover our providers",
+                service_cleaning: "Household help",
+                service_cleaning_desc: "Professional cleaning service for a sparkling interior",
+                service_shopping: "Home shopping",
+                service_shopping_desc: "We do your shopping and deliver it to your door",
+                service_hairdressing: "Home hairdressing",
+                service_hairdressing_desc: "Professional hairdressing services in the comfort of your home",
+                service_gardening: "Gardening",
+                service_gardening_desc: "Complete maintenance of your garden and green spaces",
+                service_transport: "Accompanied transport",
+                service_transport_desc: "Safe accompaniment for all your travels",
+                service_assistance: "Assistance / Help",
+                service_assistance_desc: "Emergency aid and support for delicate situations",
+                service_handyman: "Handyman",
+                service_handyman_desc: "Small jobs and various home repairs",
+                service_volunteer: "Volunteer visit",
+                service_volunteer_desc: "Company and moral support by our dedicated volunteers",
+                service_meals: "Meal order",
+                service_meals_desc: "Balanced meals delivered directly to your home",
+                service_button: "Request this service",
+                cta_title: "Need a specific service?",
+                cta_subtitle: "Contact us to discuss your specific needs",
+                cta_button: "Contact our providers",
+                footer_desc: "Your home well-being, our priority.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Spaces",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. All rights reserved.",
+                loading_text: "Sending in progress...",
+                form_title: "Service request",
+                form_password: "Password",
+                form_firstname: "First name",
+                form_lastname: "Last name",
+                form_address: "Complete address",
+                form_email: "Email",
+                form_service: "Service",
+                form_date: "Desired date",
+                form_time: "Desired time",
+                form_provider: "Choose a provider (optional)",
+                form_no_preference: "No preference",
+                form_comment: "Comment",
+                form_submit: "Send request",
+                form_success: "Request sent successfully!",
+                form_error: "Error sending request."
+            },
+            de: {
+                nav_home: "Startseite",
+                nav_services: "Dienstleistungen",
+                nav_formules: "Tarife",
+                nav_prestataires: "Dienstleister",
+                nav_client: "Kundenbereich",
+                nav_prestataires_space: "Dienstleister Bereich",
+                hero_title: "Unsere Hausdienstleistungen",
+                hero_subtitle: "Entdecken Sie unser komplettes Dienstleistungsangebot für Ihren Komfort und Ihr Wohlbefinden zu Hause",
+                prestataires_button: "Unsere Dienstleister entdecken",
+                service_cleaning: "Haushaltshilfe",
+                service_cleaning_desc: "Professioneller Reinigungsservice für ein strahlendes Interieur",
+                service_shopping: "Einkaufen nach Hause",
+                service_shopping_desc: "Wir erledigen Ihre Einkäufe und liefern sie an Ihre Tür",
+                service_hairdressing: "Friseur zu Hause",
+                service_hairdressing_desc: "Professionelle Friseurdienste im Komfort Ihres Zuhauses",
+                service_gardening: "Gartenarbeit",
+                service_gardening_desc: "Komplette Pflege Ihres Gartens und Ihrer Grünflächen",
+                service_transport: "Begleiteter Transport",
+                service_transport_desc: "Sichere Begleitung für alle Ihre Fahrten",
+                service_assistance: "Assistenz / Hilfe",
+                service_assistance_desc: "Notfallhilfe und Unterstützung in heiklen Situationen",
+                service_handyman: "Handwerker",
+                service_handyman_desc: "Kleine Arbeiten und verschiedene Hausreparaturen",
+                service_volunteer: "Freiwilligenbesuch",
+                service_volunteer_desc: "Gesellschaft und moralische Unterstützung durch unsere engagierten Freiwilligen",
+                service_meals: "Essensbestellung",
+                service_meals_desc: "Ausgewogene Mahlzeiten direkt zu Ihnen nach Hause geliefert",
+                service_button: "Diesen Service anfordern",
+                cta_title: "Benötigen Sie einen bestimmten Service?",
+                cta_subtitle: "Kontaktieren Sie uns, um Ihre spezifischen Bedürfnisse zu besprechen",
+                cta_button: "Unsere Dienstleister kontaktieren",
+                footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Bereiche",
+                footer_contact: "Kontakt",
+                footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten.",
+                loading_text: "Sendung läuft...",
+                form_title: "Dienstanfrage",
+                form_password: "Passwort",
+                form_firstname: "Vorname",
+                form_lastname: "Nachname",
+                form_address: "Vollständige Adresse",
+                form_email: "E-Mail",
+                form_service: "Dienstleistung",
+                form_date: "Gewünschtes Datum",
+                form_time: "Gewünschte Uhrzeit",
+                form_provider: "Dienstleister wählen (optional)",
+                form_no_preference: "Keine Präferenz",
+                form_comment: "Kommentar",
+                form_submit: "Anfrage senden",
+                form_success: "Anfrage erfolgreich gesendet!",
+                form_error: "Fehler beim Senden der Anfrage."
+            }
+        };
 
-            function openModal(modalId) {
-                const modal = document.getElementById(modalId);
-                if (modal) {
-                    modal.style.display = "block";
-                    document.body.style.overflow = "hidden";
+        let currentLanguage = 'fr';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
                 }
+            });
+
+            const flags = { fr: '🇫🇷', nl: '🇳🇱', en: '🇬🇧', de: '🇩🇪' };
+            const codes = { fr: 'FR', nl: 'NL', en: 'EN', de: 'DE' };
+            
+            document.getElementById('current-flag').textContent = flags[lang];
+            const codeElement = document.querySelector('#language-button .hidden');
+            if (codeElement) {
+                codeElement.textContent = codes[lang];
             }
 
-            function closeModal(modalId) {
-                const modal = document.getElementById(modalId);
-                if (modal) {
-                    modal.style.display = "none";
-                    document.body.style.overflow = "auto";
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-lang') === lang) {
+                    option.classList.add('active');
                 }
+            });
+
+            localStorage.setItem('viiveo-language', lang);
+        }
+
+        // Gestion des modales et formulaires
+        const services = {
+            'aide-menagere': { name: 'Aide ménagère', key: 'service_cleaning' },
+            'courses': { name: 'Courses à domicile', key: 'service_shopping' },
+            'coiffure': { name: 'Coiffure à domicile', key: 'service_hairdressing' },
+            'jardinage': { name: 'Jardinage', key: 'service_gardening' },
+            'transport': { name: 'Transport accompagné', key: 'service_transport' },
+            'assistance': { name: 'Assistance / Secours', key: 'service_assistance' },
+            'homme-tout-faire': { name: 'Homme à tout faire', key: 'service_handyman' },
+            'benevole': { name: 'Visite bénévole', key: 'service_volunteer' },
+            'repas': { name: 'Commande de repas', key: 'service_meals' }
+        };
+
+        function openModal(serviceId) {
+            const service = services[serviceId];
+            if (!service) return;
+
+            const modalHTML = `
+                <div class="modal" id="modal-${serviceId}">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="text-2xl font-bold">${translations[currentLanguage].form_title} : ${translations[currentLanguage][service.key]}</h2>
+                            <span class="close" onclick="closeModal('${serviceId}')">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <form id="form-${serviceId}" onsubmit="submitForm(event, '${serviceId}')">
+                                <div class="form-group">
+                                    <label>${translations[currentLanguage].form_password}</label>
+                                    <input type="password" name="password" required>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="form-group">
+                                        <label>${translations[currentLanguage].form_firstname}</label>
+                                        <input type="text" name="prenom" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>${translations[currentLanguage].form_lastname}</label>
+                                        <input type="text" name="nom" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>${translations[currentLanguage].form_address}</label>
+                                    <input type="text" name="adresse" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>${translations[currentLanguage].form_email}</label>
+                                    <input type="email" name="email" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>${translations[currentLanguage].form_service}</label>
+                                    <input type="text" name="service" value="${service.name}" readonly>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="form-group">
+                                        <label>${translations[currentLanguage].form_date}</label>
+                                        <input type="date" name="date" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>${translations[currentLanguage].form_time}</label>
+                                        <input type="time" name="heure" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>${translations[currentLanguage].form_provider}</label>
+                                    <select name="prestataire" id="select-${serviceId}">
+                                        <option value="">${translations[currentLanguage].form_no_preference}</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>${translations[currentLanguage].form_comment}</label>
+                                    <textarea name="commentaire" rows="3"></textarea>
+                                </div>
+                                
+                                <input type="hidden" name="prenom_prestataire" value="">
+                                <input type="hidden" name="nom_prestataire" value="">
+                                
+                                <button type="submit" class="btn-primary text-white w-full py-4 rounded-xl font-semibold text-lg">
+                                    ${translations[currentLanguage].form_submit}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            document.getElementById(`modal-${serviceId}`).style.display = 'block';
+            loadPrestataires(serviceId, service.name);
+        }
+
+        function closeModal(serviceId) {
+            const modal = document.getElementById(`modal-${serviceId}`);
+            if (modal) {
+                modal.remove();
             }
+        }
 
-            window.handleDropdownResponse = function(result, selectId) {
-                const selectElement = document.getElementById(selectId);
-                if (!selectElement) return;
+        function loadPrestataires(serviceId, serviceName) {
+            const selectElement = document.getElementById(`select-${serviceId}`);
+            if (!selectElement) return;
 
-                selectElement.innerHTML = '<option value="" selected>Pas de préférence</option>';
+            // Simulation du chargement des prestataires
+            setTimeout(() => {
+                selectElement.innerHTML = `
+                    <option value="">${translations[currentLanguage].form_no_preference}</option>
+                    <option value="Marie Dubois">Marie Dubois</option>
+                    <option value="Jean Martin">Jean Martin</option>
+                    <option value="Sophie Lambert">Sophie Lambert</option>
+                `;
+            }, 500);
+        }
 
-                if (result && result.success && Array.isArray(result.prestataires)) {
-                    result.prestataires.forEach(presta => {
-                        const option = document.createElement('option');
-                        option.value = presta.nomComplet;
-                        option.textContent = presta.nomComplet;
-                        selectElement.appendChild(option);
+        async function submitForm(event, serviceId) {
+            event.preventDefault();
+            const form = event.target;
+            const submitButton = form.querySelector('button[type="submit"]');
+            
+            // Afficher le loader
+            document.getElementById('loader').style.display = 'flex';
+            submitButton.disabled = true;
+
+            try {
+                // Simulation d'envoi - À remplacer par votre API réelle
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                alert(translations[currentLanguage].form_success);
+                closeModal(serviceId);
+                form.reset();
+                
+            } catch (error) {
+                alert(translations[currentLanguage].form_error);
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+                submitButton.disabled = false;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
+            changeLanguage(savedLanguage);
+
+            // Gestion du sélecteur de langue
+            const languageButton = document.getElementById('language-button');
+            const languageDropdown = document.getElementById('language-dropdown');
+            
+            if (languageButton && languageDropdown) {
+                languageButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    languageDropdown.classList.toggle('hidden');
+                });
+
+                document.addEventListener('click', function() {
+                    languageDropdown.classList.add('hidden');
+                });
+
+                document.querySelectorAll('.language-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const lang = this.getAttribute('data-lang');
+                        changeLanguage(lang);
+                        languageDropdown.classList.add('hidden');
                     });
-                } else {
-                    console.warn("Réponse inattendue ou vide:", result);
-                    selectElement.innerHTML = '<option value="" selected>Aucun prestataire disponible</option>';
-                }
-            };
-
-            function loadPrestataires(selectId, type) {
-                const selectElement = document.getElementById(selectId);
-                if (!selectElement) return;
-
-                selectElement.innerHTML = '<option value="" selected>Chargement...</option>';
-
-                const callbackName = `jsonpCallback_${Date.now()}`;
-                window[callbackName] = function (data) {
-                    window.handleDropdownResponse(data, selectId);
-                    delete window[callbackName];
-                    script.remove();
-                };
-
-                const encodedType = encodeURIComponent(type);
-                const url = `${baseUrl}?type=dropdown&specialite=${encodedType}&callback=${callbackName}`;
-                const script = document.createElement("script");
-                script.src = url;
-                document.body.appendChild(script);
+                });
             }
 
-            const modalToPrestataireMap = {
-                'modal-aide-menagere': { selectId: 'select-prestataire-aide-menagere', specialite: 'Aide ménagère' },
-                'modal-courses': { selectId: 'select-prestataire-courses', specialite: 'Courses à domicile' },
-                'modal-coiffure': { selectId: 'select-prestataire-coiffure', specialite: 'Coiffure à domicile' },
-                'modal-jardinage': { selectId: 'select-prestataire-jardinage', specialite: 'Jardinage' },
-                'modal-transport': { selectId: 'select-prestataire-transport', specialite: 'Transport accompagné' },
-                'modal-assistance': { selectId: 'select-prestataire-assistance', specialite: 'Assistance / Secours' },
-                'modal-homme': { selectId: 'select-prestataire-homme', specialite: 'Homme à tout faire' },
-                'modal-benevole': { selectId: 'select-prestataire-benevole', specialite: 'Bénévole' },
-                'modal-repas': { selectId: 'select-prestataire-repas', specialite: 'Livraison de repas' }
-            };
-
-            document.querySelectorAll(".card").forEach(card => {
-                card.addEventListener("click", function () {
-                    const modalId = this.getAttribute("onclick").match(/'([^']+)'/)[1];
-                    openModal(modalId);
-
-                    const config = modalToPrestataireMap[modalId];
-                    if (config) {
-                        loadPrestataires(config.selectId, config.specialite);
-                    }
+            // Menu mobile
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('open');
                 });
+            }
+
+            // Fermer les modales en cliquant à l'extérieur
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
             });
-
-            document.querySelectorAll("form").forEach(form => {
-                form.addEventListener("submit", async function (e) {
-                    e.preventDefault();
-
-                    const submitButton = this.querySelector('button[type="submit"]');
-
-                    if (loader) loader.style.display = "flex";
-                    if (submitButton) submitButton.disabled = true;
-
-                    const selectPrestataire = this.querySelector('select[name="prestataire"]');
-                    const fullName = selectPrestataire?.value || "";
-
-                    const prenomInput = this.querySelector('input[name="prenom_prestataire"]');
-                    const nomInput = this.querySelector('input[name="nom_prestataire"]');
-
-                    if (prenomInput && nomInput) {
-                        if (fullName.trim() && fullName !== "Pas de préférence") {
-                            const parts = fullName.trim().split(" ");
-                            prenomInput.value = parts.shift() || "";
-                            nomInput.value = parts.join(" ") || "";
-                        } else {
-                            prenomInput.value = "";
-                            nomInput.value = "";
-                        }
-                    }
-
-                    const formUrl = `${baseUrl}?type=formClient`;
-                    const formData = new FormData(this);
-
-                    try {
-                        const response = await fetch(formUrl, {
-                            method: "POST",
-                            body: formData,
-                        });
-
-                        if (!response.ok) throw new Error(`Erreur serveur: ${response.statusText}`);
-
-                        const result = await response.json();
-
-                        if (result.success) {
-                            alert(`✅ ${result.message || "Demande envoyée avec succès !"}`);
-                            this.reset();
-                            const modal = this.closest(".modal");
-                            if (modal) closeModal(modal.id);
-                        } else {
-                            alert(`⚠️ ${result.message || "Erreur côté serveur."}`);
-                        }
-
-                    } catch (err) {
-                        alert("❌ Problème de connexion : " + err.message);
-                        console.error(err);
-                    } finally {
-                        if (loader) loader.style.display = "none";
-                        if (submitButton) submitButton.disabled = false;
-                    }
-                });
-            });
-
-            window.openModal = openModal;
-            window.closeModal = closeModal;
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986b6e72d396d204',t:'MTc1OTE0ODM5My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
