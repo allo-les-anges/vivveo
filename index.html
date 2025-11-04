@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viiveo - Et si vous restiez chez vous ?</title>
+    <title>Viiveo - Nos Services</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         :root {
             --primary-color: #facc15;
@@ -19,6 +20,11 @@
         body {
             font-family: 'Inter', sans-serif;
             color: var(--text-color);
+            background-image: url('https://res.cloudinary.com/drn6w4nab/image/upload/v1759138967/viiveo_bkg_servives_sbzzec.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
         }
 
         .gradient-bg {
@@ -43,42 +49,7 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(253, 224, 71, 0.4);
         }
-        
-        .language-selector {
-            position: relative;
-        }
-        
-        .language-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            z-index: 50;
-            min-width: 150px;
-        }
-        
-        .language-option {
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .language-option:hover {
-            background-color: #f9fafb;
-        }
-        
-        .language-option.active {
-            background-color: #fef3c7;
-            color: #92400e;
-        }
 
-        /* Navigation unifiée */
         .nav-link {
             position: relative;
             transition: var(--transition);
@@ -108,25 +79,254 @@
             transform: translateY(0);
         }
 
-        /* Styles pour la vidéo de fond */
-        .video-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
+        /* Styles spécifiques services */
+        .service-card {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 2px solid #fef3c7;
+            transition: var(--transition);
+            cursor: pointer;
         }
 
-        .video-overlay {
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .service-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .service-overlay {
             position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(253, 224, 71, 0.9) 0%, rgba(250, 204, 21, 0.8) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-overlay {
+            opacity: 1;
+        }
+
+        .rating-stars {
+            color: #fbbf24;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 1.5rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            padding: 2rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+            color: white;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close:hover {
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.1);
+        }
+
+        .calendar-container {
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        .flatpickr-calendar {
+            box-shadow: none !important;
+            border: none !important;
+        }
+
+        .review-card {
+            background: #f8fafc;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .review-author {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .review-date {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .hours-selector {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .hours-btn {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .hours-btn:hover {
+            border-color: #facc15;
+        }
+
+        .hours-btn.selected {
+            background: #facc15;
+            color: white;
+            border-color: #facc15;
+        }
+
+        .credit-info {
+            background: #fef3c7;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .loader {
+            display: none;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0);
-            z-index: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .loader-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #facc15;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -143,7 +343,7 @@
                 <!-- Navigation Desktop -->
                 <nav class="hidden lg:flex items-center space-x-8">
                     <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Accueil</a>
-                    <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Services</a>
+                    <a href="nos_services.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500">Services</a>
                     <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Formules</a>
                     <a href="infos_prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Prestataires</a>
                     <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Espace Client</a>
@@ -191,7 +391,7 @@
             <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
                 <div class="px-4 py-6 space-y-4">
                     <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Accueil</a>
-                    <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Services</a>
+                    <a href="nos_services.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium">Services</a>
                     <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Formules</a>
                     <a href="infos_prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Prestataires</a>
                     <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Espace Client</a>
@@ -201,110 +401,354 @@
         </div>
     </header>
 
-    <!-- Hero Section avec vidéo -->
-    <section class="relative text-white py-20 md:py-32 min-h-screen flex items-center overflow-hidden">
-        <!-- Vidéo de fond -->
-        <video autoplay muted loop playsinline class="video-background">
-            <source src="https://res.cloudinary.com/drn6w4nab/video/upload/v1762272446/WhatsApp_Vid%C3%A9o_2025-11-04_%C3%A0_17.07.07_504a66e1_dgnwfz.mp4" type="video/mp4">
-            Votre navigateur ne supporte pas la vidéo.
-        </video>
-        
-        <!-- Overlay sombre pour améliorer la lisibilité -->
-        <div class="video-overlay"></div>
-        
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-8 md:mb-12 lg:mb-16 leading-tight text-white" data-translate="hero_title">
-                    Et si vous restiez chez vous ?
-                </h2>
-                <p class="text-lg md:text-xl lg:text-2xl mb-8 md:mb-12 leading-relaxed max-w-3xl mx-auto text-yellow-100" style="text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.3);" data-translate="hero_subtitle">
-                    La plateforme de services pour vivre sereinement sa retraite chez soi.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center">
-                    <a href="https://tally.so/r/n0zM26" target="_blank" class="btn-primary text-white px-8 md:px-10 py-4 md:py-5 rounded-full text-lg md:text-xl font-semibold inline-block shadow-2xl" data-translate="hero_signup">
-                        Inscription Client
-                    </a>
-                    <a href="https://tally.so/r/mKA0xK" target="_blank" class="bg-white bg-opacity-80 backdrop-blur-sm border-2 border-gray-300 text-gray-800 px-8 md:px-10 py-4 md:py-5 rounded-full text-lg md:text-xl font-semibold inline-block hover:bg-white hover:bg-opacity-100 transition-all duration-300 shadow-2xl" data-translate="hero_prestataire">
-                        Inscription Prestataire
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="py-16 md:py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-12 md:mb-16">
-                <h3 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="services_title">Nos Services</h3>
-                <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto" data-translate="services_subtitle">
-                    Découvrez notre gamme complète de services pensés pour votre bien-être à domicile
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
-                <div class="card-hover bg-white rounded-2xl p-6 md:p-8 shadow-lg border border-gray-100">
-                    <div class="w-16 h-16 bg-yellow-50 rounded-full flex items-center justify-center mb-6">
-                        <span class="text-3xl">🛍️</span>
-                    </div>
-                    <h4 class="text-xl md:text-2xl font-bold text-gray-800 mb-4" data-translate="card1_title">Services à Domicile</h4>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="card1_desc">
-                        Explorez tous nos services adaptés à vos besoins quotidiens
-                    </p>
-                    <a href="nos_services.html" class="text-yellow-400 font-semibold hover:text-yellow-600 transition-colors inline-flex items-center" data-translate="card1_link">
-                        Voir nos services
-                        <span class="ml-2">→</span>
-                    </a>
-                </div>
-
-                <div class="card-hover bg-white rounded-2xl p-6 md:p-8 shadow-lg border border-gray-100">
-                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
-                        <span class="text-3xl">💼</span>
-                    </div>
-                    <h4 class="text-xl md:text-2xl font-bold text-gray-800 mb-4" data-translate="card2_title">Devenir Prestataire</h4>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="card2_desc">
-                        Rejoignez notre réseau de professionnels qualifiés
-                    </p>
-                    <a href="https://tally.so/r/mKA0xK" target="_blank" class="text-green-600 font-semibold hover:text-green-800 transition-colors inline-flex items-center" data-translate="card2_link">
-                        S'inscrire comme prestataire
-                        <span class="ml-2">→</span>
-                    </a>
-                </div>
-
-                <div class="card-hover bg-white rounded-2xl p-6 md:p-8 shadow-lg border border-gray-100">
-                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6">
-                        <span class="text-3xl">💎</span>
-                    </div>
-                    <h4 class="text-xl md:text-2xl font-bold text-gray-800 mb-4" data-translate="card3_title">Nos Formules</h4>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="card3_desc">
-                        Choisissez la formule qui correspond à vos besoins
-                    </p>
-                    <a href="formules.html" class="text-purple-600 font-semibold hover:text-purple-800 transition-colors inline-flex items-center" data-translate="card3_link">
-                        Voir nos formules
-                        <span class="ml-2">→</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="py-16 md:py-20 bg-gray-100">
+    <!-- Hero Section Services -->
+    <section class="relative py-16 md:py-24 bg-gradient-to-br from-yellow-50 to-yellow-100">
         <div class="container mx-auto px-6 text-center">
-            <div class="max-w-3xl mx-auto">
-                <h3 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6" data-translate="cta_title">
-                    Prêt à vivre sereinement chez vous ?
-                </h3>
-                <p class="text-lg md:text-xl text-gray-600 mb-8 md:mb-10 leading-relaxed" data-translate="cta_subtitle">
-                    Rejoignez des milliers de personnes qui ont choisi Viiveo pour leur bien-être à domicile
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="https://tally.so/r/n0zM26" target="_blank" class="btn-primary text-white px-8 md:px-10 py-3 md:py-4 rounded-full text-lg font-semibold inline-block" data-translate="cta_client">
-                        Inscription Client
-                    </a>
-                    <a href="https://tally.so/r/mKA0xK" target="_blank" class="border-2 border-yellow-400 text-yellow-400 px-8 md:px-10 py-3 md:py-4 rounded-full text-lg font-semibold inline-block hover:bg-yellow-400 hover:text-white transition-all" data-translate="cta_prestataire">
-                        Inscription Prestataire
-                    </a>
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
+                Nos Services à Domicile
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
+                Découvrez notre gamme complète de services pour votre bien-être au quotidien
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#services" class="btn-primary text-white px-8 py-4 rounded-full text-lg font-semibold inline-block">
+                    Découvrir les services
+                </a>
+                <a href="formules.html" class="border-2 border-yellow-400 text-yellow-400 px-8 py-4 rounded-full text-lg font-semibold inline-block hover:bg-yellow-400 hover:text-white transition-all">
+                    Voir nos formules
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section id="services" class="py-16 md:py-20">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                
+                <!-- Aide ménagère -->
+                <div class="service-card" onclick="openServiceModal('Aide ménagère')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                        <div class="service-overlay">
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Aide ménagère</h3>
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Service de ménage professionnel à domicile pour vous faciliter le quotidien</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Réservation à l'heure</span>
+                            <span class="text-yellow-500 font-semibold">4.7/5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Courses à domicile -->
+                <div class="service-card" onclick="openServiceModal('Courses à domicile')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                        <div class="service-overlay">
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Courses à domicile</h3>
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Nous faisons vos courses et vous les livrons directement chez vous</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Forfait 2h minimum</span>
+                            <span class="text-yellow-500 font-semibold">4.9/5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coiffure à domicile -->
+                <div class="service-card" onclick="openServiceModal('Coiffure à domicile')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                        <div class="service-overlay">
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Coiffure à domicile</h3>
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Services de coiffure professionnels dans le confort de votre domicile</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Forfait 1h30 minimum</span>
+                            <span class="text-yellow-500 font-semibold">4.5/5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jardinage -->
+                <div class="service-card" onclick="openServiceModal('Jardinage')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                        <div class="service-overlay">
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Jardinage</h3>
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Entretien de votre jardin et espaces verts par des professionnels</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Réservation à l'heure</span>
+                            <span class="text-yellow-500 font-semibold">4.6/5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transport accompagné -->
+                <div class="service-card" onclick="openServiceModal('Transport accompagné')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                        <div class="service-overlay">
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Transport accompagné</h3>
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Service de transport avec accompagnement pour vos déplacements</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Forfait 2h minimum</span>
+                            <span class="text-yellow-500 font-semibold">4.8/5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assistance / Secours -->
+                <div class="service-card" onclick="openServiceModal('Assistance / Secours')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                        <div class="service-overlay">
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Assistance / Secours</h3>
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Aide d'urgence et assistance pour toutes situations délicates</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Service prioritaire</span>
+                            <span class="text-yellow-500 font-semibold">5.0/5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Homme à tout faire -->
+                <div class="service-card" onclick="openServiceModal('Homme à tout faire')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                        <div class="service-overlay">
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Homme à tout faire</h3>
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Petits travaux et réparations diverses dans votre domicile</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Réservation à l'heure</span>
+                            <span class="text-yellow-500 font-semibold">4.7/5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visite bénévole -->
+                <div class="service-card" onclick="openServiceModal('Visite bénévole')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                        <div class="service-overlay">
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Visite bénévole</h3>
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Compagnie et soutien moral par nos bénévoles dévoués</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Service gratuit</span>
+                            <span class="text-yellow-500 font-semibold">5.0/5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Commande de repas -->
+                <div class="service-card" onclick="openServiceModal('Commande de repas')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                        <div class="service-overlay">
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Commande de repas</h3>
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Livraison de repas équilibrés et savoureux directement chez vous</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Service de livraison</span>
+                            <span class="text-yellow-500 font-semibold">4.6/5</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Comment ça marche -->
+    <section class="py-16 md:py-20 bg-gray-50 bg-opacity-90">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Comment ça marche ?</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Un système simple et transparent pour vos services à domicile</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">📅</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">1. Réservez des heures</h3>
+                    <p class="text-gray-600">Choisissez le nombre d'heures dont vous avez besoin pour chaque service</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">👥</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">2. Prestataire confirmé</h3>
+                    <p class="text-gray-600">Un prestataire qualifié accepte votre réservation et vous contacte</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">💬</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">3. Tarif convenu ensemble</h3>
+                    <p class="text-gray-600">Vous convenez directement du tarif horaire avec le prestataire</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Avis Clients -->
+    <section class="py-16 md:py-20 bg-white bg-opacity-90">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Ce que disent nos clients</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Découvrez les expériences de ceux qui nous font confiance</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <!-- Avis 1 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="review-author">Marie D.</span>
+                        <span class="review-date">15 Jan 2024</span>
+                    </div>
+                    <div class="rating-stars text-sm">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600">"J'ai réservé 3h d'aide ménagère. Le prestataire était excellent et le tarif très raisonnable."</p>
+                </div>
+                <!-- Avis 2 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="review-author">Jean P.</span>
+                        <span class="review-date">12 Jan 2024</span>
+                    </div>
+                    <div class="rating-stars text-sm">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="text-gray-600">"Système très pratique. J'ai pu négocier directement le tarif avec le jardinier."</p>
+                </div>
+                <!-- Avis 3 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="review-author">Sophie L.</span>
+                        <span class="review-date">10 Jan 2024</span>
+                    </div>
+                    <div class="rating-stars text-sm">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600">"Transport très sécurisant. Le chauffeur était ponctuel et le tarif convenu à l'avance."</p>
                 </div>
             </div>
         </div>
@@ -317,34 +761,34 @@
                 <!-- Logo et description -->
                 <div class="md:col-span-1">
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-10 mb-4">
-                    <p class="text-gray-300 text-sm" data-translate="footer_desc">
+                    <p class="text-gray-300 text-sm">
                         Votre bien-être à domicile, notre priorité.
                     </p>
                 </div>
 
                 <!-- Navigation -->
                 <div>
-                    <h4 class="font-semibold mb-4" data-translate="footer_navigation">Navigation</h4>
+                    <h4 class="font-semibold mb-4">Navigation</h4>
                     <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="index.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_home">Accueil</a></li>
-                        <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_services">Services</a></li>
-                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_formules">Formules</a></li>
-                        <li><a href="infos_prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Prestataires</a></li>
+                        <li><a href="index.html" class="hover:text-yellow-400 transition-colors">Accueil</a></li>
+                        <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors">Services</a></li>
+                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors">Formules</a></li>
+                        <li><a href="infos_prestataires.html" class="hover:text-yellow-400 transition-colors">Prestataires</a></li>
                     </ul>
                 </div>
 
                 <!-- Espaces -->
                 <div>
-                    <h4 class="font-semibold mb-4" data-translate="footer_spaces">Espaces</h4>
+                    <h4 class="font-semibold mb-4">Espaces</h4>
                     <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="iclient.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_client">Espace Client</a></li>
-                        <li><a href="iprestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a></li>
+                        <li><a href="iclient.html" class="hover:text-yellow-400 transition-colors">Espace Client</a></li>
+                        <li><a href="iprestataires.html" class="hover:text-yellow-400 transition-colors">Espace Prestataire</a></li>
                     </ul>
                 </div>
 
                 <!-- Contact -->
                 <div>
-                    <h4 class="font-semibold mb-4" data-translate="footer_contact">Contact</h4>
+                    <h4 class="font-semibold mb-4">Contact</h4>
                     <div class="text-sm text-gray-300 space-y-2">
                         <p>info@viiveo.com</p>
                         <p>+32 475 32 51 27</p>
@@ -364,216 +808,257 @@
             </div>
 
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-                <p data-translate="footer_copyright">© 2024 Viiveo. Tous droits réservés.</p>
+                <p>© 2024 Viiveo. Tous droits réservés.</p>
             </div>
         </div>
     </footer>
 
+    <!-- Modal Générique de Réservation -->
+    <div id="service-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title" class="text-2xl font-bold">Réservation de service</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="booking-form" onsubmit="submitBooking(event)">
+                    <div class="form-group">
+                        <label for="service-type">Type de service</label>
+                        <input type="text" id="service-type" name="service-type" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Nombre d'heures souhaitées</label>
+                        <div class="hours-selector">
+                            <div class="hours-btn" data-hours="1" onclick="selectHours(1)">1h</div>
+                            <div class="hours-btn" data-hours="2" onclick="selectHours(2)">2h</div>
+                            <div class="hours-btn" data-hours="3" onclick="selectHours(3)">3h</div>
+                            <div class="hours-btn" data-hours="4" onclick="selectHours(4)">4h</div>
+                            <div class="hours-btn" data-hours="5" onclick="selectHours(5)">5h</div>
+                            <input type="hidden" id="selected-hours" name="selected-hours" value="2" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="booking-date">Date souhaitée</label>
+                        <div class="calendar-container">
+                            <input type="text" id="booking-date" name="booking-date" placeholder="Sélectionnez une date" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="booking-time">Heure de début</label>
+                        <select id="booking-time" name="booking-time" required>
+                            <option value="">Sélectionnez une heure</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prestataire">Choisir un prestataire (optionnel)</label>
+                        <select id="prestataire" name="prestataire">
+                            <option value="">Pas de préférence</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="client-email">Votre email</label>
+                        <input type="email" id="client-email" name="client-email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="client-phone">Votre téléphone</label>
+                        <input type="tel" id="client-phone" name="client-phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="special-requests">Informations complémentaires</label>
+                        <textarea id="special-requests" name="special-requests" rows="3" placeholder="Décrivez vos besoins spécifiques..."></textarea>
+                    </div>
+
+                    <div class="credit-info">
+                        <p class="text-sm text-gray-700">
+                            <strong>💡 Comment ça marche ?</strong><br>
+                            Vous réservez le nombre d'heures. Le prestataire vous contacte pour convenir du tarif horaire directement avec vous.
+                        </p>
+                    </div>
+
+                    <button type="submit" class="btn-primary text-white w-full py-3 rounded-lg font-semibold mt-4">
+                        Confirmer la réservation d'heures
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p>Envoi en cours...</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
     <script>
-        // Traductions multilingues
-        const translations = {
-            fr: {
-                // Navigation
-                nav_home: "Accueil",
-                nav_services: "Services",
-                nav_formules: "Formules",
-                nav_prestataires: "Prestataires",
-                nav_client: "Espace Client",
-                nav_prestataires_space: "Espace Prestataire",
-                
-                // Hero
-                hero_title: "Et si vous restiez chez vous ?",
-                hero_subtitle: "La plateforme de services pour vivre sereinement sa retraite chez soi.",
-                hero_signup: "Inscription Client",
-                hero_prestataire: "Inscription Prestataire",
-                
-                // Services
-                services_title: "Nos Services",
-                services_subtitle: "Découvrez notre gamme complète de services pensés pour votre bien-être à domicile",
-                card1_title: "Services à Domicile",
-                card1_desc: "Explorez tous nos services adaptés à vos besoins quotidiens",
-                card1_link: "Voir nos services",
-                card2_title: "Devenir Prestataire",
-                card2_desc: "Rejoignez notre réseau de professionnels qualifiés",
-                card2_link: "S'inscrire comme prestataire",
-                card3_title: "Nos Formules",
-                card3_desc: "Choisissez la formule qui correspond à vos besoins",
-                card3_link: "Voir nos formules",
-                
-                // CTA
-                cta_title: "Prêt à vivre sereinement chez vous ?",
-                cta_subtitle: "Rejoignez des milliers de personnes qui ont choisi Viiveo pour leur bien-être à domicile",
-                cta_client: "Inscription Client",
-                cta_prestataire: "Inscription Prestataire",
-                
-                // Footer
-                footer_desc: "Votre bien-être à domicile, notre priorité.",
-                footer_navigation: "Navigation",
-                footer_spaces: "Espaces",
-                footer_contact: "Contact",
-                footer_copyright: "© 2024 Viiveo. Tous droits réservés."
-            },
-            nl: {
-                nav_home: "Home",
-                nav_services: "Diensten",
-                nav_formules: "Formules",
-                nav_prestataires: "Dienstverleners",
-                nav_client: "Klantenruimte",
-                nav_prestataires_space: "Dienstverlener Ruimte",
-                hero_title: "Wat als u thuis zou blijven?",
-                hero_subtitle: "Het dienstenplatform om sereen thuis te leven tijdens uw pensioen.",
-                hero_signup: "Klant Registratie",
-                hero_prestataire: "Dienstverlener Registratie",
-                services_title: "Onze Diensten",
-                services_subtitle: "Ontdek ons complete aanbod van diensten voor uw welzijn thuis",
-                card1_title: "Thuis Diensten",
-                card1_desc: "Verken al onze diensten aangepast aan uw dagelijkse behoeften",
-                card1_link: "Bekijk onze diensten",
-                card2_title: "Dienstverlener Worden",
-                card2_desc: "Word lid van ons netwerk van gekwalificeerde professionals",
-                card2_link: "Registreer als dienstverlener",
-                card3_title: "Onze Formules",
-                card3_desc: "Kies de formule die bij uw behoeften past",
-                card3_link: "Bekijk onze formules",
-                cta_title: "Klaar om sereen thuis te leven?",
-                cta_subtitle: "Sluit u aan bij duizenden mensen die Viiveo hebben gekozen voor hun welzijn thuis",
-                cta_client: "Klant Registratie",
-                cta_prestataire: "Dienstverlener Registratie",
-                footer_desc: "Uw welzijn thuis, onze prioriteit.",
-                footer_navigation: "Navigatie",
-                footer_spaces: "Ruimtes",
-                footer_contact: "Contact",
-                footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden."
-            },
-            en: {
-                nav_home: "Home",
-                nav_services: "Services",
-                nav_formules: "Plans",
-                nav_prestataires: "Providers",
-                nav_client: "Client Space",
-                nav_prestataires_space: "Provider Space",
-                hero_title: "What if you stayed at home?",
-                hero_subtitle: "The service platform to live serenely at home during retirement.",
-                hero_signup: "Client Registration",
-                hero_prestataire: "Provider Registration",
-                services_title: "Our Services",
-                services_subtitle: "Discover our complete range of services designed for your home well-being",
-                card1_title: "Home Services",
-                card1_desc: "Explore all our services adapted to your daily needs",
-                card1_link: "View our services",
-                card2_title: "Become a Provider",
-                card2_desc: "Join our network of qualified professionals",
-                card2_link: "Register as provider",
-                card3_title: "Our Plans",
-                card3_desc: "Choose the plan that matches your needs",
-                card3_link: "View our plans",
-                cta_title: "Ready to live serenely at home?",
-                cta_subtitle: "Join thousands of people who have chosen Viiveo for their home well-being",
-                cta_client: "Client Registration",
-                cta_prestataire: "Provider Registration",
-                footer_desc: "Your home well-being, our priority.",
-                footer_navigation: "Navigation",
-                footer_spaces: "Spaces",
-                footer_contact: "Contact",
-                footer_copyright: "© 2024 Viiveo. All rights reserved."
-            },
-            de: {
-                nav_home: "Startseite",
-                nav_services: "Dienstleistungen",
-                nav_formules: "Tarife",
-                nav_prestataires: "Dienstleister",
-                nav_client: "Kundenbereich",
-                nav_prestataires_space: "Dienstleister Bereich",
-                hero_title: "Was wäre, wenn Sie zu Hause blieben?",
-                hero_subtitle: "Die Dienstleistungsplattform, um gelassen zu Hause im Ruhestand zu leben.",
-                hero_signup: "Kunden Registrierung",
-                hero_prestataire: "Dienstleister Registrierung",
-                services_title: "Unsere Dienstleistungen",
-                services_subtitle: "Entdecken Sie unser komplettes Angebot an Dienstleistungen für Ihr Wohlbefinden zu Hause",
-                card1_title: "Hausdienstleistungen",
-                card1_desc: "Erkunden Sie alle unsere Dienstleistungen, die an Ihre täglichen Bedürfnisse angepasst sind",
-                card1_link: "Unsere Dienstleistungen ansehen",
-                card2_title: "Dienstleister werden",
-                card2_desc: "Treten Sie unserem Netzwerk qualifizierter Fachkräfte bei",
-                card2_link: "Als Dienstleister registrieren",
-                card3_title: "Unsere Tarife",
-                card3_desc: "Wählen Sie den Tarif, der Ihren Bedürfnissen entspricht",
-                card3_link: "Unsere Tarife ansehen",
-                cta_title: "Bereit, gelassen zu Hause zu leben?",
-                cta_subtitle: "Schließen Sie sich Tausenden von Menschen an, die Viiveo für ihr Wohlbefinden zu Hause gewählt haben",
-                cta_client: "Kunden Registrierung",
-                cta_prestataire: "Dienstleister Registrierung",
-                footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
-                footer_navigation: "Navigation",
-                footer_spaces: "Bereiche",
-                footer_contact: "Kontakt",
-                footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten."
-            }
-        };
+        const API_BASE_URL = 'https://gaetano1747.gm-harchies.workers.dev';
+        let currentService = '';
 
-        let currentLanguage = 'fr';
-
-        function changeLanguage(lang) {
-            currentLanguage = lang;
-            
-            // Mettre à jour tous les éléments avec data-translate
-            document.querySelectorAll('[data-translate]').forEach(element => {
-                const key = element.getAttribute('data-translate');
-                if (translations[lang] && translations[lang][key]) {
-                    element.textContent = translations[lang][key];
+        // Configuration du calendrier
+        const calendar = flatpickr("#booking-date", {
+            locale: "fr",
+            minDate: "today",
+            dateFormat: "Y-m-d",
+            disable: [
+                function(date) {
+                    // Désactiver les weekends
+                    return (date.getDay() === 0 || date.getDay() === 6);
                 }
-            });
+            ]
+        });
 
-            // Mettre à jour le sélecteur de langue
-            const flags = { fr: '🇫🇷', nl: '🇳🇱', en: '🇬🇧', de: '🇩🇪' };
-            const codes = { fr: 'FR', nl: 'NL', en: 'EN', de: 'DE' };
+        function openServiceModal(service) {
+            currentService = service;
+            const modal = document.getElementById('service-modal');
+            const title = document.getElementById('modal-title');
+            const serviceType = document.getElementById('service-type');
             
-            document.getElementById('current-flag').textContent = flags[lang];
-            const codeElement = document.querySelector('#language-button .hidden');
-            if (codeElement) {
-                codeElement.textContent = codes[lang];
-            }
-
-            // Mettre à jour les options actives
-            document.querySelectorAll('.language-option').forEach(option => {
-                option.classList.remove('active');
-                if (option.getAttribute('data-lang') === lang) {
-                    option.classList.add('active');
-                }
-            });
-
-            localStorage.setItem('viiveo-language', lang);
+            title.textContent = `Réservation : ${service}`;
+            serviceType.value = service;
+            
+            // Réinitialiser la sélection d'heures
+            selectHours(2);
+            
+            // Charger les prestataires disponibles
+            loadPrestataires(service);
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Charger la langue sauvegardée
-            const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
-            changeLanguage(savedLanguage);
-
-            // Gestion du sélecteur de langue
-            const languageButton = document.getElementById('language-button');
-            const languageDropdown = document.getElementById('language-dropdown');
+        function selectHours(hours) {
+            // Retirer la classe selected de tous les boutons
+            document.querySelectorAll('.hours-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
             
-            if (languageButton && languageDropdown) {
-                languageButton.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    languageDropdown.classList.toggle('hidden');
-                });
-
-                document.addEventListener('click', function() {
-                    languageDropdown.classList.add('hidden');
-                });
-
-                document.querySelectorAll('.language-option').forEach(option => {
-                    option.addEventListener('click', function() {
-                        const lang = this.getAttribute('data-lang');
-                        changeLanguage(lang);
-                        languageDropdown.classList.add('hidden');
-                    });
-                });
+            // Ajouter la classe selected au bouton cliqué
+            const selectedBtn = document.querySelector(`.hours-btn[data-hours="${hours}"]`);
+            if (selectedBtn) {
+                selectedBtn.classList.add('selected');
             }
+            
+            // Mettre à jour la valeur cachée
+            document.getElementById('selected-hours').value = hours;
+        }
 
-            // Menu mobile
+        function closeModal() {
+            const modal = document.getElementById('service-modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.getElementById('booking-form').reset();
+            selectHours(2); // Réinitialiser à 2h
+        }
+
+        async function loadPrestataires(serviceType) {
+            const select = document.getElementById('prestataire');
+            select.innerHTML = '<option value="">Chargement...</option>';
+
+            try {
+                // Utilisation de JSONP pour contourner les problèmes CORS
+                const callbackName = `prestatairesCallback_${Date.now()}`;
+                
+                window.handlePrestatairesResponse = function(result) {
+                    select.innerHTML = '<option value="">Pas de préférence</option>';
+                    
+                    if (result && result.success && Array.isArray(result.prestataires)) {
+                        result.prestataires.forEach(presta => {
+                            const option = document.createElement('option');
+                            option.value = presta.email || presta.nomComplet;
+                            option.textContent = presta.nomComplet || `${presta.prenom} ${presta.nom}`;
+                            select.appendChild(option);
+                        });
+                    } else {
+                        select.innerHTML = '<option value="">Aucun prestataire disponible</option>';
+                    }
+                };
+
+                const script = document.createElement('script');
+                script.src = `${API_BASE_URL}?type=dropdown&specialite=${encodeURIComponent(serviceType)}&callback=handlePrestatairesResponse`;
+                document.body.appendChild(script);
+
+            } catch (error) {
+                console.error('Erreur chargement prestataires:', error);
+                select.innerHTML = '<option value="">Aucun prestataire disponible</option>';
+            }
+        }
+
+        async function submitBooking(event) {
+            event.preventDefault();
+            
+            const loader = document.getElementById('loader');
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            
+            // Afficher le loader
+            loader.style.display = 'flex';
+            submitButton.disabled = true;
+            
+            const formData = new FormData(event.target);
+            const bookingData = {
+                type: 'formClient',
+                service: formData.get('service-type'),
+                hours: formData.get('selected-hours'),
+                date: formData.get('booking-date'),
+                time: formData.get('booking-time'),
+                prestataire: formData.get('prestataire'),
+                email: formData.get('client-email'),
+                phone: formData.get('client-phone'),
+                requests: formData.get('special-requests'),
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch(API_BASE_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(bookingData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ Réservation confirmée ! Un prestataire vous contactera rapidement pour convenir du tarif.');
+                    closeModal();
+                } else {
+                    throw new Error(result.message || 'Erreur lors de la réservation');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('❌ Erreur lors de la réservation. Veuillez réessayer. Détail: ' + error.message);
+            } finally {
+                // Cacher le loader
+                loader.style.display = 'none';
+                submitButton.disabled = false;
+            }
+        }
+
+        // Gestion du menu mobile
+        document.addEventListener('DOMContentLoaded', function() {
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             
@@ -582,6 +1067,17 @@
                     mobileMenu.classList.toggle('open');
                 });
             }
+
+            // Fermer la modale en cliquant à l'extérieur
+            window.addEventListener('click', function(event) {
+                const modal = document.getElementById('service-modal');
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Initialiser la sélection d'heures par défaut
+            selectHours(2);
         });
     </script>
 </body>
