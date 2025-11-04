@@ -1,82 +1,214 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>En savoir plus sur nos prestataires - Viiveo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos Prestataires - Viiveo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            box-sizing: border-box;
-        }
-
         :root {
-            --primary-color: #3B82F6;
-            --primary-dark-color: #2563EB;
-            --text-color-dark: #1F2937;
-            --text-color-light: #6B7280;
-            --background-light: #F9FAFB;
-            --card-background: #FFFFFF;
-            --border-color: #E5E7EB;
-            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.05);
-            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.1);
-            --border-radius-large: 1.5rem;
-            --border-radius-medium: 0.75rem;
-            --border-radius-small: 0.5rem;
+            --primary-color: #facc15;
+            --primary-dark: #eab308;
+            --secondary-color: #1f2937;
+            --light-color: #f8fafc;
+            --text-color: #374151;
+            --transition: all 0.3s ease;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 3rem 2rem;
-            background: var(--background-light);
-            color: var(--text-color-dark);
-            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #fefce8 0%, #fef3c7 50%, #fef9c3 100%);
+            min-height: 100vh;
         }
 
-        h1 {
-            color: #0A1931;
-            text-align: center;
-            font-size: clamp(1.5rem, 4vw, 3rem);
-            margin-bottom: 1rem;
-            font-weight: bold;
+        .gradient-bg {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+        }
+        
+        .card-hover {
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            border-color: #fde047;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            transition: var(--transition);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(253, 224, 71, 0.4);
         }
 
-        .modal-header h2 {
-            color: #0A1931;
+        .language-selector {
+            position: relative;
+        }
+        
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            z-index: 50;
+            min-width: 150px;
+        }
+        
+        .language-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .language-option:hover {
+            background-color: #f9fafb;
+        }
+        
+        .language-option.active {
+            background-color: #fef3c7;
+            color: #92400e;
         }
 
+        .nav-link {
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.open {
+            transform: translateY(0);
+        }
+
+        /* Styles spécifiques aux prestataires */
         .presta-card {
-            background: var(--card-background);
-            border-radius: var(--border-radius-large);
-            padding: 1.5rem;
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
             text-align: center;
-            box-shadow: var(--shadow-light);
-            border: 1px solid var(--border-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 2px solid #fef3c7;
+            transition: var(--transition);
         }
 
         .presta-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-hover);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: #fde047;
         }
 
         .presta-card img {
-            width: 320px;
-            height: 320px;
-            border: 4px solid var(--primary-color);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            width: 120px;
+            height: 120px;
+            border: 4px solid #fde047;
             border-radius: 50%;
             object-fit: cover;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 8px 20px rgba(253, 224, 71, 0.3);
+        }
+
+        .rating {
+            color: #facc15;
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
+        }
+
+        .service-emoji {
+            font-size: 3rem;
             margin-bottom: 1rem;
         }
 
-        .presta-card h4 {
-            margin: 0.5rem 0;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-color-dark);
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 1.5rem;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            padding: 2rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+            color: white;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close:hover {
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 2rem;
         }
 
         .prestataires-grid {
@@ -86,373 +218,623 @@
             margin-top: 1.5rem;
         }
 
-        .rating {
-            color: #FFC107;
-            font-size: 1rem;
-            margin-top: 0.25rem;
-        }
-
-        .rating .fa-star, .rating .fa-star-half-alt, .rating .fa-regular.fa-star {
-            margin-right: 2px;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .service-card {
-            background: var(--card-background);
-            border-radius: var(--border-radius-large);
-            padding: 2.5rem 2rem;
-            box-shadow: var(--shadow-light);
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .service-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .service-card .emoji-icon {
-            font-size: 3rem;
-            margin-bottom: 1.25rem;
-            line-height: 1;
-        }
-
-        .service-card h3 {
-            margin-top: 0.5rem;
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--text-color-dark);
-        }
-
-        .service-card p {
-            color: var(--text-color-light);
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            flex-grow: 1;
-        }
-
-        .btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--border-radius-medium);
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn:hover {
-            background: var(--primary-dark-color);
-            transform: translateY(-1px);
-        }
-
-        .modal {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
+        .loader {
             display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal-content {
-            background: var(--card-background);
-            border-radius: var(--border-radius-large);
-            padding: 2.5rem;
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
-            transform: translateY(20px);
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        .modal.active .modal-content {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .close {
-            font-size: 2rem;
-            cursor: pointer;
-            color: var(--text-color-light);
-            transition: color 0.2s ease;
-        }
-
-        .close:hover {
-            color: var(--text-color-dark);
-        }
-
-        .menu-bubble {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 48px;
-            height: 48px;
-            background-color: white;
-            border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            display: flex;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
             align-items: center;
             justify-content: center;
-            text-decoration: none;
-            z-index: 9999;
-            transition: background-color 0.3s ease;
-            color: #333;
-            font-size: 20px;
+            backdrop-filter: blur(5px);
         }
 
-        .menu-bubble:hover {
-            background-color: #f2f2f2;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        footer {
-            width: 90%;
-            max-width: 1150px;
-            margin: 60px auto 0 auto;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 20px;
-            font-family: 'Inter', sans-serif;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        .loader-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
             text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
-        footer img {
-            max-width: 180px;
-            height: auto;
-            margin-bottom: 10px;
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #facc15;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
         }
 
-        footer .contact-info p {
-            color: #555;
-            font-size: 14px;
-            margin: 2px 0;
-        }
-
-        footer .social-icons {
-            margin-top: 10px;
-        }
-
-        footer .social-icons a {
-            margin: 0 10px;
-            text-decoration: none;
-        }
-
-        footer .social-icons i {
-            font-size: 30px;
-        }
-
-        footer hr {
-            margin: 20px auto;
-            width: 80%;
-            border: 0;
-            border-top: 1px solid #ccc;
-        }
-
-        footer .copyright {
-            font-size: 12px;
-            color: #999;
-            margin-top: 10px;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 2rem 1rem;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .modal-content {
-                padding: 1.5rem;
-            }
-
-            .modal-header h2 {
-                font-size: 1.5rem;
-            }
-
-            .presta-card img {
-                width: 128px;
-                height: 128px;
-            }
-
-            .prestataires-grid {
-                grid-template-columns: 1fr;
-            }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <!-- Bouton Maison (accueil) -->
-    <a href="https://viiveo-se.carrd.co" class="menu-bubble" aria-label="Accueil">
-        <i class="fas fa-home"></i>
-    </a>
+    <!-- Header Commun -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
+                </a>
+                
+                <!-- Navigation Desktop -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
+                    <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
+                    <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Formules</a>
+                    <a href="infos_prestataires.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                </nav>
 
-    <h1>Nos Services à Domicile</h1>
-    <div class="services-grid" id="services"></div>
+                <!-- Sélecteur de langue -->
+                <div class="language-selector">
+                    <button id="language-button" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <span id="current-flag">🇫🇷</span>
+                        <span class="hidden sm:inline text-sm font-medium">FR</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="language-dropdown" class="language-dropdown hidden">
+                        <div class="language-option active" data-lang="fr">
+                            <span>🇫🇷</span>
+                            <span>Français</span>
+                        </div>
+                        <div class="language-option" data-lang="nl">
+                            <span>🇳🇱</span>
+                            <span>Nederlands</span>
+                        </div>
+                        <div class="language-option" data-lang="en">
+                            <span>🇬🇧</span>
+                            <span>English</span>
+                        </div>
+                        <div class="language-option" data-lang="de">
+                            <span>🇩🇪</span>
+                            <span>Deutsch</span>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="modal" id="modale">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modale-titre"></h2>
-                <span class="close" id="close-btn">&times;</span>
+                <!-- Menu Mobile -->
+                <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg hover:bg-gray-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
             </div>
-            <p id="modale-description"></p>
-            <h3 style="margin-bottom: 1rem;">Prestataires disponibles</h3>
-            <div class="prestataires-grid" id="liste-prestataires"></div>
+
+            <!-- Menu Mobile -->
+            <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
+                <div class="px-4 py-6 space-y-4">
+                    <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
+                    <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
+                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Formules</a>
+                    <a href="infos_prestataires.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative py-16 md:py-24 bg-gradient-to-br from-yellow-50 to-yellow-100">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6" data-translate="hero_title">
+                Nos Prestataires Qualifiés
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8" data-translate="hero_subtitle">
+                Découvrez notre réseau de professionnels dévoués à votre bien-être à domicile
+            </p>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="services_title">
+                    Choisissez Votre Service
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto" data-translate="services_subtitle">
+                    Sélectionnez un service pour découvrir nos prestataires disponibles
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Aide ménagère -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('Aide ménagère')">
+                    <div class="service-emoji">🧹</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_cleaning">Aide ménagère</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_cleaning_desc">
+                        Service de ménage professionnel pour un intérieur étincelant
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="view_providers">
+                        Voir les prestataires
+                    </button>
+                </div>
+
+                <!-- Courses à domicile -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('Courses à domicile')">
+                    <div class="service-emoji">🛒</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_shopping">Courses à domicile</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_shopping_desc">
+                        Nous faisons vos courses et les livrons à votre porte
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="view_providers">
+                        Voir les prestataires
+                    </button>
+                </div>
+
+                <!-- Coiffure à domicile -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('Coiffure à domicile')">
+                    <div class="service-emoji">💇</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_hairdressing">Coiffure à domicile</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_hairdressing_desc">
+                        Services de coiffure professionnels dans le confort de votre maison
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="view_providers">
+                        Voir les prestataires
+                    </button>
+                </div>
+
+                <!-- Jardinage -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('Jardinage')">
+                    <div class="service-emoji">🌳</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_gardening">Jardinage</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_gardening_desc">
+                        Entretien complet de votre jardin et espaces verts
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="view_providers">
+                        Voir les prestataires
+                    </button>
+                </div>
+
+                <!-- Transport accompagné -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('Transport accompagné')">
+                    <div class="service-emoji">🚗</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_transport">Transport accompagné</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_transport_desc">
+                        Accompagnement sécurisé pour tous vos déplacements
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="view_providers">
+                        Voir les prestataires
+                    </button>
+                </div>
+
+                <!-- Homme à tout faire -->
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('Homme à tout faire')">
+                    <div class="service-emoji">🔧</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_handyman">Homme à tout faire</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_handyman_desc">
+                        Petits travaux et réparations diverses à domicile
+                    </p>
+                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="view_providers">
+                        Voir les prestataires
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-r from-yellow-400 to-yellow-500">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-translate="cta_title">
+                Vous êtes prestataire ?
+            </h2>
+            <p class="text-xl text-yellow-100 mb-8 max-w-2xl mx-auto" data-translate="cta_subtitle">
+                Rejoignez notre réseau de professionnels et développez votre activité
+            </p>
+            <a href="iprestataires.html" class="bg-white text-yellow-600 px-8 py-4 rounded-full text-lg font-semibold inline-block hover:bg-gray-100 transition-all shadow-lg" data-translate="cta_button">
+                Devenir Prestataire
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer Commun -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Logo et description -->
+                <div class="md:col-span-1">
+                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-10 mb-4">
+                    <p class="text-gray-300 text-sm" data-translate="footer_desc">
+                        Votre bien-être à domicile, notre priorité.
+                    </p>
+                </div>
+
+                <!-- Navigation -->
+                <div>
+                    <h4 class="font-semibold mb-4" data-translate="footer_navigation">Navigation</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="index.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_home">Accueil</a></li>
+                        <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_services">Services</a></li>
+                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_formules">Formules</a></li>
+                        <li><a href="infos_prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Prestataires</a></li>
+                    </ul>
+                </div>
+
+                <!-- Espaces -->
+                <div>
+                    <h4 class="font-semibold mb-4" data-translate="footer_spaces">Espaces</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="iclient.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_client">Espace Client</a></li>
+                        <li><a href="iprestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-semibold mb-4" data-translate="footer_contact">Contact</h4>
+                    <div class="text-sm text-gray-300 space-y-2">
+                        <p>info@viiveo.com</p>
+                        <p>+32 475 32 51 27</p>
+                        <div class="flex space-x-4 mt-2">
+                            <a href="https://www.facebook.com/viiveo.be" class="hover:text-yellow-400 transition-colors">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/danydecarpentrie" class="hover:text-yellow-400 transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="https://wa.me/+32475325127" class="hover:text-yellow-400 transition-colors">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p data-translate="footer_copyright">© 2024 Viiveo. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p data-translate="loading_text">Chargement des prestataires...</p>
         </div>
     </div>
 
-    <footer>
-        <img src="https://i.postimg.cc/VNqjxcQX/logo-viiveo-2.png" alt="viiveo Logo">
-        <div class="contact-info">
-            <p>info@viiveo.com</p>
-            <p>+32 475 32 51 27</p>
+    <!-- Modal pour afficher les prestataires -->
+    <div id="prestataires-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-2xl font-bold" id="modal-service-title">Prestataires</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="prestataires-grid" id="prestataires-list">
+                    <!-- Les prestataires seront chargés ici dynamiquement -->
+                </div>
+            </div>
         </div>
-        <div class="social-icons">
-            <a href="https://www.facebook.com/viiveo.be?locale=fr_FR" target="_blank">
-                <i class="fab fa-facebook" style="color: #3b5998;"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/danydecarpentrie" target="_blank">
-                <i class="fab fa-linkedin" style="color: #0077b5;"></i>
-            </a>
-            <a href="https://wa.me/+32475325127" target="_blank">
-                <i class="fab fa-whatsapp" style="color: #25D366;"></i>
-            </a>
-        </div>
-        <hr>
-        <p class="copyright">Copyright © Viiveo 2025</p>
-    </footer>
+    </div>
 
     <script>
-        const services = [
-            { nom: "Aide ménagère", emoji: "🧹", description: "Ménage, repassage, entretien régulier du domicile pour une propreté éclatante." },
-            { nom: "Courses à domicile", emoji: "🛒", description: "Faites vos courses sans bouger de chez vous ! Nous nous occupons de tout et livrons à votre porte." },
-            { nom: "Coiffure à domicile", emoji: "💇", description: "Profitez d'un service de coiffure professionnel, confortablement installé chez vous, pour toute la famille." },
-            { nom: "Jardinage", emoji: "🌳", description: "De l'entretien de haies à la tonte, en passant par le désherbage, votre jardin sera impeccable toute l'année." },
-            { nom: "Transport accompagné", emoji: "🚗", description: "Bénéficiez d'un accompagnement sécurisé pour vos rendez-vous médicaux, courses ou sorties." },
-            { nom: "Assistance / Secours", emoji: "🚨", description: "Une aide urgente en cas de besoin, des contrôles de sécurité réguliers et des visites de courtoisie pour votre tranquillité." },
-            { nom: "Homme à tout faire", emoji: "🔧", description: "Pour tous vos petits travaux, bricolage et réparations, un expert à votre service rapidement et efficacement." },
-            { nom: "Repas à domicile", emoji: "🍲", description: "Savourez des repas équilibrés et savoureux, préparés avec soin et livrés chauds directement à votre domicile." },
-            { nom: "Bénévole", emoji: "🤝", description: "Partagez des moments d'échanges humains, recevez un soutien moral ou simplement de la compagnie pour rompre la solitude." }
-        ];
+        // Traductions multilingues
+        const translations = {
+            fr: {
+                // Navigation
+                nav_home: "Accueil",
+                nav_services: "Services",
+                nav_formules: "Formules",
+                nav_prestataires: "Prestataires",
+                nav_client: "Espace Client",
+                nav_prestataires_space: "Espace Prestataire",
+                
+                // Hero
+                hero_title: "Nos Prestataires Qualifiés",
+                hero_subtitle: "Découvrez notre réseau de professionnels dévoués à votre bien-être à domicile",
+                
+                // Services
+                services_title: "Choisissez Votre Service",
+                services_subtitle: "Sélectionnez un service pour découvrir nos prestataires disponibles",
+                service_cleaning: "Aide ménagère",
+                service_cleaning_desc: "Service de ménage professionnel pour un intérieur étincelant",
+                service_shopping: "Courses à domicile",
+                service_shopping_desc: "Nous faisons vos courses et les livrons à votre porte",
+                service_hairdressing: "Coiffure à domicile",
+                service_hairdressing_desc: "Services de coiffure professionnels dans le confort de votre maison",
+                service_gardening: "Jardinage",
+                service_gardening_desc: "Entretien complet de votre jardin et espaces verts",
+                service_transport: "Transport accompagné",
+                service_transport_desc: "Accompagnement sécurisé pour tous vos déplacements",
+                service_handyman: "Homme à tout faire",
+                service_handyman_desc: "Petits travaux et réparations diverses à domicile",
+                view_providers: "Voir les prestataires",
+                
+                // CTA
+                cta_title: "Vous êtes prestataire ?",
+                cta_subtitle: "Rejoignez notre réseau de professionnels et développez votre activité",
+                cta_button: "Devenir Prestataire",
+                
+                // Footer
+                footer_desc: "Votre bien-être à domicile, notre priorité.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Espaces",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. Tous droits réservés.",
+                
+                // Prestataires
+                loading_text: "Chargement des prestataires...",
+                no_providers: "Aucun prestataire disponible pour ce service actuellement.",
+                contact_button: "Contacter",
+                rating: "Note"
+            },
+            nl: {
+                nav_home: "Home",
+                nav_services: "Diensten",
+                nav_formules: "Formules",
+                nav_prestataires: "Dienstverleners",
+                nav_client: "Klantenruimte",
+                nav_prestataires_space: "Dienstverlener Ruimte",
+                hero_title: "Onze Gekwalificeerde Dienstverleners",
+                hero_subtitle: "Ontdek ons netwerk van professionals toegewijd aan uw welzijn thuis",
+                services_title: "Kies Uw Dienst",
+                services_subtitle: "Selecteer een dienst om onze beschikbare dienstverleners te ontdekken",
+                service_cleaning: "Schoonmaakhulp",
+                service_cleaning_desc: "Professionele schoonmaakdienst voor een stralend interieur",
+                service_shopping: "Boodschappen aan huis",
+                service_shopping_desc: "Wij doen uw boodschappen en bezorgen ze aan uw deur",
+                service_hairdressing: "Kapper aan huis",
+                service_hairdressing_desc: "Professionele kappersdiensten in het comfort van uw huis",
+                service_gardening: "Tuinonderhoud",
+                service_gardening_desc: "Volledig onderhoud van uw tuin en groene ruimtes",
+                service_transport: "Begeleid vervoer",
+                service_transport_desc: "Veilige begeleiding voor al uw verplaatsingen",
+                service_handyman: "Klusjesman",
+                service_handyman_desc: "Kleine werkzaamheden en diverse reparaties aan huis",
+                view_providers: "Bekijk dienstverleners",
+                cta_title: "Bent u een dienstverlener?",
+                cta_subtitle: "Word lid van ons netwerk van professionals en ontwikkel uw activiteit",
+                cta_button: "Dienstverlener Worden",
+                footer_desc: "Uw welzijn thuis, onze prioriteit.",
+                footer_navigation: "Navigatie",
+                footer_spaces: "Ruimtes",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden.",
+                loading_text: "Laden van dienstverleners...",
+                no_providers: "Momenteel geen dienstverleners beschikbaar voor deze dienst.",
+                contact_button: "Contacteer",
+                rating: "Score"
+            },
+            en: {
+                nav_home: "Home",
+                nav_services: "Services",
+                nav_formules: "Plans",
+                nav_prestataires: "Providers",
+                nav_client: "Client Space",
+                nav_prestataires_space: "Provider Space",
+                hero_title: "Our Qualified Providers",
+                hero_subtitle: "Discover our network of professionals dedicated to your home well-being",
+                services_title: "Choose Your Service",
+                services_subtitle: "Select a service to discover our available providers",
+                service_cleaning: "Household help",
+                service_cleaning_desc: "Professional cleaning service for a sparkling interior",
+                service_shopping: "Home shopping",
+                service_shopping_desc: "We do your shopping and deliver it to your door",
+                service_hairdressing: "Home hairdressing",
+                service_hairdressing_desc: "Professional hairdressing services in the comfort of your home",
+                service_gardening: "Gardening",
+                service_gardening_desc: "Complete maintenance of your garden and green spaces",
+                service_transport: "Accompanied transport",
+                service_transport_desc: "Safe accompaniment for all your travels",
+                service_handyman: "Handyman",
+                service_handyman_desc: "Small jobs and various home repairs",
+                view_providers: "View Providers",
+                cta_title: "Are you a provider?",
+                cta_subtitle: "Join our network of professionals and develop your activity",
+                cta_button: "Become a Provider",
+                footer_desc: "Your home well-being, our priority.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Spaces",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. All rights reserved.",
+                loading_text: "Loading providers...",
+                no_providers: "No providers available for this service currently.",
+                contact_button: "Contact",
+                rating: "Rating"
+            },
+            de: {
+                nav_home: "Startseite",
+                nav_services: "Dienstleistungen",
+                nav_formules: "Tarife",
+                nav_prestataires: "Dienstleister",
+                nav_client: "Kundenbereich",
+                nav_prestataires_space: "Dienstleister Bereich",
+                hero_title: "Unsere Qualifizierten Dienstleister",
+                hero_subtitle: "Entdecken Sie unser Netzwerk von Fachleuten, die sich Ihrem Wohlbefinden zu Hause widmen",
+                services_title: "Wählen Sie Ihre Dienstleistung",
+                services_subtitle: "Wählen Sie eine Dienstleistung, um unsere verfügbaren Dienstleister zu entdecken",
+                service_cleaning: "Haushaltshilfe",
+                service_cleaning_desc: "Professioneller Reinigungsservice für ein strahlendes Interieur",
+                service_shopping: "Einkaufen nach Hause",
+                service_shopping_desc: "Wir erledigen Ihre Einkäufe und liefern sie an Ihre Tür",
+                service_hairdressing: "Friseur zu Hause",
+                service_hairdressing_desc: "Professionelle Friseurdienste im Komfort Ihres Zuhauses",
+                service_gardening: "Gartenarbeit",
+                service_gardening_desc: "Komplette Pflege Ihres Gartens und Ihrer Grünflächen",
+                service_transport: "Begleiteter Transport",
+                service_transport_desc: "Sichere Begleitung für alle Ihre Fahrten",
+                service_handyman: "Handwerker",
+                service_handyman_desc: "Kleine Arbeiten und verschiedene Hausreparaturen",
+                view_providers: "Dienstleister anzeigen",
+                cta_title: "Sind Sie ein Dienstleister?",
+                cta_subtitle: "Werden Sie Teil unseres Netzwerks von Fachleuten und entwickeln Sie Ihre Tätigkeit",
+                cta_button: "Dienstleister werden",
+                footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Bereiche",
+                footer_contact: "Kontakt",
+                footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten.",
+                loading_text: "Laden von Dienstleistern...",
+                no_providers: "Derzeit keine Dienstleister für diesen Service verfügbar.",
+                contact_button: "Kontaktieren",
+                rating: "Bewertung"
+            }
+        };
 
-        const servicesContainer = document.getElementById("services");
+        let currentLanguage = 'fr';
 
-        // Génération dynamique des cartes
-        services.forEach(service => {
-            const card = document.createElement("div");
-            card.className = "service-card";
-            card.innerHTML = `
-                <div class="emoji-icon">${service.emoji}</div>
-                <h3>${service.nom}</h3>
-                <p>${service.description}</p>
-                <button class="btn" onclick="ouvrirModale('${service.nom}', '${service.description.replace(/'/g, "\\'")}')">
-                    Voir les prestataires
-                </button>
-            `;
-            servicesContainer.appendChild(card);
-        });
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
 
-        const modale = document.getElementById("modale");
-        const modaleTitre = document.getElementById("modale-titre");
-        const modaleDescription = document.getElementById("modale-description");
-        const listePrestataires = document.getElementById("liste-prestataires");
+            const flags = { fr: '🇫🇷', nl: '🇳🇱', en: '🇬🇧', de: '🇩🇪' };
+            const codes = { fr: 'FR', nl: 'NL', en: 'EN', de: 'DE' };
+            
+            document.getElementById('current-flag').textContent = flags[lang];
+            const codeElement = document.querySelector('#language-button .hidden');
+            if (codeElement) {
+                codeElement.textContent = codes[lang];
+            }
 
-        // Fonction pour ouvrir la modale et charger les prestataires
-        async function ouvrirModale(service, description) {
-            modaleTitre.innerText = service;
-            modaleDescription.innerText = description;
-            modale.classList.add("active");
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-lang') === lang) {
+                    option.classList.add('active');
+                }
+            });
 
-            listePrestataires.innerHTML = `<p style="text-align:center; color: var(--text-color-light);">Chargement des prestataires...</p>`;
+            localStorage.setItem('viiveo-language', lang);
+        }
+
+        // Fonction pour ouvrir la modal et charger les prestataires
+        async function openModal(service) {
+            const modal = document.getElementById('prestataires-modal');
+            const title = document.getElementById('modal-service-title');
+            const list = document.getElementById('prestataires-list');
+            
+            title.textContent = `${service} - ${translations[currentLanguage].view_providers}`;
+            list.innerHTML = '';
+            
+            // Afficher le loader
+            document.getElementById('loader').style.display = 'flex';
+            modal.style.display = 'block';
 
             try {
-                const res = await fetch(`https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec?type=getPrestatairesStyl%C3%A9s&specialite=${encodeURIComponent(service)}`);
+                const res = await fetch(`https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec?type=getPrestatairesStylés&specialite=${encodeURIComponent(service)}`);
+                
                 if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
                 const data = await res.json();
 
+                // Masquer le loader
+                document.getElementById('loader').style.display = 'none';
+
                 if (data.success && data.prestataires.length > 0) {
-                    listePrestataires.innerHTML = data.prestataires.map(p => {
+                    list.innerHTML = data.prestataires.map(p => {
                         const rating = p.rating ?? 4;
                         const fullStars = Math.floor(rating);
                         const halfStar = (rating % 1) >= 0.5;
                         const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
 
                         let starsHtml = '';
-                        for (let i = 0; i < fullStars; i++) starsHtml += '<i class="fa-solid fa-star"></i>';
-                        if (halfStar) starsHtml += '<i class="fa-solid fa-star-half-stroke"></i>';
-                        for (let i = 0; i < emptyStars; i++) starsHtml += '<i class="fa-regular fa-star"></i>';
+                        for (let i = 0; i < fullStars; i++) starsHtml += '<i class="fas fa-star"></i>';
+                        if (halfStar) starsHtml += '<i class="fas fa-star-half-alt"></i>';
+                        for (let i = 0; i < emptyStars; i++) starsHtml += '<i class="far fa-star"></i>';
 
                         return `
                             <div class="presta-card">
-                                <img src="${p.photo || 'https://via.placeholder.com/160/3B82F6/FFFFFF?text=?'}" alt="${p.nom}" />
-                                <h4>${p.prenom} ${p.nom}</h4>
+                                <img src="${p.photo || 'https://via.placeholder.com/120/facc15/FFFFFF?text=?'}" alt="${p.nom}" />
+                                <h4 class="text-xl font-bold text-gray-800">${p.prenom} ${p.nom}</h4>
                                 <div class="rating">${starsHtml}</div>
-                                <p>${p.commentaire || 'Prestataire qualifié et disponible.'}</p>
-                                <a href="https://viiveo-se.carrd.co/" target="_blank" class="btn" style="background: #28a745; margin-top: 0.5rem;">Contacter</a>
+                                <p class="text-gray-600 mb-4">${p.commentaire || translations[currentLanguage].no_providers}</p>
+                                <a href="nos_services.html" class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all">
+                                    ${translations[currentLanguage].contact_button}
+                                </a>
                             </div>
                         `;
                     }).join("");
                 } else {
-                    listePrestataires.innerHTML = `<p style="text-align:center; color: var(--text-color-light);">Aucun prestataire disponible pour ce service actuellement.</p>`;
+                    list.innerHTML = `
+                        <div class="col-span-3 text-center py-8">
+                            <div class="text-6xl mb-4">😊</div>
+                            <h3 class="text-xl font-semibold text-gray-600">${translations[currentLanguage].no_providers}</h3>
+                            <p class="text-gray-500 mt-2">Revenez plus tard ou contactez-nous directement</p>
+                        </div>
+                    `;
                 }
             } catch (error) {
+                document.getElementById('loader').style.display = 'none';
                 console.error("Erreur lors du chargement des prestataires :", error);
-                listePrestataires.innerHTML = `<p style="text-align:center; color: #EF4444;">Une erreur est survenue lors du chargement des prestataires.</p>`;
+                list.innerHTML = `
+                    <div class="col-span-3 text-center py-8">
+                        <div class="text-6xl mb-4">⚠️</div>
+                        <h3 class="text-xl font-semibold text-gray-600">Erreur de chargement</h3>
+                        <p class="text-gray-500 mt-2">Veuillez réessayer plus tard</p>
+                    </div>
+                `;
             }
         }
 
-        // Fermeture de la modale
-        function fermerModale() {
-            modale.classList.remove("active");
-            listePrestataires.innerHTML = '';
+        function closeModal() {
+            document.getElementById('prestataires-modal').style.display = 'none';
         }
 
-        // Gestion des événements
-        document.getElementById('close-btn').addEventListener('click', fermerModale);
-        modale.addEventListener('click', (event) => { if (event.target === modale) fermerModale(); });
-        document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && modale.classList.contains('active')) fermerModale(); });
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
+            changeLanguage(savedLanguage);
+
+            // Gestion du sélecteur de langue
+            const languageButton = document.getElementById('language-button');
+            const languageDropdown = document.getElementById('language-dropdown');
+            
+            if (languageButton && languageDropdown) {
+                languageButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    languageDropdown.classList.toggle('hidden');
+                });
+
+                document.addEventListener('click', function() {
+                    languageDropdown.classList.add('hidden');
+                });
+
+                document.querySelectorAll('.language-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const lang = this.getAttribute('data-lang');
+                        changeLanguage(lang);
+                        languageDropdown.classList.add('hidden');
+                    });
+                });
+            }
+
+            // Menu mobile
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('open');
+                });
+            }
+
+            // Fermer la modal en cliquant à l'extérieur
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    closeModal();
+                }
+            });
+        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'986b6dcf6664d204',t:'MTc1OTE0ODM2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
