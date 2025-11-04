@@ -658,9 +658,6 @@
     </div>
 
     <script>
-        // URL de votre Google Apps Script
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec';
-
         // Traductions multilingues
         const translations = {
             fr: {
@@ -740,9 +737,7 @@
                 mission_accepted: "Mission acceptée avec succès !",
                 mission_started: "Mission démarrée !",
                 mission_completed: "Mission terminée !",
-                profile_updated: "Profil mis à jour avec succès !",
-                error_loading_missions: "Erreur lors du chargement des missions",
-                no_missions_found: "Aucune mission trouvée"
+                profile_updated: "Profil mis à jour avec succès !"
             },
             nl: {
                 nav_home: "Home",
@@ -802,9 +797,7 @@
                 mission_accepted: "Missie succesvol geaccepteerd!",
                 mission_started: "Missie gestart!",
                 mission_completed: "Missie voltooid!",
-                profile_updated: "Profiel succesvol bijgewerkt!",
-                error_loading_missions: "Fout bij het laden van missies",
-                no_missions_found: "Geen missies gevonden"
+                profile_updated: "Profiel succesvol bijgewerkt!"
             },
             en: {
                 nav_home: "Home",
@@ -864,9 +857,7 @@
                 mission_accepted: "Mission accepted successfully!",
                 mission_started: "Mission started!",
                 mission_completed: "Mission completed!",
-                profile_updated: "Profile updated successfully!",
-                error_loading_missions: "Error loading missions",
-                no_missions_found: "No missions found"
+                profile_updated: "Profile updated successfully!"
             },
             de: {
                 nav_home: "Startseite",
@@ -926,9 +917,7 @@
                 mission_accepted: "Mission erfolgreich akzeptiert!",
                 mission_started: "Mission gestartet!",
                 mission_completed: "Mission abgeschlossen!",
-                profile_updated: "Profil erfolgreich aktualisiert!",
-                error_loading_missions: "Fehler beim Laden der Missionen",
-                no_missions_found: "Keine Missionen gefunden"
+                profile_updated: "Profil erfolgreich aktualisiert!"
             }
         };
 
@@ -964,97 +953,6 @@
             localStorage.setItem('viiveo-language', lang);
         }
 
-        // Fonction pour récupérer les missions depuis Google Sheets
-        async function fetchProviderMissions(providerEmail) {
-            try {
-                const response = await fetch(`${GOOGLE_SCRIPT_URL}?type=getProviderMissions&email=${encodeURIComponent(providerEmail)}`);
-                
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    return data.missions || [];
-                } else {
-                    console.error('Erreur dans la réponse:', data.error);
-                    return [];
-                }
-            } catch (error) {
-                console.error('Erreur lors de la récupération des missions:', error);
-                // En cas d'erreur, retourner des données simulées
-                return getMockMissions();
-            }
-        }
-
-        // Fonction pour mettre à jour le statut d'une mission
-        async function updateMissionStatus(missionId, newStatus) {
-            try {
-                const response = await fetch(`${GOOGLE_SCRIPT_URL}?type=updateMissionStatus&missionId=${missionId}&status=${newStatus}&providerEmail=${encodeURIComponent(currentProvider.email)}`);
-                
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                return data.success;
-            } catch (error) {
-                console.error('Erreur lors de la mise à jour de la mission:', error);
-                return false;
-            }
-        }
-
-        // Fonction de données simulées (fallback)
-        function getMockMissions() {
-            return {
-                pending: [
-                    {
-                        id: 1,
-                        service: "Aide ménagère",
-                        client: "Jean Dupont",
-                        date: "2024-01-15",
-                        time: "14:00",
-                        address: "15 Rue des Fleurs, 75001 Paris",
-                        credits: 20
-                    }
-                ],
-                confirmed: [
-                    {
-                        id: 2,
-                        service: "Courses à domicile",
-                        client: "Sophie Martin",
-                        date: "2024-01-16",
-                        time: "10:00",
-                        address: "22 Avenue Victor Hugo, 75016 Paris",
-                        credits: 18
-                    }
-                ],
-                progress: [
-                    {
-                        id: 3,
-                        service: "Jardinage",
-                        client: "Pierre Lambert",
-                        date: "2024-01-18",
-                        time: "09:00",
-                        address: "8 Rue de la Paix, 75002 Paris",
-                        credits: 25
-                    }
-                ],
-                completed: [
-                    {
-                        id: 4,
-                        service: "Aide ménagère",
-                        client: "Marie Curie",
-                        date: "2024-01-10",
-                        time: "15:00",
-                        address: "5 Avenue des Champs-Élysées, 75008 Paris",
-                        credits: 22
-                    }
-                ]
-            };
-        }
-
         // Fonction de connexion
         async function login() {
             const email = document.getElementById('email').value;
@@ -1086,8 +984,8 @@
                     document.getElementById('provider-specialty').textContent = currentProvider.specialty;
                     document.getElementById('provider-photo').src = currentProvider.photo;
 
-                    // Charger les missions depuis Google Sheets
-                    await loadProviderData();
+                    // Charger les missions et statistiques
+                    loadProviderData();
 
                     showNotification(translations[currentLanguage].login_success, 'success');
                 } else {
@@ -1110,48 +1008,27 @@
             document.getElementById('login-message').classList.add('hidden');
         }
 
-        // Charger les données du prestataire depuis Google Sheets
-        async function loadProviderData() {
-            // Afficher le loader
-            document.getElementById('loader').style.display = 'flex';
+        // Charger les données du prestataire
+        function loadProviderData() {
+            // Mettre à jour les statistiques
+            document.getElementById('stats-pending').textContent = '3';
+            document.getElementById('stats-confirmed').textContent = '5';
+            document.getElementById('stats-progress').textContent = '2';
+            document.getElementById('stats-completed').textContent = '12';
 
-            try {
-                // Récupérer les missions depuis Google Sheets
-                const missions = await fetchProviderMissions(currentProvider.email);
-
-                // Mettre à jour les statistiques
-                updateStatistics(missions);
-
-                // Charger les missions pour chaque onglet
-                loadMissions('pending', missions.pending || []);
-                loadMissions('confirmed', missions.confirmed || []);
-                loadMissions('progress', missions.progress || []);
-                loadMissions('completed', missions.completed || []);
-
-            } catch (error) {
-                console.error('Erreur lors du chargement des données:', error);
-                showNotification(translations[currentLanguage].error_loading_missions, 'error');
-            } finally {
-                document.getElementById('loader').style.display = 'none';
-            }
-        }
-
-        // Mettre à jour les statistiques
-        function updateStatistics(missions) {
-            const pendingCount = (missions.pending || []).length;
-            const confirmedCount = (missions.confirmed || []).length;
-            const progressCount = (missions.progress || []).length;
-            const completedCount = (missions.completed || []).length;
-
-            document.getElementById('stats-pending').textContent = pendingCount;
-            document.getElementById('stats-confirmed').textContent = confirmedCount;
-            document.getElementById('stats-progress').textContent = progressCount;
-            document.getElementById('stats-completed').textContent = completedCount;
+            // Charger les missions pour chaque onglet
+            loadMissions('pending');
+            loadMissions('confirmed');
+            loadMissions('progress');
+            loadMissions('completed');
         }
 
         // Charger les missions par statut
-        function loadMissions(status, missions) {
+        function loadMissions(status) {
             const container = document.getElementById(`${status}-missions-list`);
+            
+            // Missions simulées
+            const missions = getMockMissions(status);
             
             if (missions.length === 0) {
                 container.innerHTML = `
@@ -1194,6 +1071,46 @@
             }
         }
 
+        function getMockMissions(status) {
+            const baseMissions = [
+                {
+                    id: 1,
+                    service: "Aide ménagère",
+                    client: "Jean Dupont",
+                    date: "2024-01-15",
+                    time: "14:00",
+                    address: "15 Rue des Fleurs, 75001 Paris",
+                    credits: 20
+                },
+                {
+                    id: 2,
+                    service: "Courses à domicile",
+                    client: "Sophie Martin",
+                    date: "2024-01-16",
+                    time: "10:00",
+                    address: "22 Avenue Victor Hugo, 75016 Paris",
+                    credits: 18
+                },
+                {
+                    id: 3,
+                    service: "Jardinage",
+                    client: "Pierre Lambert",
+                    date: "2024-01-18",
+                    time: "09:00",
+                    address: "8 Rue de la Paix, 75002 Paris",
+                    credits: 25
+                }
+            ];
+
+            // Filtrer selon le statut (simulation)
+            return baseMissions.filter((_, index) => {
+                if (status === 'pending') return index === 0;
+                if (status === 'confirmed') return index === 1;
+                if (status === 'progress') return index === 2;
+                return index >= 3; // completed
+            });
+        }
+
         function getMissionActions(status, missionId) {
             const actions = {
                 'pending': `
@@ -1223,48 +1140,28 @@
             return actions[status] || '';
         }
 
-        async function acceptMission(missionId) {
+        function acceptMission(missionId) {
             if (confirm("Accepter cette mission ?")) {
-                const success = await updateMissionStatus(missionId, 'confirmed');
-                if (success) {
-                    showNotification(translations[currentLanguage].mission_accepted, 'success');
-                    loadProviderData(); // Recharger les données
-                } else {
-                    showNotification("Erreur lors de l'acceptation de la mission", 'error');
-                }
+                showNotification(translations[currentLanguage].mission_accepted, 'success');
+                loadProviderData(); // Recharger les données
             }
         }
 
-        async function refuseMission(missionId) {
+        function refuseMission(missionId) {
             if (confirm("Refuser cette mission ?")) {
-                const success = await updateMissionStatus(missionId, 'refused');
-                if (success) {
-                    showNotification("Mission refusée", 'info');
-                    loadProviderData(); // Recharger les données
-                } else {
-                    showNotification("Erreur lors du refus de la mission", 'error');
-                }
+                showNotification("Mission refusée", 'info');
+                loadProviderData(); // Recharger les données
             }
         }
 
-        async function startMission(missionId) {
-            const success = await updateMissionStatus(missionId, 'in_progress');
-            if (success) {
-                showNotification(translations[currentLanguage].mission_started, 'success');
-                loadProviderData(); // Recharger les données
-            } else {
-                showNotification("Erreur lors du démarrage de la mission", 'error');
-            }
+        function startMission(missionId) {
+            showNotification(translations[currentLanguage].mission_started, 'success');
+            loadProviderData(); // Recharger les données
         }
 
-        async function completeMission(missionId) {
-            const success = await updateMissionStatus(missionId, 'completed');
-            if (success) {
-                showNotification(translations[currentLanguage].mission_completed, 'success');
-                loadProviderData(); // Recharger les données
-            } else {
-                showNotification("Erreur lors de la finalisation de la mission", 'error');
-            }
+        function completeMission(missionId) {
+            showNotification(translations[currentLanguage].mission_completed, 'success');
+            loadProviderData(); // Recharger les données
         }
 
         function showMissionDetails(missionId) {
