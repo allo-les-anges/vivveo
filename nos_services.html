@@ -20,6 +20,11 @@
         body {
             font-family: 'Inter', sans-serif;
             color: var(--text-color);
+            background-image: url('https://res.cloudinary.com/drn6w4nab/image/upload/v1759138967/viiveo_bkg_servives_sbzzec.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
         }
 
         .gradient-bg {
@@ -76,12 +81,18 @@
 
         /* Styles spécifiques services */
         .service-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.85);
             border-radius: 1.5rem;
             overflow: hidden;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             border: 2px solid #fef3c7;
             transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
 
         .service-image {
@@ -114,15 +125,6 @@
             margin-bottom: 0.5rem;
         }
 
-        .credit-badge {
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-
         .modal {
             display: none;
             position: fixed;
@@ -131,7 +133,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0,0,0,0.6);
             backdrop-filter: blur(5px);
         }
 
@@ -255,19 +257,21 @@
             display: flex;
             gap: 0.5rem;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .hours-btn {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border: 2px solid #e5e7eb;
-            border-radius: 0.5rem;
+            border-radius: 0.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
             font-weight: 600;
+            font-size: 1rem;
         }
 
         .hours-btn:hover {
@@ -285,6 +289,44 @@
             border-radius: 0.75rem;
             padding: 1rem;
             margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .loader-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #facc15;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -366,29 +408,29 @@
                 Nos Services à Domicile
             </h1>
             <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
-                Réservez le nombre d'heures dont vous avez besoin. Les prestataires fixent leurs tarifs directement avec vous.
+                Découvrez notre gamme complète de services pour votre bien-être au quotidien
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#services" class="btn-primary text-white px-8 py-4 rounded-full text-lg font-semibold inline-block">
                     Découvrir les services
                 </a>
                 <a href="formules.html" class="border-2 border-yellow-400 text-yellow-400 px-8 py-4 rounded-full text-lg font-semibold inline-block hover:bg-yellow-400 hover:text-white transition-all">
-                    Abonnement 10€/mois
+                    Voir nos formules
                 </a>
             </div>
         </div>
     </section>
 
     <!-- Services Grid -->
-    <section id="services" class="py-16 md:py-20 bg-white">
+    <section id="services" class="py-16 md:py-20">
         <div class="container mx-auto px-6">
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                 
                 <!-- Aide ménagère -->
-                <div class="service-card card-hover" onclick="openServiceModal('menage')">
+                <div class="service-card" onclick="openServiceModal('Aide ménagère')">
                     <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
                         <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Réserver des heures</span>
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
                         </div>
                     </div>
                     <div class="p-6">
@@ -402,7 +444,7 @@
                                 <i class="fas fa-star-half-alt"></i>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Ménage complet, repassage, entretien quotidien</p>
+                        <p class="text-gray-600 mb-4">Service de ménage professionnel à domicile pour vous faciliter le quotidien</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Réservation à l'heure</span>
                             <span class="text-yellow-500 font-semibold">4.7/5</span>
@@ -411,10 +453,10 @@
                 </div>
 
                 <!-- Courses à domicile -->
-                <div class="service-card card-hover" onclick="openServiceModal('courses')">
+                <div class="service-card" onclick="openServiceModal('Courses à domicile')">
                     <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
                         <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Réserver des heures</span>
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
                         </div>
                     </div>
                     <div class="p-6">
@@ -428,7 +470,7 @@
                                 <i class="fas fa-star"></i>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Courses, livraison et rangement des produits</p>
+                        <p class="text-gray-600 mb-4">Nous faisons vos courses et vous les livrons directement chez vous</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Forfait 2h minimum</span>
                             <span class="text-yellow-500 font-semibold">4.9/5</span>
@@ -437,10 +479,10 @@
                 </div>
 
                 <!-- Coiffure à domicile -->
-                <div class="service-card card-hover" onclick="openServiceModal('coiffure')">
+                <div class="service-card" onclick="openServiceModal('Coiffure à domicile')">
                     <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
                         <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Réserver des heures</span>
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
                         </div>
                     </div>
                     <div class="p-6">
@@ -454,7 +496,7 @@
                                 <i class="far fa-star"></i>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Coupe, brushing, coloration à domicile</p>
+                        <p class="text-gray-600 mb-4">Services de coiffure professionnels dans le confort de votre domicile</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Forfait 1h30 minimum</span>
                             <span class="text-yellow-500 font-semibold">4.5/5</span>
@@ -463,10 +505,10 @@
                 </div>
 
                 <!-- Jardinage -->
-                <div class="service-card card-hover" onclick="openServiceModal('jardinage')">
+                <div class="service-card" onclick="openServiceModal('Jardinage')">
                     <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
                         <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Réserver des heures</span>
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
                         </div>
                     </div>
                     <div class="p-6">
@@ -480,7 +522,7 @@
                                 <i class="fas fa-star-half-alt"></i>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Tonte, taille, entretien des espaces verts</p>
+                        <p class="text-gray-600 mb-4">Entretien de votre jardin et espaces verts par des professionnels</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Réservation à l'heure</span>
                             <span class="text-yellow-500 font-semibold">4.6/5</span>
@@ -489,10 +531,10 @@
                 </div>
 
                 <!-- Transport accompagné -->
-                <div class="service-card card-hover" onclick="openServiceModal('transport')">
+                <div class="service-card" onclick="openServiceModal('Transport accompagné')">
                     <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
                         <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Réserver des heures</span>
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
                         </div>
                     </div>
                     <div class="p-6">
@@ -506,7 +548,7 @@
                                 <i class="fas fa-star"></i>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Déplacements médicaux, courses, accompagnement</p>
+                        <p class="text-gray-600 mb-4">Service de transport avec accompagnement pour vos déplacements</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Forfait 2h minimum</span>
                             <span class="text-yellow-500 font-semibold">4.8/5</span>
@@ -515,10 +557,10 @@
                 </div>
 
                 <!-- Assistance / Secours -->
-                <div class="service-card card-hover" onclick="openServiceModal('assistance')">
+                <div class="service-card" onclick="openServiceModal('Assistance / Secours')">
                     <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
                         <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Réserver des heures</span>
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
                         </div>
                     </div>
                     <div class="p-6">
@@ -532,10 +574,88 @@
                                 <i class="fas fa-star"></i>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Aide d'urgence, assistance quotidienne</p>
+                        <p class="text-gray-600 mb-4">Aide d'urgence et assistance pour toutes situations délicates</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Service prioritaire</span>
                             <span class="text-yellow-500 font-semibold">5.0/5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Homme à tout faire -->
+                <div class="service-card" onclick="openServiceModal('Homme à tout faire')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                        <div class="service-overlay">
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Homme à tout faire</h3>
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Petits travaux et réparations diverses dans votre domicile</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Réservation à l'heure</span>
+                            <span class="text-yellow-500 font-semibold">4.7/5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visite bénévole -->
+                <div class="service-card" onclick="openServiceModal('Visite bénévole')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                        <div class="service-overlay">
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Visite bénévole</h3>
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Compagnie et soutien moral par nos bénévoles dévoués</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Service gratuit</span>
+                            <span class="text-yellow-500 font-semibold">5.0/5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Commande de repas -->
+                <div class="service-card" onclick="openServiceModal('Commande de repas')">
+                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                        <div class="service-overlay">
+                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xl font-bold text-gray-800">Commande de repas</h3>
+                            <div class="rating-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Livraison de repas équilibrés et savoureux directement chez vous</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Service de livraison</span>
+                            <span class="text-yellow-500 font-semibold">4.6/5</span>
                         </div>
                     </div>
                 </div>
@@ -545,11 +665,11 @@
     </section>
 
     <!-- Comment ça marche -->
-    <section class="py-16 md:py-20 bg-gray-50">
+    <section class="py-16 md:py-20 bg-gray-50 bg-opacity-90">
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Comment ça marche ?</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Un système simple et transparent</p>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Un système simple et transparent pour vos services à domicile</p>
             </div>
             <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                 <div class="text-center">
@@ -578,7 +698,7 @@
     </section>
 
     <!-- Avis Clients -->
-    <section class="py-16 md:py-20 bg-white">
+    <section class="py-16 md:py-20 bg-white bg-opacity-90">
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Ce que disent nos clients</h2>
@@ -778,6 +898,14 @@
         </div>
     </div>
 
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p>Envoi en cours...</p>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
     <script>
@@ -803,18 +931,8 @@
             const title = document.getElementById('modal-title');
             const serviceType = document.getElementById('service-type');
             
-            // Mettre à jour le titre et le type de service
-            const serviceNames = {
-                'menage': 'Aide ménagère',
-                'courses': 'Courses à domicile', 
-                'coiffure': 'Coiffure à domicile',
-                'jardinage': 'Jardinage',
-                'transport': 'Transport accompagné',
-                'assistance': 'Assistance / Secours'
-            };
-            
-            title.textContent = `Réservation : ${serviceNames[service]}`;
-            serviceType.value = serviceNames[service];
+            title.textContent = `Réservation : ${service}`;
+            serviceType.value = service;
             
             // Réinitialiser la sélection d'heures
             selectHours(2);
@@ -847,6 +965,7 @@
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
             document.getElementById('booking-form').reset();
+            selectHours(2); // Réinitialiser à 2h
         }
 
         async function loadPrestataires(serviceType) {
@@ -854,19 +973,28 @@
             select.innerHTML = '<option value="">Chargement...</option>';
 
             try {
-                const response = await fetch(`${API_BASE_URL}?type=dropdown&specialite=${encodeURIComponent(serviceType)}`);
-                const data = await response.json();
+                // Utilisation de JSONP pour contourner les problèmes CORS
+                const callbackName = `prestatairesCallback_${Date.now()}`;
                 
-                select.innerHTML = '<option value="">Pas de préférence</option>';
-                
-                if (data.success && data.prestataires) {
-                    data.prestataires.forEach(presta => {
-                        const option = document.createElement('option');
-                        option.value = presta.email;
-                        option.textContent = `${presta.prenom} ${presta.nom} - ${presta.specialite}`;
-                        select.appendChild(option);
-                    });
-                }
+                window.handlePrestatairesResponse = function(result) {
+                    select.innerHTML = '<option value="">Pas de préférence</option>';
+                    
+                    if (result && result.success && Array.isArray(result.prestataires)) {
+                        result.prestataires.forEach(presta => {
+                            const option = document.createElement('option');
+                            option.value = presta.email || presta.nomComplet;
+                            option.textContent = presta.nomComplet || `${presta.prenom} ${presta.nom}`;
+                            select.appendChild(option);
+                        });
+                    } else {
+                        select.innerHTML = '<option value="">Aucun prestataire disponible</option>';
+                    }
+                };
+
+                const script = document.createElement('script');
+                script.src = `${API_BASE_URL}?type=dropdown&specialite=${encodeURIComponent(serviceType)}&callback=handlePrestatairesResponse`;
+                document.body.appendChild(script);
+
             } catch (error) {
                 console.error('Erreur chargement prestataires:', error);
                 select.innerHTML = '<option value="">Aucun prestataire disponible</option>';
@@ -876,9 +1004,16 @@
         async function submitBooking(event) {
             event.preventDefault();
             
+            const loader = document.getElementById('loader');
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            
+            // Afficher le loader
+            loader.style.display = 'flex';
+            submitButton.disabled = true;
+            
             const formData = new FormData(event.target);
             const bookingData = {
-                type: 'booking',
+                type: 'formClient',
                 service: formData.get('service-type'),
                 hours: formData.get('selected-hours'),
                 date: formData.get('booking-date'),
@@ -895,9 +1030,14 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                     },
                     body: JSON.stringify(bookingData)
                 });
+
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
 
                 const result = await response.json();
 
@@ -905,11 +1045,15 @@
                     alert('✅ Réservation confirmée ! Un prestataire vous contactera rapidement pour convenir du tarif.');
                     closeModal();
                 } else {
-                    alert('❌ Erreur lors de la réservation. Veuillez réessayer.');
+                    throw new Error(result.message || 'Erreur lors de la réservation');
                 }
             } catch (error) {
                 console.error('Erreur:', error);
-                alert('❌ Erreur de connexion. Veuillez réessayer.');
+                alert('❌ Erreur lors de la réservation. Veuillez réessayer. Détail: ' + error.message);
+            } finally {
+                // Cacher le loader
+                loader.style.display = 'none';
+                submitButton.disabled = false;
             }
         }
 
