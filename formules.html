@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nos Formules - Viiveo</title>
+    <title>Abonnement Viiveo - 10€/mois | Tous nos services inclus</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -33,8 +33,8 @@
         }
         
         .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
         
         .btn-primary {
@@ -111,31 +111,38 @@
             transform: translateY(0);
         }
 
-        /* Styles spécifiques aux formules */
-        .pricing-card {
-            transition: var(--transition);
-            border: 3px solid transparent;
+        /* Hero Section améliorée */
+        .hero-section {
+            background-image: url('https://i.ibb.co/6cJCrCjN/Hero-formules.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
         }
 
-        .pricing-card.popular {
-            border-color: #facc15;
-            transform: scale(1.05);
+        @media (min-height: 800px) {
+            .hero-section {
+                min-height: 80vh;
+            }
         }
 
-        .pricing-card.popular:hover {
-            transform: scale(1.05) translateY(-8px);
+        .hero-overlay {
+            background: linear-gradient(135deg, 
+                rgba(0, 0, 0, 0.4) 0%, 
+                rgba(0, 0, 0, 0.3) 50%, 
+                rgba(0, 0, 0, 0.2) 100%);
         }
 
-        .credit-badge {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        /* Animation pulse pour le prix */
+        @keyframes pulse-gentle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
-        .table-row:hover {
-            background-color: #fffbeb;
-        }
-
-        .comparison-table th {
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+        .pulse-gentle {
+            animation: pulse-gentle 3s infinite;
         }
     </style>
 </head>
@@ -153,7 +160,7 @@
                 <nav class="hidden lg:flex items-center space-x-8">
                     <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
-                    <a href="formules.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_formules">Formules</a>
+                    <a href="formules.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_formules">Abonnement</a>
                     <a href="infos_prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Prestataires</a>
                     <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_client">Espace Client</a>
                     <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
@@ -201,7 +208,7 @@
                 <div class="px-4 py-6 space-y-4">
                     <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
-                    <a href="formules.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_formules">Formules</a>
+                    <a href="formules.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_formules">Abonnement</a>
                     <a href="infos_prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Prestataires</a>
                     <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
                     <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a>
@@ -211,140 +218,148 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero-bg relative text-white py-20 md:py-32"
-         style="background-image: url('https://i.ibb.co/6cJCrCjN/Hero-formules.png');">
-        <div class="container mx-auto px-6 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6" data-translate="hero_title">
-                Nos Formules Crédits
-            </h1>
-            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8" data-translate="hero_subtitle">
-                Choisissez la formule qui correspond à vos besoins. Plus vous achetez de crédits, moins ils vous coûtent cher !
-            </p>
+    <section class="hero-section relative text-white">
+        <div class="hero-overlay absolute inset-0"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-4xl mx-auto text-center py-20">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 md:mb-8 leading-tight" data-translate="hero_title">
+                    Simple. Clair. Sans surprise.
+                </h1>
+                <p class="text-xl md:text-2xl lg:text-3xl mb-8 md:mb-12 max-w-3xl mx-auto text-yellow-100 leading-relaxed" 
+                   style="text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.3);" 
+                   data-translate="hero_subtitle">
+                    Un forfait unique à <strong>10€/mois</strong> pour accéder à tous nos services
+                </p>
+                
+                <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 md:p-8 max-w-2xl mx-auto mb-8 pulse-gentle">
+                    <div class="text-4xl md:text-5xl font-bold text-white mb-2" data-translate="hero_price">10€<span class="text-xl">/mois</span></div>
+                    <p class="text-yellow-100 text-lg" data-translate="hero_conditions">Sans engagement • Annulation à tout moment</p>
+                </div>
+                
+                <button class="btn-primary text-white px-12 py-5 rounded-full text-xl font-semibold shadow-2xl hover:scale-105 transition-all duration-300" data-translate="hero_cta">
+                    Commencer maintenant
+                </button>
+            </div>
         </div>
     </section>
 
-    <!-- Formules Section -->
-    <section class="py-16 bg-white">
+    <!-- Avantages Section -->
+    <section class="py-20 bg-white">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="pricing_title">
-                    Choisissez Votre Formule
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="advantages_title">
+                    Pourquoi choisir l'abonnement Viiveo ?
                 </h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto" data-translate="pricing_subtitle">
-                    Des crédits flexibles pour accéder à tous nos services. Valables plusieurs mois.
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-translate="advantages_subtitle">
+                    La simplicité d'un prix unique pour une tranquillité d'esprit totale
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <!-- Pack Essentiel -->
-                <div class="pricing-card bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="pack1_title">Pack Essentiel</h3>
-                    <div class="text-4xl font-bold text-green-600 mb-2">50€</div>
-                    <div class="text-xl font-semibold text-gray-700 mb-2" data-translate="pack1_credits">50 crédits</div>
-                    <div class="text-lg text-gray-600 mb-2" data-translate="pack1_price">1€ / crédit</div>
-                    <div class="text-sm text-gray-500 mb-6" data-translate="pack1_validity">Valide 6 mois</div>
-                    
-                    <ul class="space-y-3 mb-8 text-left">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            <span data-translate="feature_all_services">Accès à tous les services</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            <span data-translate="feature_support">Support client inclus</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            <span data-translate="feature_flexible">Utilisation flexible</span>
-                        </li>
-                    </ul>
-                    
-                    <button class="btn-primary text-white w-full py-4 rounded-xl font-semibold text-lg" data-translate="buy_button">
-                        Acheter Maintenant
-                    </button>
-                </div>
-
-                <!-- Pack Confort -->
-                <div class="pricing-card popular bg-white rounded-2xl p-8 shadow-2xl border-2 border-yellow-400 text-center relative">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span class="bg-yellow-400 text-white px-6 py-2 rounded-full text-sm font-bold" data-translate="popular_badge">
-                            ⭐ POPULAIRE
-                        </span>
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="text-center card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">💰</span>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="pack2_title">Pack Confort</h3>
-                    <div class="text-4xl font-bold text-yellow-600 mb-2">95€</div>
-                    <div class="text-xl font-semibold text-gray-700 mb-2" data-translate="pack2_credits">100 crédits</div>
-                    <div class="text-lg text-gray-600 mb-2" data-translate="pack2_price">0,95€ / crédit</div>
-                    <div class="text-sm text-gray-500 mb-6" data-translate="pack2_validity">Valide 12 mois</div>
-                    
-                    <ul class="space-y-3 mb-8 text-left">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            <span data-translate="feature_all_services">Accès à tous les services</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            <span data-translate="feature_priority">Priorité sur les réservations</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            <span data-translate="feature_support">Support prioritaire</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            <span data-translate="feature_discount">5% de réduction</span>
-                        </li>
-                    </ul>
-                    
-                    <button class="btn-primary text-white w-full py-4 rounded-xl font-semibold text-lg" data-translate="buy_button">
-                        Acheter Maintenant
-                    </button>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4" data-translate="advantage1_title">Prix transparent</h3>
+                    <p class="text-gray-600" data-translate="advantage1_desc">
+                        10€ par mois, pas de frais cachés. Vous savez exactement à quoi vous attendre.
+                    </p>
                 </div>
 
-                <!-- Pack Premium -->
-                <div class="pricing-card bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="pack3_title">Pack Premium</h3>
-                    <div class="text-4xl font-bold text-purple-600 mb-2">180€</div>
-                    <div class="text-xl font-semibold text-gray-700 mb-2" data-translate="pack3_credits">200 crédits</div>
-                    <div class="text-lg text-gray-600 mb-2" data-translate="pack3_price">0,90€ / crédit</div>
-                    <div class="text-sm text-gray-500 mb-6" data-translate="pack3_validity">Valide 18 mois</div>
-                    
-                    <ul class="space-y-3 mb-8 text-left">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            <span data-translate="feature_all_services">Accès à tous les services</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            <span data-translate="feature_priority_max">Priorité maximale</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            <span data-translate="feature_dedicated">Conseiller dédié</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            <span data-translate="feature_discount_max">10% de réduction</span>
-                        </li>
-                    </ul>
-                    
-                    <button class="btn-primary text-white w-full py-4 rounded-xl font-semibold text-lg" data-translate="buy_button">
-                        Acheter Maintenant
-                    </button>
+                <div class="text-center card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">♾️</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4" data-translate="advantage2_title">Accès complet</h3>
+                    <p class="text-gray-600" data-translate="advantage2_desc">
+                        Tous nos services inclus : ménage, courses, coiffure, jardinage, transport...
+                    </p>
+                </div>
+
+                <div class="text-center card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                    <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">⏰</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4" data-translate="advantage3_title">Sans engagement</h3>
+                    <p class="text-gray-600" data-translate="advantage3_desc">
+                        Annulez à tout moment. Pas de contrat à long terme, pas de pénalités.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Tarifs Détail Section -->
-    <section class="py-16 bg-gray-50">
+    <!-- Forfait Unique Section -->
+    <section class="py-20 bg-gray-50">
         <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="pricing_detail_title">
-                    Tarifs Détaillés par Service
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="pricing_title">
+                    Un prix, tous les services
                 </h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto" data-translate="pricing_detail_subtitle">
-                    Consultez le coût en crédits pour chaque service Viiveo
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-translate="pricing_subtitle">
+                    Pour seulement 10€ par mois, profitez de notre plateforme complète
+                </p>
+            </div>
+
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-3xl p-8 text-center text-white shadow-2xl card-hover">
+                    <div class="mb-6">
+                        <span class="bg-white text-yellow-600 px-4 py-2 rounded-full text-sm font-bold" data-translate="popular_badge">
+                            CHOIX INTELLIGENT
+                        </span>
+                    </div>
+                    
+                    <h3 class="text-2xl font-bold mb-4" data-translate="plan_title">Forfait Viiveo</h3>
+                    <div class="text-5xl font-bold mb-2" data-translate="plan_price">10€<span class="text-2xl">/mois</span></div>
+                    <p class="text-yellow-100 mb-8" data-translate="plan_billing">Facturation mensuelle • Premier mois offert</p>
+                    
+                    <ul class="space-y-4 mb-8 text-left">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-white mr-3 text-xl"></i>
+                            <span class="text-lg" data-translate="feature1">Accès à tous les services</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-white mr-3 text-xl"></i>
+                            <span class="text-lg" data-translate="feature2">Réservation illimitée</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-white mr-3 text-xl"></i>
+                            <span class="text-lg" data-translate="feature3">Support client inclus</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-white mr-3 text-xl"></i>
+                            <span class="text-lg" data-translate="feature4">Annulation à tout moment</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-white mr-3 text-xl"></i>
+                            <span class="text-lg" data-translate="feature5">Application mobile incluse</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-white mr-3 text-xl"></i>
+                            <span class="text-lg" data-translate="feature6">Mises à jour gratuites</span>
+                        </li>
+                    </ul>
+                    
+                    <button class="bg-white text-yellow-600 w-full py-4 rounded-xl font-semibold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105" data-translate="subscribe_button">
+                        S'abonner maintenant
+                    </button>
+                    
+                    <p class="text-yellow-100 text-sm mt-4" data-translate="trial_text">30 jours satisfaits ou remboursés</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparaison Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="comparison_title">
+                    Viiveo vs la concurrence
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-translate="comparison_subtitle">
+                    Découvrez pourquoi notre forfait unique est la meilleure solution
                 </p>
             </div>
 
@@ -353,81 +368,33 @@
                     <table class="w-full">
                         <thead>
                             <tr class="bg-gradient-to-r from-yellow-400 to-yellow-500 text-white">
-                                <th class="py-4 px-6 text-left font-semibold" data-translate="service_col">Service</th>
-                                <th class="py-4 px-6 text-center font-semibold" data-translate="credits_col">Crédits / Heure</th>
-                                <th class="py-4 px-6 text-left font-semibold" data-translate="details_col">Détails</th>
+                                <th class="py-4 px-6 text-left font-semibold" data-translate="comparison_feature">Fonctionnalité</th>
+                                <th class="py-4 px-6 text-center font-semibold">Viiveo</th>
+                                <th class="py-4 px-6 text-center font-semibold" data-translate="comparison_others">Autres services</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
-                            <tr class="table-row hover:bg-yellow-50 transition-colors">
-                                <td class="py-4 px-6">
-                                    <div class="flex items-center space-x-3">
-                                        <span class="text-2xl">🧹</span>
-                                        <span class="font-medium" data-translate="service_cleaning">Aide ménagère</span>
-                                    </div>
-                                </td>
+                            <tr class="hover:bg-yellow-50 transition-colors">
+                                <td class="py-4 px-6 font-medium" data-translate="comparison_price">Prix mensuel</td>
                                 <td class="py-4 px-6 text-center">
-                                    <span class="credit-badge text-white px-3 py-1 rounded-full text-sm font-semibold">20 crédits</span>
+                                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">10€</span>
                                 </td>
-                                <td class="py-4 px-6 text-gray-600" data-translate="cleaning_details">
-                                    Nettoyage, repassage, entretien ménager
-                                </td>
+                                <td class="py-4 px-6 text-center text-gray-600" data-translate="comparison_price_others">15-30€ + frais</td>
                             </tr>
-                            <tr class="table-row hover:bg-yellow-50 transition-colors">
-                                <td class="py-4 px-6">
-                                    <div class="flex items-center space-x-3">
-                                        <span class="text-2xl">🛒</span>
-                                        <span class="font-medium" data-translate="service_shopping">Courses à domicile</span>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-6 text-center">
-                                    <span class="credit-badge text-white px-3 py-1 rounded-full text-sm font-semibold">18 crédits</span>
-                                </td>
-                                <td class="py-4 px-6 text-gray-600" data-translate="shopping_details">
-                                    Courses + livraison incluse
-                                </td>
+                            <tr class="hover:bg-yellow-50 transition-colors">
+                                <td class="py-4 px-6 font-medium" data-translate="comparison_services">Services inclus</td>
+                                <td class="py-4 px-6 text-center text-green-600 font-semibold" data-translate="comparison_services_all">Tous</td>
+                                <td class="py-4 px-6 text-center text-gray-600" data-translate="comparison_services_limited">Limités</td>
                             </tr>
-                            <tr class="table-row hover:bg-yellow-50 transition-colors">
-                                <td class="py-4 px-6">
-                                    <div class="flex items-center space-x-3">
-                                        <span class="text-2xl">💇</span>
-                                        <span class="font-medium" data-translate="service_hairdressing">Coiffure à domicile</span>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-6 text-center">
-                                    <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">25-40 crédits</span>
-                                </td>
-                                <td class="py-4 px-6 text-gray-600" data-translate="hairdressing_details">
-                                    Selon le type de prestation
-                                </td>
+                            <tr class="hover:bg-yellow-50 transition-colors">
+                                <td class="py-4 px-6 font-medium" data-translate="comparison_engagement">Engagement</td>
+                                <td class="py-4 px-6 text-center text-green-600 font-semibold" data-translate="comparison_engagement_none">Aucun</td>
+                                <td class="py-4 px-6 text-center text-gray-600" data-translate="comparison_engagement_yes">Souvent 12 mois</td>
                             </tr>
-                            <tr class="table-row hover:bg-yellow-50 transition-colors">
-                                <td class="py-4 px-6">
-                                    <div class="flex items-center space-x-3">
-                                        <span class="text-2xl">🌳</span>
-                                        <span class="font-medium" data-translate="service_gardening">Jardinage</span>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-6 text-center">
-                                    <span class="credit-badge text-white px-3 py-1 rounded-full text-sm font-semibold">25 crédits</span>
-                                </td>
-                                <td class="py-4 px-6 text-gray-600" data-translate="gardening_details">
-                                    Taille, tonte, entretien espaces verts
-                                </td>
-                            </tr>
-                            <tr class="table-row hover:bg-yellow-50 transition-colors">
-                                <td class="py-4 px-6">
-                                    <div class="flex items-center space-x-3">
-                                        <span class="text-2xl">🚗</span>
-                                        <span class="font-medium" data-translate="service_transport">Transport accompagné</span>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-6 text-center">
-                                    <span class="credit-badge text-white px-3 py-1 rounded-full text-sm font-semibold">20 crédits</span>
-                                </td>
-                                <td class="py-4 px-6 text-gray-600" data-translate="transport_details">
-                                    Aller-retour + temps d'attente inclus
-                                </td>
+                            <tr class="hover:bg-yellow-50 transition-colors">
+                                <td class="py-4 px-6 font-medium" data-translate="comparison_fees">Frais cachés</td>
+                                <td class="py-4 px-6 text-center text-green-600 font-semibold" data-translate="comparison_fees_none">Aucun</td>
+                                <td class="py-4 px-6 text-center text-gray-600" data-translate="comparison_fees_often">Fréquents</td>
                             </tr>
                         </tbody>
                     </table>
@@ -437,14 +404,14 @@
     </section>
 
     <!-- FAQ Section -->
-    <section class="py-16 bg-white">
+    <section class="py-20 bg-gray-50">
         <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
+            <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="faq_title">
                     Questions Fréquentes
                 </h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto" data-translate="faq_subtitle">
-                    Tout ce que vous devez savoir sur nos formules crédits
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-translate="faq_subtitle">
+                    Tout ce que vous devez savoir sur notre abonnement
                 </p>
             </div>
 
@@ -453,7 +420,7 @@
                     <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFAQ(this)">
                         <div class="flex justify-between items-center">
                             <h3 class="text-lg font-semibold text-gray-800" data-translate="faq1_question">
-                                Comment fonctionnent les crédits Viiveo ?
+                                Puis-je annuler à tout moment ?
                             </h3>
                             <svg class="w-6 h-6 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -462,7 +429,7 @@
                     </button>
                     <div class="hidden px-6 pb-6">
                         <p class="text-gray-600 leading-relaxed" data-translate="faq1_answer">
-                            Les crédits sont votre monnaie d'échange pour accéder à tous nos services. Chaque service a un coût en crédits selon sa durée et sa complexité. Vous achetez des crédits via nos formules, et vous les utilisez au fur et à mesure de vos besoins.
+                            Absolument ! Vous pouvez annuler votre abonnement à tout moment depuis votre espace client. Aucun frais de résiliation, aucune question posée.
                         </p>
                     </div>
                 </div>
@@ -471,7 +438,7 @@
                     <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFAQ(this)">
                         <div class="flex justify-between items-center">
                             <h3 class="text-lg font-semibold text-gray-800" data-translate="faq2_question">
-                                Puis-je changer de formule à tout moment ?
+                                Tous les services sont-ils vraiment inclus ?
                             </h3>
                             <svg class="w-6 h-6 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -480,7 +447,7 @@
                     </button>
                     <div class="hidden px-6 pb-6">
                         <p class="text-gray-600 leading-relaxed" data-translate="faq2_answer">
-                            Absolument ! Vous pouvez modifier votre formule à tout moment depuis votre espace client. Les changements prennent effet immédiatement, sans frais supplémentaires.
+                            Oui ! Ménage, courses, coiffure à domicile, jardinage, transport accompagné... Tous nos services standards sont inclus dans l'abonnement. Seuls les services très spécifiques ou premium peuvent avoir un supplément.
                         </p>
                     </div>
                 </div>
@@ -489,7 +456,7 @@
                     <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFAQ(this)">
                         <div class="flex justify-between items-center">
                             <h3 class="text-lg font-semibold text-gray-800" data-translate="faq3_question">
-                                Que se passe-t-il si mes crédits expirent ?
+                                Y a-t-il une période d'essai ?
                             </h3>
                             <svg class="w-6 h-6 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -498,7 +465,7 @@
                     </button>
                     <div class="hidden px-6 pb-6">
                         <p class="text-gray-600 leading-relaxed" data-translate="faq3_answer">
-                            Nous vous envoyons des rappels avant l'expiration de vos crédits. Si des crédits expirent, vous pouvez les réactiver en achetant une nouvelle formule. Nous vous offrons toujours une période de grâce de 15 jours.
+                            Nous offrons une garantie satisfait ou remboursé de 30 jours. Si vous n'êtes pas satisfait dans le premier mois, nous vous remboursons intégralement.
                         </p>
                     </div>
                 </div>
@@ -506,23 +473,24 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="py-16 bg-gradient-to-r from-yellow-400 to-yellow-500">
+    <!-- CTA Final Section -->
+    <section class="py-20 bg-gradient-to-r from-yellow-400 to-yellow-500">
         <div class="container mx-auto px-6 text-center">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-translate="cta_title">
-                Prêt à Commencer ?
+                Prêt à simplifier votre quotidien ?
             </h2>
             <p class="text-xl text-yellow-100 mb-8 max-w-2xl mx-auto" data-translate="cta_subtitle">
-                Rejoignez des milliers de clients satisfaits et simplifiez votre quotidien dès aujourd'hui
+                Rejoignez des milliers de clients satisfaits pour seulement 10€ par mois
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="nos_services.html" class="bg-white text-yellow-600 px-8 py-4 rounded-full text-lg font-semibold inline-block hover:bg-gray-100 transition-all shadow-lg" data-translate="cta_services">
+                <button class="bg-white text-yellow-600 px-12 py-4 rounded-full text-lg font-semibold inline-block hover:bg-gray-100 transition-all shadow-lg hover:scale-105" data-translate="cta_subscribe">
+                    S'abonner maintenant
+                </button>
+                <a href="nos_services.html" class="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold inline-block hover:bg-white hover:text-yellow-600 transition-all" data-translate="cta_services">
                     Découvrir nos services
                 </a>
-                <a href="iclient.html" class="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold inline-block hover:bg-white hover:text-yellow-600 transition-all" data-translate="cta_client">
-                    Espace Client
-                </a>
             </div>
+            <p class="text-yellow-100 text-sm mt-6" data-translate="cta_guarantee">Premier mois offert • Sans engagement</p>
         </div>
     </section>
 
@@ -534,7 +502,7 @@
                 <div class="md:col-span-1">
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-10 mb-4">
                     <p class="text-gray-300 text-sm" data-translate="footer_desc">
-                        Votre bien-être à domicile, notre priorité.
+                        Votre bien-être à domicile, notre priorité. Abonnement simple à 10€/mois.
                     </p>
                 </div>
 
@@ -544,7 +512,7 @@
                     <ul class="space-y-2 text-sm text-gray-300">
                         <li><a href="index.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_home">Accueil</a></li>
                         <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_services">Services</a></li>
-                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_formules">Formules</a></li>
+                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_formules">Abonnement</a></li>
                         <li><a href="infos_prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Prestataires</a></li>
                     </ul>
                 </div>
@@ -580,7 +548,7 @@
             </div>
 
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-                <p data-translate="footer_copyright">© 2024 Viiveo. Tous droits réservés.</p>
+                <p data-translate="footer_copyright">© 2024 Viiveo. Tous droits réservés. Abonnement 10€/mois.</p>
             </div>
         </div>
     </footer>
@@ -592,285 +560,189 @@
                 // Navigation
                 nav_home: "Accueil",
                 nav_services: "Services",
-                nav_formules: "Formules",
+                nav_formules: "Abonnement",
                 nav_prestataires: "Prestataires",
                 nav_client: "Espace Client",
                 nav_prestataires_space: "Espace Prestataire",
                 
                 // Hero
-                hero_title: "Nos Formules Crédits",
-                hero_subtitle: "Choisissez la formule qui correspond à vos besoins. Plus vous achetez de crédits, moins ils vous coûtent cher !",
+                hero_title: "Simple. Clair. Sans surprise.",
+                hero_subtitle: "Un forfait unique à 10€/mois pour accéder à tous nos services",
+                hero_price: "10€/mois",
+                hero_conditions: "Sans engagement • Annulation à tout moment",
+                hero_cta: "Commencer maintenant",
+                
+                // Avantages
+                advantages_title: "Pourquoi choisir l'abonnement Viiveo ?",
+                advantages_subtitle: "La simplicité d'un prix unique pour une tranquillité d'esprit totale",
+                advantage1_title: "Prix transparent",
+                advantage1_desc: "10€ par mois, pas de frais cachés. Vous savez exactement à quoi vous attendre.",
+                advantage2_title: "Accès complet",
+                advantage2_desc: "Tous nos services inclus : ménage, courses, coiffure, jardinage, transport...",
+                advantage3_title: "Sans engagement",
+                advantage3_desc: "Annulez à tout moment. Pas de contrat à long terme, pas de pénalités.",
                 
                 // Pricing
-                pricing_title: "Choisissez Votre Formule",
-                pricing_subtitle: "Des crédits flexibles pour accéder à tous nos services. Valables plusieurs mois.",
+                pricing_title: "Un prix, tous les services",
+                pricing_subtitle: "Pour seulement 10€ par mois, profitez de notre plateforme complète",
+                popular_badge: "CHOIX INTELLIGENT",
+                plan_title: "Forfait Viiveo",
+                plan_price: "10€/mois",
+                plan_billing: "Facturation mensuelle • Premier mois offert",
+                feature1: "Accès à tous les services",
+                feature2: "Réservation illimitée",
+                feature3: "Support client inclus",
+                feature4: "Annulation à tout moment",
+                feature5: "Application mobile incluse",
+                feature6: "Mises à jour gratuites",
+                subscribe_button: "S'abonner maintenant",
+                trial_text: "30 jours satisfaits ou remboursés",
                 
-                // Packs
-                pack1_title: "Pack Essentiel",
-                pack1_credits: "50 crédits",
-                pack1_price: "1€ / crédit",
-                pack1_validity: "Valide 6 mois",
-                pack2_title: "Pack Confort",
-                pack2_credits: "100 crédits",
-                pack2_price: "0,95€ / crédit",
-                pack2_validity: "Valide 12 mois",
-                pack3_title: "Pack Premium",
-                pack3_credits: "200 crédits",
-                pack3_price: "0,90€ / crédit",
-                pack3_validity: "Valide 18 mois",
-                
-                // Features
-                feature_all_services: "Accès à tous les services",
-                feature_support: "Support client inclus",
-                feature_flexible: "Utilisation flexible",
-                feature_priority: "Priorité sur les réservations",
-                feature_discount: "5% de réduction",
-                feature_priority_max: "Priorité maximale",
-                feature_dedicated: "Conseiller dédié",
-                feature_discount_max: "10% de réduction",
-                
-                popular_badge: "⭐ POPULAIRE",
-                buy_button: "Acheter Maintenant",
-                
-                // Pricing detail
-                pricing_detail_title: "Tarifs Détaillés par Service",
-                pricing_detail_subtitle: "Consultez le coût en crédits pour chaque service Viiveo",
-                service_col: "Service",
-                credits_col: "Crédits / Heure",
-                details_col: "Détails",
-                
-                // Services
-                service_cleaning: "Aide ménagère",
-                cleaning_details: "Nettoyage, repassage, entretien ménager",
-                service_shopping: "Courses à domicile",
-                shopping_details: "Courses + livraison incluse",
-                service_hairdressing: "Coiffure à domicile",
-                hairdressing_details: "Selon le type de prestation",
-                service_gardening: "Jardinage",
-                gardening_details: "Taille, tonte, entretien espaces verts",
-                service_transport: "Transport accompagné",
-                transport_details: "Aller-retour + temps d'attente inclus",
+                // Comparaison
+                comparison_title: "Viiveo vs la concurrence",
+                comparison_subtitle: "Découvrez pourquoi notre forfait unique est la meilleure solution",
+                comparison_feature: "Fonctionnalité",
+                comparison_others: "Autres services",
+                comparison_price: "Prix mensuel",
+                comparison_price_others: "15-30€ + frais",
+                comparison_services: "Services inclus",
+                comparison_services_all: "Tous",
+                comparison_services_limited: "Limités",
+                comparison_engagement: "Engagement",
+                comparison_engagement_none: "Aucun",
+                comparison_engagement_yes: "Souvent 12 mois",
+                comparison_fees: "Frais cachés",
+                comparison_fees_none: "Aucun",
+                comparison_fees_often: "Fréquents",
                 
                 // FAQ
                 faq_title: "Questions Fréquentes",
-                faq_subtitle: "Tout ce que vous devez savoir sur nos formules crédits",
-                faq1_question: "Comment fonctionnent les crédits Viiveo ?",
-                faq1_answer: "Les crédits sont votre monnaie d'échange pour accéder à tous nos services. Chaque service a un coût en crédits selon sa durée et sa complexité. Vous achetez des crédits via nos formules, et vous les utilisez au fur et à mesure de vos besoins.",
-                faq2_question: "Puis-je changer de formule à tout moment ?",
-                faq2_answer: "Absolument ! Vous pouvez modifier votre formule à tout moment depuis votre espace client. Les changements prennent effet immédiatement, sans frais supplémentaires.",
-                faq3_question: "Que se passe-t-il si mes crédits expirent ?",
-                faq3_answer: "Nous vous envoyons des rappels avant l'expiration de vos crédits. Si des crédits expirent, vous pouvez les réactiver en achetant une nouvelle formule. Nous vous offrons toujours une période de grâce de 15 jours.",
+                faq_subtitle: "Tout ce que vous devez savoir sur notre abonnement",
+                faq1_question: "Puis-je annuler à tout moment ?",
+                faq1_answer: "Absolument ! Vous pouvez annuler votre abonnement à tout moment depuis votre espace client. Aucun frais de résiliation, aucune question posée.",
+                faq2_question: "Tous les services sont-ils vraiment inclus ?",
+                faq2_answer: "Oui ! Ménage, courses, coiffure à domicile, jardinage, transport accompagné... Tous nos services standards sont inclus dans l'abonnement. Seuls les services très spécifiques ou premium peuvent avoir un supplément.",
+                faq3_question: "Y a-t-il une période d'essai ?",
+                faq3_answer: "Nous offrons une garantie satisfait ou remboursé de 30 jours. Si vous n'êtes pas satisfait dans le premier mois, nous vous remboursons intégralement.",
                 
                 // CTA
-                cta_title: "Prêt à Commencer ?",
-                cta_subtitle: "Rejoignez des milliers de clients satisfaits et simplifiez votre quotidien dès aujourd'hui",
+                cta_title: "Prêt à simplifier votre quotidien ?",
+                cta_subtitle: "Rejoignez des milliers de clients satisfaits pour seulement 10€ par mois",
+                cta_subscribe: "S'abonner maintenant",
                 cta_services: "Découvrir nos services",
-                cta_client: "Espace Client",
+                cta_guarantee: "Premier mois offert • Sans engagement",
                 
                 // Footer
-                footer_desc: "Votre bien-être à domicile, notre priorité.",
+                footer_desc: "Votre bien-être à domicile, notre priorité. Abonnement simple à 10€/mois.",
                 footer_navigation: "Navigation",
                 footer_spaces: "Espaces",
                 footer_contact: "Contact",
-                footer_copyright: "© 2024 Viiveo. Tous droits réservés."
+                footer_copyright: "© 2024 Viiveo. Tous droits réservés. Abonnement 10€/mois."
             },
             nl: {
                 nav_home: "Home",
                 nav_services: "Diensten",
-                nav_formules: "Formules",
+                nav_formules: "Abonnement",
                 nav_prestataires: "Dienstverleners",
                 nav_client: "Klantenruimte",
                 nav_prestataires_space: "Dienstverlener Ruimte",
-                hero_title: "Onze Credit Formules",
-                hero_subtitle: "Kies de formule die bij uw behoeften past. Hoe meer credits u koopt, hoe minder ze kosten!",
-                pricing_title: "Kies Uw Formule",
-                pricing_subtitle: "Flexibele credits voor toegang tot al onze diensten. Geldig voor meerdere maanden.",
-                pack1_title: "Essentieel Pakket",
-                pack1_credits: "50 credits",
-                pack1_price: "1€ / credit",
-                pack1_validity: "Geldig 6 maanden",
-                pack2_title: "Comfort Pakket",
-                pack2_credits: "100 credits",
-                pack2_price: "0,95€ / credit",
-                pack2_validity: "Geldig 12 maanden",
-                pack3_title: "Premium Pakket",
-                pack3_credits: "200 credits",
-                pack3_price: "0,90€ / credit",
-                pack3_validity: "Geldig 18 maanden",
-                feature_all_services: "Toegang tot alle diensten",
-                feature_support: "Klantenondersteuning inbegrepen",
-                feature_flexible: "Flexibel gebruik",
-                feature_priority: "Prioriteit bij reserveringen",
-                feature_discount: "5% korting",
-                feature_priority_max: "Maximale prioriteit",
-                feature_dedicated: "Toegewijde adviseur",
-                feature_discount_max: "10% korting",
-                popular_badge: "⭐ POPULAIR",
-                buy_button: "Nu Kopen",
-                pricing_detail_title: "Gedetailleerde Tarieven per Dienst",
-                pricing_detail_subtitle: "Bekijk de creditkosten voor elke Viiveo-dienst",
-                service_col: "Dienst",
-                credits_col: "Credits / Uur",
-                details_col: "Details",
-                service_cleaning: "Schoonmaakhulp",
-                cleaning_details: "Schoonmaken, strijken, huishoudelijk onderhoud",
-                service_shopping: "Boodschappen aan huis",
-                shopping_details: "Boodschappen + levering inbegrepen",
-                service_hairdressing: "Kapper aan huis",
-                hairdressing_details: "Volgens het type dienst",
-                service_gardening: "Tuinonderhoud",
-                gardening_details: "Snoeien, maaien, onderhoud groene ruimtes",
-                service_transport: "Begeleid vervoer",
-                transport_details: "Heen en terug + wachttijd inbegrepen",
-                faq_title: "Veelgestelde Vragen",
-                faq_subtitle: "Alles wat u moet weten over onze credit formules",
-                faq1_question: "Hoe werken Viiveo credits?",
-                faq1_answer: "Credits zijn uw ruilmiddel om toegang te krijgen tot al onze diensten. Elke dienst heeft een creditkost volgens duur en complexiteit. U koopt credits via onze formules en gebruikt ze naargelang uw behoeften.",
-                faq2_question: "Kan ik op elk moment van formule veranderen?",
-                faq2_answer: "Absoluut! U kunt uw formule op elk moment wijzigen via uw klantenruimte. Wijzigingen worden onmiddellijk doorgevoerd, zonder extra kosten.",
-                faq3_question: "Wat gebeurt er als mijn credits verlopen?",
-                faq3_answer: "We sturen u herinneringen voor uw credits verlopen. Als credits verlopen, kunt u ze reactiveren door een nieuwe formule te kopen. We bieden altijd een respijtperiode van 15 dagen.",
-                cta_title: "Klaar om te Beginnen?",
-                cta_subtitle: "Sluit u aan bij duizenden tevreden klanten en vereenvoudig uw dagelijks leven vandaag nog",
-                cta_services: "Ontdek onze diensten",
-                cta_client: "Klantenruimte",
-                footer_desc: "Uw welzijn thuis, onze prioriteit.",
-                footer_navigation: "Navigatie",
-                footer_spaces: "Ruimtes",
-                footer_contact: "Contact",
-                footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden."
+                hero_title: "Eenvoudig. Duidelijk. Zonder verrassingen.",
+                hero_subtitle: "Eén abonnement van €10/maand voor toegang tot al onze diensten",
+                hero_price: "€10/maand",
+                hero_conditions: "Zonder verplichting • Altijd opzegbaar",
+                hero_cta: "Nu beginnen",
+                advantages_title: "Waarom voor Viiveo abonnement kiezen?",
+                advantages_subtitle: "De eenvoud van één prijs voor totale gemoedsrust",
+                advantage1_title: "Transparante prijs",
+                advantage1_desc: "€10 per maand, geen verborgen kosten. U weet precies waar u aan toe bent.",
+                advantage2_title: "Volledige toegang",
+                advantage2_desc: "Alle diensten inbegrepen: schoonmaak, boodschappen, kapper, tuinonderhoud, vervoer...",
+                advantage3_title: "Zonder verplichting",
+                advantage3_desc: "Altijd opzegbaar. Geen lang contract, geen boetes.",
+                pricing_title: "Eén prijs, alle diensten",
+                pricing_subtitle: "Voor slechts €10 per maand geniet u van ons volledige platform",
+                popular_badge: "SLIMKE KEUZE",
+                plan_title: "Viiveo Abonnement",
+                plan_price: "€10/maand",
+                plan_billing: "Maandelijkse facturering • Eerste maand gratis",
+                feature1: "Toegang tot alle diensten",
+                feature2: "Onbeperkt reserveren",
+                feature3: "Klantenondersteuning inbegrepen",
+                feature4: "Altijd opzegbaar",
+                feature5: "Mobiele app inbegrepen",
+                feature6: "Gratis updates",
+                subscribe_button: "Nu abonneren",
+                trial_text: "30 dagen tevreden of geld terug"
             },
             en: {
                 nav_home: "Home",
                 nav_services: "Services",
-                nav_formules: "Plans",
+                nav_formules: "Subscription",
                 nav_prestataires: "Providers",
                 nav_client: "Client Space",
                 nav_prestataires_space: "Provider Space",
-                hero_title: "Our Credit Plans",
-                hero_subtitle: "Choose the plan that matches your needs. The more credits you buy, the less they cost!",
-                pricing_title: "Choose Your Plan",
-                pricing_subtitle: "Flexible credits to access all our services. Valid for several months.",
-                pack1_title: "Essential Pack",
-                pack1_credits: "50 credits",
-                pack1_price: "1€ / credit",
-                pack1_validity: "Valid 6 months",
-                pack2_title: "Comfort Pack",
-                pack2_credits: "100 credits",
-                pack2_price: "0.95€ / credit",
-                pack2_validity: "Valid 12 months",
-                pack3_title: "Premium Pack",
-                pack3_credits: "200 credits",
-                pack3_price: "0.90€ / credit",
-                pack3_validity: "Valid 18 months",
-                feature_all_services: "Access to all services",
-                feature_support: "Customer support included",
-                feature_flexible: "Flexible use",
-                feature_priority: "Priority on bookings",
-                feature_discount: "5% discount",
-                feature_priority_max: "Maximum priority",
-                feature_dedicated: "Dedicated advisor",
-                feature_discount_max: "10% discount",
-                popular_badge: "⭐ POPULAR",
-                buy_button: "Buy Now",
-                pricing_detail_title: "Detailed Rates per Service",
-                pricing_detail_subtitle: "Check the credit cost for each Viiveo service",
-                service_col: "Service",
-                credits_col: "Credits / Hour",
-                details_col: "Details",
-                service_cleaning: "Household help",
-                cleaning_details: "Cleaning, ironing, household maintenance",
-                service_shopping: "Home shopping",
-                shopping_details: "Shopping + delivery included",
-                service_hairdressing: "Home hairdressing",
-                hairdressing_details: "According to service type",
-                service_gardening: "Gardening",
-                gardening_details: "Pruning, mowing, green space maintenance",
-                service_transport: "Accompanied transport",
-                transport_details: "Round trip + waiting time included",
-                faq_title: "Frequently Asked Questions",
-                faq_subtitle: "Everything you need to know about our credit plans",
-                faq1_question: "How do Viiveo credits work?",
-                faq1_answer: "Credits are your exchange currency to access all our services. Each service has a credit cost based on duration and complexity. You buy credits through our plans and use them according to your needs.",
-                faq2_question: "Can I change plans at any time?",
-                faq2_answer: "Absolutely! You can modify your plan at any time from your client space. Changes take effect immediately, with no additional fees.",
-                faq3_question: "What happens if my credits expire?",
-                faq3_answer: "We send you reminders before your credits expire. If credits expire, you can reactivate them by purchasing a new plan. We always offer a 15-day grace period.",
-                cta_title: "Ready to Get Started?",
-                cta_subtitle: "Join thousands of satisfied customers and simplify your daily life today",
-                cta_services: "Discover our services",
-                cta_client: "Client Space",
-                footer_desc: "Your home well-being, our priority.",
-                footer_navigation: "Navigation",
-                footer_spaces: "Spaces",
-                footer_contact: "Contact",
-                footer_copyright: "© 2024 Viiveo. All rights reserved."
+                hero_title: "Simple. Clear. No surprises.",
+                hero_subtitle: "One subscription at €10/month for access to all our services",
+                hero_price: "€10/month",
+                hero_conditions: "No commitment • Cancel anytime",
+                hero_cta: "Get Started",
+                advantages_title: "Why choose Viiveo subscription?",
+                advantages_subtitle: "The simplicity of one price for total peace of mind",
+                advantage1_title: "Transparent pricing",
+                advantage1_desc: "€10 per month, no hidden fees. You know exactly what to expect.",
+                advantage2_title: "Complete access",
+                advantage2_desc: "All services included: cleaning, shopping, hairdressing, gardening, transport...",
+                advantage3_title: "No commitment",
+                advantage3_desc: "Cancel anytime. No long-term contract, no penalties.",
+                pricing_title: "One price, all services",
+                pricing_subtitle: "For only €10 per month, enjoy our complete platform",
+                popular_badge: "SMART CHOICE",
+                plan_title: "Viiveo Subscription",
+                plan_price: "€10/month",
+                plan_billing: "Monthly billing • First month free",
+                feature1: "Access to all services",
+                feature2: "Unlimited booking",
+                feature3: "Customer support included",
+                feature4: "Cancel anytime",
+                feature5: "Mobile app included",
+                feature6: "Free updates",
+                subscribe_button: "Subscribe Now",
+                trial_text: "30-day satisfaction guarantee"
             },
             de: {
                 nav_home: "Startseite",
                 nav_services: "Dienstleistungen",
-                nav_formules: "Tarife",
+                nav_formules: "Abonnement",
                 nav_prestataires: "Dienstleister",
                 nav_client: "Kundenbereich",
                 nav_prestataires_space: "Dienstleister Bereich",
-                hero_title: "Unsere Credit Tarife",
-                hero_subtitle: "Wählen Sie den Tarif, der Ihren Bedürfnissen entspricht. Je mehr Credits Sie kaufen, desto weniger kosten sie!",
-                pricing_title: "Wählen Sie Ihren Tarif",
-                pricing_subtitle: "Flexible Credits für den Zugang zu all unseren Dienstleistungen. Gültig für mehrere Monate.",
-                pack1_title: "Essential Paket",
-                pack1_credits: "50 Credits",
-                pack1_price: "1€ / Credit",
-                pack1_validity: "Gültig 6 Monate",
-                pack2_title: "Comfort Paket",
-                pack2_credits: "100 Credits",
-                pack2_price: "0,95€ / Credit",
-                pack2_validity: "Gültig 12 Monate",
-                pack3_title: "Premium Paket",
-                pack3_credits: "200 Credits",
-                pack3_price: "0,90€ / Credit",
-                pack3_validity: "Gültig 18 Monate",
-                feature_all_services: "Zugang zu allen Dienstleistungen",
-                feature_support: "Kundensupport inbegriffen",
-                feature_flexible: "Flexible Nutzung",
-                feature_priority: "Priorität bei Buchungen",
-                feature_discount: "5% Rabatt",
-                feature_priority_max: "Maximale Priorität",
-                feature_dedicated: "Dedizierter Berater",
-                feature_discount_max: "10% Rabatt",
-                popular_badge: "⭐ BELIEBT",
-                buy_button: "Jetzt Kaufen",
-                pricing_detail_title: "Detaillierte Preise pro Dienstleistung",
-                pricing_detail_subtitle: "Prüfen Sie die Credit-Kosten für jede Viiveo-Dienstleistung",
-                service_col: "Dienstleistung",
-                credits_col: "Credits / Stunde",
-                details_col: "Details",
-                service_cleaning: "Haushaltshilfe",
-                cleaning_details: "Reinigung, Bügeln, Haushaltswartung",
-                service_shopping: "Einkaufen nach Hause",
-                shopping_details: "Einkaufen + Lieferung inbegriffen",
-                service_hairdressing: "Friseur zu Hause",
-                hairdressing_details: "Je nach Dienstleistungstyp",
-                service_gardening: "Gartenarbeit",
-                gardening_details: "Beschneiden, Mähen, Grünflächenpflege",
-                service_transport: "Begleiteter Transport",
-                transport_details: "Hin und zurück + Wartezeit inbegriffen",
-                faq_title: "Häufig Gestellte Fragen",
-                faq_subtitle: "Alles, was Sie über unsere Credit-Tarife wissen müssen",
-                faq1_question: "Wie funktionieren Viiveo Credits?",
-                faq1_answer: "Credits sind Ihre Tauschwährung für den Zugang zu all unseren Dienstleistungen. Jede Dienstleistung hat Credit-Kosten basierend auf Dauer und Komplexität. Sie kaufen Credits über unsere Tarife und nutzen sie nach Bedarf.",
-                faq2_question: "Kann ich jederzeit den Tarif wechseln?",
-                faq2_answer: "Absolut! Sie können Ihren Tarif jederzeit über Ihren Kundenbereich ändern. Änderungen treten sofort in Kraft, ohne zusätzliche Gebühren.",
-                faq3_question: "Was passiert, wenn meine Credits ablaufen?",
-                faq3_answer: "Wir senden Ihnen Erinnerungen, bevor Ihre Credits ablaufen. Wenn Credits ablaufen, können Sie sie durch Kauf eines neuen Tarifs reaktivieren. Wir bieten immer eine Gnadenfrist von 15 Tagen.",
-                cta_title: "Bereit zu Beginnen?",
-                cta_subtitle: "Schließen Sie sich Tausenden zufriedenen Kunden an und vereinfachen Sie Ihr tägliches Leben noch heute",
-                cta_services: "Unsere Dienstleistungen entdecken",
-                cta_client: "Kundenbereich",
-                footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
-                footer_navigation: "Navigation",
-                footer_spaces: "Bereiche",
-                footer_contact: "Kontakt",
-                footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten."
+                hero_title: "Einfach. Klar. Keine Überraschungen.",
+                hero_subtitle: "Ein Abonnement für 10€/Monat für Zugang zu all unseren Dienstleistungen",
+                hero_price: "10€/Monat",
+                hero_conditions: "Ohne Verpflichtung • Jederzeit kündbar",
+                hero_cta: "Jetzt starten",
+                advantages_title: "Warum Viiveo Abonnement wählen?",
+                advantages_subtitle: "Die Einfachheit eines Preises für totale Ruhe",
+                advantage1_title: "Transparenter Preis",
+                advantage1_desc: "10€ pro Monat, keine versteckten Kosten. Sie wissen genau, was Sie erwartet.",
+                advantage2_title: "Vollständiger Zugang",
+                advantage2_desc: "Alle Dienstleistungen inklusive: Reinigung, Einkaufen, Friseur, Gartenarbeit, Transport...",
+                advantage3_title: "Ohne Verpflichtung",
+                advantage3_desc: "Jederzeit kündbar. Kein langfristiger Vertrag, keine Strafen.",
+                pricing_title: "Ein Preis, alle Dienstleistungen",
+                pricing_subtitle: "Für nur 10€ pro Monat genießen Sie unsere vollständige Plattform",
+                popular_badge: "KLUGE WAHL",
+                plan_title: "Viiveo Abonnement",
+                plan_price: "10€/Monat",
+                plan_billing: "Monatliche Abrechnung • Erster Monat kostenlos",
+                feature1: "Zugang zu allen Dienstleistungen",
+                feature2: "Unbegrenzte Buchungen",
+                feature3: "Kundensupport inklusive",
+                feature4: "Jederzeit kündbar",
+                feature5: "Mobile App inklusive",
+                feature6: "Kostenlose Updates",
+                subscribe_button: "Jetzt abonnieren",
+                trial_text: "30 Tage zufrieden oder Geld zurück"
             }
         };
 
@@ -955,14 +827,16 @@
                 });
             }
 
-            // Gestion des boutons d'achat
-            document.querySelectorAll('.btn-primary').forEach(button => {
-                button.addEventListener('click', function() {
-                    alert(currentLanguage === 'fr' ? 'Redirection vers la page de paiement...' : 
-                          currentLanguage === 'nl' ? 'Doorverwijzing naar betalingspagina...' :
-                          currentLanguage === 'en' ? 'Redirecting to payment page...' :
-                          'Weiterleitung zur Zahlungsseite...');
-                });
+            // Gestion des boutons d'abonnement
+            document.querySelectorAll('button').forEach(button => {
+                if (button.textContent.includes('abonner') || button.textContent.includes('subscribe') || button.textContent.includes('Commencer')) {
+                    button.addEventListener('click', function() {
+                        alert(currentLanguage === 'fr' ? 'Redirection vers la page d\'abonnement...' : 
+                              currentLanguage === 'nl' ? 'Doorverwijzing naar abonnementspagina...' :
+                              currentLanguage === 'en' ? 'Redirecting to subscription page...' :
+                              'Weiterleitung zur Abonnementsseite...');
+                    });
+                }
             });
         });
     </script>
