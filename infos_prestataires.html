@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nos Prestataires - Viiveo</title>
+    <title>Espace Client - Viiveo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -33,9 +33,8 @@
         }
         
         .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-            border-color: #fde047;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
         
         .btn-primary {
@@ -111,42 +110,90 @@
             transform: translateY(0);
         }
 
-        /* Styles spécifiques aux prestataires */
-        .presta-card {
+        /* Styles spécifiques à l'interface client */
+        .client-section {
             background: white;
             border-radius: 1.5rem;
-            padding: 2rem;
-            text-align: center;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             border: 2px solid #fef3c7;
-            transition: var(--transition);
         }
 
-        .presta-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            border-color: #fde047;
-        }
-
-        .presta-card img {
+        .client-photo {
             width: 120px;
             height: 120px;
-            border: 4px solid #fde047;
             border-radius: 50%;
             object-fit: cover;
-            margin: 0 auto 1.5rem;
+            border: 4px solid #fde047;
             box-shadow: 0 8px 20px rgba(253, 224, 71, 0.3);
         }
 
-        .rating {
-            color: #facc15;
-            font-size: 1.1rem;
-            margin: 0.5rem 0;
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.875rem;
         }
 
-        .service-emoji {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+        .status-validated {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        .status-confirmed {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .table-hover tr {
+            transition: var(--transition);
+        }
+
+        .table-hover tr:hover {
+            background-color: #fffbeb;
+        }
+
+        .loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .loader-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #facc15;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .modal {
@@ -167,7 +214,7 @@
             padding: 0;
             border-radius: 1.5rem;
             width: 90%;
-            max-width: 800px;
+            max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: 0 25px 50px rgba(0,0,0,0.25);
@@ -211,48 +258,34 @@
             padding: 2rem;
         }
 
-        .prestataires-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 1.5rem;
+        .form-group {
+            margin-bottom: 1.5rem;
         }
 
-        .loader {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(5px);
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: var(--transition);
         }
 
-        .loader-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #facc15;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.1);
         }
     </style>
 </head>
@@ -271,8 +304,8 @@
                     <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
                     <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Formules</a>
-                    <a href="infos_prestataires.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_prestataires">Prestataires</a>
-                    <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_client">Espace Client</a>
+                    <a href="infos_prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="iclient.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_client">Espace Client</a>
                     <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </nav>
 
@@ -319,128 +352,122 @@
                     <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
                     <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Formules</a>
-                    <a href="infos_prestataires.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_prestataires">Prestataires</a>
-                    <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
+                    <a href="infos_prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="iclient.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_client">Espace Client</a>
                     <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="relative py-16 md:py-24 bg-gradient-to-br from-yellow-50 to-yellow-100">
-        <div class="container mx-auto px-6 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6" data-translate="hero_title">
-                Nos Prestataires Qualifiés
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Section de connexion -->
+        <div id="login-section" class="client-section max-w-md mx-auto text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6" data-translate="login_title">
+                Espace Client Viiveo
             </h1>
-            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8" data-translate="hero_subtitle">
-                Découvrez notre réseau de professionnels dévoués à votre bien-être à domicile
+            <p class="text-gray-600 mb-8" data-translate="login_subtitle">
+                Connectez-vous pour gérer vos services et crédits
             </p>
-        </div>
-    </section>
 
-    <!-- Services Grid -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="services_title">
-                    Choisissez Votre Service
-                </h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto" data-translate="services_subtitle">
-                    Sélectionnez un service pour découvrir nos prestataires disponibles
-                </p>
+            <form id="login-form" onsubmit="event.preventDefault(); login();">
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Votre email" required 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Votre mot de passe" required
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                </div>
+                <button type="submit" class="btn-primary text-white w-full py-3 rounded-lg font-semibold text-lg">
+                    <span data-translate="login_button">Se connecter</span>
+                </button>
+                <div id="login-message" class="mt-4 text-red-500 text-sm hidden"></div>
+            </form>
+        </div>
+
+        <!-- Interface client (cachée par défaut) -->
+        <div id="client-interface" class="hidden">
+            <!-- En-tête client -->
+            <div class="client-section text-center">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="flex items-center space-x-6">
+                        <img id="client-photo" src="https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png" 
+                             alt="Photo client" class="client-photo">
+                        <div class="text-left">
+                            <h2 class="text-2xl font-bold text-gray-800" data-translate="welcome">
+                                Bienvenue, <span id="client-name">Client</span> !
+                            </h2>
+                            <p class="text-gray-600" data-translate="credits_available">
+                                Crédits disponibles : <span id="client-credits" class="font-bold text-yellow-600">0</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <button onclick="showRechargeModal()" class="btn-primary text-white px-6 py-3 rounded-lg font-semibold mr-4" data-translate="recharge_credits">
+                            Recharger crédits
+                        </button>
+                        <button onclick="logout()" class="border border-yellow-500 text-yellow-500 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-50 transition-colors" data-translate="logout">
+                            Déconnexion
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <!-- Aide ménagère -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('Aide ménagère')">
-                    <div class="service-emoji">🧹</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_cleaning">Aide ménagère</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_cleaning_desc">
-                        Service de ménage professionnel pour un intérieur étincelant
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="view_providers">
-                        Voir les prestataires
+            <!-- Actions rapides -->
+            <div class="client-section">
+                <h3 class="text-xl font-bold text-gray-800 mb-6" data-translate="quick_actions">
+                    Actions Rapides
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button onclick="showServiceRequest()" class="card-hover bg-white p-6 rounded-xl border border-gray-200 text-center hover:border-yellow-300">
+                        <div class="text-4xl mb-4">📋</div>
+                        <h4 class="font-semibold text-gray-800 mb-2" data-translate="new_request">Nouvelle demande</h4>
+                        <p class="text-gray-600 text-sm" data-translate="new_request_desc">Demander un nouveau service</p>
                     </button>
-                </div>
-
-                <!-- Courses à domicile -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('Courses à domicile')">
-                    <div class="service-emoji">🛒</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_shopping">Courses à domicile</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_shopping_desc">
-                        Nous faisons vos courses et les livrons à votre porte
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="view_providers">
-                        Voir les prestataires
+                    <button onclick="showHistory()" class="card-hover bg-white p-6 rounded-xl border border-gray-200 text-center hover:border-yellow-300">
+                        <div class="text-4xl mb-4">📊</div>
+                        <h4 class="font-semibold text-gray-800 mb-2" data-translate="history">Historique</h4>
+                        <p class="text-gray-600 text-sm" data-translate="history_desc">Voir mes services passés</p>
                     </button>
-                </div>
-
-                <!-- Coiffure à domicile -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('Coiffure à domicile')">
-                    <div class="service-emoji">💇</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_hairdressing">Coiffure à domicile</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_hairdressing_desc">
-                        Services de coiffure professionnels dans le confort de votre maison
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="view_providers">
-                        Voir les prestataires
-                    </button>
-                </div>
-
-                <!-- Jardinage -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('Jardinage')">
-                    <div class="service-emoji">🌳</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_gardening">Jardinage</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_gardening_desc">
-                        Entretien complet de votre jardin et espaces verts
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="view_providers">
-                        Voir les prestataires
-                    </button>
-                </div>
-
-                <!-- Transport accompagné -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('Transport accompagné')">
-                    <div class="service-emoji">🚗</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_transport">Transport accompagné</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_transport_desc">
-                        Accompagnement sécurisé pour tous vos déplacements
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="view_providers">
-                        Voir les prestataires
-                    </button>
-                </div>
-
-                <!-- Homme à tout faire -->
-                <div class="card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center cursor-pointer" onclick="openModal('Homme à tout faire')">
-                    <div class="service-emoji">🔧</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4" data-translate="service_handyman">Homme à tout faire</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed" data-translate="service_handyman_desc">
-                        Petits travaux et réparations diverses à domicile
-                    </p>
-                    <button class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all" data-translate="view_providers">
-                        Voir les prestataires
+                    <button onclick="showProfile()" class="card-hover bg-white p-6 rounded-xl border border-gray-200 text-center hover:border-yellow-300">
+                        <div class="text-4xl mb-4">👤</div>
+                        <h4 class="font-semibold text-gray-800 mb-2" data-translate="profile">Mon profil</h4>
+                        <p class="text-gray-600 text-sm" data-translate="profile_desc">Gérer mes informations</p>
                     </button>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- CTA Section -->
-    <section class="py-16 bg-gradient-to-r from-yellow-400 to-yellow-500">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-translate="cta_title">
-                Vous êtes prestataire ?
-            </h2>
-            <p class="text-xl text-yellow-100 mb-8 max-w-2xl mx-auto" data-translate="cta_subtitle">
-                Rejoignez notre réseau de professionnels et développez votre activité
-            </p>
-            <a href="iprestataires.html" class="bg-white text-yellow-600 px-8 py-4 rounded-full text-lg font-semibold inline-block hover:bg-gray-100 transition-all shadow-lg" data-translate="cta_button">
-                Devenir Prestataire
-            </a>
+            <!-- Services en cours -->
+            <div class="client-section">
+                <h3 class="text-xl font-bold text-gray-800 mb-6" data-translate="current_services">
+                    Mes Services en Cours
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full table-hover">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600" data-translate="service">Service</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600" data-translate="date">Date</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600" data-translate="prestataire">Prestataire</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600" data-translate="status">Statut</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600" data-translate="actions">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="services-table-body">
+                            <!-- Les services seront chargés dynamiquement -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="no-services" class="text-center py-8 hidden">
+                    <div class="text-6xl mb-4">😊</div>
+                    <h4 class="text-lg font-semibold text-gray-600 mb-2" data-translate="no_services">Aucun service en cours</h4>
+                    <p class="text-gray-500" data-translate="no_services_desc">Demandez votre premier service !</p>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
 
     <!-- Footer Commun -->
     <footer class="bg-gray-800 text-white py-12">
@@ -505,21 +532,38 @@
     <div id="loader" class="loader">
         <div class="loader-content">
             <div class="spinner"></div>
-            <p data-translate="loading_text">Chargement des prestataires...</p>
+            <p data-translate="loading">Chargement...</p>
         </div>
     </div>
 
-    <!-- Modal pour afficher les prestataires -->
-    <div id="prestataires-modal" class="modal">
+    <!-- Modal de recharge -->
+    <div id="recharge-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="text-2xl font-bold" id="modal-service-title">Prestataires</h2>
-                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 class="text-2xl font-bold" data-translate="recharge_title">Recharger mes crédits</h2>
+                <span class="close" onclick="closeModal('recharge-modal')">&times;</span>
             </div>
             <div class="modal-body">
-                <div class="prestataires-grid" id="prestataires-list">
-                    <!-- Les prestataires seront chargés ici dynamiquement -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="card-hover bg-white p-4 rounded-xl border-2 border-gray-200 text-center cursor-pointer hover:border-yellow-400">
+                        <div class="text-2xl font-bold text-yellow-600 mb-2">50€</div>
+                        <div class="text-sm text-gray-600 mb-2" data-translate="pack_essential">50 crédits</div>
+                        <div class="text-xs text-gray-500" data-translate="valid_6months">Valide 6 mois</div>
+                    </div>
+                    <div class="card-hover bg-white p-4 rounded-xl border-2 border-yellow-400 text-center cursor-pointer">
+                        <div class="text-2xl font-bold text-yellow-600 mb-2">95€</div>
+                        <div class="text-sm text-gray-600 mb-2" data-translate="pack_comfort">100 crédits</div>
+                        <div class="text-xs text-gray-500" data-translate="valid_12months">Valide 12 mois</div>
+                    </div>
+                    <div class="card-hover bg-white p-4 rounded-xl border-2 border-gray-200 text-center cursor-pointer hover:border-yellow-400">
+                        <div class="text-2xl font-bold text-yellow-600 mb-2">180€</div>
+                        <div class="text-sm text-gray-600 mb-2" data-translate="pack_premium">200 crédits</div>
+                        <div class="text-xs text-gray-500" data-translate="valid_18months">Valide 18 mois</div>
+                    </div>
                 </div>
+                <button class="btn-primary text-white w-full py-3 rounded-lg font-semibold" data-translate="proceed_payment">
+                    Procéder au paiement
+                </button>
             </div>
         </div>
     </div>
@@ -536,31 +580,43 @@
                 nav_client: "Espace Client",
                 nav_prestataires_space: "Espace Prestataire",
                 
-                // Hero
-                hero_title: "Nos Prestataires Qualifiés",
-                hero_subtitle: "Découvrez notre réseau de professionnels dévoués à votre bien-être à domicile",
+                // Login
+                login_title: "Espace Client Viiveo",
+                login_subtitle: "Connectez-vous pour gérer vos services et crédits",
+                login_button: "Se connecter",
                 
-                // Services
-                services_title: "Choisissez Votre Service",
-                services_subtitle: "Sélectionnez un service pour découvrir nos prestataires disponibles",
-                service_cleaning: "Aide ménagère",
-                service_cleaning_desc: "Service de ménage professionnel pour un intérieur étincelant",
-                service_shopping: "Courses à domicile",
-                service_shopping_desc: "Nous faisons vos courses et les livrons à votre porte",
-                service_hairdressing: "Coiffure à domicile",
-                service_hairdressing_desc: "Services de coiffure professionnels dans le confort de votre maison",
-                service_gardening: "Jardinage",
-                service_gardening_desc: "Entretien complet de votre jardin et espaces verts",
-                service_transport: "Transport accompagné",
-                service_transport_desc: "Accompagnement sécurisé pour tous vos déplacements",
-                service_handyman: "Homme à tout faire",
-                service_handyman_desc: "Petits travaux et réparations diverses à domicile",
-                view_providers: "Voir les prestataires",
+                // Interface client
+                welcome: "Bienvenue",
+                credits_available: "Crédits disponibles",
+                recharge_credits: "Recharger crédits",
+                logout: "Déconnexion",
+                quick_actions: "Actions Rapides",
+                new_request: "Nouvelle demande",
+                new_request_desc: "Demander un nouveau service",
+                history: "Historique",
+                history_desc: "Voir mes services passés",
+                profile: "Mon profil",
+                profile_desc: "Gérer mes informations",
+                current_services: "Mes Services en Cours",
+                service: "Service",
+                date: "Date",
+                prestataire: "Prestataire",
+                status: "Statut",
+                actions: "Actions",
+                no_services: "Aucun service en cours",
+                no_services_desc: "Demandez votre premier service !",
                 
-                // CTA
-                cta_title: "Vous êtes prestataire ?",
-                cta_subtitle: "Rejoignez notre réseau de professionnels et développez votre activité",
-                cta_button: "Devenir Prestataire",
+                // Statuts
+                status_pending: "En attente",
+                status_confirmed: "Confirmé",
+                status_in_progress: "En cours",
+                status_completed: "Terminé",
+                status_validated: "Validé",
+                
+                // Actions
+                action_validate: "Valider",
+                action_cancel: "Annuler",
+                action_details: "Détails",
                 
                 // Footer
                 footer_desc: "Votre bien-être à domicile, notre priorité.",
@@ -569,11 +625,24 @@
                 footer_contact: "Contact",
                 footer_copyright: "© 2024 Viiveo. Tous droits réservés.",
                 
-                // Prestataires
-                loading_text: "Chargement des prestataires...",
-                no_providers: "Aucun prestataire disponible pour ce service actuellement.",
-                contact_button: "Contacter",
-                rating: "Note"
+                // Loader
+                loading: "Chargement...",
+                
+                // Modal recharge
+                recharge_title: "Recharger mes crédits",
+                pack_essential: "50 crédits",
+                pack_comfort: "100 crédits",
+                pack_premium: "200 crédits",
+                valid_6months: "Valide 6 mois",
+                valid_12months: "Valide 12 mois",
+                valid_18months: "Valide 18 mois",
+                proceed_payment: "Procéder au paiement",
+                
+                // Messages
+                login_success: "Connexion réussie !",
+                login_error: "Email ou mot de passe incorrect",
+                validation_success: "Service validé avec succès !",
+                recharge_success: "Redirection vers le paiement..."
             },
             nl: {
                 nav_home: "Home",
@@ -582,35 +651,54 @@
                 nav_prestataires: "Dienstverleners",
                 nav_client: "Klantenruimte",
                 nav_prestataires_space: "Dienstverlener Ruimte",
-                hero_title: "Onze Gekwalificeerde Dienstverleners",
-                hero_subtitle: "Ontdek ons netwerk van professionals toegewijd aan uw welzijn thuis",
-                services_title: "Kies Uw Dienst",
-                services_subtitle: "Selecteer een dienst om onze beschikbare dienstverleners te ontdekken",
-                service_cleaning: "Schoonmaakhulp",
-                service_cleaning_desc: "Professionele schoonmaakdienst voor een stralend interieur",
-                service_shopping: "Boodschappen aan huis",
-                service_shopping_desc: "Wij doen uw boodschappen en bezorgen ze aan uw deur",
-                service_hairdressing: "Kapper aan huis",
-                service_hairdressing_desc: "Professionele kappersdiensten in het comfort van uw huis",
-                service_gardening: "Tuinonderhoud",
-                service_gardening_desc: "Volledig onderhoud van uw tuin en groene ruimtes",
-                service_transport: "Begeleid vervoer",
-                service_transport_desc: "Veilige begeleiding voor al uw verplaatsingen",
-                service_handyman: "Klusjesman",
-                service_handyman_desc: "Kleine werkzaamheden en diverse reparaties aan huis",
-                view_providers: "Bekijk dienstverleners",
-                cta_title: "Bent u een dienstverlener?",
-                cta_subtitle: "Word lid van ons netwerk van professionals en ontwikkel uw activiteit",
-                cta_button: "Dienstverlener Worden",
+                login_title: "Viiveo Klantenruimte",
+                login_subtitle: "Log in om uw diensten en credits te beheren",
+                login_button: "Inloggen",
+                welcome: "Welkom",
+                credits_available: "Beschikbare credits",
+                recharge_credits: "Credits opladen",
+                logout: "Uitloggen",
+                quick_actions: "Snelle Acties",
+                new_request: "Nieuwe aanvraag",
+                new_request_desc: "Vraag een nieuwe dienst aan",
+                history: "Geschiedenis",
+                history_desc: "Bekijk mijn vorige diensten",
+                profile: "Mijn profiel",
+                profile_desc: "Beheer mijn informatie",
+                current_services: "Mijn Lopende Diensten",
+                service: "Dienst",
+                date: "Datum",
+                prestataire: "Dienstverlener",
+                status: "Status",
+                actions: "Acties",
+                no_services: "Geen lopende diensten",
+                no_services_desc: "Vraag uw eerste dienst aan!",
+                status_pending: "In afwachting",
+                status_confirmed: "Bevestigd",
+                status_in_progress: "Bezig",
+                status_completed: "Voltooid",
+                status_validated: "Gevalideerd",
+                action_validate: "Valideren",
+                action_cancel: "Annuleren",
+                action_details: "Details",
                 footer_desc: "Uw welzijn thuis, onze prioriteit.",
                 footer_navigation: "Navigatie",
                 footer_spaces: "Ruimtes",
                 footer_contact: "Contact",
                 footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden.",
-                loading_text: "Laden van dienstverleners...",
-                no_providers: "Momenteel geen dienstverleners beschikbaar voor deze dienst.",
-                contact_button: "Contacteer",
-                rating: "Score"
+                loading: "Laden...",
+                recharge_title: "Mijn credits opladen",
+                pack_essential: "50 credits",
+                pack_comfort: "100 credits",
+                pack_premium: "200 credits",
+                valid_6months: "Geldig 6 maanden",
+                valid_12months: "Geldig 12 maanden",
+                valid_18months: "Geldig 18 maanden",
+                proceed_payment: "Doorgaan naar betaling",
+                login_success: "Login geslaagd!",
+                login_error: "E-mail of wachtwoord onjuist",
+                validation_success: "Dienst succesvol gevalideerd!",
+                recharge_success: "Doorverwijzing naar betaling..."
             },
             en: {
                 nav_home: "Home",
@@ -619,35 +707,54 @@
                 nav_prestataires: "Providers",
                 nav_client: "Client Space",
                 nav_prestataires_space: "Provider Space",
-                hero_title: "Our Qualified Providers",
-                hero_subtitle: "Discover our network of professionals dedicated to your home well-being",
-                services_title: "Choose Your Service",
-                services_subtitle: "Select a service to discover our available providers",
-                service_cleaning: "Household help",
-                service_cleaning_desc: "Professional cleaning service for a sparkling interior",
-                service_shopping: "Home shopping",
-                service_shopping_desc: "We do your shopping and deliver it to your door",
-                service_hairdressing: "Home hairdressing",
-                service_hairdressing_desc: "Professional hairdressing services in the comfort of your home",
-                service_gardening: "Gardening",
-                service_gardening_desc: "Complete maintenance of your garden and green spaces",
-                service_transport: "Accompanied transport",
-                service_transport_desc: "Safe accompaniment for all your travels",
-                service_handyman: "Handyman",
-                service_handyman_desc: "Small jobs and various home repairs",
-                view_providers: "View Providers",
-                cta_title: "Are you a provider?",
-                cta_subtitle: "Join our network of professionals and develop your activity",
-                cta_button: "Become a Provider",
+                login_title: "Viiveo Client Space",
+                login_subtitle: "Log in to manage your services and credits",
+                login_button: "Log in",
+                welcome: "Welcome",
+                credits_available: "Available credits",
+                recharge_credits: "Recharge credits",
+                logout: "Logout",
+                quick_actions: "Quick Actions",
+                new_request: "New request",
+                new_request_desc: "Request a new service",
+                history: "History",
+                history_desc: "View my past services",
+                profile: "My profile",
+                profile_desc: "Manage my information",
+                current_services: "My Current Services",
+                service: "Service",
+                date: "Date",
+                prestataire: "Provider",
+                status: "Status",
+                actions: "Actions",
+                no_services: "No current services",
+                no_services_desc: "Request your first service!",
+                status_pending: "Pending",
+                status_confirmed: "Confirmed",
+                status_in_progress: "In progress",
+                status_completed: "Completed",
+                status_validated: "Validated",
+                action_validate: "Validate",
+                action_cancel: "Cancel",
+                action_details: "Details",
                 footer_desc: "Your home well-being, our priority.",
                 footer_navigation: "Navigation",
                 footer_spaces: "Spaces",
                 footer_contact: "Contact",
                 footer_copyright: "© 2024 Viiveo. All rights reserved.",
-                loading_text: "Loading providers...",
-                no_providers: "No providers available for this service currently.",
-                contact_button: "Contact",
-                rating: "Rating"
+                loading: "Loading...",
+                recharge_title: "Recharge my credits",
+                pack_essential: "50 credits",
+                pack_comfort: "100 credits",
+                pack_premium: "200 credits",
+                valid_6months: "Valid 6 months",
+                valid_12months: "Valid 12 months",
+                valid_18months: "Valid 18 months",
+                proceed_payment: "Proceed to payment",
+                login_success: "Login successful!",
+                login_error: "Incorrect email or password",
+                validation_success: "Service validated successfully!",
+                recharge_success: "Redirecting to payment..."
             },
             de: {
                 nav_home: "Startseite",
@@ -656,39 +763,59 @@
                 nav_prestataires: "Dienstleister",
                 nav_client: "Kundenbereich",
                 nav_prestataires_space: "Dienstleister Bereich",
-                hero_title: "Unsere Qualifizierten Dienstleister",
-                hero_subtitle: "Entdecken Sie unser Netzwerk von Fachleuten, die sich Ihrem Wohlbefinden zu Hause widmen",
-                services_title: "Wählen Sie Ihre Dienstleistung",
-                services_subtitle: "Wählen Sie eine Dienstleistung, um unsere verfügbaren Dienstleister zu entdecken",
-                service_cleaning: "Haushaltshilfe",
-                service_cleaning_desc: "Professioneller Reinigungsservice für ein strahlendes Interieur",
-                service_shopping: "Einkaufen nach Hause",
-                service_shopping_desc: "Wir erledigen Ihre Einkäufe und liefern sie an Ihre Tür",
-                service_hairdressing: "Friseur zu Hause",
-                service_hairdressing_desc: "Professionelle Friseurdienste im Komfort Ihres Zuhauses",
-                service_gardening: "Gartenarbeit",
-                service_gardening_desc: "Komplette Pflege Ihres Gartens und Ihrer Grünflächen",
-                service_transport: "Begleiteter Transport",
-                service_transport_desc: "Sichere Begleitung für alle Ihre Fahrten",
-                service_handyman: "Handwerker",
-                service_handyman_desc: "Kleine Arbeiten und verschiedene Hausreparaturen",
-                view_providers: "Dienstleister anzeigen",
-                cta_title: "Sind Sie ein Dienstleister?",
-                cta_subtitle: "Werden Sie Teil unseres Netzwerks von Fachleuten und entwickeln Sie Ihre Tätigkeit",
-                cta_button: "Dienstleister werden",
+                login_title: "Viiveo Kundenbereich",
+                login_subtitle: "Melden Sie sich an, um Ihre Dienstleistungen und Credits zu verwalten",
+                login_button: "Anmelden",
+                welcome: "Willkommen",
+                credits_available: "Verfügbare Credits",
+                recharge_credits: "Credits aufladen",
+                logout: "Abmelden",
+                quick_actions: "Schnellaktionen",
+                new_request: "Neue Anfrage",
+                new_request_desc: "Neue Dienstleistung anfordern",
+                history: "Verlauf",
+                history_desc: "Meine vergangenen Dienstleistungen anzeigen",
+                profile: "Mein Profil",
+                profile_desc: "Meine Informationen verwalten",
+                current_services: "Meine Laufenden Dienstleistungen",
+                service: "Dienstleistung",
+                date: "Datum",
+                prestataire: "Dienstleister",
+                status: "Status",
+                actions: "Aktionen",
+                no_services: "Keine laufenden Dienstleistungen",
+                no_services_desc: "Fordern Sie Ihre erste Dienstleistung an!",
+                status_pending: "Ausstehend",
+                status_confirmed: "Bestätigt",
+                status_in_progress: "In Bearbeitung",
+                status_completed: "Abgeschlossen",
+                status_validated: "Validiert",
+                action_validate: "Validieren",
+                action_cancel: "Abbrechen",
+                action_details: "Details",
                 footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
                 footer_navigation: "Navigation",
                 footer_spaces: "Bereiche",
                 footer_contact: "Kontakt",
                 footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten.",
-                loading_text: "Laden von Dienstleistern...",
-                no_providers: "Derzeit keine Dienstleister für diesen Service verfügbar.",
-                contact_button: "Kontaktieren",
-                rating: "Bewertung"
+                loading: "Laden...",
+                recharge_title: "Meine Credits aufladen",
+                pack_essential: "50 Credits",
+                pack_comfort: "100 Credits",
+                pack_premium: "200 Credits",
+                valid_6months: "Gültig 6 Monate",
+                valid_12months: "Gültig 12 Monate",
+                valid_18months: "Gültig 18 Monate",
+                proceed_payment: "Zur Zahlung fortfahren",
+                login_success: "Anmeldung erfolgreich!",
+                login_error: "Falsche E-Mail oder Passwort",
+                validation_success: "Dienstleistung erfolgreich validiert!",
+                recharge_success: "Weiterleitung zur Zahlung..."
             }
         };
 
         let currentLanguage = 'fr';
+        let currentClient = null;
 
         function changeLanguage(lang) {
             currentLanguage = lang;
@@ -719,76 +846,179 @@
             localStorage.setItem('viiveo-language', lang);
         }
 
-        // Fonction pour ouvrir la modal et charger les prestataires
-        async function openModal(service) {
-            const modal = document.getElementById('prestataires-modal');
-            const title = document.getElementById('modal-service-title');
-            const list = document.getElementById('prestataires-list');
-            
-            title.textContent = `${service} - ${translations[currentLanguage].view_providers}`;
-            list.innerHTML = '';
-            
+        // Fonction de connexion
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('login-message');
+
             // Afficher le loader
             document.getElementById('loader').style.display = 'flex';
-            modal.style.display = 'block';
 
             try {
-                const res = await fetch(`https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec?type=getPrestatairesStylés&specialite=${encodeURIComponent(service)}`);
-                
-                if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
-                const data = await res.json();
+                // Simulation de connexion - À remplacer par votre API réelle
+                await new Promise(resolve => setTimeout(resolve, 1500));
 
-                // Masquer le loader
-                document.getElementById('loader').style.display = 'none';
+                // Vérification basique (dans la réalité, cela serait fait par l'API)
+                if (email && password) {
+                    // Connexion réussie
+                    currentClient = {
+                        email: email,
+                        name: "Jean Dupont",
+                        credits: 150,
+                        photo: "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png"
+                    };
 
-                if (data.success && data.prestataires.length > 0) {
-                    list.innerHTML = data.prestataires.map(p => {
-                        const rating = p.rating ?? 4;
-                        const fullStars = Math.floor(rating);
-                        const halfStar = (rating % 1) >= 0.5;
-                        const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('client-interface').classList.remove('hidden');
+                    
+                    // Mettre à jour les informations client
+                    document.getElementById('client-name').textContent = currentClient.name;
+                    document.getElementById('client-credits').textContent = currentClient.credits;
+                    document.getElementById('client-photo').src = currentClient.photo;
 
-                        let starsHtml = '';
-                        for (let i = 0; i < fullStars; i++) starsHtml += '<i class="fas fa-star"></i>';
-                        if (halfStar) starsHtml += '<i class="fas fa-star-half-alt"></i>';
-                        for (let i = 0; i < emptyStars; i++) starsHtml += '<i class="far fa-star"></i>';
+                    // Charger les services
+                    loadClientServices();
 
-                        return `
-                            <div class="presta-card">
-                                <img src="${p.photo || 'https://via.placeholder.com/120/facc15/FFFFFF?text=?'}" alt="${p.nom}" />
-                                <h4 class="text-xl font-bold text-gray-800">${p.prenom} ${p.nom}</h4>
-                                <div class="rating">${starsHtml}</div>
-                                <p class="text-gray-600 mb-4">${p.commentaire || translations[currentLanguage].no_providers}</p>
-                                <a href="nos_services.html" class="btn-primary text-white px-6 py-3 rounded-full font-semibold transition-all">
-                                    ${translations[currentLanguage].contact_button}
-                                </a>
-                            </div>
-                        `;
-                    }).join("");
+                    showNotification(translations[currentLanguage].login_success, 'success');
                 } else {
-                    list.innerHTML = `
-                        <div class="col-span-3 text-center py-8">
-                            <div class="text-6xl mb-4">😊</div>
-                            <h3 class="text-xl font-semibold text-gray-600">${translations[currentLanguage].no_providers}</h3>
-                            <p class="text-gray-500 mt-2">Revenez plus tard ou contactez-nous directement</p>
-                        </div>
-                    `;
+                    throw new Error('Invalid credentials');
                 }
             } catch (error) {
+                message.textContent = translations[currentLanguage].login_error;
+                message.classList.remove('hidden');
+            } finally {
                 document.getElementById('loader').style.display = 'none';
-                console.error("Erreur lors du chargement des prestataires :", error);
-                list.innerHTML = `
-                    <div class="col-span-3 text-center py-8">
-                        <div class="text-6xl mb-4">⚠️</div>
-                        <h3 class="text-xl font-semibold text-gray-600">Erreur de chargement</h3>
-                        <p class="text-gray-500 mt-2">Veuillez réessayer plus tard</p>
-                    </div>
-                `;
             }
         }
 
-        function closeModal() {
-            document.getElementById('prestataires-modal').style.display = 'none';
+        // Fonction de déconnexion
+        function logout() {
+            currentClient = null;
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('client-interface').classList.add('hidden');
+            document.getElementById('login-form').reset();
+            document.getElementById('login-message').classList.add('hidden');
+        }
+
+        // Charger les services du client
+        function loadClientServices() {
+            const tableBody = document.getElementById('services-table-body');
+            const noServices = document.getElementById('no-services');
+
+            // Services simulés
+            const services = [
+                {
+                    id: 1,
+                    service: "Aide ménagère",
+                    date: "2024-01-15",
+                    prestataire: "Marie Dubois",
+                    status: "completed",
+                    credits: 20
+                },
+                {
+                    id: 2,
+                    service: "Courses à domicile",
+                    date: "2024-01-18",
+                    prestataire: "Jean Martin",
+                    status: "in_progress",
+                    credits: 18
+                },
+                {
+                    id: 3,
+                    service: "Jardinage",
+                    date: "2024-01-20",
+                    prestataire: "Sophie Lambert",
+                    status: "confirmed",
+                    credits: 25
+                }
+            ];
+
+            if (services.length === 0) {
+                tableBody.innerHTML = '';
+                noServices.classList.remove('hidden');
+            } else {
+                noServices.classList.add('hidden');
+                tableBody.innerHTML = services.map(service => `
+                    <tr class="border-b border-gray-200 hover:bg-yellow-50">
+                        <td class="px-4 py-3">${service.service}</td>
+                        <td class="px-4 py-3">${service.date}</td>
+                        <td class="px-4 py-3">${service.prestataire}</td>
+                        <td class="px-4 py-3">
+                            <span class="status-badge ${getStatusClass(service.status)}">
+                                ${getStatusText(service.status)}
+                            </span>
+                        </td>
+                        <td class="px-4 py-3">
+                            ${service.status === 'completed' ? 
+                                `<button onclick="validateService(${service.id})" class="text-green-600 hover:text-green-800 font-semibold text-sm">
+                                    ${translations[currentLanguage].action_validate}
+                                </button>` : 
+                                `<button onclick="showServiceDetails(${service.id})" class="text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                                    ${translations[currentLanguage].action_details}
+                                </button>`
+                            }
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function getStatusClass(status) {
+            const classes = {
+                'pending': 'status-pending',
+                'confirmed': 'status-confirmed',
+                'in_progress': 'status-pending',
+                'completed': 'status-validated'
+            };
+            return classes[status] || 'status-pending';
+        }
+
+        function getStatusText(status) {
+            const texts = {
+                'pending': translations[currentLanguage].status_pending,
+                'confirmed': translations[currentLanguage].status_confirmed,
+                'in_progress': translations[currentLanguage].status_in_progress,
+                'completed': translations[currentLanguage].status_completed
+            };
+            return texts[status] || translations[currentLanguage].status_pending;
+        }
+
+        function validateService(serviceId) {
+            if (confirm(translations[currentLanguage].validation_success)) {
+                showNotification(translations[currentLanguage].validation_success, 'success');
+                // Recharger les services
+                loadClientServices();
+            }
+        }
+
+        function showServiceDetails(serviceId) {
+            alert(`Détails du service #${serviceId} - ${translations[currentLanguage].action_details}`);
+        }
+
+        function showRechargeModal() {
+            document.getElementById('recharge-modal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function showServiceRequest() {
+            window.location.href = 'nos_services.html';
+        }
+
+        function showHistory() {
+            alert(translations[currentLanguage].history);
+        }
+
+        function showProfile() {
+            alert(translations[currentLanguage].profile);
+        }
+
+        function showNotification(message, type = 'info') {
+            // Implémentation basique de notification
+            alert(message);
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -828,10 +1058,10 @@
                 });
             }
 
-            // Fermer la modal en cliquant à l'extérieur
+            // Fermer les modales en cliquant à l'extérieur
             document.addEventListener('click', function(event) {
                 if (event.target.classList.contains('modal')) {
-                    closeModal();
+                    event.target.style.display = 'none';
                 }
             });
         });
