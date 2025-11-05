@@ -52,15 +52,21 @@
         }
         
         .language-dropdown {
+            display: none;
             position: absolute;
             top: 100%;
             right: 0;
+            margin-top: 0.5rem;
+            width: 12rem;
             background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
             border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             z-index: 50;
-            min-width: 150px;
+        }
+        
+        .language-dropdown.show {
+            display: block;
         }
         
         .language-option {
@@ -79,6 +85,10 @@
         .language-option.active {
             background-color: #fef3c7;
             color: #92400e;
+        }
+
+        .language-option:not(:last-child) {
+            border-bottom: 1px solid #f3f4f6;
         }
 
         /* Navigation unifiée */
@@ -105,10 +115,12 @@
         .mobile-menu {
             transform: translateY(-100%);
             transition: transform 0.3s ease;
+            display: none;
         }
 
         .mobile-menu.open {
             transform: translateY(0);
+            display: block;
         }
 
         /* Hero Section améliorée */
@@ -147,7 +159,7 @@
     </style>
 </head>
 <body>
-    <!-- Header Commun -->
+    <!-- Header Commun avec menu corrigé -->
     <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between py-4">
@@ -156,12 +168,12 @@
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
                 </a>
                 
-                <!-- Navigation Desktop -->
+                <!-- Navigation Desktop - MÊME STRUCTURE QUE SERVICES.HTML -->
                 <nav class="hidden lg:flex items-center space-x-8">
                     <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
                     <a href="formules.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_formules">Abonnement</a>
-                    <a href="infos_prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
                     <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_client">Espace Client</a>
                     <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </nav>
@@ -170,12 +182,12 @@
                 <div class="language-selector">
                     <button id="language-button" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
                         <span id="current-flag">🇫🇷</span>
-                        <span class="hidden sm:inline text-sm font-medium">FR</span>
+                        <span class="hidden sm:inline text-sm font-medium" id="current-language">FR</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
-                    <div id="language-dropdown" class="language-dropdown hidden">
+                    <div id="language-dropdown" class="language-dropdown">
                         <div class="language-option active" data-lang="fr">
                             <span>🇫🇷</span>
                             <span>Français</span>
@@ -203,13 +215,13 @@
                 </button>
             </div>
 
-            <!-- Menu Mobile -->
+            <!-- Menu Mobile - MÊME STRUCTURE QUE SERVICES.HTML -->
             <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
                 <div class="px-4 py-6 space-y-4">
                     <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
                     <a href="formules.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_formules">Abonnement</a>
-                    <a href="infos_prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
                     <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
                     <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </div>
@@ -513,7 +525,7 @@
                         <li><a href="index.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_home">Accueil</a></li>
                         <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_services">Services</a></li>
                         <li><a href="formules.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_formules">Abonnement</a></li>
-                        <li><a href="infos_prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Prestataires</a></li>
+                        <li><a href="prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a></li>
                     </ul>
                 </div>
 
@@ -561,7 +573,7 @@
                 nav_home: "Accueil",
                 nav_services: "Services",
                 nav_formules: "Abonnement",
-                nav_prestataires: "Prestataires",
+                nav_prestataires: "Découvrir nos Prestataires",
                 nav_client: "Espace Client",
                 nav_prestataires_space: "Espace Prestataire",
                 
@@ -643,7 +655,7 @@
                 nav_home: "Home",
                 nav_services: "Diensten",
                 nav_formules: "Abonnement",
-                nav_prestataires: "Dienstverleners",
+                nav_prestataires: "Onze Dienstverleners Ontdekken",
                 nav_client: "Klantenruimte",
                 nav_prestataires_space: "Dienstverlener Ruimte",
                 hero_title: "Eenvoudig. Duidelijk. Zonder verrassingen.",
@@ -672,13 +684,46 @@
                 feature5: "Mobiele app inbegrepen",
                 feature6: "Gratis updates",
                 subscribe_button: "Nu abonneren",
-                trial_text: "30 dagen tevreden of geld terug"
+                trial_text: "30 dagen tevreden of geld terug",
+                comparison_title: "Viiveo vs concurrentie",
+                comparison_subtitle: "Ontdek waarom ons unieke abonnement de beste oplossing is",
+                comparison_feature: "Functie",
+                comparison_others: "Andere diensten",
+                comparison_price: "Maandelijkse prijs",
+                comparison_price_others: "€15-30 + kosten",
+                comparison_services: "Diensten inbegrepen",
+                comparison_services_all: "Alle",
+                comparison_services_limited: "Beperkt",
+                comparison_engagement: "Verplichting",
+                comparison_engagement_none: "Geen",
+                comparison_engagement_yes: "Vaak 12 maanden",
+                comparison_fees: "Verborgen kosten",
+                comparison_fees_none: "Geen",
+                comparison_fees_often: "Vaak",
+                faq_title: "Veelgestelde Vragen",
+                faq_subtitle: "Alles wat u moet weten over ons abonnement",
+                faq1_question: "Kan ik altijd opzeggen?",
+                faq1_answer: "Absoluut! U kunt uw abonnement altijd opzeggen via uw klantenruimte. Geen opzegkosten, geen vragen gesteld.",
+                faq2_question: "Zijn alle diensten echt inbegrepen?",
+                faq2_answer: "Ja! Schoonmaak, boodschappen, kapper aan huis, tuinonderhoud, begeleid vervoer... Al onze standaarddiensten zijn in het abonnement inbegrepen. Alleen zeer specifieke of premium diensten kunnen een toeslag hebben.",
+                faq3_question: "Is er een proefperiode?",
+                faq3_answer: "Wij bieden een 30-dagen tevredenheidsgarantie. Als u niet tevreden bent in de eerste maand, betalen wij u volledig terug.",
+                cta_title: "Klaar om uw dagelijks leven te vereenvoudigen?",
+                cta_subtitle: "Sluit u aan bij duizenden tevreden klanten voor slechts €10 per maand",
+                cta_subscribe: "Nu abonneren",
+                cta_services: "Onze diensten ontdekken",
+                cta_guarantee: "Eerste maand gratis • Zonder verplichting",
+                footer_desc: "Uw welzijn thuis, onze prioriteit. Eenvoudig abonnement van €10/maand.",
+                footer_navigation: "Navigatie",
+                footer_spaces: "Ruimtes",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden. Abonnement €10/maand."
             },
             en: {
                 nav_home: "Home",
                 nav_services: "Services",
                 nav_formules: "Subscription",
-                nav_prestataires: "Providers",
+                nav_prestataires: "Discover our Providers",
                 nav_client: "Client Space",
                 nav_prestataires_space: "Provider Space",
                 hero_title: "Simple. Clear. No surprises.",
@@ -707,13 +752,46 @@
                 feature5: "Mobile app included",
                 feature6: "Free updates",
                 subscribe_button: "Subscribe Now",
-                trial_text: "30-day satisfaction guarantee"
+                trial_text: "30-day satisfaction guarantee",
+                comparison_title: "Viiveo vs Competition",
+                comparison_subtitle: "Discover why our unique subscription is the best solution",
+                comparison_feature: "Feature",
+                comparison_others: "Other services",
+                comparison_price: "Monthly price",
+                comparison_price_others: "€15-30 + fees",
+                comparison_services: "Services included",
+                comparison_services_all: "All",
+                comparison_services_limited: "Limited",
+                comparison_engagement: "Commitment",
+                comparison_engagement_none: "None",
+                comparison_engagement_yes: "Often 12 months",
+                comparison_fees: "Hidden fees",
+                comparison_fees_none: "None",
+                comparison_fees_often: "Often",
+                faq_title: "Frequently Asked Questions",
+                faq_subtitle: "Everything you need to know about our subscription",
+                faq1_question: "Can I cancel at any time?",
+                faq1_answer: "Absolutely! You can cancel your subscription at any time from your client space. No termination fees, no questions asked.",
+                faq2_question: "Are all services really included?",
+                faq2_answer: "Yes! Cleaning, shopping, home hairdressing, gardening, accompanied transport... All our standard services are included in the subscription. Only very specific or premium services may have an additional charge.",
+                faq3_question: "Is there a trial period?",
+                faq3_answer: "We offer a 30-day satisfaction guarantee. If you're not satisfied in the first month, we'll refund you in full.",
+                cta_title: "Ready to simplify your daily life?",
+                cta_subtitle: "Join thousands of satisfied customers for only €10 per month",
+                cta_subscribe: "Subscribe Now",
+                cta_services: "Discover our services",
+                cta_guarantee: "First month free • No commitment",
+                footer_desc: "Your home well-being, our priority. Simple subscription at €10/month.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Spaces",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. All rights reserved. Subscription €10/month."
             },
             de: {
                 nav_home: "Startseite",
                 nav_services: "Dienstleistungen",
                 nav_formules: "Abonnement",
-                nav_prestataires: "Dienstleister",
+                nav_prestataires: "Unsere Dienstleister Entdecken",
                 nav_client: "Kundenbereich",
                 nav_prestataires_space: "Dienstleister Bereich",
                 hero_title: "Einfach. Klar. Keine Überraschungen.",
@@ -742,7 +820,40 @@
                 feature5: "Mobile App inklusive",
                 feature6: "Kostenlose Updates",
                 subscribe_button: "Jetzt abonnieren",
-                trial_text: "30 Tage zufrieden oder Geld zurück"
+                trial_text: "30 Tage zufrieden oder Geld zurück",
+                comparison_title: "Viiveo vs Konkurrenz",
+                comparison_subtitle: "Entdecken Sie, warum unser einzigartiges Abonnement die beste Lösung ist",
+                comparison_feature: "Funktion",
+                comparison_others: "Andere Dienste",
+                comparison_price: "Monatlicher Preis",
+                comparison_price_others: "15-30€ + Gebühren",
+                comparison_services: "Dienstleistungen inklusive",
+                comparison_services_all: "Alle",
+                comparison_services_limited: "Begrenzt",
+                comparison_engagement: "Verpflichtung",
+                comparison_engagement_none: "Keine",
+                comparison_engagement_yes: "Oft 12 Monate",
+                comparison_fees: "Versteckte Gebühren",
+                comparison_fees_none: "Keine",
+                comparison_fees_often: "Oft",
+                faq_title: "Häufig Gestellte Fragen",
+                faq_subtitle: "Alles, was Sie über unser Abonnement wissen müssen",
+                faq1_question: "Kann ich jederzeit kündigen?",
+                faq1_answer: "Absolut! Sie können Ihr Abonnement jederzeit über Ihren Kundenbereich kündigen. Keine Kündigungsgebühren, keine Fragen.",
+                faq2_question: "Sind wirklich alle Dienstleistungen inbegriffen?",
+                faq2_answer: "Ja! Reinigung, Einkaufen, Friseur zu Hause, Gartenarbeit, Begleiteter Transport... Alle unsere Standarddienstleistungen sind im Abonnement enthalten. Nur sehr spezifische oder Premium-Dienstleistungen können einen Aufpreis haben.",
+                faq3_question: "Gibt es eine Testphase?",
+                faq3_answer: "Wir bieten eine 30-tägige Zufriedenheitsgarantie. Wenn Sie im ersten Monat nicht zufrieden sind, erstatten wir Ihnen den vollen Betrag.",
+                cta_title: "Bereit, Ihren Alltag zu vereinfachen?",
+                cta_subtitle: "Schließen Sie sich Tausenden zufriedenen Kunden für nur 10€ pro Monat an",
+                cta_subscribe: "Jetzt abonnieren",
+                cta_services: "Unsere Dienstleistungen entdecken",
+                cta_guarantee: "Erster Monat kostenlos • Ohne Verpflichtung",
+                footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität. Einfaches Abonnement für 10€/Monat.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Bereiche",
+                footer_contact: "Kontakt",
+                footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten. Abonnement 10€/Monat."
             }
         };
 
@@ -751,6 +862,7 @@
         function changeLanguage(lang) {
             currentLanguage = lang;
             
+            // Mettre à jour tous les éléments avec data-translate
             document.querySelectorAll('[data-translate]').forEach(element => {
                 const key = element.getAttribute('data-translate');
                 if (translations[lang] && translations[lang][key]) {
@@ -758,15 +870,14 @@
                 }
             });
 
+            // Mettre à jour le sélecteur de langue
             const flags = { fr: '🇫🇷', nl: '🇳🇱', en: '🇬🇧', de: '🇩🇪' };
             const codes = { fr: 'FR', nl: 'NL', en: 'EN', de: 'DE' };
             
             document.getElementById('current-flag').textContent = flags[lang];
-            const codeElement = document.querySelector('#language-button .hidden');
-            if (codeElement) {
-                codeElement.textContent = codes[lang];
-            }
+            document.getElementById('current-language').textContent = codes[lang];
 
+            // Mettre à jour les options actives
             document.querySelectorAll('.language-option').forEach(option => {
                 option.classList.remove('active');
                 if (option.getAttribute('data-lang') === lang) {
@@ -791,6 +902,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Charger la langue sauvegardée
             const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
             changeLanguage(savedLanguage);
 
@@ -801,18 +913,18 @@
             if (languageButton && languageDropdown) {
                 languageButton.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    languageDropdown.classList.toggle('hidden');
+                    languageDropdown.classList.toggle('show');
                 });
 
                 document.addEventListener('click', function() {
-                    languageDropdown.classList.add('hidden');
+                    languageDropdown.classList.remove('show');
                 });
 
                 document.querySelectorAll('.language-option').forEach(option => {
                     option.addEventListener('click', function() {
                         const lang = this.getAttribute('data-lang');
                         changeLanguage(lang);
-                        languageDropdown.classList.add('hidden');
+                        languageDropdown.classList.remove('show');
                     });
                 });
             }
@@ -837,6 +949,13 @@
                               'Weiterleitung zur Abonnementsseite...');
                     });
                 }
+            });
+
+            // Fermer le menu mobile en cliquant sur un lien
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('open');
+                });
             });
         });
     </script>
