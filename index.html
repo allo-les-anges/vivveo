@@ -138,7 +138,7 @@
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Header Commun CORRIGÉ -->
+    <!-- Header Commun CORRIGÉ selon services.html -->
     <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between py-4">
@@ -147,12 +147,12 @@
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
                 </a>
                 
-                <!-- Navigation Desktop -->
+                <!-- Navigation Desktop - MÊME STRUCTURE QUE SERVICES.HTML -->
                 <nav class="hidden lg:flex items-center space-x-8">
-                    <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
+                    <a href="index.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
                     <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Formules</a>
-                    <a href="infos_prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
                     <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_client">Espace Client</a>
                     <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </nav>
@@ -194,13 +194,13 @@
                 </button>
             </div>
 
-            <!-- Menu Mobile -->
+            <!-- Menu Mobile - MÊME STRUCTURE QUE SERVICES.HTML -->
             <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
                 <div class="px-4 py-6 space-y-4">
-                    <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
+                    <a href="index.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
                     <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Formules</a>
-                    <a href="infos_prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
                     <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
                     <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </div>
@@ -208,6 +208,7 @@
         </div>
     </header>
 
+    <!-- Le reste du contenu de index.html reste identique -->
     <!-- Hero Section avec vidéo -->
     <section class="relative text-white py-20 md:py-32 min-h-screen flex items-center overflow-hidden">
         <!-- Vidéo de fond -->
@@ -336,7 +337,7 @@
                         <li><a href="index.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_home">Accueil</a></li>
                         <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_services">Services</a></li>
                         <li><a href="formules.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_formules">Formules</a></li>
-                        <li><a href="infos_prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Prestataires</a></li>
+                        <li><a href="prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a></li>
                     </ul>
                 </div>
 
@@ -377,14 +378,14 @@
     </footer>
 
     <script>
-        // Traductions multilingues
+        // Traductions multilingues - AJOUT DES NOUVELLES CLÉS
         const translations = {
             fr: {
                 // Navigation
                 nav_home: "Accueil",
                 nav_services: "Services",
                 nav_formules: "Formules",
-                nav_prestataires: "Prestataires",
+                nav_prestataires: "Découvrir nos Prestataires",
                 nav_client: "Espace Client",
                 nav_prestataires_space: "Espace Prestataire",
                 
@@ -424,7 +425,7 @@
                 nav_home: "Home",
                 nav_services: "Diensten",
                 nav_formules: "Formules",
-                nav_prestataires: "Dienstverleners",
+                nav_prestataires: "Onze Dienstverleners Ontdekken",
                 nav_client: "Klantenruimte",
                 nav_prestataires_space: "Dienstverlener Ruimte",
                 hero_title: "Wat als u thuis zou blijven?",
@@ -456,7 +457,7 @@
                 nav_home: "Home",
                 nav_services: "Services",
                 nav_formules: "Plans",
-                nav_prestataires: "Providers",
+                nav_prestataires: "Discover our Providers",
                 nav_client: "Client Space",
                 nav_prestataires_space: "Provider Space",
                 hero_title: "What if you stayed at home?",
@@ -488,7 +489,7 @@
                 nav_home: "Startseite",
                 nav_services: "Dienstleistungen",
                 nav_formules: "Tarife",
-                nav_prestataires: "Dienstleister",
+                nav_prestataires: "Unsere Dienstleister Entdecken",
                 nav_client: "Kundenbereich",
                 nav_prestataires_space: "Dienstleister Bereich",
                 hero_title: "Was wäre, wenn Sie zu Hause blieben?",
