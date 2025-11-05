@@ -61,10 +61,86 @@
             background: #facc15;
             color: white;
         }
+
+        /* Styles pour le sélecteur de langue */
+        .language-selector {
+            position: relative;
+        }
+
+        .language-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            width: 12rem;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e5e7eb;
+            z-index: 50;
+        }
+
+        .language-dropdown.show {
+            display: block;
+        }
+
+        .language-option {
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .language-option:hover {
+            background-color: #f9fafb;
+        }
+
+        .language-option.active {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .language-option:not(:last-child) {
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .mobile-menu {
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            display: none;
+        }
+
+        .mobile-menu.open {
+            transform: translateY(0);
+            display: block;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Header Commun -->
+    <!-- Header Commun avec menu corrigé -->
     <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between py-4">
@@ -73,15 +149,44 @@
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
                 </a>
                 
-                <!-- Navigation Desktop -->
+                <!-- Navigation Desktop - MÊME STRUCTURE QUE SERVICES.HTML -->
                 <nav class="hidden lg:flex items-center space-x-8">
-                    <a href="index.html" class="text-gray-700 hover:text-yellow-500 font-medium">Accueil</a>
-                    <a href="nos_services.html" class="text-gray-700 hover:text-yellow-500 font-medium">Services</a>
-                    <a href="formules.html" class="text-gray-700 hover:text-yellow-500 font-medium">Formules</a>
-                    <a href="prestataires.html" class="text-yellow-500 font-medium border-b-2 border-yellow-500">Prestataires</a>
-                    <a href="iclient.html" class="text-gray-700 hover:text-yellow-500 font-medium">Espace Client</a>
-                    <a href="iprestataires.html" class="text-gray-700 hover:text-yellow-500 font-medium">Espace Prestataire</a>
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
+                    <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
+                    <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Abonnement</a>
+                    <a href="prestataires.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
+                    <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </nav>
+
+                <!-- Sélecteur de langue -->
+                <div class="language-selector">
+                    <button id="language-button" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <span id="current-flag">🇫🇷</span>
+                        <span class="hidden sm:inline text-sm font-medium" id="current-language">FR</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="language-dropdown" class="language-dropdown">
+                        <div class="language-option active" data-lang="fr">
+                            <span>🇫🇷</span>
+                            <span>Français</span>
+                        </div>
+                        <div class="language-option" data-lang="nl">
+                            <span>🇳🇱</span>
+                            <span>Nederlands</span>
+                        </div>
+                        <div class="language-option" data-lang="en">
+                            <span>🇬🇧</span>
+                            <span>English</span>
+                        </div>
+                        <div class="language-option" data-lang="de">
+                            <span>🇩🇪</span>
+                            <span>Deutsch</span>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Menu Mobile -->
                 <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg hover:bg-gray-100">
@@ -91,15 +196,15 @@
                 </button>
             </div>
 
-            <!-- Menu Mobile -->
-            <div id="mobile-menu" class="lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg hidden">
+            <!-- Menu Mobile - MÊME STRUCTURE QUE SERVICES.HTML -->
+            <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
                 <div class="px-4 py-6 space-y-4">
-                    <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium">Accueil</a>
-                    <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium">Services</a>
-                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium">Formules</a>
-                    <a href="prestataires.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium">Prestataires</a>
-                    <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium">Espace Client</a>
-                    <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium">Espace Prestataire</a>
+                    <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
+                    <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
+                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Abonnement</a>
+                    <a href="prestataires.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
+                    <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </div>
             </div>
         </div>
@@ -108,10 +213,10 @@
     <!-- Hero Section Prestataires -->
     <section class="relative py-16 md:py-24 bg-gradient-to-br from-yellow-50 to-yellow-100">
         <div class="container mx-auto px-6 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6" data-translate="providers_hero_title">
                 Nos Prestataires
             </h1>
-            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
+            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8" data-translate="providers_hero_subtitle">
                 Découvrez nos professionnels qualifiés, sélectionnés avec soin pour vous offrir le meilleur service
             </p>
         </div>
@@ -121,7 +226,7 @@
     <section class="py-8 bg-white">
         <div class="container mx-auto px-6">
             <div class="text-center mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Filtrer par service</h2>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4" data-translate="providers_filter_title">Filtrer par service</h2>
                 <div class="flex flex-wrap justify-center gap-2" id="service-filters">
                     <!-- Les filtres seront générés dynamiquement -->
                 </div>
@@ -144,44 +249,211 @@
             <div class="grid md:grid-cols-4 gap-8">
                 <div class="md:col-span-1">
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-10 mb-4">
-                    <p class="text-gray-300 text-sm">Votre bien-être à domicile, notre priorité.</p>
+                    <p class="text-gray-300 text-sm" data-translate="footer_desc">Votre bien-être à domicile, notre priorité.</p>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Navigation</h4>
+                    <h4 class="font-semibold mb-4" data-translate="footer_navigation">Navigation</h4>
                     <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="index.html" class="hover:text-yellow-400">Accueil</a></li>
-                        <li><a href="nos_services.html" class="hover:text-yellow-400">Services</a></li>
-                        <li><a href="formules.html" class="hover:text-yellow-400">Formules</a></li>
-                        <li><a href="prestataires.html" class="hover:text-yellow-400">Prestataires</a></li>
+                        <li><a href="index.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_home">Accueil</a></li>
+                        <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_services">Services</a></li>
+                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_formules">Abonnement</a></li>
+                        <li><a href="prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Espaces</h4>
+                    <h4 class="font-semibold mb-4" data-translate="footer_spaces">Espaces</h4>
                     <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="iclient.html" class="hover:text-yellow-400">Espace Client</a></li>
-                        <li><a href="iprestataires.html" class="hover:text-yellow-400">Espace Prestataire</a></li>
+                        <li><a href="iclient.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_client">Espace Client</a></li>
+                        <li><a href="iprestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <h4 class="font-semibold mb-4" data-translate="footer_contact">Contact</h4>
                     <div class="text-sm text-gray-300 space-y-2">
                         <p>info@viiveo.com</p>
                         <p>+32 475 32 51 27</p>
                         <div class="flex space-x-4 mt-2">
-                            <a href="https://www.facebook.com/viiveo.be" class="hover:text-yellow-400"><i class="fab fa-facebook"></i></a>
-                            <a href="https://www.linkedin.com/in/danydecarpentrie" class="hover:text-yellow-400"><i class="fab fa-linkedin"></i></a>
-                            <a href="https://wa.me/+32475325127" class="hover:text-yellow-400"><i class="fab fa-whatsapp"></i></a>
+                            <a href="https://www.facebook.com/viiveo.be" class="hover:text-yellow-400 transition-colors"><i class="fab fa-facebook"></i></a>
+                            <a href="https://www.linkedin.com/in/danydecarpentrie" class="hover:text-yellow-400 transition-colors"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://wa.me/+32475325127" class="hover:text-yellow-400 transition-colors"><i class="fab fa-whatsapp"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-                <p>© 2024 Viiveo. Tous droits réservés.</p>
+                <p data-translate="footer_copyright">© 2024 Viiveo. Tous droits réservés.</p>
             </div>
         </div>
     </footer>
 
     <script>
+        // Traductions multilingues
+        const translations = {
+            fr: {
+                // Navigation
+                nav_home: "Accueil",
+                nav_services: "Services",
+                nav_formules: "Abonnement",
+                nav_prestataires: "Découvrir nos Prestataires",
+                nav_client: "Espace Client",
+                nav_prestataires_space: "Espace Prestataire",
+                
+                // Hero Section
+                providers_hero_title: "Nos Prestataires",
+                providers_hero_subtitle: "Découvrez nos professionnels qualifiés, sélectionnés avec soin pour vous offrir le meilleur service",
+                
+                // Filtres
+                providers_filter_title: "Filtrer par service",
+                providers_all: "👥 Tous les prestataires",
+                providers_loading: "Chargement des prestataires...",
+                providers_error: "Erreur lors du chargement des prestataires",
+                providers_none: "Aucun prestataire trouvé",
+                providers_book: "Réserver",
+                
+                // Services
+                service_cleaning: "Aide ménagère",
+                service_shopping: "Courses à domicile",
+                service_haircare: "Coiffure à domicile",
+                service_gardening: "Jardinage",
+                service_transport: "Transport accompagné",
+                service_assistance: "Assistance / Secours",
+                service_handyman: "Homme à tout faire",
+                service_volunteer: "Bénévole",
+                service_meals: "Livraison de repas",
+                
+                // Footer
+                footer_desc: "Votre bien-être à domicile, notre priorité.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Espaces",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. Tous droits réservés."
+            },
+            nl: {
+                nav_home: "Home",
+                nav_services: "Diensten",
+                nav_formules: "Abonnement",
+                nav_prestataires: "Onze Dienstverleners Ontdekken",
+                nav_client: "Klantenruimte",
+                nav_prestataires_space: "Dienstverlener Ruimte",
+                providers_hero_title: "Onze Dienstverleners",
+                providers_hero_subtitle: "Ontdek onze gekwalificeerde professionals, zorgvuldig geselecteerd om u de beste service te bieden",
+                providers_filter_title: "Filteren op dienst",
+                providers_all: "👥 Alle dienstverleners",
+                providers_loading: "Dienstverleners laden...",
+                providers_error: "Fout bij het laden van dienstverleners",
+                providers_none: "Geen dienstverleners gevonden",
+                providers_book: "Reserveren",
+                service_cleaning: "Huishoudhulp",
+                service_shopping: "Boodschappen aan huis",
+                service_haircare: "Kapper aan huis",
+                service_gardening: "Tuinonderhoud",
+                service_transport: "Begeleid vervoer",
+                service_assistance: "Assistentie / Hulp",
+                service_handyman: "Klusjesman",
+                service_volunteer: "Vrijwilliger",
+                service_meals: "Maaltijdbezorging",
+                footer_desc: "Uw welzijn thuis, onze prioriteit.",
+                footer_navigation: "Navigatie",
+                footer_spaces: "Ruimtes",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden."
+            },
+            en: {
+                nav_home: "Home",
+                nav_services: "Services",
+                nav_formules: "Subscription",
+                nav_prestataires: "Discover our Providers",
+                nav_client: "Client Space",
+                nav_prestataires_space: "Provider Space",
+                providers_hero_title: "Our Providers",
+                providers_hero_subtitle: "Discover our qualified professionals, carefully selected to offer you the best service",
+                providers_filter_title: "Filter by service",
+                providers_all: "👥 All providers",
+                providers_loading: "Loading providers...",
+                providers_error: "Error loading providers",
+                providers_none: "No providers found",
+                providers_book: "Book",
+                service_cleaning: "Home cleaning",
+                service_shopping: "Home shopping",
+                service_haircare: "Home hairdressing",
+                service_gardening: "Gardening",
+                service_transport: "Accompanied transport",
+                service_assistance: "Assistance / Help",
+                service_handyman: "Handyman",
+                service_volunteer: "Volunteer",
+                service_meals: "Meal delivery",
+                footer_desc: "Your home well-being, our priority.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Spaces",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. All rights reserved."
+            },
+            de: {
+                nav_home: "Startseite",
+                nav_services: "Dienstleistungen",
+                nav_formules: "Abonnement",
+                nav_prestataires: "Unsere Dienstleister Entdecken",
+                nav_client: "Kundenbereich",
+                nav_prestataires_space: "Dienstleister Bereich",
+                providers_hero_title: "Unsere Dienstleister",
+                providers_hero_subtitle: "Entdecken Sie unsere qualifizierten Fachkräfte, sorgfältig ausgewählt, um Ihnen den besten Service zu bieten",
+                providers_filter_title: "Nach Dienstleistung filtern",
+                providers_all: "👥 Alle Dienstleister",
+                providers_loading: "Dienstleister werden geladen...",
+                providers_error: "Fehler beim Laden der Dienstleister",
+                providers_none: "Keine Dienstleister gefunden",
+                providers_book: "Buchen",
+                service_cleaning: "Haushaltshilfe",
+                service_shopping: "Einkaufsservice",
+                service_haircare: "Friseur zu Hause",
+                service_gardening: "Gartenarbeit",
+                service_transport: "Begleiteter Transport",
+                service_assistance: "Assistenz / Hilfe",
+                service_handyman: "Handwerker",
+                service_volunteer: "Freiwilliger",
+                service_meals: "Essenslieferung",
+                footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Bereiche",
+                footer_contact: "Kontakt",
+                footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten."
+            }
+        };
+
+        let currentLanguage = 'fr';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Mettre à jour tous les éléments avec data-translate
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            // Mettre à jour le sélecteur de langue
+            const flags = { fr: '🇫🇷', nl: '🇳🇱', en: '🇬🇧', de: '🇩🇪' };
+            const codes = { fr: 'FR', nl: 'NL', en: 'EN', de: 'DE' };
+            
+            document.getElementById('current-flag').textContent = flags[lang];
+            document.getElementById('current-language').textContent = codes[lang];
+
+            // Mettre à jour les options actives
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-lang') === lang) {
+                    option.classList.add('active');
+                }
+            });
+
+            localStorage.setItem('viiveo-language', lang);
+            
+            // Recharger les filtres avec les nouvelles traductions
+            initializeFilters();
+        }
+
         const API_BASE_URL = 'https://gaetano1747.gm-harchies.workers.dev';
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec';
 
@@ -197,6 +469,33 @@
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
+            // Charger la langue sauvegardée
+            const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
+            changeLanguage(savedLanguage);
+
+            // Gestion du sélecteur de langue
+            const languageButton = document.getElementById('language-button');
+            const languageDropdown = document.getElementById('language-dropdown');
+            
+            if (languageButton && languageDropdown) {
+                languageButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    languageDropdown.classList.toggle('show');
+                });
+
+                document.addEventListener('click', function() {
+                    languageDropdown.classList.remove('show');
+                });
+
+                document.querySelectorAll('.language-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const lang = this.getAttribute('data-lang');
+                        changeLanguage(lang);
+                        languageDropdown.classList.remove('show');
+                    });
+                });
+            }
+
             initializeFilters();
             loadAllPrestataires();
             setupMobileMenu();
@@ -208,18 +507,26 @@
             
             if (mobileMenuButton && mobileMenu) {
                 mobileMenuButton.addEventListener('click', function() {
-                    mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('open');
                 });
             }
+
+            // Fermer le menu mobile en cliquant sur un lien
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('open');
+                });
+            });
         }
 
         function initializeFilters() {
             const filtersContainer = document.getElementById('service-filters');
+            filtersContainer.innerHTML = '';
             
             // Bouton "Tous"
             const allButton = document.createElement('button');
             allButton.className = 'filter-btn active bg-yellow-500 text-white px-4 py-2 rounded-full font-semibold';
-            allButton.textContent = '👥 Tous les prestataires';
+            allButton.textContent = translations[currentLanguage].providers_all;
             allButton.onclick = () => filterPrestataires('all');
             filtersContainer.appendChild(allButton);
 
@@ -227,10 +534,27 @@
             services.forEach(service => {
                 const button = document.createElement('button');
                 button.className = 'filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full font-semibold hover:bg-gray-300';
-                button.textContent = getServiceEmoji(service) + ' ' + service;
+                button.textContent = getServiceEmoji(service) + ' ' + getTranslatedService(service);
                 button.onclick = () => filterPrestataires(service);
                 filtersContainer.appendChild(button);
             });
+        }
+
+        function getTranslatedService(service) {
+            const serviceTranslations = {
+                'Aide ménagère': 'service_cleaning',
+                'Courses à domicile': 'service_shopping',
+                'Coiffure à domicile': 'service_haircare',
+                'Jardinage': 'service_gardening',
+                'Transport accompagné': 'service_transport',
+                'Assistance / Secours': 'service_assistance',
+                'Homme à tout faire': 'service_handyman',
+                'Bénévole': 'service_volunteer',
+                'Livraison de repas': 'service_meals'
+            };
+            
+            const key = serviceTranslations[service];
+            return translations[currentLanguage][key] || service;
         }
 
         function getServiceEmoji(service) {
@@ -250,7 +574,7 @@
 
         async function loadAllPrestataires() {
             const container = document.getElementById('prestataires-container');
-            container.innerHTML = '<div class="col-span-full text-center py-8"><div class="spinner border-4 border-yellow-500 border-t-transparent rounded-full w-12 h-12 mx-auto mb-4 animate-spin"></div><p>Chargement des prestataires...</p></div>';
+            container.innerHTML = `<div class="col-span-full text-center py-8"><div class="spinner border-4 border-yellow-500 border-t-transparent rounded-full w-12 h-12 mx-auto mb-4 animate-spin"></div><p>${translations[currentLanguage].providers_loading}</p></div>`;
 
             try {
                 // Charger les prestataires pour chaque service
@@ -275,7 +599,7 @@
                 displayPrestataires(allPrestataires);
             } catch (error) {
                 console.error('Erreur chargement prestataires:', error);
-                container.innerHTML = '<div class="col-span-full text-center py-8 text-red-600"><p>Erreur lors du chargement des prestataires</p></div>';
+                container.innerHTML = `<div class="col-span-full text-center py-8 text-red-600"><p>${translations[currentLanguage].providers_error}</p></div>`;
             }
         }
 
@@ -283,7 +607,7 @@
             const container = document.getElementById('prestataires-container');
             
             if (prestataires.length === 0) {
-                container.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500"><p>Aucun prestataire trouvé</p></div>';
+                container.innerHTML = `<div class="col-span-full text-center py-8 text-gray-500"><p>${translations[currentLanguage].providers_none}</p></div>`;
                 return;
             }
 
@@ -301,7 +625,7 @@
 
                     <div class="flex flex-wrap gap-1 justify-center mb-3">
                         ${presta.services ? presta.services.map(service => 
-                            `<span class="service-badge text-xs">${getServiceEmoji(service)} ${service}</span>`
+                            `<span class="service-badge text-xs">${getServiceEmoji(service)} ${getTranslatedService(service)}</span>`
                         ).join('') : ''}
                     </div>
 
@@ -309,7 +633,7 @@
 
                     <div class="text-center">
                         <a href="nos_services.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors inline-block">
-                            <i class="fas fa-calendar-check mr-1"></i>Réserver
+                            <i class="fas fa-calendar-check mr-1"></i>${translations[currentLanguage].providers_book}
                         </a>
                     </div>
                 </div>
@@ -340,7 +664,14 @@
 
             // Activer le bouton cliqué
             const activeButton = Array.from(document.querySelectorAll('.filter-btn'))
-                .find(btn => btn.textContent.includes(service));
+                .find(btn => {
+                    if (service === 'all') {
+                        return btn.textContent.includes(translations[currentLanguage].providers_all);
+                    } else {
+                        return btn.textContent.includes(getTranslatedService(service));
+                    }
+                });
+                
             if (activeButton) {
                 activeButton.classList.add('active', 'bg-yellow-500', 'text-white');
                 activeButton.classList.remove('bg-gray-200', 'text-gray-700');
