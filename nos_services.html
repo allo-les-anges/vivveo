@@ -187,8 +187,10 @@
             padding: 2rem;
         }
 
+        /* Formulaire contemporain */
         .form-group {
             margin-bottom: 1.5rem;
+            position: relative;
         }
 
         .form-group label {
@@ -196,6 +198,9 @@
             margin-bottom: 0.5rem;
             font-weight: 600;
             color: #374151;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .form-group input,
@@ -207,6 +212,7 @@
             border-radius: 0.75rem;
             font-size: 1rem;
             transition: var(--transition);
+            background: #fafafa;
         }
 
         .form-group input:focus,
@@ -214,13 +220,24 @@
         .form-group textarea:focus {
             outline: none;
             border-color: #facc15;
+            background: white;
             box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-icon {
+            position: absolute;
+            right: 1rem;
+            top: 2.5rem;
+            color: #9ca3af;
+            font-size: 1.2rem;
         }
 
         .calendar-container {
             border: 2px solid #e5e7eb;
             border-radius: 0.75rem;
             overflow: hidden;
+            background: #fafafa;
         }
 
         .flatpickr-calendar {
@@ -272,24 +289,28 @@
             transition: var(--transition);
             font-weight: 600;
             font-size: 1rem;
+            background: #fafafa;
         }
 
         .hours-btn:hover {
             border-color: #facc15;
+            transform: translateY(-2px);
         }
 
         .hours-btn.selected {
             background: #facc15;
             color: white;
             border-color: #facc15;
+            transform: scale(1.05);
         }
 
         .credit-info {
-            background: #fef3c7;
+            background: linear-gradient(135deg, #fef3c7 0%, #fef7cd 100%);
             border-radius: 0.75rem;
-            padding: 1rem;
+            padding: 1.5rem;
             margin-top: 1rem;
             font-size: 0.875rem;
+            border-left: 4px solid #facc15;
         }
 
         .loader {
@@ -413,6 +434,20 @@
             font-size: 0.9rem;
             margin-top: 0.25rem;
         }
+
+        /* Section Prestataires améliorée */
+        .prestataires-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .prestataire-feature {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -430,39 +465,10 @@
                     <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Accueil</a>
                     <a href="nos_services.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500">Services</a>
                     <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Formules</a>
-                    <a href="prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Prestataires</a>
+                    <a href="prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Découvrir nos Prestataires</a>
                     <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Espace Client</a>
                     <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Espace Prestataire</a>
                 </nav>
-
-                <!-- Sélecteur de langue -->
-                <div class="language-selector">
-                    <button id="language-button" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
-                        <span id="current-flag">🇫🇷</span>
-                        <span class="hidden sm:inline text-sm font-medium">FR</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div id="language-dropdown" class="language-dropdown hidden">
-                        <div class="language-option active" data-lang="fr">
-                            <span>🇫🇷</span>
-                            <span>Français</span>
-                        </div>
-                        <div class="language-option" data-lang="nl">
-                            <span>🇳🇱</span>
-                            <span>Nederlands</span>
-                        </div>
-                        <div class="language-option" data-lang="en">
-                            <span>🇬🇧</span>
-                            <span>English</span>
-                        </div>
-                        <div class="language-option" data-lang="de">
-                            <span>🇩🇪</span>
-                            <span>Deutsch</span>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Menu Mobile -->
                 <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg hover:bg-gray-100">
@@ -478,7 +484,7 @@
                     <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Accueil</a>
                     <a href="nos_services.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium">Services</a>
                     <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Formules</a>
-                    <a href="prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Prestataires</a>
+                    <a href="prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Découvrir nos Prestataires</a>
                     <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Espace Client</a>
                     <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Espace Prestataire</a>
                 </div>
@@ -506,13 +512,20 @@
         </div>
     </section>
 
-    <!-- Bouton Prestataires -->
-    <section class="py-8 bg-white bg-opacity-80">
-        <div class="container mx-auto px-6 text-center">
-            <a href="prestataires.html" class="inline-block bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg">
-                <i class="fas fa-users mr-2"></i>
-                En savoir plus sur nos prestataires ?
-            </a>
+    <!-- Section Explication Prestataires -->
+    <section class="py-12 bg-white bg-opacity-90">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">👥 Découvrez nos Prestataires</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Le lien <strong>"Découvrir nos Prestataires"</strong> vous permet de consulter tous nos professionnels qualifiés, 
+                    leurs spécialités, leurs disponibilités et leurs tarifs. C'est l'endroit idéal pour choisir le prestataire 
+                    qui correspond le mieux à vos besoins avant de faire une réservation.
+                </p>
+                <a href="prestataires.html" class="inline-block bg-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-700 transition-colors mt-4">
+                    <i class="fas fa-users mr-2"></i>Explorer nos Prestataires
+                </a>
+            </div>
         </div>
     </section>
 
@@ -544,9 +557,13 @@
                             <span class="text-sm text-gray-500">Réservation à l'heure</span>
                             <span class="text-yellow-500 font-semibold">4.7/5</span>
                         </div>
+                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Aide ménagère')">
+                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                        </button>
                     </div>
                 </div>
 
+                <!-- Autres services avec le même pattern... -->
                 <!-- Courses à domicile -->
                 <div class="service-card" onclick="openServiceModal('Courses à domicile')">
                     <div class="service-image" style="background-image: url('https://i.postimg.cc/XN97HV71/courses.png')">
@@ -570,6 +587,9 @@
                             <span class="text-sm text-gray-500">Forfait 2h minimum</span>
                             <span class="text-yellow-500 font-semibold">4.9/5</span>
                         </div>
+                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Courses à domicile')">
+                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                        </button>
                     </div>
                 </div>
 
@@ -596,6 +616,9 @@
                             <span class="text-sm text-gray-500">Forfait 1h30 minimum</span>
                             <span class="text-yellow-500 font-semibold">4.5/5</span>
                         </div>
+                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Coiffure à domicile')">
+                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                        </button>
                     </div>
                 </div>
 
@@ -622,6 +645,9 @@
                             <span class="text-sm text-gray-500">Réservation à l'heure</span>
                             <span class="text-yellow-500 font-semibold">4.6/5</span>
                         </div>
+                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Jardinage')">
+                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                        </button>
                     </div>
                 </div>
 
@@ -648,6 +674,9 @@
                             <span class="text-sm text-gray-500">Forfait 2h minimum</span>
                             <span class="text-yellow-500 font-semibold">4.8/5</span>
                         </div>
+                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Transport accompagné')">
+                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                        </button>
                     </div>
                 </div>
 
@@ -674,6 +703,9 @@
                             <span class="text-sm text-gray-500">Service prioritaire</span>
                             <span class="text-yellow-500 font-semibold">5.0/5</span>
                         </div>
+                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Assistance / Secours')">
+                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                        </button>
                     </div>
                 </div>
 
@@ -700,6 +732,9 @@
                             <span class="text-sm text-gray-500">Réservation à l'heure</span>
                             <span class="text-yellow-500 font-semibold">4.7/5</span>
                         </div>
+                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Homme à tout faire')">
+                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                        </button>
                     </div>
                 </div>
 
@@ -722,6 +757,9 @@
                             <span class="text-sm text-gray-500">Service bénévole</span>
                             <span class="text-yellow-500 font-semibold">5.0/5</span>
                         </div>
+                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Visite bénévole')">
+                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                        </button>
                     </div>
                 </div>
 
@@ -744,6 +782,9 @@
                             <span class="text-sm text-gray-500">Service CPAS</span>
                             <span class="text-yellow-500 font-semibold">4.6/5</span>
                         </div>
+                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Commande de repas')">
+                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                        </button>
                     </div>
                 </div>
 
@@ -751,259 +792,158 @@
         </div>
     </section>
 
-    <!-- Comment ça marche -->
-    <section class="py-16 md:py-20 bg-gray-50 bg-opacity-90">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Comment ça marche ?</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Un système simple et transparent pour vos services à domicile</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-2xl">📅</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">1. Réservez des heures</h3>
-                    <p class="text-gray-600">Choisissez le nombre d'heures dont vous avez besoin pour chaque service</p>
-                </div>
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-2xl">👥</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">2. Prestataire confirmé</h3>
-                    <p class="text-gray-600">Un prestataire qualifié accepte votre réservation et vous contacte</p>
-                </div>
-                <div class="text-center">
-                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-2xl">💬</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">3. Tarif convenu ensemble</h3>
-                    <p class="text-gray-600">Vous convenez directement du tarif horaire avec le prestataire</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Avis Clients -->
-    <section class="py-16 md:py-20 bg-white bg-opacity-90">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Ce que disent nos clients</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Découvrez les expériences de ceux qui nous font confiance</p>
-            </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                <!-- Avis 1 -->
-                <div class="review-card">
-                    <div class="review-header">
-                        <span class="review-author">Marie D.</span>
-                        <span class="review-date">15 Jan 2024</span>
-                    </div>
-                    <div class="rating-stars text-sm">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="text-gray-600">"J'ai réservé 3h d'aide ménagère. Le prestataire était excellent et le tarif très raisonnable."</p>
-                </div>
-                <!-- Avis 2 -->
-                <div class="review-card">
-                    <div class="review-header">
-                        <span class="review-author">Jean P.</span>
-                        <span class="review-date">12 Jan 2024</span>
-                    </div>
-                    <div class="rating-stars text-sm">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <p class="text-gray-600">"Système très pratique. J'ai pu négocier directement le tarif avec le jardinier."</p>
-                </div>
-                <!-- Avis 3 -->
-                <div class="review-card">
-                    <div class="review-header">
-                        <span class="review-author">Sophie L.</span>
-                        <span class="review-date">10 Jan 2024</span>
-                    </div>
-                    <div class="rating-stars text-sm">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="text-gray-600">"Transport très sécurisant. Le chauffeur était ponctuel et le tarif convenu à l'avance."</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer Commun -->
-    <footer class="bg-gray-800 text-white py-12">
-        <div class="container mx-auto px-6">
-            <div class="grid md:grid-cols-4 gap-8">
-                <!-- Logo et description -->
-                <div class="md:col-span-1">
-                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-10 mb-4">
-                    <p class="text-gray-300 text-sm">
-                        Votre bien-être à domicile, notre priorité.
-                    </p>
-                </div>
-
-                <!-- Navigation -->
-                <div>
-                    <h4 class="font-semibold mb-4">Navigation</h4>
-                    <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="index.html" class="hover:text-yellow-400 transition-colors">Accueil</a></li>
-                        <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors">Services</a></li>
-                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors">Formules</a></li>
-                        <li><a href="prestataires.html" class="hover:text-yellow-400 transition-colors">Prestataires</a></li>
-                    </ul>
-                </div>
-
-                <!-- Espaces -->
-                <div>
-                    <h4 class="font-semibold mb-4">Espaces</h4>
-                    <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="iclient.html" class="hover:text-yellow-400 transition-colors">Espace Client</a></li>
-                        <li><a href="iprestataires.html" class="hover:text-yellow-400 transition-colors">Espace Prestataire</a></li>
-                    </ul>
-                </div>
-
-                <!-- Contact -->
-                <div>
-                    <h4 class="font-semibold mb-4">Contact</h4>
-                    <div class="text-sm text-gray-300 space-y-2">
-                        <p>info@viiveo.com</p>
-                        <p>+32 475 32 51 27</p>
-                        <div class="flex space-x-4 mt-2">
-                            <a href="https://www.facebook.com/viiveo.be" class="hover:text-yellow-400 transition-colors">
-                                <i class="fab fa-facebook"></i>
-                            </a>
-                            <a href="https://www.linkedin.com/in/danydecarpentrie" class="hover:text-yellow-400 transition-colors">
-                                <i class="fab fa-linkedin"></i>
-                            </a>
-                            <a href="https://wa.me/+32475325127" class="hover:text-yellow-400 transition-colors">
-                                <i class="fab fa-whatsapp"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-                <p>© 2024 Viiveo. Tous droits réservés.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Modal de Réservation -->
+    <!-- Modal de Réservation Contemporain -->
     <div id="service-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modal-title" class="text-2xl font-bold">Réservation de service</h2>
+                <h2 id="modal-title" class="text-2xl font-bold">📋 Demande d'Intervention</h2>
                 <span class="close" onclick="closeModal()">&times;</span>
             </div>
             <div class="modal-body">
                 <form id="booking-form" onsubmit="submitBooking(event)">
-                    <div class="form-group">
-                        <label for="service-type">Type de service</label>
-                        <input type="text" id="service-type" name="service-type" readonly>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="client-password">🔒 Mot de passe</label>
-                        <input type="password" id="client-password" name="password" required>
-                    </div>
+                    <!-- Informations Personnelles -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-user-circle mr-2 text-yellow-500"></i>
+                            Vos Informations
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="client-firstname">Prénom</label>
+                                <input type="text" id="client-firstname" name="prenom" required placeholder="Votre prénom">
+                                <i class="fas fa-user form-icon"></i>
+                            </div>
+                            <div class="form-group">
+                                <label for="client-lastname">Nom</label>
+                                <input type="text" id="client-lastname" name="nom" required placeholder="Votre nom">
+                                <i class="fas fa-user form-icon"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="client-email">Adresse Email</label>
+                            <input type="email" id="client-email" name="email" required placeholder="votre@email.com">
+                            <i class="fas fa-envelope form-icon"></i>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="client-firstname">👤 Prénom</label>
-                        <input type="text" id="client-firstname" name="prenom" required>
-                    </div>
+                        <div class="form-group">
+                            <label for="client-address">Adresse complète</label>
+                            <input type="text" id="client-address" name="adresse" required placeholder="Votre adresse complète">
+                            <i class="fas fa-home form-icon"></i>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="client-lastname">👤 Nom</label>
-                        <input type="text" id="client-lastname" name="nom" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="client-address">🏠 Adresse complète</label>
-                        <input type="text" id="client-address" name="adresse" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="client-email">📧 Email</label>
-                        <input type="email" id="client-email" name="email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="service-name">🛎️ Nature du service</label>
-                        <input type="text" id="service-name" name="service" readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Nombre d'heures souhaitées</label>
-                        <div class="hours-selector">
-                            <div class="hours-btn" data-hours="1" onclick="selectHours(1)">1h</div>
-                            <div class="hours-btn" data-hours="2" onclick="selectHours(2)">2h</div>
-                            <div class="hours-btn" data-hours="3" onclick="selectHours(3)">3h</div>
-                            <div class="hours-btn" data-hours="4" onclick="selectHours(4)">4h</div>
-                            <div class="hours-btn" data-hours="5" onclick="selectHours(5)">5h</div>
-                            <input type="hidden" id="selected-hours" name="selected-hours" value="2" required>
+                        <div class="form-group">
+                            <label for="client-password">Mot de passe client</label>
+                            <input type="password" id="client-password" name="password" required placeholder="Votre mot de passe">
+                            <i class="fas fa-lock form-icon"></i>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="booking-date">📅 Date souhaitée</label>
-                        <div class="calendar-container">
-                            <input type="text" id="booking-date" name="date" placeholder="Sélectionnez une date" required>
+                    <!-- Détails de l'Intervention -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-calendar-alt mr-2 text-yellow-500"></i>
+                            Détails de l'Intervention
+                        </h3>
+                        
+                        <div class="form-group">
+                            <label for="service-type">Service demandé</label>
+                            <input type="text" id="service-type" name="service-type" readonly class="bg-yellow-50">
+                            <i class="fas fa-concierge-bell form-icon text-yellow-500"></i>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Durée estimée</label>
+                            <div class="hours-selector">
+                                <div class="hours-btn" data-hours="1" onclick="selectHours(1)">1h</div>
+                                <div class="hours-btn" data-hours="2" onclick="selectHours(2)">2h</div>
+                                <div class="hours-btn" data-hours="3" onclick="selectHours(3)">3h</div>
+                                <div class="hours-btn" data-hours="4" onclick="selectHours(4)">4h</div>
+                                <div class="hours-btn" data-hours="5" onclick="selectHours(5)">5h</div>
+                                <input type="hidden" id="selected-hours" name="selected-hours" value="2" required>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="booking-date">Date souhaitée</label>
+                                <div class="calendar-container">
+                                    <input type="text" id="booking-date" name="date" placeholder="Choisir une date" required>
+                                </div>
+                                <i class="fas fa-calendar form-icon"></i>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="booking-time">Horaire</label>
+                                <select id="booking-time" name="heure" required>
+                                    <option value="">Sélectionnez</option>
+                                    <option value="08:00">08:00 - Matin</option>
+                                    <option value="09:00">09:00 - Matin</option>
+                                    <option value="10:00">10:00 - Matin</option>
+                                    <option value="11:00">11:00 - Matin</option>
+                                    <option value="14:00">14:00 - Après-midi</option>
+                                    <option value="15:00">15:00 - Après-midi</option>
+                                    <option value="16:00">16:00 - Après-midi</option>
+                                    <option value="17:00">17:00 - Après-midi</option>
+                                </select>
+                                <i class="fas fa-clock form-icon"></i>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="booking-time">⏰ Heure de passage souhaitée</label>
-                        <select id="booking-time" name="heure" required>
-                            <option value="">Sélectionnez une heure</option>
-                            <option value="08:00">08:00</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                        </select>
+                    <!-- Choix du Prestataire -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-users mr-2 text-yellow-500"></i>
+                            Choix du Prestataire
+                        </h3>
+                        <div class="form-group">
+                            <label for="prestataire">Préférence de prestataire (optionnel)</label>
+                            <select id="prestataire" name="prestataire">
+                                <option value="">Aucune préférence - Nous choisissons pour vous</option>
+                            </select>
+                            <i class="fas fa-user-tie form-icon"></i>
+                        </div>
+                        <button type="button" onclick="openPrestatairesModal(currentService)" class="text-blue-600 hover:text-blue-800 text-sm flex items-center">
+                            <i class="fas fa-external-link-alt mr-1"></i>
+                            Voir tous les prestataires disponibles
+                        </button>
                     </div>
 
-                    <div class="form-group">
-                        <label for="prestataire">🔽 Choisir un prestataire (optionnel)</label>
-                        <select id="prestataire" name="prestataire">
-                            <option value="">Pas de préférence</option>
-                        </select>
+                    <!-- Informations Complémentaires -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-comment-dots mr-2 text-yellow-500"></i>
+                            Informations Complémentaires
+                        </h3>
+                        <div class="form-group">
+                            <label for="special-requests">Décrivez vos besoins spécifiques</label>
+                            <textarea id="special-requests" name="commentaire" rows="4" placeholder="Ex: Surface à nettoyer, type de courses, travaux spécifiques..."></textarea>
+                            <i class="fas fa-edit form-icon"></i>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="special-requests">📝 Commentaire</label>
-                        <textarea id="special-requests" name="commentaire" rows="3" placeholder="Décrivez vos besoins spécifiques..."></textarea>
-                    </div>
-
-                    <!-- Champs cachés pour prénom et nom du prestataire -->
+                    <!-- Champs cachés -->
+                    <input type="hidden" id="service-name" name="service">
                     <input type="hidden" name="prenom_prestataire" value="">
                     <input type="hidden" name="nom_prestataire" value="">
 
                     <div class="credit-info">
-                        <p class="text-sm text-gray-700">
-                            <strong>💡 Comment ça marche ?</strong><br>
-                            Vous réservez le nombre d'heures. Le prestataire vous contacte pour convenir du tarif horaire directement avec vous.
-                            <br><br>
-                            <strong>Services gratuits :</strong> Les services "Visite bénévole" et "Commande de repas" sont entièrement gratuits.
-                        </p>
+                        <div class="flex items-start">
+                            <i class="fas fa-info-circle text-yellow-500 mt-1 mr-3"></i>
+                            <div>
+                                <strong>💡 Comment ça marche ?</strong><br>
+                                Vous réservez le nombre d'heures. Notre équice vous contacte sous 24h pour confirmer 
+                                et vous mettre en relation avec le prestataire qui convient le mieux à vos besoins.
+                                <br><br>
+                                <strong>Services gratuits :</strong> Les services "Visite bénévole" et "Commande de repas" 
+                                sont entièrement gratuits et sans engagement.
+                            </div>
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn-primary text-white w-full py-3 rounded-lg font-semibold mt-4">
+                    <button type="submit" class="btn-primary text-white w-full py-4 rounded-lg font-semibold mt-6 text-lg flex items-center justify-center">
+                        <i class="fas fa-paper-plane mr-2"></i>
                         Envoyer la demande
                     </button>
                 </form>
@@ -1015,12 +955,12 @@
     <div id="prestataires-modal" class="modal">
         <div class="modal-content" style="max-width: 800px;">
             <div class="modal-header">
-                <h2 id="prestataires-title" class="text-2xl font-bold">Prestataires disponibles</h2>
+                <h2 id="prestataires-title" class="text-2xl font-bold">👥 Prestataires Disponibles</h2>
                 <span class="close" onclick="closePrestatairesModal()">&times;</span>
             </div>
             <div class="modal-body">
                 <p id="prestataires-description" class="text-gray-600 mb-4"></p>
-                <h3 class="text-xl font-bold text-gray-800 mb-4">Nos prestataires qualifiés</h3>
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Nos professionnels qualifiés</h3>
                 <div class="prestataires-grid" id="liste-prestataires"></div>
             </div>
         </div>
@@ -1048,7 +988,6 @@
             dateFormat: "Y-m-d",
             disable: [
                 function(date) {
-                    // Désactiver les weekends
                     return (date.getDay() === 0 || date.getDay() === 6);
                 }
             ]
@@ -1087,14 +1026,11 @@
             const serviceType = document.getElementById('service-type');
             const serviceName = document.getElementById('service-name');
             
-            title.textContent = `Demande : ${service}`;
+            title.textContent = `📋 Demande : ${service}`;
             serviceType.value = service;
             serviceName.value = service;
             
-            // Réinitialiser la sélection d'heures
             selectHours(2);
-            
-            // Charger les prestataires disponibles
             loadPrestataires(service);
             
             modal.style.display = 'block';
@@ -1107,29 +1043,24 @@
             const title = document.getElementById('prestataires-title');
             const description = document.getElementById('prestataires-description');
             
-            title.textContent = service;
+            title.textContent = `👥 Prestataires - ${service}`;
             description.textContent = serviceDescriptions[service] || 'Découvrez nos prestataires qualifiés pour ce service.';
             
-            // Charger les prestataires avec photos et évaluations
             loadPrestatairesWithDetails(service);
-            
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
 
         function selectHours(hours) {
-            // Retirer la classe selected de tous les boutons
             document.querySelectorAll('.hours-btn').forEach(btn => {
                 btn.classList.remove('selected');
             });
             
-            // Ajouter la classe selected au bouton cliqué
             const selectedBtn = document.querySelector(`.hours-btn[data-hours="${hours}"]`);
             if (selectedBtn) {
                 selectedBtn.classList.add('selected');
             }
             
-            // Mettre à jour la valeur cachée
             document.getElementById('selected-hours').value = hours;
         }
 
@@ -1138,7 +1069,7 @@
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
             document.getElementById('booking-form').reset();
-            selectHours(2); // Réinitialiser à 2h
+            selectHours(2);
         }
 
         function closePrestatairesModal() {
@@ -1152,7 +1083,7 @@
             const selectElement = document.getElementById(selectId);
             if (!selectElement) return;
 
-            selectElement.innerHTML = '<option value="" selected>Pas de préférence</option>';
+            selectElement.innerHTML = '<option value="">Aucune préférence - Nous choisissons pour vous</option>';
 
             if (result && result.success && Array.isArray(result.prestataires)) {
                 result.prestataires.forEach(presta => {
@@ -1161,9 +1092,6 @@
                     option.textContent = presta.nomComplet || `${presta.prenom} ${presta.nom}`;
                     selectElement.appendChild(option);
                 });
-            } else {
-                console.warn("Réponse inattendue ou vide:", result);
-                selectElement.innerHTML = '<option value="" selected>Aucun prestataire disponible</option>';
             }
         };
 
@@ -1171,7 +1099,7 @@
             const selectElement = document.getElementById('prestataire');
             if (!selectElement) return;
 
-            selectElement.innerHTML = '<option value="" selected>Chargement...</option>';
+            selectElement.innerHTML = '<option value="">Chargement...</option>';
 
             const specialite = serviceToSpecialiteMap[service] || service;
             const callbackName = `jsonpCallback_${Date.now()}`;
@@ -1215,10 +1143,10 @@
                         <div class="presta-card">
                             <img src="${p.photo || 'https://via.placeholder.com/120/facc15/FFFFFF?text=?'}" alt="${p.nom}" />
                             <h4>${p.prenom} ${p.nom}</h4>
-                            <div class="presta-rating">${starsHtml}</div>
+                            <div class="presta-rating">${starsHtml} ${rating}/5</div>
                             <p>${p.commentaire || 'Prestataire qualifié et disponible.'}</p>
                             <button type="button" onclick="selectPrestataire('${p.prenom} ${p.nom}')" class="btn-primary text-white px-4 py-2 rounded-lg text-sm font-semibold mt-2">
-                                Choisir ce prestataire
+                                <i class="fas fa-check mr-1"></i>Choisir ce prestataire
                             </button>
                         </div>
                         `;
@@ -1245,7 +1173,6 @@
             const loader = document.getElementById('viiveo-loader');
             const submitButton = event.target.querySelector('button[type="submit"]');
             
-            // Afficher le loader
             loader.style.display = 'flex';
             submitButton.disabled = true;
             
@@ -1282,11 +1209,10 @@
                 if (result.success) {
                     let message = `✅ ${result.message || "Demande envoyée avec succès !"}`;
                     
-                    // Message spécial pour les services gratuits
                     if (currentService === 'Visite bénévole' || currentService === 'Commande de repas') {
                         message += ' Ce service est entièrement gratuit.';
                     } else {
-                        message += ' Le prestataire vous contactera pour convenir du tarif.';
+                        message += ' Notre équipe vous contacte sous 24h.';
                     }
                     
                     alert(message);
@@ -1299,7 +1225,6 @@
                 alert("❌ Problème de connexion : " + err.message);
                 console.error(err);
             } finally {
-                // Masquer le loader et réactiver le bouton
                 loader.style.display = "none";
                 submitButton.disabled = false;
             }
@@ -1321,12 +1246,8 @@
                 const serviceModal = document.getElementById('service-modal');
                 const prestatairesModal = document.getElementById('prestataires-modal');
                 
-                if (event.target === serviceModal) {
-                    closeModal();
-                }
-                if (event.target === prestatairesModal) {
-                    closePrestatairesModal();
-                }
+                if (event.target === serviceModal) closeModal();
+                if (event.target === prestatairesModal) closePrestatairesModal();
             });
 
             // Fermer le menu mobile en cliquant sur un lien
@@ -1336,21 +1257,7 @@
                 });
             });
 
-            // Initialiser la sélection d'heures par défaut
             selectHours(2);
-
-            // Ajouter les boutons "Voir les prestataires" aux cartes de service
-            document.querySelectorAll('.service-card').forEach(card => {
-                const serviceName = card.querySelector('h3').textContent;
-                const button = document.createElement('button');
-                button.className = 'bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors mt-2';
-                button.textContent = 'Voir les prestataires';
-                button.onclick = (e) => {
-                    e.stopPropagation();
-                    openPrestatairesModal(serviceName);
-                };
-                card.querySelector('.p-6').appendChild(button);
-            });
         });
     </script>
 </body>
