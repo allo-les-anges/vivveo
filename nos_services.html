@@ -360,6 +360,59 @@
             text-align: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
+
+        /* Styles pour la modale des prestataires */
+        .prestataires-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .presta-card {
+            background: #f8fafc;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #e5e7eb;
+        }
+
+        .presta-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .presta-card img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 0.75rem;
+            border: 3px solid #facc15;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .presta-card h4 {
+            margin: 0.5rem 0 0.25rem;
+            font-size: 1.1rem;
+            color: #374151;
+            font-weight: 600;
+        }
+
+        .presta-card p {
+            font-size: 0.9rem;
+            color: #6b7280;
+            min-height: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .presta-rating {
+            color: #fbbf24;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -847,7 +900,7 @@
         </div>
     </footer>
 
-    <!-- Modal Générique de Réservation -->
+    <!-- Modal de Réservation -->
     <div id="service-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -889,6 +942,18 @@
                     <div class="form-group">
                         <label for="service-name">🛎️ Nature du service</label>
                         <input type="text" id="service-name" name="service" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nombre d'heures souhaitées</label>
+                        <div class="hours-selector">
+                            <div class="hours-btn" data-hours="1" onclick="selectHours(1)">1h</div>
+                            <div class="hours-btn" data-hours="2" onclick="selectHours(2)">2h</div>
+                            <div class="hours-btn" data-hours="3" onclick="selectHours(3)">3h</div>
+                            <div class="hours-btn" data-hours="4" onclick="selectHours(4)">4h</div>
+                            <div class="hours-btn" data-hours="5" onclick="selectHours(5)">5h</div>
+                            <input type="hidden" id="selected-hours" name="selected-hours" value="2" required>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -946,6 +1011,21 @@
         </div>
     </div>
 
+    <!-- Modal des Prestataires -->
+    <div id="prestataires-modal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2 id="prestataires-title" class="text-2xl font-bold">Prestataires disponibles</h2>
+                <span class="close" onclick="closePrestatairesModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="prestataires-description" class="text-gray-600 mb-4"></p>
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Nos prestataires qualifiés</h3>
+                <div class="prestataires-grid" id="liste-prestataires"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Loader Viiveo -->
     <div class="viiveo-loader" id="viiveo-loader">
         <div class="viiveo-loader-content">
@@ -987,6 +1067,19 @@
             'Commande de repas': 'Livraison de repas'
         };
 
+        // Descriptions des services
+        const serviceDescriptions = {
+            'Aide ménagère': 'Ménage, repassage, entretien régulier du domicile pour une propreté éclatante.',
+            'Courses à domicile': 'Faites vos courses sans bouger de chez vous ! Nous nous occupons de tout et livrons à votre porte.',
+            'Coiffure à domicile': 'Profitez d\'un service de coiffure professionnel, confortablement installé chez vous, pour toute la famille.',
+            'Jardinage': 'De l\'entretien de haies à la tonte, en passant par le désherbage, votre jardin sera impeccable toute l\'année.',
+            'Transport accompagné': 'Bénéficiez d\'un accompagnement sécurisé pour vos rendez-vous médicaux, courses ou sorties.',
+            'Assistance / Secours': 'Une aide urgente en cas de besoin, des contrôles de sécurité réguliers et des visites de courtoisie pour votre tranquillité.',
+            'Homme à tout faire': 'Pour tous vos petits travaux, bricolage et réparations, un expert à votre service rapidement et efficacement.',
+            'Visite bénévole': 'Partagez des moments d\'échanges humains, recevez un soutien moral ou simplement de la compagnie pour rompre la solitude.',
+            'Commande de repas': 'Savourez des repas équilibrés et savoureux, préparés avec soin et livrés chauds directement à votre domicile.'
+        };
+
         function openServiceModal(service) {
             currentService = service;
             const modal = document.getElementById('service-modal');
@@ -998,6 +1091,9 @@
             serviceType.value = service;
             serviceName.value = service;
             
+            // Réinitialiser la sélection d'heures
+            selectHours(2);
+            
             // Charger les prestataires disponibles
             loadPrestataires(service);
             
@@ -1005,11 +1101,50 @@
             document.body.style.overflow = 'hidden';
         }
 
+        function openPrestatairesModal(service) {
+            currentService = service;
+            const modal = document.getElementById('prestataires-modal');
+            const title = document.getElementById('prestataires-title');
+            const description = document.getElementById('prestataires-description');
+            
+            title.textContent = service;
+            description.textContent = serviceDescriptions[service] || 'Découvrez nos prestataires qualifiés pour ce service.';
+            
+            // Charger les prestataires avec photos et évaluations
+            loadPrestatairesWithDetails(service);
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function selectHours(hours) {
+            // Retirer la classe selected de tous les boutons
+            document.querySelectorAll('.hours-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Ajouter la classe selected au bouton cliqué
+            const selectedBtn = document.querySelector(`.hours-btn[data-hours="${hours}"]`);
+            if (selectedBtn) {
+                selectedBtn.classList.add('selected');
+            }
+            
+            // Mettre à jour la valeur cachée
+            document.getElementById('selected-hours').value = hours;
+        }
+
         function closeModal() {
             const modal = document.getElementById('service-modal');
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
             document.getElementById('booking-form').reset();
+            selectHours(2); // Réinitialiser à 2h
+        }
+
+        function closePrestatairesModal() {
+            const modal = document.getElementById('prestataires-modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
         // Fonction pour gérer la réponse des prestataires
@@ -1052,6 +1187,56 @@
             const script = document.createElement("script");
             script.src = url;
             document.body.appendChild(script);
+        }
+
+        async function loadPrestatairesWithDetails(service) {
+            const container = document.getElementById('liste-prestataires');
+            container.innerHTML = '<p style="text-align:center; color: #6b7280;">Chargement des prestataires...</p>';
+
+            try {
+                const specialite = serviceToSpecialiteMap[service] || service;
+                const res = await fetch(`${GOOGLE_SCRIPT_URL}?type=getPrestatairesStylés&specialite=${encodeURIComponent(specialite)}`);
+                if (!res.ok) throw new Error(`Erreur HTTP: ${res.status}`);
+                const data = await res.json();
+
+                if (data.success && data.prestataires.length > 0) {
+                    container.innerHTML = data.prestataires.map(p => {
+                        const rating = p.rating ?? 4;
+                        const fullStars = Math.floor(rating);
+                        const halfStar = rating % 1 >= 0.5;
+                        const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+                        let starsHtml = '';
+                        for (let i = 0; i < fullStars; i++) starsHtml += '<i class="fas fa-star"></i>';
+                        if (halfStar) starsHtml += '<i class="fas fa-star-half-alt"></i>';
+                        for (let i = 0; i < emptyStars; i++) starsHtml += '<i class="far fa-star"></i>';
+
+                        return `
+                        <div class="presta-card">
+                            <img src="${p.photo || 'https://via.placeholder.com/120/facc15/FFFFFF?text=?'}" alt="${p.nom}" />
+                            <h4>${p.prenom} ${p.nom}</h4>
+                            <div class="presta-rating">${starsHtml}</div>
+                            <p>${p.commentaire || 'Prestataire qualifié et disponible.'}</p>
+                            <button type="button" onclick="selectPrestataire('${p.prenom} ${p.nom}')" class="btn-primary text-white px-4 py-2 rounded-lg text-sm font-semibold mt-2">
+                                Choisir ce prestataire
+                            </button>
+                        </div>
+                        `;
+                    }).join("");
+                } else {
+                    container.innerHTML = '<p style="text-align:center; color: #6b7280;">Aucun prestataire disponible pour ce service actuellement.</p>';
+                }
+            } catch (error) {
+                console.error("Erreur lors du chargement des prestataires :", error);
+                container.innerHTML = '<p style="text-align:center; color: #EF4444;">Une erreur est survenue lors du chargement des prestataires.</p>';
+            }
+        }
+
+        function selectPrestataire(fullName) {
+            const select = document.getElementById('prestataire');
+            select.value = fullName;
+            closePrestatairesModal();
+            openServiceModal(currentService);
         }
 
         async function submitBooking(event) {
@@ -1131,11 +1316,16 @@
                 });
             }
 
-            // Fermer la modale en cliquant à l'extérieur
+            // Fermer les modales en cliquant à l'extérieur
             window.addEventListener('click', function(event) {
-                const modal = document.getElementById('service-modal');
-                if (event.target === modal) {
+                const serviceModal = document.getElementById('service-modal');
+                const prestatairesModal = document.getElementById('prestataires-modal');
+                
+                if (event.target === serviceModal) {
                     closeModal();
+                }
+                if (event.target === prestatairesModal) {
+                    closePrestatairesModal();
                 }
             });
 
@@ -1144,6 +1334,22 @@
                 link.addEventListener('click', () => {
                     mobileMenu.classList.remove('open');
                 });
+            });
+
+            // Initialiser la sélection d'heures par défaut
+            selectHours(2);
+
+            // Ajouter les boutons "Voir les prestataires" aux cartes de service
+            document.querySelectorAll('.service-card').forEach(card => {
+                const serviceName = card.querySelector('h3').textContent;
+                const button = document.createElement('button');
+                button.className = 'bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors mt-2';
+                button.textContent = 'Voir les prestataires';
+                button.onclick = (e) => {
+                    e.stopPropagation();
+                    openPrestatairesModal(serviceName);
+                };
+                card.querySelector('.p-6').appendChild(button);
             });
         });
     </script>
