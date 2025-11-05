@@ -20,7 +20,6 @@
         body {
             font-family: 'Inter', sans-serif;
             color: var(--text-color);
-            background-image: url('https://res.cloudinary.com/drn6w4nab/image/upload/v1759138967/viiveo_bkg_servives_sbzzec.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -493,7 +492,7 @@
     </header>
 
     <!-- Hero Section Services -->
-<section class="relative py-16 md:py-24" style="background-image: url('https://res.cloudinary.com/drn6w4nab/image/upload/v1759138967/viiveo_bkg_servives_sbzzec.png'); background-size: cover; background-position: center; background-attachment: fixed;">
+<section class="relative py-16 md:py-24" style="background-image: url('https://res.cloudinary.com/drn6w4nab/image/upload/v1759138967/viiveo_bkg_servives_sbzzec.png'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;">
     <div class="container mx-auto px-6 text-center">
         <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">
             Nos Services à Domicile
@@ -511,7 +510,7 @@
         </div>
     </div>
 </section>
-
+    
     <!-- Bouton Prestataires -->
 <section class="py-8 bg-white bg-opacity-80">
     <div class="container mx-auto px-6 text-center">
@@ -524,268 +523,267 @@
 </section>
 
     <!-- Services Grid -->
-    <section id="services" class="py-16 md:py-20">
-        <div class="container mx-auto px-6">
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                
-                <!-- Aide ménagère -->
-                <div class="service-card" onclick="openServiceModal('Aide ménagère')">
-                    <div class="service-image" style="background-image: url('https://i.postimg.cc/SxdnZmVb/aide-m-nag-re.png')">
-                        <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-gray-800">Aide ménagère</h3>
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">Un coup de main professionnel pour l'entretien de la maison et du linge, en toute confiance.</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Réservation à l'heure</span>
-                            <span class="text-yellow-500 font-semibold">4.7/5</span>
-                        </div>
-                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Aide ménagère')">
-                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
-                        </button>
+<section id="services" class="py-16 md:py-20 bg-gradient-to-br from-yellow-50 to-yellow-100">
+    <div class="container mx-auto px-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            
+            <!-- Aide ménagère -->
+            <div class="service-card bg-white" onclick="openServiceModal('Aide ménagère')">
+                <div class="service-image" style="background-image: url('https://i.postimg.cc/SxdnZmVb/aide-m-nag-re.png')">
+                    <div class="service-overlay">
+                        <span class="text-white text-lg font-semibold">Réserver maintenant</span>
                     </div>
                 </div>
-
-                <!-- Autres services avec le même pattern... -->
-                <!-- Courses à domicile -->
-                <div class="service-card" onclick="openServiceModal('Courses à domicile')">
-                    <div class="service-image" style="background-image: url('https://i.postimg.cc/XN97HV71/courses.png')">
-                        <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xl font-bold text-gray-800">Aide ménagère</h3>
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-gray-800">Courses à domicile</h3>
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">Nous faisons les courses pour vous ou avec vous, selon vos envies et vos besoins.</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Forfait 2h minimum</span>
-                            <span class="text-yellow-500 font-semibold">4.9/5</span>
-                        </div>
-                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Courses à domicile')">
-                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
-                        </button>
+                    <p class="text-gray-600 mb-4">Un coup de main professionnel pour l'entretien de la maison et du linge, en toute confiance.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Réservation à l'heure</span>
+                        <span class="text-yellow-500 font-semibold">4.7/5</span>
                     </div>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Aide ménagère')">
+                        <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                    </button>
                 </div>
-
-                <!-- Coiffure à domicile -->
-                <div class="service-card" onclick="openServiceModal('Coiffure à domicile')">
-                    <div class="service-image" style="background-image: url('https://i.postimg.cc/hPg4NHXD/coiffure.png')">
-                        <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-gray-800">Coiffure à domicile</h3>
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">Des professionnels qualifiés viennent à domicile pour prendre soin de vous.</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Forfait 1h30 minimum</span>
-                            <span class="text-yellow-500 font-semibold">4.5/5</span>
-                        </div>
-                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Coiffure à domicile')">
-                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Jardinage -->
-                <div class="service-card" onclick="openServiceModal('Jardinage')">
-                    <div class="service-image" style="background-image: url('https://i.postimg.cc/1twPjHPV/jardinage.png')">
-                        <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-gray-800">Jardinage</h3>
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">Entretien de votre jardin, pelouse, haies ou potager par des intervenants expérimentés.</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Réservation à l'heure</span>
-                            <span class="text-yellow-500 font-semibold">4.6/5</span>
-                        </div>
-                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Jardinage')">
-                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Transport accompagné -->
-                <div class="service-card" onclick="openServiceModal('Transport accompagné')">
-                    <div class="service-image" style="background-image: url('https://i.postimg.cc/Kc7x7JJd/Transport.png')">
-                        <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-gray-800">Transport accompagné</h3>
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">Un accompagnement sûr et chaleureux pour vos trajets et rendez-vous importants.</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Forfait 2h minimum</span>
-                            <span class="text-yellow-500 font-semibold">4.8/5</span>
-                        </div>
-                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Transport accompagné')">
-                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Assistance / Secours -->
-                <div class="service-card" onclick="openServiceModal('Assistance / Secours')">
-                    <div class="service-image" style="background-image: url('https://i.postimg.cc/DyBhHmV6/assistance.png')">
-                        <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-gray-800">Assistance / Secours</h3>
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">Une aide rapide et humaine en cas de besoin urgent ou de situation délicate à domicile.</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Service prioritaire</span>
-                            <span class="text-yellow-500 font-semibold">5.0/5</span>
-                        </div>
-                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Assistance / Secours')">
-                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Homme à tout faire -->
-                <div class="service-card" onclick="openServiceModal('Homme à tout faire')">
-                    <div class="service-image" style="background-image: url('https://i.postimg.cc/DwzHfByW/19.png')">
-                        <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Réserver maintenant</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-gray-800">Homme à tout faire</h3>
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">Petits travaux de bricolage, montages, réparations diverses avec soin et efficacité.</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Réservation à l'heure</span>
-                            <span class="text-yellow-500 font-semibold">4.7/5</span>
-                        </div>
-                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Homme à tout faire')">
-                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Visite bénévole -->
-                <div class="service-card" onclick="openServiceModal('Visite bénévole')">
-                    <div class="service-image" style="background-image: url('https://i.postimg.cc/52jKWynL/20.png')">
-                        <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Service gratuit</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-gray-800">Visite bénévole</h3>
-                            <div class="free-badge">
-                                GRATUIT
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">Recevez la visite chaleureuse d'un bénévole pour discuter, rompre la solitude et partager un moment.</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Service bénévole</span>
-                            <span class="text-yellow-500 font-semibold">5.0/5</span>
-                        </div>
-                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Visite bénévole')">
-                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Commande de repas -->
-                <div class="service-card" onclick="openServiceModal('Commande de repas')">
-                    <div class="service-image" style="background-image: url('https://i.postimg.cc/GmBKSNmj/21.png')">
-                        <div class="service-overlay">
-                            <span class="text-white text-lg font-semibold">Service gratuit</span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-xl font-bold text-gray-800">Commande de repas</h3>
-                            <div class="free-badge">
-                                GRATUIT
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4">Besoin d'un repas livré chez vous ? Nous vous mettons en lien avec le CPAS ou la Commune.</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Service CPAS</span>
-                            <span class="text-yellow-500 font-semibold">4.6/5</span>
-                        </div>
-                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Commande de repas')">
-                            <i class="fas fa-eye mr-2"></i>Voir les prestataires
-                        </button>
-                    </div>
-                </div>
-
             </div>
-        </div>
-    </section>
 
+            <!-- Courses à domicile -->
+            <div class="service-card bg-white" onclick="openServiceModal('Courses à domicile')">
+                <div class="service-image" style="background-image: url('https://i.postimg.cc/XN97HV71/courses.png')">
+                    <div class="service-overlay">
+                        <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xl font-bold text-gray-800">Courses à domicile</h3>
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">Nous faisons les courses pour vous ou avec vous, selon vos envies et vos besoins.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Forfait 2h minimum</span>
+                        <span class="text-yellow-500 font-semibold">4.9/5</span>
+                    </div>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Courses à domicile')">
+                        <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                    </button>
+                </div>
+            </div>
+
+            <!-- Coiffure à domicile -->
+            <div class="service-card bg-white" onclick="openServiceModal('Coiffure à domicile')">
+                <div class="service-image" style="background-image: url('https://i.postimg.cc/hPg4NHXD/coiffure.png')">
+                    <div class="service-overlay">
+                        <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xl font-bold text-gray-800">Coiffure à domicile</h3>
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">Des professionnels qualifiés viennent à domicile pour prendre soin de vous.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Forfait 1h30 minimum</span>
+                        <span class="text-yellow-500 font-semibold">4.5/5</span>
+                    </div>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Coiffure à domicile')">
+                        <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                    </button>
+                </div>
+            </div>
+
+            <!-- Jardinage -->
+            <div class="service-card bg-white" onclick="openServiceModal('Jardinage')">
+                <div class="service-image" style="background-image: url('https://i.postimg.cc/1twPjHPV/jardinage.png')">
+                    <div class="service-overlay">
+                        <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xl font-bold text-gray-800">Jardinage</h3>
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">Entretien de votre jardin, pelouse, haies ou potager par des intervenants expérimentés.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Réservation à l'heure</span>
+                        <span class="text-yellow-500 font-semibold">4.6/5</span>
+                    </div>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Jardinage')">
+                        <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                    </button>
+                </div>
+            </div>
+
+            <!-- Transport accompagné -->
+            <div class="service-card bg-white" onclick="openServiceModal('Transport accompagné')">
+                <div class="service-image" style="background-image: url('https://i.postimg.cc/Kc7x7JJd/Transport.png')">
+                    <div class="service-overlay">
+                        <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xl font-bold text-gray-800">Transport accompagné</h3>
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">Un accompagnement sûr et chaleureux pour vos trajets et rendez-vous importants.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Forfait 2h minimum</span>
+                        <span class="text-yellow-500 font-semibold">4.8/5</span>
+                    </div>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Transport accompagné')">
+                        <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                    </button>
+                </div>
+            </div>
+
+            <!-- Assistance / Secours -->
+            <div class="service-card bg-white" onclick="openServiceModal('Assistance / Secours')">
+                <div class="service-image" style="background-image: url('https://i.postimg.cc/DyBhHmV6/assistance.png')">
+                    <div class="service-overlay">
+                        <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xl font-bold text-gray-800">Assistance / Secours</h3>
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">Une aide rapide et humaine en cas de besoin urgent ou de situation délicate à domicile.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Service prioritaire</span>
+                        <span class="text-yellow-500 font-semibold">5.0/5</span>
+                    </div>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Assistance / Secours')">
+                        <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                    </button>
+                </div>
+            </div>
+
+            <!-- Homme à tout faire -->
+            <div class="service-card bg-white" onclick="openServiceModal('Homme à tout faire')">
+                <div class="service-image" style="background-image: url('https://i.postimg.cc/DwzHfByW/19.png')">
+                    <div class="service-overlay">
+                        <span class="text-white text-lg font-semibold">Réserver maintenant</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xl font-bold text-gray-800">Homme à tout faire</h3>
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">Petits travaux de bricolage, montages, réparations diverses avec soin et efficacité.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Réservation à l'heure</span>
+                        <span class="text-yellow-500 font-semibold">4.7/5</span>
+                    </div>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Homme à tout faire')">
+                        <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                    </button>
+                </div>
+            </div>
+
+            <!-- Visite bénévole -->
+            <div class="service-card bg-white" onclick="openServiceModal('Visite bénévole')">
+                <div class="service-image" style="background-image: url('https://i.postimg.cc/52jKWynL/20.png')">
+                    <div class="service-overlay">
+                        <span class="text-white text-lg font-semibold">Service gratuit</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xl font-bold text-gray-800">Visite bénévole</h3>
+                        <div class="free-badge">
+                            GRATUIT
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">Recevez la visite chaleureuse d'un bénévole pour discuter, rompre la solitude et partager un moment.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Service bénévole</span>
+                        <span class="text-yellow-500 font-semibold">5.0/5</span>
+                    </div>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Visite bénévole')">
+                        <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                    </button>
+                </div>
+            </div>
+
+            <!-- Commande de repas -->
+            <div class="service-card bg-white" onclick="openServiceModal('Commande de repas')">
+                <div class="service-image" style="background-image: url('https://i.postimg.cc/GmBKSNmj/21.png')">
+                    <div class="service-overlay">
+                        <span class="text-white text-lg font-semibold">Service gratuit</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xl font-bold text-gray-800">Commande de repas</h3>
+                        <div class="free-badge">
+                            GRATUIT
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">Besoin d'un repas livré chez vous ? Nous vous mettons en lien avec le CPAS ou la Commune.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">Service CPAS</span>
+                        <span class="text-yellow-500 font-semibold">4.6/5</span>
+                    </div>
+                    <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors mt-3" onclick="event.stopPropagation(); openPrestatairesModal('Commande de repas')">
+                        <i class="fas fa-eye mr-2"></i>Voir les prestataires
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+    
     <!-- Modal de Réservation Contemporain -->
     <div id="service-modal" class="modal">
         <div class="modal-content">
