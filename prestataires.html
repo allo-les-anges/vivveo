@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viiveo - Nos Prestataires</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #facc15;
+            --primary-dark: #eab308;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfaf6;
+        }
+
+        .prestataire-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid #fef3c7;
+        }
+
+        .prestataire-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .prestataire-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #facc15;
+            margin: 0 auto 1rem;
+        }
+
+        .service-badge {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .rating-stars {
+            color: #fbbf24;
+        }
+
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: #facc15;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header Commun -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3">
+                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
+                </a>
+                
+                <!-- Navigation Desktop -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-yellow-500 font-medium">Accueil</a>
+                    <a href="nos_services.html" class="text-gray-700 hover:text-yellow-500 font-medium">Services</a>
+                    <a href="formules.html" class="text-gray-700 hover:text-yellow-500 font-medium">Formules</a>
+                    <a href="prestataires.html" class="text-yellow-500 font-medium border-b-2 border-yellow-500">Prestataires</a>
+                    <a href="iclient.html" class="text-gray-700 hover:text-yellow-500 font-medium">Espace Client</a>
+                    <a href="iprestataires.html" class="text-gray-700 hover:text-yellow-500 font-medium">Espace Prestataire</a>
+                </nav>
+
+                <!-- Menu Mobile -->
+                <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg hover:bg-gray-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Menu Mobile -->
+            <div id="mobile-menu" class="lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg hidden">
+                <div class="px-4 py-6 space-y-4">
+                    <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium">Accueil</a>
+                    <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium">Services</a>
+                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium">Formules</a>
+                    <a href="prestataires.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium">Prestataires</a>
+                    <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium">Espace Client</a>
+                    <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium">Espace Prestataire</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section Prestataires -->
+    <section class="relative py-16 md:py-24 bg-gradient-to-br from-yellow-50 to-yellow-100">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
+                Nos Prestataires
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
+                Découvrez nos professionnels qualifiés, sélectionnés avec soin pour vous offrir le meilleur service
+            </p>
+        </div>
+    </section>
+
+    <!-- Filtres par Service -->
+    <section class="py-8 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Filtrer par service</h2>
+                <div class="flex flex-wrap justify-center gap-2" id="service-filters">
+                    <!-- Les filtres seront générés dynamiquement -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Grille des Prestataires -->
+    <section class="py-16">
+        <div class="container mx-auto px-6">
+            <div id="prestataires-container" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Les prestataires seront chargés ici -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Commun -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="md:col-span-1">
+                    <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-10 mb-4">
+                    <p class="text-gray-300 text-sm">Votre bien-être à domicile, notre priorité.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Navigation</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="index.html" class="hover:text-yellow-400">Accueil</a></li>
+                        <li><a href="nos_services.html" class="hover:text-yellow-400">Services</a></li>
+                        <li><a href="formules.html" class="hover:text-yellow-400">Formules</a></li>
+                        <li><a href="prestataires.html" class="hover:text-yellow-400">Prestataires</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Espaces</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li><a href="iclient.html" class="hover:text-yellow-400">Espace Client</a></li>
+                        <li><a href="iprestataires.html" class="hover:text-yellow-400">Espace Prestataire</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <div class="text-sm text-gray-300 space-y-2">
+                        <p>info@viiveo.com</p>
+                        <p>+32 475 32 51 27</p>
+                        <div class="flex space-x-4 mt-2">
+                            <a href="https://www.facebook.com/viiveo.be" class="hover:text-yellow-400"><i class="fab fa-facebook"></i></a>
+                            <a href="https://www.linkedin.com/in/danydecarpentrie" class="hover:text-yellow-400"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://wa.me/+32475325127" class="hover:text-yellow-400"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>© 2024 Viiveo. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const API_BASE_URL = 'https://gaetano1747.gm-harchies.workers.dev';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec';
+
+        // Services disponibles
+        const services = [
+            'Aide ménagère', 'Courses à domicile', 'Coiffure à domicile', 'Jardinage',
+            'Transport accompagné', 'Assistance / Secours', 'Homme à tout faire', 
+            'Bénévole', 'Livraison de repas'
+        ];
+
+        let allPrestataires = [];
+        let currentFilter = 'all';
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFilters();
+            loadAllPrestataires();
+            setupMobileMenu();
+        });
+
+        function setupMobileMenu() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        }
+
+        function initializeFilters() {
+            const filtersContainer = document.getElementById('service-filters');
+            
+            // Bouton "Tous"
+            const allButton = document.createElement('button');
+            allButton.className = 'filter-btn active bg-yellow-500 text-white px-4 py-2 rounded-full font-semibold';
+            allButton.textContent = '👥 Tous les prestataires';
+            allButton.onclick = () => filterPrestataires('all');
+            filtersContainer.appendChild(allButton);
+
+            // Boutons pour chaque service
+            services.forEach(service => {
+                const button = document.createElement('button');
+                button.className = 'filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full font-semibold hover:bg-gray-300';
+                button.textContent = getServiceEmoji(service) + ' ' + service;
+                button.onclick = () => filterPrestataires(service);
+                filtersContainer.appendChild(button);
+            });
+        }
+
+        function getServiceEmoji(service) {
+            const emojis = {
+                'Aide ménagère': '🧹',
+                'Courses à domicile': '🛒',
+                'Coiffure à domicile': '💇',
+                'Jardinage': '🌳',
+                'Transport accompagné': '🚗',
+                'Assistance / Secours': '🚨',
+                'Homme à tout faire': '🔧',
+                'Bénévole': '🤝',
+                'Livraison de repas': '🍲'
+            };
+            return emojis[service] || '👤';
+        }
+
+        async function loadAllPrestataires() {
+            const container = document.getElementById('prestataires-container');
+            container.innerHTML = '<div class="col-span-full text-center py-8"><div class="spinner border-4 border-yellow-500 border-t-transparent rounded-full w-12 h-12 mx-auto mb-4 animate-spin"></div><p>Chargement des prestataires...</p></div>';
+
+            try {
+                // Charger les prestataires pour chaque service
+                const promises = services.map(service => 
+                    fetch(`${GOOGLE_SCRIPT_URL}?type=getPrestatairesStylés&specialite=${encodeURIComponent(service)}`)
+                        .then(res => res.json())
+                );
+
+                const results = await Promise.all(promises);
+                
+                allPrestataires = [];
+                results.forEach((result, index) => {
+                    if (result.success && result.prestataires) {
+                        result.prestataires.forEach(presta => {
+                            // Ajouter le service au prestataire
+                            presta.services = [services[index]];
+                            allPrestataires.push(presta);
+                        });
+                    }
+                });
+
+                displayPrestataires(allPrestataires);
+            } catch (error) {
+                console.error('Erreur chargement prestataires:', error);
+                container.innerHTML = '<div class="col-span-full text-center py-8 text-red-600"><p>Erreur lors du chargement des prestataires</p></div>';
+            }
+        }
+
+        function displayPrestataires(prestataires) {
+            const container = document.getElementById('prestataires-container');
+            
+            if (prestataires.length === 0) {
+                container.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500"><p>Aucun prestataire trouvé</p></div>';
+                return;
+            }
+
+            container.innerHTML = prestataires.map(presta => `
+                <div class="prestataire-card">
+                    <img src="${presta.photo || 'https://via.placeholder.com/120/facc15/FFFFFF?text=?'}" 
+                         alt="${presta.prenom} ${presta.nom}" 
+                         class="prestataire-photo">
+                    <h3 class="text-xl font-bold text-gray-800 text-center mb-2">${presta.prenom} ${presta.nom}</h3>
+                    
+                    <div class="rating-stars text-center mb-3">
+                        ${generateStars(presta.rating || 4)}
+                        <span class="text-sm text-gray-600 ml-1">${presta.rating || 4}/5</span>
+                    </div>
+
+                    <div class="flex flex-wrap gap-1 justify-center mb-3">
+                        ${presta.services ? presta.services.map(service => 
+                            `<span class="service-badge text-xs">${getServiceEmoji(service)} ${service}</span>`
+                        ).join('') : ''}
+                    </div>
+
+                    <p class="text-gray-600 text-sm text-center mb-4">${presta.commentaire || 'Prestataire qualifié et disponible'}</p>
+
+                    <div class="text-center">
+                        <a href="nos_services.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors inline-block">
+                            <i class="fas fa-calendar-check mr-1"></i>Réserver
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 >= 0.5;
+            const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+            let starsHtml = '';
+            for (let i = 0; i < fullStars; i++) starsHtml += '<i class="fas fa-star"></i>';
+            if (halfStar) starsHtml += '<i class="fas fa-star-half-alt"></i>';
+            for (let i = 0; i < emptyStars; i++) starsHtml += '<i class="far fa-star"></i>';
+            
+            return starsHtml;
+        }
+
+        function filterPrestataires(service) {
+            currentFilter = service;
+            
+            // Mettre à jour les boutons actifs
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-yellow-500', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+
+            // Activer le bouton cliqué
+            const activeButton = Array.from(document.querySelectorAll('.filter-btn'))
+                .find(btn => btn.textContent.includes(service));
+            if (activeButton) {
+                activeButton.classList.add('active', 'bg-yellow-500', 'text-white');
+                activeButton.classList.remove('bg-gray-200', 'text-gray-700');
+            }
+
+            if (service === 'all') {
+                displayPrestataires(allPrestataires);
+            } else {
+                const filtered = allPrestataires.filter(presta => 
+                    presta.services && presta.services.includes(service)
+                );
+                displayPrestataires(filtered);
+            }
+        }
+    </script>
+</body>
+</html>
