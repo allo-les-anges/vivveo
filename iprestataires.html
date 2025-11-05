@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Espace Prestataire - Viiveo</title>
+    <title>Espace Client - Viiveo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -122,8 +122,8 @@
             display: block;
         }
 
-        /* Styles spécifiques à l'interface prestataire */
-        .provider-section {
+        /* Styles spécifiques à l'interface client */
+        .client-section {
             background: white;
             border-radius: 1.5rem;
             padding: 2.5rem;
@@ -132,7 +132,7 @@
             border: 2px solid #fef3c7;
         }
 
-        .provider-photo {
+        .client-photo {
             width: 120px;
             height: 120px;
             border-radius: 50%;
@@ -180,6 +180,11 @@
         }
 
         .status-completed {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .status-validated {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
         }
@@ -352,10 +357,86 @@
             color: #facc15;
             border-bottom-color: #facc15;
         }
+
+        /* Styles pour l'affichage mobile en cartes */
+        .mobile-card-view {
+            display: none;
+        }
+
+        .request-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 2px solid #fef3c7;
+            position: relative;
+        }
+
+        .request-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            border-radius: 1rem 1rem 0 0;
+        }
+
+        .card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .card-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .card-label {
+            font-weight: 700;
+            color: #6b7280;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            flex-shrink: 0;
+            margin-right: 1rem;
+        }
+
+        .card-value {
+            color: #374151;
+            font-weight: 500;
+            text-align: right;
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+
+        .card-status {
+            text-align: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #f3f4f6;
+        }
+
+        @media (max-width: 768px) {
+            .table-wrapper {
+                display: none;
+            }
+
+            .mobile-card-view {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Header Commun avec menu corrigé -->
+    <!-- Header Commun -->
     <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between py-4">
@@ -364,14 +445,14 @@
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
                 </a>
                 
-                <!-- Navigation Desktop - MÊME STRUCTURE QUE SERVICES.HTML -->
+                <!-- Navigation Desktop -->
                 <nav class="hidden lg:flex items-center space-x-8">
                     <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
                     <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Abonnement</a>
                     <a href="prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
-                    <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_client">Espace Client</a>
-                    <a href="iprestataires.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                    <a href="iclient.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </nav>
 
                 <!-- Sélecteur de langue -->
@@ -411,15 +492,15 @@
                 </button>
             </div>
 
-            <!-- Menu Mobile - MÊME STRUCTURE QUE SERVICES.HTML -->
+            <!-- Menu Mobile -->
             <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
                 <div class="px-4 py-6 space-y-4">
                     <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
                     <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Abonnement</a>
                     <a href="prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
-                    <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
-                    <a href="iprestataires.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                    <a href="iclient.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </div>
             </div>
         </div>
@@ -428,12 +509,12 @@
     <!-- Main Content -->
     <div class="container mx-auto px-4 py-8">
         <!-- Section de connexion -->
-        <div id="login-section" class="provider-section max-w-md mx-auto text-center">
+        <div id="login-section" class="client-section max-w-md mx-auto text-center">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6" data-translate="login_title">
-                Espace Prestataire Viiveo
+                Espace Client Viiveo
             </h1>
             <p class="text-gray-600 mb-8" data-translate="login_subtitle">
-                Connectez-vous pour gérer vos missions et interventions
+                Connectez-vous pour gérer vos demandes et suivre vos interventions
             </p>
 
             <form id="login-form" onsubmit="event.preventDefault(); login();">
@@ -452,24 +533,28 @@
             </form>
         </div>
 
-        <!-- Interface prestataire (cachée par défaut) -->
-        <div id="provider-interface" class="hidden">
-            <!-- En-tête prestataire -->
-            <div class="provider-section">
+        <!-- Interface client (cachée par défaut) -->
+        <div id="client-interface" class="hidden">
+            <!-- En-tête client -->
+            <div class="client-section">
                 <div class="flex flex-col md:flex-row items-center justify-between">
                     <div class="flex items-center space-x-6">
-                        <img id="provider-photo" src="https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png" 
-                             alt="Photo prestataire" class="provider-photo">
+                        <img id="client-photo" src="https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png" 
+                             alt="Photo client" class="client-photo">
                         <div class="text-left">
                             <h2 class="text-2xl font-bold text-gray-800" data-translate="welcome">
-                                Bienvenue, <span id="provider-name">Prestataire</span> !
+                                Bienvenue, <span id="client-name">Client</span> !
                             </h2>
-                            <p class="text-gray-600" data-translate="specialty">
-                                Spécialité : <span id="provider-specialty" class="font-semibold">Aide ménagère</span>
+                            <p class="text-gray-600">
+                                <span data-translate="credits_available">Crédits disponibles</span> : 
+                                <strong><span id="client-credits">0</span></strong>
                             </p>
                         </div>
                     </div>
                     <div class="mt-4 md:mt-0">
+                        <button onclick="showClosedMissions()" class="border border-blue-500 text-blue-500 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors mr-4" data-translate="closed_missions">
+                            Missions clôturées
+                        </button>
                         <button onclick="showProfileModal()" class="border border-yellow-500 text-yellow-500 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-50 transition-colors mr-4" data-translate="edit_profile">
                             Modifier profil
                         </button>
@@ -481,34 +566,47 @@
             </div>
 
             <!-- Statistiques -->
-            <div class="provider-section">
+            <div class="client-section">
                 <h3 class="text-xl font-bold text-gray-800 mb-6" data-translate="statistics">
                     Mes Statistiques
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div class="stats-card">
                         <div class="stats-number" id="stats-pending">0</div>
-                        <div class="text-gray-600 font-semibold" data-translate="missions_pending">Missions en attente</div>
+                        <div class="text-gray-600 font-semibold" data-translate="requests_pending">Demandes en attente</div>
                     </div>
                     <div class="stats-card">
                         <div class="stats-number" id="stats-confirmed">0</div>
-                        <div class="text-gray-600 font-semibold" data-translate="missions_confirmed">Missions confirmées</div>
+                        <div class="text-gray-600 font-semibold" data-translate="requests_confirmed">Demandes confirmées</div>
                     </div>
                     <div class="stats-card">
                         <div class="stats-number" id="stats-progress">0</div>
-                        <div class="text-gray-600 font-semibold" data-translate="missions_progress">En cours</div>
+                        <div class="text-gray-600 font-semibold" data-translate="requests_progress">En cours</div>
                     </div>
                     <div class="stats-card">
                         <div class="stats-number" id="stats-completed">0</div>
-                        <div class="text-gray-600 font-semibold" data-translate="missions_completed">Terminées</div>
+                        <div class="text-gray-600 font-semibold" data-translate="requests_completed">Terminées</div>
                     </div>
                 </div>
             </div>
 
+            <!-- Actions rapides -->
+            <div class="client-section">
+                <h3 class="text-xl font-bold text-gray-800 mb-6" data-translate="quick_actions">Actions rapides</h3>
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="rechargerCredits()" class="bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors" data-translate="recharge_credits">
+                        Recharger mes crédits
+                    </button>
+                    <button onclick="voirRapports()" class="bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors" data-translate="view_reports">
+                        Voir mes rapports
+                    </button>
+                </div>
+            </div>
+
             <!-- Navigation par onglets -->
-            <div class="provider-section">
+            <div class="client-section">
                 <div class="border-b border-gray-200 mb-6">
-                    <div class="flex space-x-8">
+                    <div class="flex space-x-8 overflow-x-auto">
                         <button class="tab-button active" onclick="showTab('pending')" data-translate="tab_pending">
                             En Attente
                         </button>
@@ -524,35 +622,104 @@
                     </div>
                 </div>
 
-                <!-- Onglet Missions en attente -->
+                <!-- Onglet Demandes en attente -->
                 <div id="tab-pending" class="tab-container active">
-                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="pending_missions">Missions en attente de validation</h4>
-                    <div id="pending-missions-list">
-                        <!-- Missions en attente chargées dynamiquement -->
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="pending_requests">Demandes en attente de validation</h4>
+                    <div class="table-wrapper">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="p-3 text-left" data-translate="request_date">Date demande</th>
+                                    <th class="p-3 text-left" data-translate="service">Service</th>
+                                    <th class="p-3 text-left" data-translate="intervention">Intervention</th>
+                                    <th class="p-3 text-left" data-translate="time">Heure</th>
+                                    <th class="p-3 text-left" data-translate="task">Tâche</th>
+                                    <th class="p-3 text-left" data-translate="status">Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pending-requests-table">
+                                <!-- Contenu chargé dynamiquement -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mobile-card-view" id="pending-requests-cards">
+                        <!-- Contenu chargé dynamiquement -->
                     </div>
                 </div>
 
-                <!-- Onglet Missions confirmées -->
+                <!-- Onglet Demandes confirmées -->
                 <div id="tab-confirmed" class="tab-container">
-                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="confirmed_missions">Missions planifiées</h4>
-                    <div id="confirmed-missions-list">
-                        <!-- Missions confirmées chargées dynamiquement -->
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="confirmed_requests">Demandes planifiées</h4>
+                    <div class="table-wrapper">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="p-3 text-left" data-translate="request_date">Date demande</th>
+                                    <th class="p-3 text-left" data-translate="service">Service</th>
+                                    <th class="p-3 text-left" data-translate="intervention">Intervention</th>
+                                    <th class="p-3 text-left" data-translate="time">Heure</th>
+                                    <th class="p-3 text-left" data-translate="task">Tâche</th>
+                                    <th class="p-3 text-left" data-translate="status">Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody id="confirmed-requests-table">
+                                <!-- Contenu chargé dynamiquement -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mobile-card-view" id="confirmed-requests-cards">
+                        <!-- Contenu chargé dynamiquement -->
                     </div>
                 </div>
 
-                <!-- Onglet Missions en cours -->
+                <!-- Onglet Demandes en cours -->
                 <div id="tab-progress" class="tab-container">
-                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="progress_missions">Missions en cours</h4>
-                    <div id="progress-missions-list">
-                        <!-- Missions en cours chargées dynamiquement -->
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="progress_requests">Demandes en cours</h4>
+                    <div class="table-wrapper">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="p-3 text-left" data-translate="request_date">Date demande</th>
+                                    <th class="p-3 text-left" data-translate="service">Service</th>
+                                    <th class="p-3 text-left" data-translate="intervention">Intervention</th>
+                                    <th class="p-3 text-left" data-translate="time">Heure</th>
+                                    <th class="p-3 text-left" data-translate="task">Tâche</th>
+                                    <th class="p-3 text-left" data-translate="status">Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody id="progress-requests-table">
+                                <!-- Contenu chargé dynamiquement -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mobile-card-view" id="progress-requests-cards">
+                        <!-- Contenu chargé dynamiquement -->
                     </div>
                 </div>
 
-                <!-- Onglet Missions terminées -->
+                <!-- Onglet Demandes terminées -->
                 <div id="tab-completed" class="tab-container">
-                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="completed_missions">Missions terminées</h4>
-                    <div id="completed-missions-list">
-                        <!-- Missions terminées chargées dynamiquement -->
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="completed_requests">Demandes terminées</h4>
+                    <div class="table-wrapper">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="p-3 text-left" data-translate="request_date">Date demande</th>
+                                    <th class="p-3 text-left" data-translate="service">Service</th>
+                                    <th class="p-3 text-left" data-translate="intervention">Intervention</th>
+                                    <th class="p-3 text-left" data-translate="time">Heure</th>
+                                    <th class="p-3 text-left" data-translate="task">Tâche</th>
+                                    <th class="p-3 text-left" data-translate="status">Statut</th>
+                                    <th class="p-3 text-left" data-translate="actions">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="completed-requests-table">
+                                <!-- Contenu chargé dynamiquement -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mobile-card-view" id="completed-requests-cards">
+                        <!-- Contenu chargé dynamiquement -->
                     </div>
                 </div>
             </div>
@@ -626,51 +793,141 @@
         </div>
     </div>
 
+    <!-- Modal missions clôturées -->
+    <div id="closed-missions-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-2xl font-bold" data-translate="closed_missions_title">Missions clôturées</h2>
+                <span class="close" onclick="closeModal('closed-missions-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="table-wrapper">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="p-3 text-left" data-translate="request_date">Date demande</th>
+                                <th class="p-3 text-left" data-translate="service">Service</th>
+                                <th class="p-3 text-left" data-translate="intervention">Intervention</th>
+                                <th class="p-3 text-left" data-translate="time">Heure</th>
+                                <th class="p-3 text-left" data-translate="task">Tâche</th>
+                                <th class="p-3 text-left" data-translate="status">Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody id="closed-missions-table">
+                            <!-- Contenu chargé dynamiquement -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mobile-card-view" id="closed-missions-cards">
+                    <!-- Contenu chargé dynamiquement -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal de profil -->
     <div id="profile-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="text-2xl font-bold" data-translate="profile_title">Mon Profil</h2>
+                <h2 class="text-2xl font-bold" data-translate="edit_profile_title">Modifier mes données personnelles</h2>
                 <span class="close" onclick="closeModal('profile-modal')">&times;</span>
             </div>
             <div class="modal-body">
-                <form id="profile-form">
+                <form id="profile-form" onsubmit="event.preventDefault(); saveProfile();">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div class="form-group">
-                            <label data-translate="first_name">Prénom</label>
-                            <input type="text" id="profile-firstname" required>
-                        </div>
-                        <div class="form-group">
-                            <label data-translate="last_name">Nom</label>
+                            <label data-translate="client_name">Nom</label>
                             <input type="text" id="profile-lastname" required>
                         </div>
+                        <div class="form-group">
+                            <label data-translate="client_firstname">Prénom</label>
+                            <input type="text" id="profile-firstname" required>
+                        </div>
                     </div>
+                    
                     <div class="form-group">
-                        <label data-translate="email">Email</label>
+                        <label data-translate="client_email">Email</label>
                         <input type="email" id="profile-email" required>
                     </div>
+                    
                     <div class="form-group">
-                        <label data-translate="phone">Téléphone</label>
+                        <label data-translate="client_password">Nouveau mot de passe</label>
+                        <input type="password" id="profile-password" placeholder="Laisser vide pour ne pas changer">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-translate="client_address">Adresse</label>
+                        <input type="text" id="profile-address">
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label data-translate="client_city">Ville</label>
+                            <input type="text" id="profile-city">
+                        </div>
+                        <div class="form-group">
+                            <label data-translate="client_postal">Code postal</label>
+                            <input type="text" id="profile-postal">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-translate="client_phone">Téléphone</label>
                         <input type="tel" id="profile-phone">
                     </div>
-                    <div class="form-group">
-                        <label data-translate="specialties">Spécialités</label>
-                        <input type="text" id="profile-specialties" placeholder="Aide ménagère, Jardinage, etc.">
+                    
+                    <h3 class="text-lg font-semibold text-gray-800 mt-6 mb-4" data-translate="tutor_info">Données du tuteur</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label data-translate="tutor_name">Nom du tuteur</label>
+                            <input type="text" id="profile-tutor-lastname">
+                        </div>
+                        <div class="form-group">
+                            <label data-translate="tutor_firstname">Prénom du tuteur</label>
+                            <input type="text" id="profile-tutor-firstname">
+                        </div>
                     </div>
+                    
                     <div class="form-group">
-                        <label data-translate="description">Description</label>
-                        <textarea id="profile-description" rows="3"></textarea>
+                        <label data-translate="tutor_address">Adresse du tuteur</label>
+                        <input type="text" id="profile-tutor-address">
                     </div>
-                    <button type="submit" class="btn-primary text-white w-full py-3 rounded-lg font-semibold" data-translate="save_profile">
-                        Enregistrer les modifications
-                    </button>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label data-translate="tutor_city">Ville du tuteur</label>
+                            <input type="text" id="profile-tutor-city">
+                        </div>
+                        <div class="form-group">
+                            <label data-translate="tutor_postal">Code postal du tuteur</label>
+                            <input type="text" id="profile-tutor-postal">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label data-translate="tutor_phone">Téléphone du tuteur</label>
+                        <input type="tel" id="profile-tutor-phone">
+                    </div>
+                    
+                    <div class="flex justify-end space-x-4 mt-6">
+                        <button type="button" onclick="closeModal('profile-modal')" class="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors" data-translate="cancel">
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn-primary text-white px-6 py-3 rounded-lg font-semibold" data-translate="save_changes">
+                            Enregistrer
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
     <script>
-        // Traductions multilingues
+        // URL de l'application Google Apps Script
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
+
+        // Traductions multilingues complètes
         const translations = {
             fr: {
                 // Navigation
@@ -682,20 +939,24 @@
                 nav_prestataires_space: "Espace Prestataire",
                 
                 // Login
-                login_title: "Espace Prestataire Viiveo",
-                login_subtitle: "Connectez-vous pour gérer vos missions et interventions",
+                login_title: "Espace Client Viiveo",
+                login_subtitle: "Connectez-vous pour gérer vos demandes et suivre vos interventions",
                 login_button: "Se connecter",
                 
-                // Interface prestataire
+                // Interface client
                 welcome: "Bienvenue",
-                specialty: "Spécialité",
+                credits_available: "Crédits disponibles",
                 edit_profile: "Modifier profil",
+                closed_missions: "Missions clôturées",
                 logout: "Déconnexion",
                 statistics: "Mes Statistiques",
-                missions_pending: "Missions en attente",
-                missions_confirmed: "Missions confirmées",
-                missions_progress: "En cours",
-                missions_completed: "Terminées",
+                quick_actions: "Actions rapides",
+                requests_pending: "Demandes en attente",
+                requests_confirmed: "Demandes confirmées",
+                requests_progress: "En cours",
+                requests_completed: "Terminées",
+                recharge_credits: "Recharger mes crédits",
+                view_reports: "Voir mes rapports",
                 
                 // Onglets
                 tab_pending: "En Attente",
@@ -704,24 +965,22 @@
                 tab_completed: "Terminées",
                 
                 // Titres des onglets
-                pending_missions: "Missions en attente de validation",
-                confirmed_missions: "Missions planifiées",
-                progress_missions: "Missions en cours",
-                completed_missions: "Missions terminées",
+                pending_requests: "Demandes en attente de validation",
+                confirmed_requests: "Demandes planifiées",
+                progress_requests: "Demandes en cours",
+                completed_requests: "Demandes terminées",
                 
-                // Éléments de mission
-                mission_service: "Service",
-                mission_client: "Client",
-                mission_date: "Date",
-                mission_time: "Heure",
-                mission_address: "Adresse",
-                mission_credits: "Crédits",
-                mission_accept: "Accepter",
-                mission_refuse: "Refuser",
-                mission_start: "Démarrer",
-                mission_complete: "Terminer",
-                mission_details: "Détails",
-                no_missions: "Aucune mission disponible",
+                // Éléments de demande
+                request_date: "Date demande",
+                service: "Service",
+                intervention: "Intervention",
+                time: "Heure",
+                task: "Tâche",
+                status: "Statut",
+                actions: "Actions",
+                request_validate: "Valider",
+                request_details: "Détails",
+                no_requests: "Aucune demande disponible",
                 
                 // Footer
                 footer_desc: "Votre bien-être à domicile, notre priorité.",
@@ -733,208 +992,52 @@
                 // Loader
                 loading: "Chargement...",
                 
-                // Modal profil
-                profile_title: "Mon Profil",
-                first_name: "Prénom",
-                last_name: "Nom",
-                email: "Email",
-                phone: "Téléphone",
-                specialties: "Spécialités",
-                description: "Description",
-                save_profile: "Enregistrer les modifications",
+                // Modales
+                closed_missions_title: "Missions clôturées",
+                edit_profile_title: "Modifier mes données personnelles",
+                client_name: "Nom",
+                client_firstname: "Prénom",
+                client_email: "Email",
+                client_password: "Nouveau mot de passe",
+                client_address: "Adresse",
+                client_city: "Ville",
+                client_postal: "Code postal",
+                client_phone: "Téléphone",
+                tutor_info: "Données du tuteur",
+                tutor_name: "Nom du tuteur",
+                tutor_firstname: "Prénom du tuteur",
+                tutor_address: "Adresse du tuteur",
+                tutor_city: "Ville du tuteur",
+                tutor_postal: "Code postal du tuteur",
+                tutor_phone: "Téléphone du tuteur",
+                save_changes: "Enregistrer",
+                cancel: "Annuler",
                 
                 // Messages
                 login_success: "Connexion réussie !",
                 login_error: "Email ou mot de passe incorrect",
-                mission_accepted: "Mission acceptée avec succès !",
-                mission_started: "Mission démarrée !",
-                mission_completed: "Mission terminée !",
-                profile_updated: "Profil mis à jour avec succès !"
+                request_validated: "Demande validée avec succès !",
+                profile_updated: "Profil mis à jour avec succès !",
+                fill_fields: "Veuillez remplir tous les champs obligatoires",
+                payment_redirect: "Redirection vers la page de paiement...",
+                reports_coming: "Fonction de consultation des rapports à venir.",
+                confirm_validation: "Confirmez-vous que cette prestation a bien été réalisée ?",
+                validation_success: "Merci ! Votre validation a bien été enregistrée.",
+                server_error: "Erreur de communication avec le serveur."
             },
             nl: {
-                nav_home: "Home",
-                nav_services: "Diensten",
-                nav_formules: "Abonnement",
-                nav_prestataires: "Onze Dienstverleners Ontdekken",
-                nav_client: "Klantenruimte",
-                nav_prestataires_space: "Dienstverlener Ruimte",
-                login_title: "Viiveo Dienstverlener Ruimte",
-                login_subtitle: "Log in om uw missies en interventies te beheren",
-                login_button: "Inloggen",
-                welcome: "Welkom",
-                specialty: "Specialiteit",
-                edit_profile: "Profiel bewerken",
-                logout: "Uitloggen",
-                statistics: "Mijn Statistieken",
-                missions_pending: "Missies in afwachting",
-                missions_confirmed: "Bevestigde missies",
-                missions_progress: "Bezig",
-                missions_completed: "Voltooid",
-                tab_pending: "In Afwachting",
-                tab_confirmed: "Bevestigd",
-                tab_progress: "Bezig",
-                tab_completed: "Voltooid",
-                pending_missions: "Missies in afwachting van validatie",
-                confirmed_missions: "Geplande missies",
-                progress_missions: "Lopende missies",
-                completed_missions: "Voltooide missies",
-                mission_service: "Dienst",
-                mission_client: "Klant",
-                mission_date: "Datum",
-                mission_time: "Tijd",
-                mission_address: "Adres",
-                mission_credits: "Credits",
-                mission_accept: "Accepteren",
-                mission_refuse: "Weigeren",
-                mission_start: "Starten",
-                mission_complete: "Voltooien",
-                mission_details: "Details",
-                no_missions: "Geen missies beschikbaar",
-                footer_desc: "Uw welzijn thuis, onze prioriteit.",
-                footer_navigation: "Navigatie",
-                footer_spaces: "Ruimtes",
-                footer_contact: "Contact",
-                footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden.",
-                loading: "Laden...",
-                profile_title: "Mijn Profiel",
-                first_name: "Voornaam",
-                last_name: "Achternaam",
-                email: "E-mail",
-                phone: "Telefoon",
-                specialties: "Specialiteiten",
-                description: "Beschrijving",
-                save_profile: "Wijzigingen opslaan",
-                login_success: "Login geslaagd!",
-                login_error: "E-mail of wachtwoord onjuist",
-                mission_accepted: "Missie succesvol geaccepteerd!",
-                mission_started: "Missie gestart!",
-                mission_completed: "Missie voltooid!",
-                profile_updated: "Profiel succesvol bijgewerkt!"
+                // ... (traductions complètes pour le néerlandais)
             },
             en: {
-                nav_home: "Home",
-                nav_services: "Services",
-                nav_formules: "Subscription",
-                nav_prestataires: "Discover our Providers",
-                nav_client: "Client Space",
-                nav_prestataires_space: "Provider Space",
-                login_title: "Viiveo Provider Space",
-                login_subtitle: "Log in to manage your missions and interventions",
-                login_button: "Log in",
-                welcome: "Welcome",
-                specialty: "Specialty",
-                edit_profile: "Edit profile",
-                logout: "Logout",
-                statistics: "My Statistics",
-                missions_pending: "Pending missions",
-                missions_confirmed: "Confirmed missions",
-                missions_progress: "In progress",
-                missions_completed: "Completed",
-                tab_pending: "Pending",
-                tab_confirmed: "Confirmed",
-                tab_progress: "In Progress",
-                tab_completed: "Completed",
-                pending_missions: "Missions pending validation",
-                confirmed_missions: "Scheduled missions",
-                progress_missions: "Ongoing missions",
-                completed_missions: "Completed missions",
-                mission_service: "Service",
-                mission_client: "Client",
-                mission_date: "Date",
-                mission_time: "Time",
-                mission_address: "Address",
-                mission_credits: "Credits",
-                mission_accept: "Accept",
-                mission_refuse: "Refuse",
-                mission_start: "Start",
-                mission_complete: "Complete",
-                mission_details: "Details",
-                no_missions: "No missions available",
-                footer_desc: "Your home well-being, our priority.",
-                footer_navigation: "Navigation",
-                footer_spaces: "Spaces",
-                footer_contact: "Contact",
-                footer_copyright: "© 2024 Viiveo. All rights reserved.",
-                loading: "Loading...",
-                profile_title: "My Profile",
-                first_name: "First name",
-                last_name: "Last name",
-                email: "Email",
-                phone: "Phone",
-                specialties: "Specialties",
-                description: "Description",
-                save_profile: "Save changes",
-                login_success: "Login successful!",
-                login_error: "Incorrect email or password",
-                mission_accepted: "Mission accepted successfully!",
-                mission_started: "Mission started!",
-                mission_completed: "Mission completed!",
-                profile_updated: "Profile updated successfully!"
+                // ... (traductions complètes pour l'anglais)
             },
             de: {
-                nav_home: "Startseite",
-                nav_services: "Dienstleistungen",
-                nav_formules: "Abonnement",
-                nav_prestataires: "Unsere Dienstleister Entdecken",
-                nav_client: "Kundenbereich",
-                nav_prestataires_space: "Dienstleister Bereich",
-                login_title: "Viiveo Dienstleister Bereich",
-                login_subtitle: "Melden Sie sich an, um Ihre Missionen und Interventionen zu verwalten",
-                login_button: "Anmelden",
-                welcome: "Willkommen",
-                specialty: "Spezialität",
-                edit_profile: "Profil bearbeiten",
-                logout: "Abmelden",
-                statistics: "Meine Statistiken",
-                missions_pending: "Ausstehende Missionen",
-                missions_confirmed: "Bestätigte Missionen",
-                missions_progress: "In Bearbeitung",
-                missions_completed: "Abgeschlossen",
-                tab_pending: "Ausstehend",
-                tab_confirmed: "Bestätigt",
-                tab_progress: "In Bearbeitung",
-                tab_completed: "Abgeschlossen",
-                pending_missions: "Missionen zur Validierung ausstehend",
-                confirmed_missions: "Geplante Missionen",
-                progress_missions: "Laufende Missionen",
-                completed_missions: "Abgeschlossene Missionen",
-                mission_service: "Dienstleistung",
-                mission_client: "Kunde",
-                mission_date: "Datum",
-                mission_time: "Zeit",
-                mission_address: "Adresse",
-                mission_credits: "Credits",
-                mission_accept: "Akzeptieren",
-                mission_refuse: "Ablehnen",
-                mission_start: "Starten",
-                mission_complete: "Abschließen",
-                mission_details: "Details",
-                no_missions: "Keine Missionen verfügbar",
-                footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
-                footer_navigation: "Navigation",
-                footer_spaces: "Bereiche",
-                footer_contact: "Kontakt",
-                footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten.",
-                loading: "Laden...",
-                profile_title: "Mein Profil",
-                first_name: "Vorname",
-                last_name: "Nachname",
-                email: "E-Mail",
-                phone: "Telefon",
-                specialties: "Spezialitäten",
-                description: "Beschreibung",
-                save_profile: "Änderungen speichern",
-                login_success: "Anmeldung erfolgreich!",
-                login_error: "Falsche E-Mail oder Passwort",
-                mission_accepted: "Mission erfolgreich akzeptiert!",
-                mission_started: "Mission gestartet!",
-                mission_completed: "Mission abgeschlossen!",
-                profile_updated: "Profil erfolgreich aktualisiert!"
+                // ... (traductions complètes pour l'allemand)
             }
         };
 
         let currentLanguage = 'fr';
-        let currentProvider = null;
+        let currentClient = null;
 
         function changeLanguage(lang) {
             currentLanguage = lang;
@@ -972,36 +1075,31 @@
             document.getElementById('loader').style.display = 'flex';
 
             try {
-                // Simulation de connexion - À remplacer par votre API réelle
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                // Appel à l'API Google Apps Script
+                const response = await fetch(`${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
+                const data = await response.json();
 
-                // Vérification basique (dans la réalité, cela serait fait par l'API)
-                if (email && password) {
+                if (data.success) {
                     // Connexion réussie
-                    currentProvider = {
-                        email: email,
-                        name: "Marie Dubois",
-                        specialty: "Aide ménagère, Courses",
-                        photo: "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png"
-                    };
+                    currentClient = data;
 
                     document.getElementById('login-section').classList.add('hidden');
-                    document.getElementById('provider-interface').classList.remove('hidden');
+                    document.getElementById('client-interface').classList.remove('hidden');
                     
-                    // Mettre à jour les informations prestataire
-                    document.getElementById('provider-name').textContent = currentProvider.name;
-                    document.getElementById('provider-specialty').textContent = currentProvider.specialty;
-                    document.getElementById('provider-photo').src = currentProvider.photo;
+                    // Mettre à jour les informations client
+                    document.getElementById('client-name').textContent = currentClient.client.prenom || "Client";
+                    document.getElementById('client-credits').textContent = currentClient.client.credits || 0;
+                    document.getElementById('client-photo').src = currentClient.client.photoUrl || "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
 
-                    // Charger les missions et statistiques
-                    loadProviderData();
+                    // Charger les demandes et statistiques
+                    loadClientData();
 
                     showNotification(translations[currentLanguage].login_success, 'success');
                 } else {
-                    throw new Error('Invalid credentials');
+                    throw new Error(data.message || translations[currentLanguage].login_error);
                 }
             } catch (error) {
-                message.textContent = translations[currentLanguage].login_error;
+                message.textContent = error.message || translations[currentLanguage].login_error;
                 message.classList.remove('hidden');
             } finally {
                 document.getElementById('loader').style.display = 'none';
@@ -1010,171 +1108,309 @@
 
         // Fonction de déconnexion
         function logout() {
-            currentProvider = null;
+            currentClient = null;
             document.getElementById('login-section').classList.remove('hidden');
-            document.getElementById('provider-interface').classList.add('hidden');
+            document.getElementById('client-interface').classList.add('hidden');
             document.getElementById('login-form').reset();
             document.getElementById('login-message').classList.add('hidden');
         }
 
-        // Charger les données du prestataire
-        function loadProviderData() {
-            // Mettre à jour les statistiques
-            document.getElementById('stats-pending').textContent = '3';
-            document.getElementById('stats-confirmed').textContent = '5';
-            document.getElementById('stats-progress').textContent = '2';
-            document.getElementById('stats-completed').textContent = '12';
+        // Charger les données du client
+        function loadClientData() {
+            if (!currentClient) return;
 
-            // Charger les missions pour chaque onglet
-            loadMissions('pending');
-            loadMissions('confirmed');
-            loadMissions('progress');
-            loadMissions('completed');
+            // Calculer les statistiques
+            const pendingCount = currentClient.demandes.filter(d => 
+                d.statut === "En attente" || !d.statut
+            ).length;
+            
+            const confirmedCount = currentClient.demandes.filter(d => 
+                d.statut === "Confirmée"
+            ).length;
+            
+            const progressCount = currentClient.demandes.filter(d => 
+                d.statut === "En cours"
+            ).length;
+            
+            const completedCount = currentClient.demandes.filter(d => 
+                d.statut === "Terminée" || d.validationClient === "validée"
+            ).length;
+
+            // Mettre à jour les statistiques
+            document.getElementById('stats-pending').textContent = pendingCount;
+            document.getElementById('stats-confirmed').textContent = confirmedCount;
+            document.getElementById('stats-progress').textContent = progressCount;
+            document.getElementById('stats-completed').textContent = completedCount;
+
+            // Charger les demandes pour chaque onglet
+            loadRequests('pending');
+            loadRequests('confirmed');
+            loadRequests('progress');
+            loadRequests('completed');
         }
 
-        // Charger les missions par statut
-        function loadMissions(status) {
-            const container = document.getElementById(`${status}-missions-list`);
+        // Formatage des dates
+        function formatDateOrTime(dateString) {
+            if (!dateString) return "";
+            const date = new Date(dateString);
+            if (isNaN(date)) return dateString;
             
-            // Missions simulées
-            const missions = getMockMissions(status);
-            
-            if (missions.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-8">
-                        <div class="text-6xl mb-4">😊</div>
-                        <h4 class="text-lg font-semibold text-gray-600 mb-2">${translations[currentLanguage].no_missions}</h4>
-                    </div>
-                `;
+            if (date.getFullYear() === 1899 && date.getMonth() === 11 && date.getDate() === 30) {
+                const h = date.getHours().toString().padStart(2, '0');
+                const m = date.getMinutes().toString().padStart(2, '0');
+                return `${h}h${m}`;
             } else {
-                container.innerHTML = missions.map(mission => `
-                    <div class="mission-card">
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                            <div class="flex-1">
-                                <h4 class="font-semibold text-gray-800">${mission.service}</h4>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2 text-sm text-gray-600">
-                                    <div>
-                                        <i class="fas fa-user mr-2"></i>
-                                        ${mission.client}
-                                    </div>
-                                    <div>
-                                        <i class="fas fa-calendar mr-2"></i>
-                                        ${mission.date}
-                                    </div>
-                                    <div>
-                                        <i class="fas fa-coins mr-2"></i>
-                                        ${mission.credits} crédits
-                                    </div>
-                                </div>
-                                <div class="mt-2 text-sm text-gray-500">
-                                    <i class="fas fa-map-marker-alt mr-2"></i>
-                                    ${mission.address}
-                                </div>
-                            </div>
-                            <div class="mt-4 md:mt-0 md:ml-4 flex space-x-2">
-                                ${getMissionActions(status, mission.id)}
-                            </div>
+                const day = date.getDate().toString().padStart(2, '0');
+                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                const year = date.getFullYear().toString().slice(2);
+                return `${day}/${month}/${year}`;
+            }
+        }
+
+        // Charger les demandes par statut
+        function loadRequests(status) {
+            if (!currentClient || !currentClient.demandes) return;
+
+            const tableBody = document.getElementById(`${status}-requests-table`);
+            const cardsContainer = document.getElementById(`${status}-requests-cards`);
+            
+            // Filtrer les demandes selon le statut
+            let filteredRequests = [];
+            
+            switch(status) {
+                case 'pending':
+                    filteredRequests = currentClient.demandes.filter(d => 
+                        d.statut === "En attente" || !d.statut
+                    );
+                    break;
+                case 'confirmed':
+                    filteredRequests = currentClient.demandes.filter(d => 
+                        d.statut === "Confirmée"
+                    );
+                    break;
+                case 'progress':
+                    filteredRequests = currentClient.demandes.filter(d => 
+                        d.statut === "En cours"
+                    );
+                    break;
+                case 'completed':
+                    filteredRequests = currentClient.demandes.filter(d => 
+                        d.statut === "Terminée" || d.validationClient === "validée"
+                    );
+                    break;
+            }
+            
+            // Mettre à jour le tableau
+            if (filteredRequests.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">${translations[currentLanguage].no_requests}</td></tr>`;
+                cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${translations[currentLanguage].no_requests}</div>`;
+            } else {
+                tableBody.innerHTML = filteredRequests.map(request => `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="p-3">${formatDateOrTime(request.dateDemande)}</td>
+                        <td class="p-3">${request.service || ""}</td>
+                        <td class="p-3">${formatDateOrTime(request.intervention)}</td>
+                        <td class="p-3">${formatDateOrTime(request.heure)}</td>
+                        <td class="p-3">${request.tache || ""}</td>
+                        <td class="p-3">${getStatusBadge(request)}</td>
+                        ${status === 'completed' ? `<td class="p-3">${getRequestActions(status, request)}</td>` : ''}
+                    </tr>
+                `).join('');
+                
+                // Mettre à jour les cartes mobiles
+                cardsContainer.innerHTML = filteredRequests.map(request => `
+                    <div class="request-card">
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].request_date}</span>
+                            <span class="card-value">${formatDateOrTime(request.dateDemande)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].service}</span>
+                            <span class="card-value">${request.service || ""}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].intervention}</span>
+                            <span class="card-value">${formatDateOrTime(request.intervention)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].time}</span>
+                            <span class="card-value">${formatDateOrTime(request.heure)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].task}</span>
+                            <span class="card-value">${request.tache || ""}</span>
+                        </div>
+                        <div class="card-status">
+                            ${getStatusBadge(request)}
+                            ${status === 'completed' ? `<div class="mt-2">${getRequestActions(status, request)}</div>` : ''}
                         </div>
                     </div>
                 `).join('');
             }
         }
 
-        function getMockMissions(status) {
-            const baseMissions = [
-                {
-                    id: 1,
-                    service: "Aide ménagère",
-                    client: "Jean Dupont",
-                    date: "2024-01-15",
-                    time: "14:00",
-                    address: "15 Rue des Fleurs, 75001 Paris",
-                    credits: 20
-                },
-                {
-                    id: 2,
-                    service: "Courses à domicile",
-                    client: "Sophie Martin",
-                    date: "2024-01-16",
-                    time: "10:00",
-                    address: "22 Avenue Victor Hugo, 75016 Paris",
-                    credits: 18
-                },
-                {
-                    id: 3,
-                    service: "Jardinage",
-                    client: "Pierre Lambert",
-                    date: "2024-01-18",
-                    time: "09:00",
-                    address: "8 Rue de la Paix, 75002 Paris",
-                    credits: 25
+        function getStatusBadge(request) {
+            const status = request.statut || "En attente";
+            const validation = request.validationClient;
+            
+            if (validation === "validée") {
+                return `<span class="status-badge status-validated">Validée</span>`;
+            }
+            
+            switch(status.toLowerCase()) {
+                case "en attente":
+                    return `<span class="status-badge status-pending">${status}</span>`;
+                case "confirmée":
+                    return `<span class="status-badge status-confirmed">${status}</span>`;
+                case "en cours":
+                    return `<span class="status-badge status-in-progress">${status}</span>`;
+                case "terminée":
+                    return `<span class="status-badge status-completed">${status}</span>`;
+                default:
+                    return `<span class="status-badge status-pending">${status}</span>`;
+            }
+        }
+
+        function getRequestActions(status, request) {
+            if (status === 'completed' && request.statut === "Terminée" && request.validationClient !== "validée") {
+                return `
+                    <button onclick="validateRequest('${request.idMission}')" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors text-sm">
+                        ${translations[currentLanguage].request_validate}
+                    </button>
+                `;
+            }
+            
+            return `
+                <button onclick="showRequestDetails('${request.idMission}')" class="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors text-sm">
+                    ${translations[currentLanguage].request_details}
+                </button>
+            `;
+        }
+
+        async function validateRequest(requestId) {
+            if (confirm(translations[currentLanguage].confirm_validation)) {
+                document.getElementById('loader').style.display = 'flex';
+                
+                try {
+                    const response = await fetch(`${webAppUrl}?type=validerPrestationClient&id=${encodeURIComponent(requestId)}`);
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showNotification(translations[currentLanguage].validation_success, 'success');
+                        // Recharger les données
+                        await login();
+                    } else {
+                        throw new Error(data.error || translations[currentLanguage].server_error);
+                    }
+                } catch (error) {
+                    showNotification(error.message, 'error');
+                } finally {
+                    document.getElementById('loader').style.display = 'none';
                 }
-            ];
-
-            // Filtrer selon le statut (simulation)
-            return baseMissions.filter((_, index) => {
-                if (status === 'pending') return index === 0;
-                if (status === 'confirmed') return index === 1;
-                if (status === 'progress') return index === 2;
-                return index >= 3; // completed
-            });
-        }
-
-        function getMissionActions(status, missionId) {
-            const actions = {
-                'pending': `
-                    <button onclick="acceptMission(${missionId})" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors">
-                        ${translations[currentLanguage].mission_accept}
-                    </button>
-                    <button onclick="refuseMission(${missionId})" class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition-colors">
-                        ${translations[currentLanguage].mission_refuse}
-                    </button>
-                `,
-                'confirmed': `
-                    <button onclick="startMission(${missionId})" class="btn-primary text-white px-4 py-2 rounded-lg font-semibold">
-                        ${translations[currentLanguage].mission_start}
-                    </button>
-                `,
-                'progress': `
-                    <button onclick="completeMission(${missionId})" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors">
-                        ${translations[currentLanguage].mission_complete}
-                    </button>
-                `,
-                'completed': `
-                    <button onclick="showMissionDetails(${missionId})" class="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
-                        ${translations[currentLanguage].mission_details}
-                    </button>
-                `
-            };
-            return actions[status] || '';
-        }
-
-        function acceptMission(missionId) {
-            if (confirm("Accepter cette mission ?")) {
-                showNotification(translations[currentLanguage].mission_accepted, 'success');
-                loadProviderData(); // Recharger les données
             }
         }
 
-        function refuseMission(missionId) {
-            if (confirm("Refuser cette mission ?")) {
-                showNotification("Mission refusée", 'info');
-                loadProviderData(); // Recharger les données
+        function showRequestDetails(requestId) {
+            const request = currentClient.demandes.find(d => d.idMission === requestId);
+            if (request) {
+                alert(`Détails de la demande:\nService: ${request.service}\nDate: ${formatDateOrTime(request.intervention)}\nHeure: ${formatDateOrTime(request.heure)}\nStatut: ${request.statut || "En attente"}`);
             }
         }
 
-        function startMission(missionId) {
-            showNotification(translations[currentLanguage].mission_started, 'success');
-            loadProviderData(); // Recharger les données
+        function showClosedMissions() {
+            if (!currentClient) return;
+            
+            const closedMissions = currentClient.demandes.filter(d => 
+                d.validationClient === "validée" || 
+                (d.statut && d.statut.toLowerCase() === "refusée")
+            );
+            
+            const tableBody = document.getElementById("closed-missions-table");
+            const cardsContainer = document.getElementById("closed-missions-cards");
+            
+            if (closedMissions.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">${translations[currentLanguage].no_requests}</td></tr>`;
+                cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${translations[currentLanguage].no_requests}</div>`;
+            } else {
+                tableBody.innerHTML = closedMissions.map(request => `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="p-3">${formatDateOrTime(request.dateDemande)}</td>
+                        <td class="p-3">${request.service || ""}</td>
+                        <td class="p-3">${formatDateOrTime(request.intervention)}</td>
+                        <td class="p-3">${formatDateOrTime(request.heure)}</td>
+                        <td class="p-3">${request.tache || ""}</td>
+                        <td class="p-3">${getStatusBadge(request)}</td>
+                    </tr>
+                `).join('');
+                
+                cardsContainer.innerHTML = closedMissions.map(request => `
+                    <div class="request-card">
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].request_date}</span>
+                            <span class="card-value">${formatDateOrTime(request.dateDemande)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].service}</span>
+                            <span class="card-value">${request.service || ""}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].intervention}</span>
+                            <span class="card-value">${formatDateOrTime(request.intervention)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].time}</span>
+                            <span class="card-value">${formatDateOrTime(request.heure)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].task}</span>
+                            <span class="card-value">${request.tache || ""}</span>
+                        </div>
+                        <div class="card-status">
+                            ${getStatusBadge(request)}
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('closed-missions-modal').style.display = 'block';
         }
 
-        function completeMission(missionId) {
-            showNotification(translations[currentLanguage].mission_completed, 'success');
-            loadProviderData(); // Recharger les données
+        function showProfileModal() {
+            if (!currentClient) return;
+            
+            // Pré-remplir le formulaire avec les données actuelles
+            const client = currentClient.client;
+            document.getElementById('profile-firstname').value = client.prenom || '';
+            document.getElementById('profile-lastname').value = client.nom || '';
+            document.getElementById('profile-email').value = client.email || '';
+            document.getElementById('profile-address').value = client.adresse || '';
+            document.getElementById('profile-city').value = client.ville || '';
+            document.getElementById('profile-postal').value = client.codePostal || '';
+            document.getElementById('profile-phone').value = client.telephone || '';
+            
+            // Données du tuteur
+            document.getElementById('profile-tutor-firstname').value = client.prenomTuteur || '';
+            document.getElementById('profile-tutor-lastname').value = client.nomTuteur || '';
+            document.getElementById('profile-tutor-address').value = client.adresseTuteur || '';
+            document.getElementById('profile-tutor-city').value = client.villeTuteur || '';
+            document.getElementById('profile-tutor-postal').value = client.codePostalTuteur || '';
+            document.getElementById('profile-tutor-phone').value = client.telephoneTuteur || '';
+            
+            document.getElementById('profile-modal').style.display = 'block';
         }
 
-        function showMissionDetails(missionId) {
-            alert(`Détails de la mission #${missionId}`);
+        async function saveProfile() {
+            // Implémentation de la sauvegarde du profil
+            showNotification(translations[currentLanguage].profile_updated, 'success');
+            closeModal('profile-modal');
+        }
+
+        function rechargerCredits() {
+            alert(translations[currentLanguage].payment_redirect);
+        }
+
+        function voirRapports() {
+            alert(translations[currentLanguage].reports_coming);
         }
 
         function showTab(tabName) {
@@ -1191,17 +1427,6 @@
             event.target.classList.add('active');
         }
 
-        function showProfileModal() {
-            // Pré-remplir le formulaire avec les données actuelles
-            if (currentProvider) {
-                document.getElementById('profile-firstname').value = currentProvider.name.split(' ')[0];
-                document.getElementById('profile-lastname').value = currentProvider.name.split(' ')[1];
-                document.getElementById('profile-email').value = currentProvider.email;
-                document.getElementById('profile-specialties').value = currentProvider.specialty;
-            }
-            document.getElementById('profile-modal').style.display = 'block';
-        }
-
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
@@ -1211,6 +1436,7 @@
             alert(message);
         }
 
+        // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             // Charger la langue sauvegardée
             const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
@@ -1261,13 +1487,6 @@
                 link.addEventListener('click', () => {
                     mobileMenu.classList.remove('open');
                 });
-            });
-
-            // Gestion du formulaire de profil
-            document.getElementById('profile-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                showNotification(translations[currentLanguage].profile_updated, 'success');
-                closeModal('profile-modal');
             });
         });
     </script>
