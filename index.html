@@ -58,6 +58,11 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             z-index: 50;
             min-width: 150px;
+            display: none;
+        }
+        
+        .language-dropdown.show {
+            display: block;
         }
         
         .language-option {
@@ -102,10 +107,12 @@
         .mobile-menu {
             transform: translateY(-100%);
             transition: transform 0.3s ease;
+            display: none;
         }
 
         .mobile-menu.open {
             transform: translateY(0);
+            display: block;
         }
 
         /* Styles pour la vidéo de fond */
@@ -131,7 +138,7 @@
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Header Commun -->
+    <!-- Header Commun CORRIGÉ -->
     <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between py-4">
@@ -142,12 +149,12 @@
                 
                 <!-- Navigation Desktop -->
                 <nav class="hidden lg:flex items-center space-x-8">
-                    <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Accueil</a>
-                    <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Services</a>
-                    <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Formules</a>
-                    <a href="infos_prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Prestataires</a>
-                    <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Espace Client</a>
-                    <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Espace Prestataire</a>
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
+                    <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
+                    <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Formules</a>
+                    <a href="infos_prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </nav>
 
                 <!-- Sélecteur de langue -->
@@ -159,7 +166,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
-                    <div id="language-dropdown" class="language-dropdown hidden">
+                    <div id="language-dropdown" class="language-dropdown">
                         <div class="language-option active" data-lang="fr">
                             <span>🇫🇷</span>
                             <span>Français</span>
@@ -190,12 +197,12 @@
             <!-- Menu Mobile -->
             <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
                 <div class="px-4 py-6 space-y-4">
-                    <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Accueil</a>
-                    <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Services</a>
-                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Formules</a>
-                    <a href="infos_prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Prestataires</a>
-                    <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Espace Client</a>
-                    <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Espace Prestataire</a>
+                    <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
+                    <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
+                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Formules</a>
+                    <a href="infos_prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </div>
             </div>
         </div>
@@ -557,18 +564,18 @@
             if (languageButton && languageDropdown) {
                 languageButton.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    languageDropdown.classList.toggle('hidden');
+                    languageDropdown.classList.toggle('show');
                 });
 
                 document.addEventListener('click', function() {
-                    languageDropdown.classList.add('hidden');
+                    languageDropdown.classList.remove('show');
                 });
 
                 document.querySelectorAll('.language-option').forEach(option => {
                     option.addEventListener('click', function() {
                         const lang = this.getAttribute('data-lang');
                         changeLanguage(lang);
-                        languageDropdown.classList.add('hidden');
+                        languageDropdown.classList.remove('show');
                     });
                 });
             }
