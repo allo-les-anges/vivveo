@@ -337,6 +337,29 @@
             font-size: 0.875rem;
             font-weight: 600;
         }
+
+        /* Styles pour le loader Viiveo */
+        .viiveo-loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .viiveo-loader-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -447,7 +470,7 @@
                 
                 <!-- Aide ménagère -->
                 <div class="service-card" onclick="openServiceModal('Aide ménagère')">
-                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                    <div class="service-image" style="background-image: url('https://i.postimg.cc/SxdnZmVb/aide-m-nag-re.png')">
                         <div class="service-overlay">
                             <span class="text-white text-lg font-semibold">Réserver maintenant</span>
                         </div>
@@ -463,7 +486,7 @@
                                 <i class="fas fa-star-half-alt"></i>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Service de ménage professionnel à domicile pour vous faciliter le quotidien</p>
+                        <p class="text-gray-600 mb-4">Un coup de main professionnel pour l'entretien de la maison et du linge, en toute confiance.</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Réservation à l'heure</span>
                             <span class="text-yellow-500 font-semibold">4.7/5</span>
@@ -473,7 +496,7 @@
 
                 <!-- Courses à domicile -->
                 <div class="service-card" onclick="openServiceModal('Courses à domicile')">
-                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                    <div class="service-image" style="background-image: url('https://i.postimg.cc/XN97HV71/courses.png')">
                         <div class="service-overlay">
                             <span class="text-white text-lg font-semibold">Réserver maintenant</span>
                         </div>
@@ -489,7 +512,7 @@
                                 <i class="fas fa-star"></i>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Nous faisons vos courses et vous les livrons directement chez vous</p>
+                        <p class="text-gray-600 mb-4">Nous faisons les courses pour vous ou avec vous, selon vos envies et vos besoins.</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Forfait 2h minimum</span>
                             <span class="text-yellow-500 font-semibold">4.9/5</span>
@@ -499,7 +522,7 @@
 
                 <!-- Coiffure à domicile -->
                 <div class="service-card" onclick="openServiceModal('Coiffure à domicile')">
-                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                    <div class="service-image" style="background-image: url('https://i.postimg.cc/hPg4NHXD/coiffure.png')">
                         <div class="service-overlay">
                             <span class="text-white text-lg font-semibold">Réserver maintenant</span>
                         </div>
@@ -515,7 +538,7 @@
                                 <i class="far fa-star"></i>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Services de coiffure professionnels dans le confort de votre domicile</p>
+                        <p class="text-gray-600 mb-4">Des professionnels qualifiés viennent à domicile pour prendre soin de vous.</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Forfait 1h30 minimum</span>
                             <span class="text-yellow-500 font-semibold">4.5/5</span>
@@ -525,7 +548,7 @@
 
                 <!-- Jardinage -->
                 <div class="service-card" onclick="openServiceModal('Jardinage')">
-                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                    <div class="service-image" style="background-image: url('https://i.postimg.cc/1twPjHPV/jardinage.png')">
                         <div class="service-overlay">
                             <span class="text-white text-lg font-semibold">Réserver maintenant</span>
                         </div>
@@ -541,7 +564,7 @@
                                 <i class="fas fa-star-half-alt"></i>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Entretien de votre jardin et espaces verts par des professionnels</p>
+                        <p class="text-gray-600 mb-4">Entretien de votre jardin, pelouse, haies ou potager par des intervenants expérimentés.</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Réservation à l'heure</span>
                             <span class="text-yellow-500 font-semibold">4.6/5</span>
@@ -551,7 +574,7 @@
 
                 <!-- Transport accompagné -->
                 <div class="service-card" onclick="openServiceModal('Transport accompagné')">
-                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1576765168632-a75460691c3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                    <div class="service-image" style="background-image: url('https://i.postimg.cc/Kc7x7JJd/Transport.png')">
                         <div class="service-overlay">
                             <span class="text-white text-lg font-semibold">Réserver maintenant</span>
                         </div>
@@ -567,7 +590,7 @@
                                 <i class="fas fa-star"></i>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Service de taxi adapté aux personnes âgées avec accompagnement</p>
+                        <p class="text-gray-600 mb-4">Un accompagnement sûr et chaleureux pour vos trajets et rendez-vous importants.</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Forfait 2h minimum</span>
                             <span class="text-yellow-500 font-semibold">4.8/5</span>
@@ -577,7 +600,7 @@
 
                 <!-- Assistance / Secours -->
                 <div class="service-card" onclick="openServiceModal('Assistance / Secours')">
-                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                    <div class="service-image" style="background-image: url('https://i.postimg.cc/DyBhHmV6/assistance.png')">
                         <div class="service-overlay">
                             <span class="text-white text-lg font-semibold">Réserver maintenant</span>
                         </div>
@@ -593,7 +616,7 @@
                                 <i class="fas fa-star"></i>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Aide médicale et assistance infirmière à domicile</p>
+                        <p class="text-gray-600 mb-4">Une aide rapide et humaine en cas de besoin urgent ou de situation délicate à domicile.</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Service prioritaire</span>
                             <span class="text-yellow-500 font-semibold">5.0/5</span>
@@ -603,7 +626,7 @@
 
                 <!-- Homme à tout faire -->
                 <div class="service-card" onclick="openServiceModal('Homme à tout faire')">
-                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                    <div class="service-image" style="background-image: url('https://i.postimg.cc/DwzHfByW/19.png')">
                         <div class="service-overlay">
                             <span class="text-white text-lg font-semibold">Réserver maintenant</span>
                         </div>
@@ -619,7 +642,7 @@
                                 <i class="fas fa-star-half-alt"></i>
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Bricolage et petites réparations par des professionnels</p>
+                        <p class="text-gray-600 mb-4">Petits travaux de bricolage, montages, réparations diverses avec soin et efficacité.</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Réservation à l'heure</span>
                             <span class="text-yellow-500 font-semibold">4.7/5</span>
@@ -629,7 +652,7 @@
 
                 <!-- Visite bénévole -->
                 <div class="service-card" onclick="openServiceModal('Visite bénévole')">
-                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1545996124-0501ebae84d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                    <div class="service-image" style="background-image: url('https://i.postimg.cc/52jKWynL/20.png')">
                         <div class="service-overlay">
                             <span class="text-white text-lg font-semibold">Service gratuit</span>
                         </div>
@@ -641,7 +664,7 @@
                                 GRATUIT
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Compagnie et soutien moral par nos bénévoles dévoués</p>
+                        <p class="text-gray-600 mb-4">Recevez la visite chaleureuse d'un bénévole pour discuter, rompre la solitude et partager un moment.</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Service bénévole</span>
                             <span class="text-yellow-500 font-semibold">5.0/5</span>
@@ -651,7 +674,7 @@
 
                 <!-- Commande de repas -->
                 <div class="service-card" onclick="openServiceModal('Commande de repas')">
-                    <div class="service-image" style="background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+                    <div class="service-image" style="background-image: url('https://i.postimg.cc/GmBKSNmj/21.png')">
                         <div class="service-overlay">
                             <span class="text-white text-lg font-semibold">Service gratuit</span>
                         </div>
@@ -663,7 +686,7 @@
                                 GRATUIT
                             </div>
                         </div>
-                        <p class="text-gray-600 mb-4">Livraison de repas restaurant équilibrés directement chez vous</p>
+                        <p class="text-gray-600 mb-4">Besoin d'un repas livré chez vous ? Nous vous mettons en lien avec le CPAS ou la Commune.</p>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Service CPAS</span>
                             <span class="text-yellow-500 font-semibold">4.6/5</span>
@@ -838,59 +861,46 @@
                         <input type="text" id="service-type" name="service-type" readonly>
                     </div>
                     
-                    <!-- Numéro de client -->
                     <div class="form-group">
-                        <label for="client-number">Votre numéro de client</label>
-                        <input type="text" id="client-number" name="client-number" required placeholder="Votre numéro client Viiveo">
+                        <label for="client-password">🔒 Mot de passe</label>
+                        <input type="password" id="client-password" name="password" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="client-password">Mot de passe</label>
-                        <input type="password" id="client-password" name="client-password" required>
+                        <label for="client-firstname">👤 Prénom</label>
+                        <input type="text" id="client-firstname" name="prenom" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="client-firstname">Prénom</label>
-                        <input type="text" id="client-firstname" name="client-firstname" required>
+                        <label for="client-lastname">👤 Nom</label>
+                        <input type="text" id="client-lastname" name="nom" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="client-lastname">Nom</label>
-                        <input type="text" id="client-lastname" name="client-lastname" required>
+                        <label for="client-address">🏠 Adresse complète</label>
+                        <input type="text" id="client-address" name="adresse" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="client-address">Adresse complète</label>
-                        <input type="text" id="client-address" name="client-address" required>
+                        <label for="client-email">📧 Email</label>
+                        <input type="email" id="client-email" name="email" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="client-email">Email</label>
-                        <input type="email" id="client-email" name="client-email" required>
+                        <label for="service-name">🛎️ Nature du service</label>
+                        <input type="text" id="service-name" name="service" readonly>
                     </div>
 
                     <div class="form-group">
-                        <label>Nombre d'heures souhaitées</label>
-                        <div class="hours-selector">
-                            <div class="hours-btn" data-hours="1" onclick="selectHours(1)">1h</div>
-                            <div class="hours-btn" data-hours="2" onclick="selectHours(2)">2h</div>
-                            <div class="hours-btn" data-hours="3" onclick="selectHours(3)">3h</div>
-                            <div class="hours-btn" data-hours="4" onclick="selectHours(4)">4h</div>
-                            <div class="hours-btn" data-hours="5" onclick="selectHours(5)">5h</div>
-                            <input type="hidden" id="selected-hours" name="selected-hours" value="2" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="booking-date">Date souhaitée</label>
+                        <label for="booking-date">📅 Date souhaitée</label>
                         <div class="calendar-container">
-                            <input type="text" id="booking-date" name="booking-date" placeholder="Sélectionnez une date" required>
+                            <input type="text" id="booking-date" name="date" placeholder="Sélectionnez une date" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="booking-time">Heure de début</label>
-                        <select id="booking-time" name="booking-time" required>
+                        <label for="booking-time">⏰ Heure de passage souhaitée</label>
+                        <select id="booking-time" name="heure" required>
                             <option value="">Sélectionnez une heure</option>
                             <option value="08:00">08:00</option>
                             <option value="09:00">09:00</option>
@@ -904,16 +914,20 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="prestataire">Choisir un prestataire (optionnel)</label>
+                        <label for="prestataire">🔽 Choisir un prestataire (optionnel)</label>
                         <select id="prestataire" name="prestataire">
                             <option value="">Pas de préférence</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="special-requests">Informations complémentaires</label>
-                        <textarea id="special-requests" name="special-requests" rows="3" placeholder="Décrivez vos besoins spécifiques..."></textarea>
+                        <label for="special-requests">📝 Commentaire</label>
+                        <textarea id="special-requests" name="commentaire" rows="3" placeholder="Décrivez vos besoins spécifiques..."></textarea>
                     </div>
+
+                    <!-- Champs cachés pour prénom et nom du prestataire -->
+                    <input type="hidden" name="prenom_prestataire" value="">
+                    <input type="hidden" name="nom_prestataire" value="">
 
                     <div class="credit-info">
                         <p class="text-sm text-gray-700">
@@ -925,16 +939,16 @@
                     </div>
 
                     <button type="submit" class="btn-primary text-white w-full py-3 rounded-lg font-semibold mt-4">
-                        Confirmer la réservation
+                        Envoyer la demande
                     </button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Loader -->
-    <div id="loader" class="loader">
-        <div class="loader-content">
+    <!-- Loader Viiveo -->
+    <div class="viiveo-loader" id="viiveo-loader">
+        <div class="viiveo-loader-content">
             <div class="spinner"></div>
             <p>Envoi en cours...</p>
         </div>
@@ -944,6 +958,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
     <script>
         const API_BASE_URL = 'https://gaetano1747.gm-harchies.workers.dev';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec';
         let currentService = '';
 
         // Configuration du calendrier
@@ -959,17 +974,29 @@
             ]
         });
 
+        // Mapping des services pour les prestataires
+        const serviceToSpecialiteMap = {
+            'Aide ménagère': 'Aide ménagère',
+            'Courses à domicile': 'Courses à domicile',
+            'Coiffure à domicile': 'Coiffure à domicile',
+            'Jardinage': 'Jardinage',
+            'Transport accompagné': 'Transport accompagné',
+            'Assistance / Secours': 'Assistance / Secours',
+            'Homme à tout faire': 'Homme à tout faire',
+            'Visite bénévole': 'Bénévole',
+            'Commande de repas': 'Livraison de repas'
+        };
+
         function openServiceModal(service) {
             currentService = service;
             const modal = document.getElementById('service-modal');
             const title = document.getElementById('modal-title');
             const serviceType = document.getElementById('service-type');
+            const serviceName = document.getElementById('service-name');
             
-            title.textContent = `Réservation : ${service}`;
+            title.textContent = `Demande : ${service}`;
             serviceType.value = service;
-            
-            // Réinitialiser la sélection d'heures
-            selectHours(2);
+            serviceName.value = service;
             
             // Charger les prestataires disponibles
             loadPrestataires(service);
@@ -978,131 +1005,117 @@
             document.body.style.overflow = 'hidden';
         }
 
-        function selectHours(hours) {
-            // Retirer la classe selected de tous les boutons
-            document.querySelectorAll('.hours-btn').forEach(btn => {
-                btn.classList.remove('selected');
-            });
-            
-            // Ajouter la classe selected au bouton cliqué
-            const selectedBtn = document.querySelector(`.hours-btn[data-hours="${hours}"]`);
-            if (selectedBtn) {
-                selectedBtn.classList.add('selected');
-            }
-            
-            // Mettre à jour la valeur cachée
-            document.getElementById('selected-hours').value = hours;
-        }
-
         function closeModal() {
             const modal = document.getElementById('service-modal');
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
             document.getElementById('booking-form').reset();
-            selectHours(2); // Réinitialiser à 2h
         }
 
-        async function loadPrestataires(serviceType) {
-            const select = document.getElementById('prestataire');
-            select.innerHTML = '<option value="">Chargement...</option>';
+        // Fonction pour gérer la réponse des prestataires
+        window.handleDropdownResponse = function(result, selectId) {
+            const selectElement = document.getElementById(selectId);
+            if (!selectElement) return;
 
-            try {
-                // Utilisation de JSONP pour contourner les problèmes CORS
-                const callbackName = `prestatairesCallback_${Date.now()}`;
-                
-                window.handlePrestatairesResponse = function(result) {
-                    select.innerHTML = '<option value="">Pas de préférence</option>';
-                    
-                    if (result && result.success && Array.isArray(result.prestataires)) {
-                        result.prestataires.forEach(presta => {
-                            const option = document.createElement('option');
-                            option.value = presta.email || presta.nomComplet;
-                            option.textContent = presta.nomComplet || `${presta.prenom} ${presta.nom}`;
-                            if (presta.rating) {
-                                option.textContent += ` ★ ${presta.rating}`;
-                            }
-                            select.appendChild(option);
-                        });
-                    } else {
-                        select.innerHTML = '<option value="">Aucun prestataire disponible</option>';
-                    }
-                };
+            selectElement.innerHTML = '<option value="" selected>Pas de préférence</option>';
 
-                const script = document.createElement('script');
-                script.src = `${API_BASE_URL}?type=dropdown&specialite=${encodeURIComponent(serviceType)}&callback=handlePrestatairesResponse`;
-                document.body.appendChild(script);
-
-            } catch (error) {
-                console.error('Erreur chargement prestataires:', error);
-                select.innerHTML = '<option value="">Aucun prestataire disponible</option>';
+            if (result && result.success && Array.isArray(result.prestataires)) {
+                result.prestataires.forEach(presta => {
+                    const option = document.createElement('option');
+                    option.value = presta.nomComplet || `${presta.prenom} ${presta.nom}`;
+                    option.textContent = presta.nomComplet || `${presta.prenom} ${presta.nom}`;
+                    selectElement.appendChild(option);
+                });
+            } else {
+                console.warn("Réponse inattendue ou vide:", result);
+                selectElement.innerHTML = '<option value="" selected>Aucun prestataire disponible</option>';
             }
+        };
+
+        function loadPrestataires(service) {
+            const selectElement = document.getElementById('prestataire');
+            if (!selectElement) return;
+
+            selectElement.innerHTML = '<option value="" selected>Chargement...</option>';
+
+            const specialite = serviceToSpecialiteMap[service] || service;
+            const callbackName = `jsonpCallback_${Date.now()}`;
+            
+            window[callbackName] = function (data) {
+                window.handleDropdownResponse(data, 'prestataire');
+                delete window[callbackName];
+                script.remove();
+            };
+
+            const encodedType = encodeURIComponent(specialite);
+            const url = `${API_BASE_URL}?type=dropdown&specialite=${encodedType}&callback=${callbackName}`;
+            const script = document.createElement("script");
+            script.src = url;
+            document.body.appendChild(script);
         }
 
         async function submitBooking(event) {
             event.preventDefault();
             
-            const loader = document.getElementById('loader');
+            const loader = document.getElementById('viiveo-loader');
             const submitButton = event.target.querySelector('button[type="submit"]');
             
             // Afficher le loader
             loader.style.display = 'flex';
             submitButton.disabled = true;
             
+            // Gérer la séparation prénom/nom prestataire
+            const selectPrestataire = event.target.querySelector('select[name="prestataire"]');
+            const fullName = selectPrestataire?.value || "";
+
+            const prenomInput = event.target.querySelector('input[name="prenom_prestataire"]');
+            const nomInput = event.target.querySelector('input[name="nom_prestataire"]');
+
+            if (prenomInput && nomInput) {
+                if (fullName.trim() && fullName !== "Pas de préférence") {
+                    const parts = fullName.trim().split(" ");
+                    prenomInput.value = parts.shift() || "";
+                    nomInput.value = parts.join(" ") || "";
+                } else {
+                    prenomInput.value = "";
+                    nomInput.value = "";
+                }
+            }
+
             const formData = new FormData(event.target);
-            const bookingData = {
-                type: 'formClient',
-                service: formData.get('service-type'),
-                password: formData.get('client-password'),
-                prenom: formData.get('client-firstname'),
-                nom: formData.get('client-lastname'),
-                adresse: formData.get('client-address'),
-                email: formData.get('client-email'),
-                clientNumber: formData.get('client-number'),
-                hours: formData.get('selected-hours'),
-                date: formData.get('booking-date'),
-                time: formData.get('booking-time'),
-                prestataire: formData.get('prestataire'),
-                commentaire: formData.get('special-requests'),
-                timestamp: new Date().toISOString()
-            };
 
             try {
-                const response = await fetch(API_BASE_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(bookingData)
+                const response = await fetch(`${API_BASE_URL}?type=formClient`, {
+                    method: "POST",
+                    body: formData,
                 });
 
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`Erreur serveur: ${response.statusText}`);
 
                 const result = await response.json();
 
                 if (result.success) {
-                    let message = '✅ Réservation confirmée ! Un prestataire vous contactera rapidement';
+                    let message = `✅ ${result.message || "Demande envoyée avec succès !"}`;
                     
                     // Message spécial pour les services gratuits
                     if (currentService === 'Visite bénévole' || currentService === 'Commande de repas') {
-                        message += '. Ce service est entièrement gratuit.';
+                        message += ' Ce service est entièrement gratuit.';
                     } else {
-                        message += ' pour convenir du tarif.';
+                        message += ' Le prestataire vous contactera pour convenir du tarif.';
                     }
                     
                     alert(message);
                     closeModal();
                 } else {
-                    throw new Error(result.message || 'Erreur lors de la réservation');
+                    alert(`⚠️ ${result.message || "Erreur côté serveur."}`);
                 }
-            } catch (error) {
-                console.error('Erreur:', error);
-                alert('❌ Erreur lors de la réservation. Veuillez réessayer. Détail: ' + error.message);
+
+            } catch (err) {
+                alert("❌ Problème de connexion : " + err.message);
+                console.error(err);
             } finally {
-                // Cacher le loader
-                loader.style.display = 'none';
+                // Masquer le loader et réactiver le bouton
+                loader.style.display = "none";
                 submitButton.disabled = false;
             }
         }
@@ -1126,8 +1139,12 @@
                 }
             });
 
-            // Initialiser la sélection d'heures par défaut
-            selectHours(2);
+            // Fermer le menu mobile en cliquant sur un lien
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('open');
+                });
+            });
         });
     </script>
 </body>
