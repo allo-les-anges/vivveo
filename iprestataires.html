@@ -52,15 +52,21 @@
         }
         
         .language-dropdown {
+            display: none;
             position: absolute;
             top: 100%;
             right: 0;
+            margin-top: 0.5rem;
+            width: 12rem;
             background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
             border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             z-index: 50;
-            min-width: 150px;
+        }
+        
+        .language-dropdown.show {
+            display: block;
         }
         
         .language-option {
@@ -79,6 +85,10 @@
         .language-option.active {
             background-color: #fef3c7;
             color: #92400e;
+        }
+
+        .language-option:not(:last-child) {
+            border-bottom: 1px solid #f3f4f6;
         }
 
         .nav-link {
@@ -104,10 +114,12 @@
         .mobile-menu {
             transform: translateY(-100%);
             transition: transform 0.3s ease;
+            display: none;
         }
 
         .mobile-menu.open {
             transform: translateY(0);
+            display: block;
         }
 
         /* Styles spécifiques à l'interface prestataire */
@@ -343,7 +355,7 @@
     </style>
 </head>
 <body>
-    <!-- Header Commun -->
+    <!-- Header Commun avec menu corrigé -->
     <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between py-4">
@@ -352,12 +364,12 @@
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
                 </a>
                 
-                <!-- Navigation Desktop -->
+                <!-- Navigation Desktop - MÊME STRUCTURE QUE SERVICES.HTML -->
                 <nav class="hidden lg:flex items-center space-x-8">
                     <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
-                    <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Formules</a>
-                    <a href="infos_prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Abonnement</a>
+                    <a href="prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
                     <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_client">Espace Client</a>
                     <a href="iprestataires.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </nav>
@@ -366,12 +378,12 @@
                 <div class="language-selector">
                     <button id="language-button" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
                         <span id="current-flag">🇫🇷</span>
-                        <span class="hidden sm:inline text-sm font-medium">FR</span>
+                        <span class="hidden sm:inline text-sm font-medium" id="current-language">FR</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
-                    <div id="language-dropdown" class="language-dropdown hidden">
+                    <div id="language-dropdown" class="language-dropdown">
                         <div class="language-option active" data-lang="fr">
                             <span>🇫🇷</span>
                             <span>Français</span>
@@ -399,13 +411,13 @@
                 </button>
             </div>
 
-            <!-- Menu Mobile -->
+            <!-- Menu Mobile - MÊME STRUCTURE QUE SERVICES.HTML -->
             <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
                 <div class="px-4 py-6 space-y-4">
                     <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
-                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Formules</a>
-                    <a href="infos_prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Prestataires</a>
+                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Abonnement</a>
+                    <a href="prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
                     <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
                     <a href="iprestataires.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </div>
@@ -565,8 +577,8 @@
                     <ul class="space-y-2 text-sm text-gray-300">
                         <li><a href="index.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_home">Accueil</a></li>
                         <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_services">Services</a></li>
-                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_formules">Formules</a></li>
-                        <li><a href="infos_prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Prestataires</a></li>
+                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_formules">Abonnement</a></li>
+                        <li><a href="prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a></li>
                     </ul>
                 </div>
 
@@ -664,8 +676,8 @@
                 // Navigation
                 nav_home: "Accueil",
                 nav_services: "Services",
-                nav_formules: "Formules",
-                nav_prestataires: "Prestataires",
+                nav_formules: "Abonnement",
+                nav_prestataires: "Découvrir nos Prestataires",
                 nav_client: "Espace Client",
                 nav_prestataires_space: "Espace Prestataire",
                 
@@ -742,8 +754,8 @@
             nl: {
                 nav_home: "Home",
                 nav_services: "Diensten",
-                nav_formules: "Formules",
-                nav_prestataires: "Dienstverleners",
+                nav_formules: "Abonnement",
+                nav_prestataires: "Onze Dienstverleners Ontdekken",
                 nav_client: "Klantenruimte",
                 nav_prestataires_space: "Dienstverlener Ruimte",
                 login_title: "Viiveo Dienstverlener Ruimte",
@@ -802,8 +814,8 @@
             en: {
                 nav_home: "Home",
                 nav_services: "Services",
-                nav_formules: "Plans",
-                nav_prestataires: "Providers",
+                nav_formules: "Subscription",
+                nav_prestataires: "Discover our Providers",
                 nav_client: "Client Space",
                 nav_prestataires_space: "Provider Space",
                 login_title: "Viiveo Provider Space",
@@ -862,8 +874,8 @@
             de: {
                 nav_home: "Startseite",
                 nav_services: "Dienstleistungen",
-                nav_formules: "Tarife",
-                nav_prestataires: "Dienstleister",
+                nav_formules: "Abonnement",
+                nav_prestataires: "Unsere Dienstleister Entdecken",
                 nav_client: "Kundenbereich",
                 nav_prestataires_space: "Dienstleister Bereich",
                 login_title: "Viiveo Dienstleister Bereich",
@@ -938,10 +950,7 @@
             const codes = { fr: 'FR', nl: 'NL', en: 'EN', de: 'DE' };
             
             document.getElementById('current-flag').textContent = flags[lang];
-            const codeElement = document.querySelector('#language-button .hidden');
-            if (codeElement) {
-                codeElement.textContent = codes[lang];
-            }
+            document.getElementById('current-language').textContent = codes[lang];
 
             document.querySelectorAll('.language-option').forEach(option => {
                 option.classList.remove('active');
@@ -1203,6 +1212,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Charger la langue sauvegardée
             const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
             changeLanguage(savedLanguage);
 
@@ -1213,18 +1223,18 @@
             if (languageButton && languageDropdown) {
                 languageButton.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    languageDropdown.classList.toggle('hidden');
+                    languageDropdown.classList.toggle('show');
                 });
 
                 document.addEventListener('click', function() {
-                    languageDropdown.classList.add('hidden');
+                    languageDropdown.classList.remove('show');
                 });
 
                 document.querySelectorAll('.language-option').forEach(option => {
                     option.addEventListener('click', function() {
                         const lang = this.getAttribute('data-lang');
                         changeLanguage(lang);
-                        languageDropdown.classList.add('hidden');
+                        languageDropdown.classList.remove('show');
                     });
                 });
             }
@@ -1244,6 +1254,13 @@
                 if (event.target.classList.contains('modal')) {
                     event.target.style.display = 'none';
                 }
+            });
+
+            // Fermer le menu mobile en cliquant sur un lien
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('open');
+                });
             });
 
             // Gestion du formulaire de profil
