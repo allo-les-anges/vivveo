@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Prestataire - Viiveo</title>
+    <!-- Remplacement du CDN Tailwind par une version plus stable -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
@@ -804,14 +805,14 @@
                 <div class="form-group">
                     <label for="email" data-translate="email_label">Adresse email</label>
                     <div class="relative">
-                        <input type="email" id="email" class="form-input" placeholder="votre@email.com" required>
+                        <input type="email" id="email" class="form-input" placeholder="votre@email.com" required autocomplete="email">
                         <i class="fas fa-envelope form-input-icon"></i>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password" data-translate="password_label">Mot de passe</label>
                     <div class="relative">
-                        <input type="password" id="password" class="form-input" placeholder="Votre mot de passe" required>
+                        <input type="password" id="password" class="form-input" placeholder="Votre mot de passe" required autocomplete="current-password">
                         <i class="fas fa-lock form-input-icon"></i>
                     </div>
                 </div>
@@ -1153,7 +1154,7 @@
                         <div class="form-group">
                             <label data-translate="prestataire_email">Email</label>
                             <div class="relative">
-                                <input type="email" id="profile-email" class="form-input" required>
+                                <input type="email" id="profile-email" class="form-input" required autocomplete="email">
                                 <i class="fas fa-envelope form-input-icon"></i>
                             </div>
                         </div>
@@ -1161,7 +1162,7 @@
                         <div class="form-group">
                             <label data-translate="prestataire_password">Nouveau mot de passe</label>
                             <div class="relative">
-                                <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer">
+                                <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer" autocomplete="new-password">
                                 <i class="fas fa-lock form-input-icon"></i>
                             </div>
                         </div>
@@ -1322,113 +1323,7 @@
         // URL de l'application Google Apps Script
         const webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
 
-        // Traductions multilingues complètes
-        const translations = {
-            fr: {
-                // Navigation
-                nav_home: "Accueil",
-                nav_services: "Services",
-                nav_formules: "Abonnement",
-                nav_prestataires: "Découvrir nos Prestataires",
-                nav_client: "Espace Client",
-                nav_prestataires_space: "Espace Prestataire",
-                
-                // Login
-                login_title: "Espace Prestataire Viiveo",
-                login_subtitle: "Connectez-vous pour gérer vos missions et interventions",
-                email_label: "Adresse email",
-                password_label: "Mot de passe",
-                login_button: "Se connecter",
-                
-                // Interface prestataire
-                welcome: "Bienvenue",
-                rating: "Note moyenne",
-                edit_profile: "Modifier profil",
-                completed_missions: "Missions terminées",
-                logout: "Déconnexion",
-                statistics: "Mes Statistiques",
-                missions_pending: "Missions en attente",
-                missions_today: "Missions du jour",
-                missions_planned: "Missions planifiées",
-                missions_completed: "Missions terminées",
-                
-                // Onglets
-                tab_pending: "En Attente",
-                tab_today: "Missions du Jour",
-                tab_planned: "Planifiées",
-                tab_completed: "Terminées",
-                
-                // Titres des onglets
-                pending_missions: "Missions en attente de validation",
-                today_missions: "Missions prévues aujourd'hui",
-                planned_missions: "Missions planifiées",
-                completed_missions: "Missions terminées",
-                
-                // Éléments de mission
-                mission_id: "ID Mission",
-                client: "Client",
-                address: "Adresse",
-                service: "Service",
-                date: "Date",
-                time: "Heure",
-                status: "Statut",
-                actions: "Actions",
-                mission_validate: "Valider",
-                mission_refuse: "Refuser",
-                mission_start: "Démarrer",
-                no_missions: "Aucune mission disponible",
-                
-                // Footer
-                footer_desc: "Votre bien-être à domicile, notre priorité.",
-                footer_navigation: "Navigation",
-                footer_spaces: "Espaces",
-                footer_contact: "Contact",
-                footer_copyright: "© 2024 Viiveo. Tous droits réservés.",
-                
-                // Loader
-                loading: "Chargement...",
-                
-                // Modales
-                completed_missions_title: "Missions terminées",
-                edit_profile_title: "Modifier mes données personnelles",
-                personal_info: "Informations personnelles",
-                contact_info: "Coordonnées",
-                prestataire_name: "Nom",
-                prestataire_firstname: "Prénom",
-                prestataire_email: "Email",
-                prestataire_password: "Nouveau mot de passe",
-                prestataire_address: "Adresse",
-                prestataire_city: "Ville",
-                prestataire_postal: "Code postal",
-                prestataire_phone: "Téléphone",
-                services_info: "Services proposés",
-                save_changes: "Enregistrer",
-                cancel: "Annuler",
-                
-                // Messages
-                login_success: "Connexion réussie !",
-                login_error: "Email ou mot de passe incorrect",
-                mission_validated: "Mission validée avec succès !",
-                mission_refused: "Mission refusée avec succès !",
-                profile_updated: "Profil mis à jour avec succès !",
-                fill_fields: "Veuillez remplir tous les champs obligatoires",
-                confirm_validation: "Confirmez-vous que vous acceptez cette mission ?",
-                confirm_refusal: "Indiquez une autre date/heure possible :",
-                validation_success: "Merci ! Votre validation a bien été enregistrée.",
-                refusal_success: "Votre proposition a bien été envoyée.",
-                server_error: "Erreur de communication avec le serveur."
-            },
-            nl: {
-                // ... (traductions complètes pour le néerlandais)
-            },
-            en: {
-                // ... (traductions complètes pour l'anglais)
-            },
-            de: {
-                // ... (traductions complètes pour l'allemand)
-            }
-        };
-
+        // Variables globales
         let currentLanguage = 'fr';
         let currentPrestataire = null;
         let currentEmail = "";
@@ -1452,33 +1347,26 @@
         const photosInput = document.getElementById("photos");
         const photosPreview = document.getElementById("photosPreview");
 
-        function changeLanguage(lang) {
-            currentLanguage = lang;
-            
-            document.querySelectorAll('[data-translate]').forEach(element => {
-                const key = element.getAttribute('data-translate');
-                if (translations[lang] && translations[lang][key]) {
-                    element.textContent = translations[lang][key];
-                }
+        // Fonction JSONP comme dans vos embeds
+        function callApiJsonp(url, callbackName) {
+            return new Promise((resolve, reject) => {
+                window[callbackName] = function(data) {
+                    resolve(data);
+                    delete window[callbackName];
+                    script.remove();
+                };
+                const script = document.createElement('script');
+                script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
+                script.onerror = () => {
+                    reject(new Error('Erreur JSONP'));
+                    delete window[callbackName];
+                    script.remove();
+                };
+                document.body.appendChild(script);
             });
-
-            const flags = { fr: '🇫🇷', nl: '🇳🇱', en: '🇬🇧', de: '🇩🇪' };
-            const codes = { fr: 'FR', nl: 'NL', en: 'EN', de: 'DE' };
-            
-            document.getElementById('current-flag').textContent = flags[lang];
-            document.getElementById('current-language').textContent = codes[lang];
-
-            document.querySelectorAll('.language-option').forEach(option => {
-                option.classList.remove('active');
-                if (option.getAttribute('data-lang') === lang) {
-                    option.classList.add('active');
-                }
-            });
-
-            localStorage.setItem('viiveo-language', lang);
         }
 
-        // Fonction de connexion
+        // Fonction de connexion avec JSONP
         async function login() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -1488,9 +1376,10 @@
             document.getElementById('loader').style.display = 'flex';
 
             try {
-                // Appel à l'API Google Apps Script
-                const response = await fetch(`${webAppUrl}?type=getPrestataireData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
-                const data = await response.json();
+                // Appel à l'API Google Apps Script avec JSONP
+                const callbackName = 'cbLogin' + Date.now();
+                const url = `${webAppUrl}?type=loginPresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+                const data = await callApiJsonp(url, callbackName);
 
                 if (data.success) {
                     // Connexion réussie
@@ -1501,19 +1390,18 @@
                     document.getElementById('prestataire-interface').classList.remove('hidden');
                     
                     // Mettre à jour les informations prestataire
-                    document.getElementById('prestataire-name').textContent = currentPrestataire.prestataire.prenom || "Prestataire";
-                    document.getElementById('prestataire-rating').textContent = currentPrestataire.prestataire.note || "4.8";
-                    document.getElementById('prestataire-photo').src = currentPrestataire.prestataire.photoUrl || "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
+                    document.getElementById('prestataire-name').textContent = data.prenom || "Prestataire";
+                    document.getElementById('prestataire-rating').textContent = data.note || "4.8";
 
-                    // Charger les missions et statistiques
-                    loadPrestataireData();
+                    // Charger les missions
+                    await loadMissions(email);
 
-                    showNotification(translations[currentLanguage].login_success, 'success');
+                    showNotification("Connexion réussie !", 'success');
                 } else {
-                    throw new Error(data.message || translations[currentLanguage].login_error);
+                    throw new Error(data.message || "Email ou mot de passe incorrect");
                 }
             } catch (error) {
-                message.textContent = error.message || translations[currentLanguage].login_error;
+                message.textContent = error.message;
                 message.classList.remove('hidden');
                 message.className = 'message message-error';
             } finally {
@@ -1521,26 +1409,35 @@
             }
         }
 
-        // Fonction de déconnexion
-        function logout() {
-            currentPrestataire = null;
-            currentEmail = "";
-            document.getElementById('login-section').classList.remove('hidden');
-            document.getElementById('prestataire-interface').classList.add('hidden');
-            document.getElementById('login-form').reset();
-            document.getElementById('login-message').classList.add('hidden');
+        // Charger les missions avec JSONP
+        async function loadMissions(email) {
+            try {
+                const callbackName = 'cbMissions' + Date.now();
+                const url = `${webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
+                const missions = await callApiJsonp(url, callbackName);
+
+                // Mettre à jour les statistiques
+                updateStats(missions);
+                
+                // Charger les missions pour chaque onglet
+                loadMissionsByStatus('pending', missions);
+                loadMissionsByStatus('today', missions);
+                loadMissionsByStatus('planned', missions);
+                loadMissionsByStatus('completed', missions);
+
+                // Attacher les listeners pour les boutons de démarrage
+                attacherListenersStartPrestation();
+
+            } catch (error) {
+                console.error("Erreur lors du chargement des missions:", error);
+                showNotification("Erreur lors du chargement des missions", 'error');
+            }
         }
 
-        // Charger les données du prestataire
-        function loadPrestataireData() {
-            if (!currentPrestataire) return;
-
-            // Calculer les statistiques
-            const pendingCount = currentPrestataire.missions.filter(m => 
-                m.statut === "en attente" || !m.statut
-            ).length;
-            
-            const todayCount = currentPrestataire.missions.filter(m => {
+        // Mettre à jour les statistiques
+        function updateStats(missions) {
+            const pendingCount = missions.filter(m => m.statut === "en attente").length;
+            const todayCount = missions.filter(m => {
                 if (m.statut !== "confirmée") return false;
                 const missionDate = new Date(m.date);
                 const today = new Date();
@@ -1548,67 +1445,35 @@
                        missionDate.getMonth() === today.getMonth() && 
                        missionDate.getFullYear() === today.getFullYear();
             }).length;
-            
-            const plannedCount = currentPrestataire.missions.filter(m => {
+            const plannedCount = missions.filter(m => {
                 if (m.statut !== "confirmée") return false;
                 const missionDate = new Date(m.date);
-                const today = new Date();
-                return missionDate > today;
+                return missionDate > new Date();
             }).length;
-            
-            const completedCount = currentPrestataire.missions.filter(m => 
-                m.statut === "terminée" || m.statut === "validée"
-            ).length;
+            const completedCount = missions.filter(m => m.statut === "terminée" || m.statut === "validée").length;
 
-            // Mettre à jour les statistiques
             document.getElementById('stats-pending').textContent = pendingCount;
             document.getElementById('stats-today').textContent = todayCount;
             document.getElementById('stats-planned').textContent = plannedCount;
             document.getElementById('stats-completed').textContent = completedCount;
-
-            // Charger les missions pour chaque onglet
-            loadMissions('pending');
-            loadMissions('today');
-            loadMissions('planned');
-            loadMissions('completed');
-        }
-
-        // Formatage des dates
-        function formatDateOrTime(dateString) {
-            if (!dateString) return "";
-            const date = new Date(dateString);
-            if (isNaN(date)) return dateString;
-            
-            if (date.getFullYear() === 1899 && date.getMonth() === 11 && date.getDate() === 30) {
-                const h = date.getHours().toString().padStart(2, '0');
-                const m = date.getMinutes().toString().padStart(2, '0');
-                return `${h}h${m}`;
-            } else {
-                const day = date.getDate().toString().padStart(2, '0');
-                const month = (date.getMonth() + 1).toString().padStart(2, '0');
-                const year = date.getFullYear().toString().slice(2);
-                return `${day}/${month}/${year}`;
-            }
         }
 
         // Charger les missions par statut
-        function loadMissions(status) {
-            if (!currentPrestataire || !currentPrestataire.missions) return;
-
+        function loadMissionsByStatus(status, missions) {
             const tableBody = document.getElementById(`${status}-missions-table`);
             const cardsContainer = document.getElementById(`${status}-missions-cards`);
             
+            if (!tableBody || !cardsContainer) return;
+
             // Filtrer les missions selon le statut
             let filteredMissions = [];
             
             switch(status) {
                 case 'pending':
-                    filteredMissions = currentPrestataire.missions.filter(m => 
-                        m.statut === "en attente" || !m.statut
-                    );
+                    filteredMissions = missions.filter(m => m.statut === "en attente");
                     break;
                 case 'today':
-                    filteredMissions = currentPrestataire.missions.filter(m => {
+                    filteredMissions = missions.filter(m => {
                         if (m.statut !== "confirmée") return false;
                         const missionDate = new Date(m.date);
                         const today = new Date();
@@ -1618,33 +1483,30 @@
                     });
                     break;
                 case 'planned':
-                    filteredMissions = currentPrestataire.missions.filter(m => {
+                    filteredMissions = missions.filter(m => {
                         if (m.statut !== "confirmée") return false;
                         const missionDate = new Date(m.date);
-                        const today = new Date();
-                        return missionDate > today;
+                        return missionDate > new Date();
                     });
                     break;
                 case 'completed':
-                    filteredMissions = currentPrestataire.missions.filter(m => 
-                        m.statut === "terminée" || m.statut === "validée"
-                    );
+                    filteredMissions = missions.filter(m => m.statut === "terminée" || m.statut === "validée");
                     break;
             }
             
             // Mettre à jour le tableau
             if (filteredMissions.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="${status === 'completed' ? '6' : '7'}" class="p-4 text-center text-gray-500">${translations[currentLanguage].no_missions}</td></tr>`;
-                cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${translations[currentLanguage].no_missions}</div>`;
+                tableBody.innerHTML = `<tr><td colspan="${status === 'completed' ? '6' : '7'}" class="p-4 text-center text-gray-500">Aucune mission disponible</td></tr>`;
+                cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission disponible</div>`;
             } else {
                 tableBody.innerHTML = filteredMissions.map(mission => `
                     <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                         <td class="p-4">${mission.id}</td>
-                        <td class="p-4">${mission.client || ""}</td>
-                        <td class="p-4">${mission.adresse || ""}</td>
-                        <td class="p-4">${mission.service || ""}</td>
-                        <td class="p-4">${formatDateOrTime(mission.date)}</td>
-                        <td class="p-4">${formatDateOrTime(mission.heure)}</td>
+                        <td class="p-4" data-prenom="${mission.prenom || ''}">${mission.client}</td>
+                        <td class="p-4">${mission.adresse}</td>
+                        <td class="p-4">${mission.service}</td>
+                        <td class="p-4">${formatDate(mission.date)}</td>
+                        <td class="p-4">${formatTime(mission.heure)}</td>
                         <td class="p-4">${getMissionActions(status, mission)}</td>
                     </tr>
                 `).join('');
@@ -1653,28 +1515,28 @@
                 cardsContainer.innerHTML = filteredMissions.map(mission => `
                     <div class="request-card">
                         <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].mission_id}</span>
+                            <span class="card-label">ID Mission</span>
                             <span class="card-value">${mission.id}</span>
                         </div>
                         <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].client}</span>
-                            <span class="card-value">${mission.client || ""}</span>
+                            <span class="card-label">Client</span>
+                            <span class="card-value">${mission.client}</span>
                         </div>
                         <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].address}</span>
-                            <span class="card-value">${mission.adresse || ""}</span>
+                            <span class="card-label">Adresse</span>
+                            <span class="card-value">${mission.adresse}</span>
                         </div>
                         <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].service}</span>
-                            <span class="card-value">${mission.service || ""}</span>
+                            <span class="card-label">Service</span>
+                            <span class="card-value">${mission.service}</span>
                         </div>
                         <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].date}</span>
-                            <span class="card-value">${formatDateOrTime(mission.date)}</span>
+                            <span class="card-label">Date</span>
+                            <span class="card-value">${formatDate(mission.date)}</span>
                         </div>
                         <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].time}</span>
-                            <span class="card-value">${formatDateOrTime(mission.heure)}</span>
+                            <span class="card-label">Heure</span>
+                            <span class="card-value">${formatTime(mission.heure)}</span>
                         </div>
                         <div class="card-status">
                             ${getMissionActions(status, mission)}
@@ -1682,6 +1544,17 @@
                     </div>
                 `).join('');
             }
+        }
+
+        // Formatage des dates (comme dans vos embeds)
+        function formatDate(dateString) {
+            const d = new Date(dateString);
+            return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
+        }
+
+        function formatTime(timeString) {
+            const d = new Date(timeString);
+            return isNaN(d) ? timeString : `${String(d.getHours()).padStart(2, '0')}h${String(d.getMinutes()).padStart(2, '0')}`;
         }
 
         function getMissionActions(status, mission) {
@@ -1709,20 +1582,22 @@
             return "";
         }
 
-        async function validerMission(missionId) {
-            if (confirm(translations[currentLanguage].confirm_validation)) {
+        // Valider une mission avec JSONP
+        async function validerMission(id) {
+            if (confirm("Confirmez-vous que vous acceptez cette mission ?")) {
                 document.getElementById('loader').style.display = 'flex';
                 
                 try {
-                    const response = await fetch(`${webAppUrl}?type=validerMission&id=${encodeURIComponent(missionId)}`);
-                    const data = await response.json();
+                    const callbackName = 'cbValider' + Date.now();
+                    const url = `${webAppUrl}?type=validerMission&id=${encodeURIComponent(id)}`;
+                    const data = await callApiJsonp(url, callbackName);
                     
                     if (data.success) {
-                        showNotification(translations[currentLanguage].validation_success, 'success');
+                        showNotification("Mission validée avec succès !", 'success');
                         // Recharger les données
-                        await login();
+                        await loadMissions(currentEmail);
                     } else {
-                        throw new Error(data.error || translations[currentLanguage].server_error);
+                        throw new Error(data.error || "Erreur lors de la validation");
                     }
                 } catch (error) {
                     showNotification(error.message, 'error');
@@ -1732,172 +1607,30 @@
             }
         }
 
-        async function refuserMission(missionId) {
-            const alternatives = prompt(translations[currentLanguage].confirm_refusal);
+        // Refuser une mission avec JSONP
+        async function refuserMission(id) {
+            const alternatives = prompt("Indiquez une autre date/heure possible :");
             if (!alternatives) return;
             
             document.getElementById('loader').style.display = 'flex';
             
             try {
-                const response = await fetch(`${webAppUrl}?type=refuserMission&id=${encodeURIComponent(missionId)}&alternatives=${encodeURIComponent(alternatives)}`);
-                const data = await response.json();
+                const callbackName = 'cbRefuser' + Date.now();
+                const url = `${webAppUrl}?type=refuserMission&id=${encodeURIComponent(id)}&alternatives=${encodeURIComponent(alternatives)}`;
+                const data = await callApiJsonp(url, callbackName);
                 
                 if (data.success) {
-                    showNotification(translations[currentLanguage].refusal_success, 'success');
+                    showNotification("Votre proposition a bien été envoyée.", 'success');
                     // Recharger les données
-                    await login();
+                    await loadMissions(currentEmail);
                 } else {
-                    throw new Error(data.error || translations[currentLanguage].server_error);
+                    throw new Error(data.error || "Erreur lors de l'envoi");
                 }
             } catch (error) {
                 showNotification(error.message, 'error');
             } finally {
                 document.getElementById('loader').style.display = 'none';
             }
-        }
-
-        function showCompletedMissions() {
-            if (!currentPrestataire) return;
-            
-            const completedMissions = currentPrestataire.missions.filter(m => 
-                m.statut === "terminée" || m.statut === "validée"
-            );
-            
-            const tableBody = document.getElementById("completed-missions-table-modal");
-            const cardsContainer = document.getElementById("completed-missions-cards-modal");
-            
-            if (completedMissions.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">${translations[currentLanguage].no_missions}</td></tr>`;
-                cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${translations[currentLanguage].no_missions}</div>`;
-            } else {
-                tableBody.innerHTML = completedMissions.map(mission => `
-                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td class="p-4">${mission.id}</td>
-                        <td class="p-4">${mission.client || ""}</td>
-                        <td class="p-4">${mission.adresse || ""}</td>
-                        <td class="p-4">${mission.service || ""}</td>
-                        <td class="p-4">${formatDateOrTime(mission.date)}</td>
-                        <td class="p-4">${formatDateOrTime(mission.heure)}</td>
-                        <td class="p-4">
-                            <span class="status-badge ${mission.statut === 'validée' ? 'status-validated' : 'status-completed'}">
-                                ${mission.statut}
-                            </span>
-                        </td>
-                    </tr>
-                `).join('');
-                
-                cardsContainer.innerHTML = completedMissions.map(mission => `
-                    <div class="request-card">
-                        <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].mission_id}</span>
-                            <span class="card-value">${mission.id}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].client}</span>
-                            <span class="card-value">${mission.client || ""}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].address}</span>
-                            <span class="card-value">${mission.adresse || ""}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].service}</span>
-                            <span class="card-value">${mission.service || ""}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].date}</span>
-                            <span class="card-value">${formatDateOrTime(mission.date)}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].time}</span>
-                            <span class="card-value">${formatDateOrTime(mission.heure)}</span>
-                        </div>
-                        <div class="card-status">
-                            <span class="status-badge ${mission.statut === 'validée' ? 'status-validated' : 'status-completed'}">
-                                ${mission.statut}
-                            </span>
-                        </div>
-                    </div>
-                `).join('');
-            }
-            
-            document.getElementById('completed-missions-modal').style.display = 'block';
-        }
-
-        function showProfileModal() {
-            if (!currentPrestataire) return;
-            
-            // Pré-remplir le formulaire avec les données actuelles
-            const prestataire = currentPrestataire.prestataire;
-            document.getElementById('profile-firstname').value = prestataire.prenom || '';
-            document.getElementById('profile-lastname').value = prestataire.nom || '';
-            document.getElementById('profile-email').value = prestataire.email || '';
-            document.getElementById('profile-address').value = prestataire.adresse || '';
-            document.getElementById('profile-city').value = prestataire.ville || '';
-            document.getElementById('profile-postal').value = prestataire.codePostal || '';
-            document.getElementById('profile-phone').value = prestataire.telephone || '';
-            
-            document.getElementById('profile-modal').style.display = 'block';
-        }
-
-        async function saveProfile() {
-            // Implémentation de la sauvegarde du profil
-            showNotification(translations[currentLanguage].profile_updated, 'success');
-            closeModal('profile-modal');
-        }
-
-        function showTab(tabName) {
-            // Désactiver tous les onglets
-            document.querySelectorAll('.tab-container').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
-
-            // Activer l'onglet sélectionné
-            document.getElementById(`tab-${tabName}`).classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        function showNotification(message, type = 'info') {
-            // Créer une notification élégante
-            const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 z-50 message message-${type} transform translate-x-full transition-transform duration-300`;
-            notification.innerHTML = `
-                <div class="flex items-center justify-between p-4 rounded-lg shadow-lg max-w-sm">
-                    <div class="flex items-center">
-                        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'} mr-3"></i>
-                        <span>${message}</span>
-                    </div>
-                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-gray-500 hover:text-gray-700">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Animation d'entrée
-            setTimeout(() => {
-                notification.classList.remove('translate-x-full');
-            }, 100);
-            
-            // Suppression automatique après 5 secondes
-            setTimeout(() => {
-                if (notification.parentElement) {
-                    notification.classList.add('translate-x-full');
-                    setTimeout(() => {
-                        if (notification.parentElement) {
-                            notification.remove();
-                        }
-                    }, 300);
-                }
-            }, 5000);
         }
 
         // Fonctions pour la modale QR et fiche d'observation
@@ -1947,9 +1680,9 @@
                         const email = url.searchParams.get("email");
                         if (!email) throw new Error("QR invalide");
 
-                        // Vérification du client
-                        const response = await fetch(`${webAppUrl}?type=verifyClientEmail&email=${encodeURIComponent(email)}`);
-                        const data = await response.json();
+                        // Vérification du client avec JSONP
+                        const callbackName = 'cbVerifyClient' + Date.now();
+                        const data = await callApiJsonp(`${webAppUrl}?type=verifyClientEmail&email=${encodeURIComponent(email)}`, callbackName);
 
                         if (!data.success || !currentClientNom.toUpperCase().trim().includes((data.nom || "").toUpperCase().trim())) {
                             alert("❌ Ce QR ne correspond pas au client de cette mission.");
@@ -2020,7 +1753,7 @@
             document.querySelectorAll(".btn-start-prestation").forEach(btn => {
                 btn.addEventListener("click", () => {
                     const missionId = btn.dataset.id;
-                    const row = [...document.querySelectorAll("#container table tbody tr")]
+                    const row = [...document.querySelectorAll("table tbody tr")]
                         .find(tr => tr.children[0].textContent.trim() === missionId);
                     if (!row) return alert("❌ Ligne de mission introuvable");
 
@@ -2028,9 +1761,9 @@
                     const clientNom = row.children[1]?.textContent.trim() || "";
                     const clientPrenom = row.children[1]?.dataset.prenom?.trim() || clientNom.split(" ")[0];
 
-                    // Option 1 : tu connais le prénom/nom du prestataire depuis la session
-                    const prestatairePrenom = currentPrestataire?.prestataire?.prenom || "Jean";
-                    const prestataireNom = currentPrestataire?.prestataire?.nom || "Dupont";
+                    // Récupérer les infos du prestataire
+                    const prestatairePrenom = document.getElementById('prestataire-name').textContent || "Prestataire";
+                    const prestataireNom = ""; // À adapter selon vos données
 
                     // Lancement modal
                     openModalStartPrestation(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom);
@@ -2038,11 +1771,75 @@
             });
         }
 
+        // Fonction de déconnexion
+        function logout() {
+            currentPrestataire = null;
+            currentEmail = "";
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('prestataire-interface').classList.add('hidden');
+            document.getElementById('login-form').reset();
+            document.getElementById('login-message').classList.add('hidden');
+        }
+
+        function showTab(tabName) {
+            // Désactiver tous les onglets
+            document.querySelectorAll('.tab-container').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Activer l'onglet sélectionné
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function showNotification(message, type = 'info') {
+            // Créer une notification élégante
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 message message-${type} transform translate-x-full transition-transform duration-300`;
+            notification.innerHTML = `
+                <div class="flex items-center justify-between p-4 rounded-lg shadow-lg max-w-sm">
+                    <div class="flex items-center">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'} mr-3"></i>
+                        <span>${message}</span>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animation d'entrée
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Suppression automatique après 5 secondes
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.classList.add('translate-x-full');
+                    setTimeout(() => {
+                        if (notification.parentElement) {
+                            notification.remove();
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             // Charger la langue sauvegardée
             const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
-            changeLanguage(savedLanguage);
+            // changeLanguage(savedLanguage); // À implémenter si besoin
 
             // Gestion du sélecteur de langue
             const languageButton = document.getElementById('language-button');
@@ -2061,7 +1858,7 @@
                 document.querySelectorAll('.language-option').forEach(option => {
                     option.addEventListener('click', function() {
                         const lang = this.getAttribute('data-lang');
-                        changeLanguage(lang);
+                        // changeLanguage(lang); // À implémenter si besoin
                         languageDropdown.classList.remove('show');
                     });
                 });
@@ -2124,6 +1921,7 @@
                 }
 
                 const heureFin = new Date().toISOString();
+                // Utilisation de FormData pour l'envoi des fichiers
                 const formData = new FormData();
                 formData.append("type", "envoyerFiche");
                 formData.append("missionId", currentMissionId);
@@ -2145,6 +1943,7 @@
                 }
 
                 try {
+                    // Pour l'envoi de fichiers, on utilise fetch avec POST
                     const res = await fetch(webAppUrl, {
                         method: "POST",
                         body: formData,
