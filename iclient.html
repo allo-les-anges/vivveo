@@ -1484,17 +1484,32 @@
 
         // Charger les données du client
         function loadClientData() {
+    console.log('🔍 loadClientData CALLED');
+    console.log('🔍 currentClient:', currentClient);
+    console.log('🔍 demandes count:', currentClient?.demandes?.length);
+    console.log('🔍 demandes content:', currentClient?.demandes);
+    
     if (!currentClient) return;
 
-    // CACHER la section statistiques si pas de demandes
-    const statsSection = document.querySelector('.client-section:nth-child(3)'); // Section statistiques
-    const tabsSection = document.querySelector('.client-section:nth-child(5)'); // Section onglets
+    // FILTRER les demandes vides
+    if (currentClient.demandes) {
+        currentClient.demandes = currentClient.demandes.filter(d => 
+            d.service && d.service.trim() !== "" && 
+            d.intervention && d.intervention.trim() !== ""
+        );
+        console.log('🔍 After filtering - demandes count:', currentClient.demandes.length);
+    }
+
+    const statsSection = document.querySelector('.client-section:nth-child(3)');
+    const tabsSection = document.querySelector('.client-section:nth-child(5)');
     
     if (!currentClient.demandes || currentClient.demandes.length === 0) {
+        console.log('🔍 NO MISSIONS - hiding sections');
         if (statsSection) statsSection.style.display = 'none';
         if (tabsSection) tabsSection.style.display = 'none';
         return;
     } else {
+        console.log('🔍 MISSIONS FOUND - showing sections');
         if (statsSection) statsSection.style.display = 'block';
         if (tabsSection) tabsSection.style.display = 'block';
     }
