@@ -1385,50 +1385,63 @@
 
         // Fonction de connexion AMÉLIORÉE
         async function login() {
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const message = document.getElementById('login-message');
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const message = document.getElementById('login-message');
 
-            // Validation des champs
-            if (!email || !password) {
-                message.textContent = translations[currentLanguage].fill_fields;
-                message.classList.remove('hidden');
-                message.className = 'message message-error';
-                return;
-            }
+    // Validation des champs
+    if (!email || !password) {
+        message.textContent = translations[currentLanguage].fill_fields;
+        message.classList.remove('hidden');
+        message.className = 'message message-error';
+        return;
+    }
 
-            // Afficher le loader
-            document.getElementById('loader').style.display = 'flex';
+    // Afficher le loader
+    document.getElementById('loader').style.display = 'flex';
 
-            try {
-                // Appel à l'API Google Apps Script - CORRECT
-                console.log('🔍 ENVOI REQUÊTE:', `${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`); // ← AJOUTEZ CETTE LIGNE
-                const response = await fetch(`${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
-                const data = await response.json();
-                console.log('🔍 RÉPONSE SERVEUR:', data); // ← AJOUTEZ CETTE LIGNE
+    try {
+        // Appel à l'API Google Apps Script - CORRECT
+        console.log('🔍 ENVOI REQUÊTE:', `${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
+        
+        const response = await fetch(`${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
+        const data = await response.json();
 
-                if (data.success) {
-                    // Connexion réussie
-                    currentClient = data;
+        console.log('🔍 RÉPONSE SERVEUR:', data);
 
-                    document.getElementById('login-section').classList.add('hidden');
-                    document.getElementById('client-interface').classList.remove('hidden');
-                    
-                    // DEBUG - Vérifier si les éléments existent
-                    console.log('🔍 client-name existe?:', document.getElementById('client-name'));
-                    console.log('🔍 client-credits existe?:', document.getElementById('client-credits'));
-                    console.log('🔍 Tous les éléments avec id:', document.querySelectorAll('[id]'));
-                    
-                    // Mettre à jour les informations client
+        if (data.success) {
+            // Connexion réussie
+            currentClient = data;
+
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('client-interface').classList.remove('hidden');
+
+            // ATTENDRE que le DOM soit mis à jour
+            setTimeout(() => {
+                try {
                     const clientNameElement = document.getElementById('client-name');
                     const clientCreditsElement = document.getElementById('client-credits');
-
-                    if (clientNameElement) {
-                    clientNameElement.textContent = currentClient.client.prenom || "Client";
+                    
+                    console.log('🔍 Recherche client-name...');
+                    console.log('🔍 Élément trouvé:', clientNameElement);
+                    
+                    if (!clientNameElement) {
+                        console.error('❌ client-name NON TROUVÉ !');
+                        // Créer l'élément manuellement si nécessaire
+                        const welcomeElement = document.querySelector('[data-translate="welcome"]');
+                        if (welcomeElement) {
+                            const span = document.createElement('span');
+                            span.id = 'client-name';
+                            span.className = 'text-blue-600';
+                            span.textContent = currentClient.client.prenom || "Client";
+                            welcomeElement.appendChild(span);
+                        }
+                    } else {
+                        clientNameElement.textContent = currentClient.client.prenom || "Client";
                     }
-
+                    
                     if (clientCreditsElement) {
-                    clientCreditsElement.textContent = currentClient.client.credits || 0;
+                        clientCreditsElement.textContent = currentClient.client.credits || 0;
                     }
                     
                     // Gestion de la photo de profil avec fallback
@@ -1442,18 +1455,23 @@
                     loadClientData();
 
                     showNotification(translations[currentLanguage].login_success, 'success');
-                } else {
-                    throw new Error(data.message || translations[currentLanguage].login_error);
+                    
+                } catch (error) {
+                    console.error('Erreur lors de la mise à jour UI:', error);
                 }
-            } catch (error) {
-                console.error('Erreur de connexion:', error);
-                message.textContent = error.message || translations[currentLanguage].login_error;
-                message.classList.remove('hidden');
-                message.className = 'message message-error';
-            } finally {
-                document.getElementById('loader').style.display = 'none';
-            }
+            }, 50);
+        } else {
+            throw new Error(data.message || translations[currentLanguage].login_error);
         }
+    } catch (error) {
+        console.error('Erreur de connexion:', error);
+        message.textContent = error.message || translations[currentLanguage].login_error;
+        message.classList.remove('hidden');
+        message.className = 'message message-error';
+    } finally {
+        document.getElementById('loader').style.display = 'none';
+    }
+}
 
         // Fonction de déconnexion
         function logout() {
