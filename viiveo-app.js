@@ -215,9 +215,9 @@ function handleLoginSuccess(response, email) {
     const userName = `${response.prenom} ${response.nom}`;
     showStatus(`Connexion réussie - Bienvenue ${userName}`, 'success');
     
-    // Charger les missions
-    log('LOGIN: Chargement des missions après connexion réussie...');
-    loadMissions();
+    // Charger les VRAIES missions depuis l'API
+    log('LOGIN: Chargement des vraies missions après connexion réussie...');
+    loadRealMissions();
     
     log('LOGIN: Fonction login() terminée.');
 }
@@ -242,9 +242,9 @@ function updateUIAfterLogin() {
     }
 }
 
-// Gestion des missions
-window.loadMissions = function() {
-    log('LOAD MISSIONS: Chargement des missions...');
+// Charger les VRAIES missions depuis l'API
+function loadRealMissions() {
+    log('LOAD MISSIONS: Chargement des vraies missions depuis l API...');
     
     // S'assurer que les conteneurs existent
     ensureMissionContainers();
@@ -260,31 +260,31 @@ window.loadMissions = function() {
     DOM.missionsContainer.style.display = 'none';
     DOM.emptyMissions.style.display = 'none';
     
-    // Simuler le chargement des missions (à remplacer par l'appel API réel)
-    setTimeout(() => {
-        // Ici, vous appelleriez votre API pour récupérer les missions
-        // Pour l'instant, on simule des données
-        const mockMissions = [
-            {
-                id: 1,
-                titre: "Installation fibre optique",
-                client: "Client A",
-                adresse: "123 Rue Example, Paris",
-                date: "2024-01-15",
-                statut: "planifiée"
-            },
-            {
-                id: 2,
-                titre: "Dépannage réseau",
-                client: "Client B", 
-                adresse: "456 Avenue Test, Lyon",
-                date: "2024-01-16",
-                statut: "en cours"
-            }
-        ];
+    // Appel API pour récupérer les vraies missions
+    const missionsUrl = `${CONFIG.API_BASE_URL}?type=getmissions&email=${encodeURIComponent(appState.currentUser.email)}`;
+    log(`LOAD MISSIONS: URL d'API pour les missions: ${missionsUrl}`);
+    
+    jsonpRequest(missionsUrl, 'cbMissions', function(response) {
+        log('LOAD MISSIONS: Réponse de l API missions:', response);
         
-        displayMissions(mockMissions);
-    }, 1000);
+        if (response.success && response.missions) {
+            displayMissions(response.missions);
+            showStatus(`${response.missions.length} mission(s) chargée(s)`, 'success');
+        } else {
+            log('LOAD MISSIONS: Aucune mission trouvée ou erreur API');
+            displayMissions([]);
+            showStatus('Aucune mission disponible', 'info');
+        }
+    });
+}
+
+// Gestion des missions
+window.loadMissions = function() {
+    if (appState.isLoggedIn) {
+        loadRealMissions();
+    } else {
+        showStatus('Veuillez vous connecter d abord', 'error');
+    }
 };
 
 function displayMissions(missions) {
@@ -302,13 +302,28 @@ function displayMissions(missions) {
         // Afficher les missions
         DOM.missionsContainer.innerHTML = missions.map(mission => `
             <div class="mission-card" data-mission-id="${mission.id}">
-                <h3>${mission.titre}</h3>
+                <h3>${mission.titre || 'Mission sans titre'}</h3>
                 <div class="mission-info">
-                    <p><strong>Client:</strong> ${mission.client}</p>
-                    <p><strong>Adresse:</strong> ${mission.adresse}</p>
-                    <p><strong>Date:</strong> ${mission.date}</p>
-                    <p><strong>Statut:</strong> <span class="status-${mission.statut}">${mission.statut}</span></p>
+                    ${mission.client ? `<p><strong>Client:</strong> ${mission.client}</p>` : ''}
+                    ${mission.adresse ? `<p><strong>Adresse:</strong> ${mission.adresse}</p>` : ''}
+                    ${mission.date ? `<p><strong>Date:</strong> ${mission.date}</p>` : ''}
+                    ${mission.heure ? `<p><strong>Heure:</strong> ${mission.heure}</p>` : ''}
+                    ${mission.statut ? `<p><strong>Statut:</strong> <span class="status-${mission.statut}">${mission.statut}</span></p>` : ''}
+                    ${mission.description ? `<p><strong>Description:</strong> ${mission.description}</p>` : ''}
+                    ${mission.telephone ? `<p><strong>Téléphone:</strong> ${mission.telephone}</p>` : ''}
+                    ${mission.priorite ? `<p><strong>Priorité:</strong> ${mission.priorite}</p>` : ''}
                 </div>
+                ${mission.statut === 'planifiée' ? `
+                    <div class="mission-actions">
+                        <button onclick="updateMissionStatus(${mission.id}, 'en_cours')" class="btn-accept">Commencer</button>
+                        <button onclick="updateMissionStatus(${mission.id}, 'annulée')" class="btn-decline">Refuser</button>
+                    </div>
+                ` : ''}
+                ${mission.statut === 'en_cours' ? `
+                    <div class="mission-actions">
+                        <button onclick="updateMissionStatus(${mission.id}, 'terminée')" class="btn-complete">Terminer</button>
+                    </div>
+                ` : ''}
             </div>
         `).join('');
         
@@ -321,9 +336,30 @@ function displayMissions(missions) {
     }
 }
 
+// Mettre à jour le statut d'une mission
+function updateMissionStatus(missionId, newStatus) {
+    log(`MISSION: Mise à jour mission ${missionId} vers statut ${newStatus}`);
+    
+    const updateUrl = `${CONFIG.API_BASE_URL}?type=updatemission&mission_id=${missionId}&statut=${newStatus}&email=${encodeURIComponent(appState.currentUser.email)}`;
+    
+    showStatus('Mise à jour de la mission...', 'info');
+    
+    jsonpRequest(updateUrl, 'cbUpdateMission', function(response) {
+        log('MISSION: Réponse mise à jour:', response);
+        
+        if (response.success) {
+            showStatus('Mission mise à jour avec succès', 'success');
+            // Recharger les missions
+            loadRealMissions();
+        } else {
+            showStatus('Erreur lors de la mise à jour', 'error');
+        }
+    });
+}
+
 function refreshMissions() {
     showStatus('Actualisation des missions...', 'info');
-    loadMissions();
+    loadRealMissions();
 }
 
 // Gestion de la déconnexion
@@ -388,7 +424,7 @@ function checkLoginStatus() {
             appState.isLoggedIn = true;
             appState.currentUser = user;
             updateUIAfterLogin();
-            loadMissions();
+            loadRealMissions();
             showStatus(`Reconnexion automatique - Bienvenue ${user.prenom} ${user.nom}`, 'success');
         } catch (e) {
             localStorage.removeItem('viiveo_user');
@@ -419,3 +455,4 @@ window.handleLogin = handleLogin;
 window.loadMissions = loadMissions;
 window.logout = logout;
 window.refreshMissions = refreshMissions;
+window.updateMissionStatus = updateMissionStatus;
