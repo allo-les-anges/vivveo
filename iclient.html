@@ -1402,8 +1402,10 @@
 
             try {
                 // Appel à l'API Google Apps Script - CORRECT
+                console.log('🔍 ENVOI REQUÊTE:', `${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`); // ← AJOUTEZ CETTE LIGNE
                 const response = await fetch(`${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
                 const data = await response.json();
+                console.log('🔍 RÉPONSE SERVEUR:', data); // ← AJOUTEZ CETTE LIGNE
 
                 if (data.success) {
                     // Connexion réussie
