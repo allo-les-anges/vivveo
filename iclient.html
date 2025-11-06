@@ -8,23 +8,34 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #facc15;
-            --primary-dark: #eab308;
-            --secondary-color: #1f2937;
+            --primary-color: #2563A0;
+            --primary-dark: #1e5285;
+            --secondary-color: #CF94B4;
             --light-color: #f8fafc;
             --text-color: #374151;
             --transition: all 0.3s ease;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text-color);
-            background: linear-gradient(135deg, #fefce8 0%, #fef3c7 50%, #fef9c3 100%);
+            background: transparent;
             min-height: 100vh;
         }
 
+        #background-wrapper {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('https://i.postimg.cc/7LX7CrC9/bkg-viive-cl.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(0.85);
+            z-index: -1;
+        }
+
         .gradient-bg {
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            background: linear-gradient(135deg, #2563A0 0%, #1e5285 100%);
         }
         
         .card-hover {
@@ -38,13 +49,13 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            background: linear-gradient(135deg, #2563A0 0%, #1e5285 100%);
             transition: var(--transition);
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(253, 224, 71, 0.4);
+            box-shadow: 0 10px 25px rgba(37, 99, 160, 0.4);
         }
 
         .language-selector {
@@ -83,8 +94,8 @@
         }
         
         .language-option.active {
-            background-color: #fef3c7;
-            color: #92400e;
+            background-color: #e1effe;
+            color: #1e40af;
         }
 
         .language-option:not(:last-child) {
@@ -124,12 +135,12 @@
 
         /* Styles spécifiques à l'interface client */
         .client-section {
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 1.5rem;
             padding: 2.5rem;
             margin-bottom: 2rem;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border: 2px solid #fef3c7;
+            border: 2px solid #e1effe;
             position: relative;
             overflow: hidden;
         }
@@ -141,7 +152,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            background: linear-gradient(135deg, #2563A0 0%, #1e5285 100%);
         }
 
         .client-photo {
@@ -149,8 +160,8 @@
             height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid #fde047;
-            box-shadow: 0 8px 20px rgba(253, 224, 71, 0.3);
+            border: 4px solid #2563A0;
+            box-shadow: 0 8px 20px rgba(37, 99, 160, 0.3);
         }
 
         .mission-card {
@@ -159,7 +170,7 @@
             padding: 1.5rem;
             margin-bottom: 1rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            border: 2px solid #fef3c7;
+            border: 2px solid #e1effe;
             transition: var(--transition);
             position: relative;
             overflow: hidden;
@@ -172,11 +183,11 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            background: linear-gradient(135deg, #2563A0 0%, #1e5285 100%);
         }
 
         .mission-card:hover {
-            border-color: #fde047;
+            border-color: #2563A0;
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
@@ -220,7 +231,7 @@
             padding: 1.5rem;
             text-align: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            border: 2px solid #fef3c7;
+            border: 2px solid #e1effe;
             transition: var(--transition);
             position: relative;
             overflow: hidden;
@@ -233,7 +244,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            background: linear-gradient(135deg, #2563A0 0%, #1e5285 100%);
         }
 
         .stats-card:hover {
@@ -244,7 +255,7 @@
         .stats-number {
             font-size: 2.5rem;
             font-weight: bold;
-            color: #facc15;
+            color: #2563A0;
             margin-bottom: 0.5rem;
         }
 
@@ -272,7 +283,7 @@
 
         .spinner {
             border: 4px solid #f3f3f3;
-            border-top: 4px solid #facc15;
+            border-top: 4px solid #2563A0;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -322,7 +333,7 @@
         }
 
         .modal-header {
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            background: linear-gradient(135deg, #2563A0 0%, #1e5285 100%);
             padding: 2rem;
             border-radius: 1.5rem 1.5rem 0 0;
             color: white;
@@ -375,8 +386,8 @@
 
         .form-input:focus {
             outline: none;
-            border-color: #facc15;
-            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.1);
+            border-color: #2563A0;
+            box-shadow: 0 0 0 3px rgba(37, 99, 160, 0.1);
             background: white;
             transform: translateY(-1px);
         }
@@ -395,7 +406,7 @@
         }
 
         .form-input:focus + .form-input-icon {
-            color: #facc15;
+            color: #2563A0;
         }
 
         .form-section {
@@ -420,7 +431,7 @@
         }
 
         .form-section-title i {
-            color: #facc15;
+            color: #2563A0;
         }
 
         .tab-container {
@@ -450,13 +461,13 @@
         }
 
         .tab-button.active {
-            color: #facc15;
-            border-bottom-color: #facc15;
+            color: #2563A0;
+            border-bottom-color: #2563A0;
         }
 
         .tab-button:hover:not(.active) {
             color: #374151;
-            background: #fef3c7;
+            background: #e1effe;
         }
 
         /* Styles pour l'affichage mobile en cartes */
@@ -470,7 +481,7 @@
             padding: 1.5rem;
             margin-bottom: 1rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            border: 2px solid #fef3c7;
+            border: 2px solid #e1effe;
             position: relative;
             transition: var(--transition);
         }
@@ -482,7 +493,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            background: linear-gradient(135deg, #2563A0 0%, #1e5285 100%);
             border-radius: 1rem 1rem 0 0;
         }
 
@@ -533,7 +544,7 @@
 
         /* Boutons améliorés */
         .btn-elegant {
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            background: linear-gradient(135deg, #2563A0 0%, #1e5285 100%);
             color: white;
             padding: 1rem 2rem;
             border: none;
@@ -542,7 +553,7 @@
             font-size: 1rem;
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 4px 12px rgba(250, 204, 21, 0.3);
+            box-shadow: 0 4px 12px rgba(37, 99, 160, 0.3);
             position: relative;
             overflow: hidden;
         }
@@ -564,7 +575,7 @@
 
         .btn-elegant:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(250, 204, 21, 0.4);
+            box-shadow: 0 8px 20px rgba(37, 99, 160, 0.4);
         }
 
         .btn-secondary {
@@ -580,8 +591,8 @@
         }
 
         .btn-secondary:hover {
-            border-color: #facc15;
-            color: #facc15;
+            border-color: #2563A0;
+            color: #2563A0;
             transform: translateY(-1px);
         }
 
@@ -643,6 +654,9 @@
     </style>
 </head>
 <body>
+    <!-- Background -->
+    <div id="background-wrapper"></div>
+
     <!-- Header Commun -->
     <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="container mx-auto px-4">
@@ -654,12 +668,12 @@
                 
                 <!-- Navigation Desktop -->
                 <nav class="hidden lg:flex items-center space-x-8">
-                    <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
-                    <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
-                    <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Abonnement</a>
-                    <a href="prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
-                    <a href="iclient.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_client">Espace Client</a>
-                    <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-translate="nav_home">Accueil</a>
+                    <a href="nos_services.html" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-translate="nav_services">Services</a>
+                    <a href="formules.html" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-translate="nav_formules">Abonnement</a>
+                    <a href="prestataires.html" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
+                    <a href="iclient.html" class="nav-link text-blue-600 font-medium border-b-2 border-blue-600" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </nav>
 
                 <!-- Sélecteur de langue -->
@@ -702,12 +716,12 @@
             <!-- Menu Mobile -->
             <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
                 <div class="px-4 py-6 space-y-4">
-                    <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
-                    <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
-                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Abonnement</a>
-                    <a href="prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
-                    <a href="iclient.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_client">Espace Client</a>
-                    <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                    <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
+                    <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
+                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Abonnement</a>
+                    <a href="prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
+                    <a href="iclient.html" class="block py-3 px-4 text-blue-600 bg-blue-50 rounded-lg font-medium" data-translate="nav_client">Espace Client</a>
+                    <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </div>
             </div>
         </div>
@@ -718,7 +732,7 @@
         <!-- Section de connexion -->
         <div id="login-section" class="client-section max-w-md mx-auto text-center">
             <div class="mb-8">
-                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 flex items-center justify-center">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 flex items-center justify-center">
                     <i class="fas fa-user text-white text-2xl"></i>
                 </div>
                 <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2" data-translate="login_title">
@@ -765,10 +779,10 @@
                         </div>
                         <div class="text-left">
                             <h2 class="text-2xl font-bold text-gray-800" data-translate="welcome">
-                                Bienvenue, <span id="client-name" class="text-yellow-500">Client</span> !
+                                Bienvenue, <span id="client-name" class="text-blue-600">Client</span> !
                             </h2>
                             <p class="text-gray-600 flex items-center">
-                                <i class="fas fa-coins text-yellow-500 mr-2"></i>
+                                <i class="fas fa-coins text-blue-600 mr-2"></i>
                                 <span data-translate="credits_available">Crédits disponibles</span> : 
                                 <strong class="ml-1 text-lg"><span id="client-credits">0</span></strong>
                             </p>
@@ -794,7 +808,7 @@
             <!-- Statistiques -->
             <div class="client-section">
                 <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center" data-translate="statistics">
-                    <i class="fas fa-chart-bar text-yellow-500 mr-3"></i>
+                    <i class="fas fa-chart-bar text-blue-600 mr-3"></i>
                     Mes Statistiques
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -820,7 +834,7 @@
             <!-- Actions rapides -->
             <div class="client-section">
                 <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center" data-translate="quick_actions">
-                    <i class="fas fa-bolt text-yellow-500 mr-3"></i>
+                    <i class="fas fa-bolt text-blue-600 mr-3"></i>
                     Actions rapides
                 </h3>
                 <div class="flex flex-wrap gap-4">
@@ -978,10 +992,10 @@
                 <div>
                     <h4 class="font-semibold mb-4" data-translate="footer_navigation">Navigation</h4>
                     <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="index.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_home">Accueil</a></li>
-                        <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_services">Services</a></li>
-                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_formules">Abonnement</a></li>
-                        <li><a href="prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a></li>
+                        <li><a href="index.html" class="hover:text-blue-400 transition-colors" data-translate="nav_home">Accueil</a></li>
+                        <li><a href="nos_services.html" class="hover:text-blue-400 transition-colors" data-translate="nav_services">Services</a></li>
+                        <li><a href="formules.html" class="hover:text-blue-400 transition-colors" data-translate="nav_formules">Abonnement</a></li>
+                        <li><a href="prestataires.html" class="hover:text-blue-400 transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a></li>
                     </ul>
                 </div>
 
@@ -989,8 +1003,8 @@
                 <div>
                     <h4 class="font-semibold mb-4" data-translate="footer_spaces">Espaces</h4>
                     <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="iclient.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_client">Espace Client</a></li>
-                        <li><a href="iprestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a></li>
+                        <li><a href="iclient.html" class="hover:text-blue-400 transition-colors" data-translate="nav_client">Espace Client</a></li>
+                        <li><a href="iprestataires.html" class="hover:text-blue-400 transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a></li>
                     </ul>
                 </div>
 
@@ -1001,13 +1015,13 @@
                         <p>info@viiveo.com</p>
                         <p>+32 475 32 51 27</p>
                         <div class="flex space-x-4 mt-2">
-                            <a href="https://www.facebook.com/viiveo.be" class="hover:text-yellow-400 transition-colors">
+                            <a href="https://www.facebook.com/viiveo.be" class="hover:text-blue-400 transition-colors">
                                 <i class="fab fa-facebook"></i>
                             </a>
-                            <a href="https://www.linkedin.com/in/danydecarpentrie" class="hover:text-yellow-400 transition-colors">
+                            <a href="https://www.linkedin.com/in/danydecarpentrie" class="hover:text-blue-400 transition-colors">
                                 <i class="fab fa-linkedin"></i>
                             </a>
-                            <a href="https://wa.me/+32475325127" class="hover:text-yellow-400 transition-colors">
+                            <a href="https://wa.me/+32475325127" class="hover:text-blue-400 transition-colors">
                                 <i class="fab fa-whatsapp"></i>
                             </a>
                         </div>
@@ -1392,7 +1406,13 @@
                     // Mettre à jour les informations client
                     document.getElementById('client-name').textContent = currentClient.client.prenom || "Client";
                     document.getElementById('client-credits').textContent = currentClient.client.credits || 0;
-                    document.getElementById('client-photo').src = currentClient.client.photoUrl || "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
+                    
+                    // Gestion de la photo de profil avec fallback
+                    const clientPhoto = document.getElementById('client-photo');
+                    clientPhoto.onerror = () => {
+                        clientPhoto.src = "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
+                    };
+                    clientPhoto.src = currentClient.client.photoUrl || "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
 
                     // Charger les demandes et statistiques
                     loadClientData();
