@@ -1495,26 +1495,35 @@
 
     // FILTRER les demandes vides
     if (currentClient.demandes) {
-        currentClient.demandes = currentClient.demandes.filter(d => 
-            d.service && d.service.trim() !== "" && 
-            d.intervention && d.intervention.trim() !== ""
-        );
-        console.log('🔍 After filtering - demandes count:', currentClient.demandes.length);
-    }
-
-    const statsSection = document.querySelector('.client-section:nth-child(3)');
-    const tabsSection = document.querySelector('.client-section:nth-child(5)');
+    console.log('🔍 DEMANDES BEFORE FILTER:', currentClient.demandes);
     
-    if (!currentClient.demandes || currentClient.demandes.length === 0) {
-        console.log('🔍 NO MISSIONS - hiding sections');
-        if (statsSection) statsSection.style.display = 'none';
-        if (tabsSection) tabsSection.style.display = 'none';
-        return;
-    } else {
-        console.log('🔍 MISSIONS FOUND - showing sections');
-        if (statsSection) statsSection.style.display = 'block';
-        if (tabsSection) tabsSection.style.display = 'block';
-    }
+    currentClient.demandes = currentClient.demandes.filter(d => {
+        const hasService = d.service && d.service.trim() !== "";
+        const hasIntervention = d.intervention && d.intervention.trim() !== "";
+        console.log('🔍 Filtering demande:', { 
+            service: d.service, 
+            intervention: d.intervention,
+            passes: hasService && hasIntervention
+        });
+        return hasService && hasIntervention;
+    });
+    
+    console.log('🔍 After filtering - demandes count:', currentClient.demandes.length);
+}
+
+const statsSection = document.querySelector('.client-section:nth-child(3)');
+const tabsSection = document.querySelector('.client-section:nth-child(5)');
+
+if (!currentClient.demandes || currentClient.demandes.length === 0) {
+    console.log('🔍 NO MISSIONS - hiding sections');
+    if (statsSection) statsSection.style.display = 'none';
+    if (tabsSection) tabsSection.style.display = 'none';
+    return;
+} else {
+    console.log('🔍 MISSIONS FOUND - showing sections');
+    if (statsSection) statsSection.style.display = 'block';
+    if (tabsSection) tabsSection.style.display = 'block';
+}
 
     // Calculer les statistiques (seulement si demandes existent)
     const pendingCount = currentClient.demandes.filter(d => 
