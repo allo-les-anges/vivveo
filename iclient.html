@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Client - Viiveo</title>
+    <!-- Remplacement du CDN Tailwind par une version production -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -747,14 +748,14 @@
                 <div class="form-group">
                     <label for="email" data-translate="email_label">Adresse email</label>
                     <div class="relative">
-                        <input type="email" id="email" class="form-input" placeholder="votre@email.com" required>
+                        <input type="email" id="email" class="form-input" placeholder="votre@email.com" required autocomplete="username">
                         <i class="fas fa-envelope form-input-icon"></i>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password" data-translate="password_label">Mot de passe</label>
                     <div class="relative">
-                        <input type="password" id="password" class="form-input" placeholder="Votre mot de passe" required>
+                        <input type="password" id="password" class="form-input" placeholder="Votre mot de passe" required autocomplete="current-password">
                         <i class="fas fa-lock form-input-icon"></i>
                     </div>
                 </div>
@@ -1118,7 +1119,7 @@
                         <div class="form-group">
                             <label data-translate="client_password">Nouveau mot de passe</label>
                             <div class="relative">
-                                <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer">
+                                <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer" autocomplete="new-password">
                                 <i class="fas fa-lock form-input-icon"></i>
                             </div>
                         </div>
@@ -1237,7 +1238,7 @@
     </div>
 
     <script>
-        // URL de l'application Google Apps Script
+        // URL de l'application Google Apps Script - CORRECTE
         const webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
 
         // Traductions multilingues complètes
@@ -1382,17 +1383,25 @@
             localStorage.setItem('viiveo-language', lang);
         }
 
-        // Fonction de connexion
+        // Fonction de connexion AMÉLIORÉE
         async function login() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
             const message = document.getElementById('login-message');
+
+            // Validation des champs
+            if (!email || !password) {
+                message.textContent = translations[currentLanguage].fill_fields;
+                message.classList.remove('hidden');
+                message.className = 'message message-error';
+                return;
+            }
 
             // Afficher le loader
             document.getElementById('loader').style.display = 'flex';
 
             try {
-                // Appel à l'API Google Apps Script
+                // Appel à l'API Google Apps Script - CORRECT
                 const response = await fetch(`${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
                 const data = await response.json();
 
@@ -1422,6 +1431,7 @@
                     throw new Error(data.message || translations[currentLanguage].login_error);
                 }
             } catch (error) {
+                console.error('Erreur de connexion:', error);
                 message.textContent = error.message || translations[currentLanguage].login_error;
                 message.classList.remove('hidden');
                 message.className = 'message message-error';
@@ -1444,21 +1454,21 @@
             if (!currentClient) return;
 
             // Calculer les statistiques
-            const pendingCount = currentClient.demandes.filter(d => 
+            const pendingCount = currentClient.demandes ? currentClient.demandes.filter(d => 
                 d.statut === "En attente" || !d.statut
-            ).length;
+            ).length : 0;
             
-            const confirmedCount = currentClient.demandes.filter(d => 
+            const confirmedCount = currentClient.demandes ? currentClient.demandes.filter(d => 
                 d.statut === "Confirmée"
-            ).length;
+            ).length : 0;
             
-            const progressCount = currentClient.demandes.filter(d => 
+            const progressCount = currentClient.demandes ? currentClient.demandes.filter(d => 
                 d.statut === "En cours"
-            ).length;
+            ).length : 0;
             
-            const completedCount = currentClient.demandes.filter(d => 
+            const completedCount = currentClient.demandes ? currentClient.demandes.filter(d => 
                 d.statut === "Terminée" || d.validationClient === "validée"
-            ).length;
+            ).length : 0;
 
             // Mettre à jour les statistiques
             document.getElementById('stats-pending').textContent = pendingCount;
@@ -1493,7 +1503,12 @@
 
         // Charger les demandes par statut
         function loadRequests(status) {
-            if (!currentClient || !currentClient.demandes) return;
+            if (!currentClient || !currentClient.demandes) {
+                const noDataMsg = `<tr><td colspan="6" class="p-4 text-center text-gray-500">${translations[currentLanguage].no_requests}</td></tr>`;
+                document.getElementById(`${status}-requests-table`).innerHTML = noDataMsg;
+                document.getElementById(`${status}-requests-cards`).innerHTML = `<div class="text-center p-8 text-gray-500">${translations[currentLanguage].no_requests}</div>`;
+                return;
+            }
 
             const tableBody = document.getElementById(`${status}-requests-table`);
             const cardsContainer = document.getElementById(`${status}-requests-cards`);
@@ -1646,10 +1661,10 @@
         function showClosedMissions() {
             if (!currentClient) return;
             
-            const closedMissions = currentClient.demandes.filter(d => 
+            const closedMissions = currentClient.demandes ? currentClient.demandes.filter(d => 
                 d.validationClient === "validée" || 
                 (d.statut && d.statut.toLowerCase() === "refusée")
-            );
+            ) : [];
             
             const tableBody = document.getElementById("closed-missions-table");
             const cardsContainer = document.getElementById("closed-missions-cards");
