@@ -1414,6 +1414,11 @@
                     document.getElementById('login-section').classList.add('hidden');
                     document.getElementById('client-interface').classList.remove('hidden');
                     
+                    // DEBUG - Vérifier si les éléments existent
+                    console.log('🔍 client-name existe?:', document.getElementById('client-name'));
+                    console.log('🔍 client-credits existe?:', document.getElementById('client-credits'));
+                    console.log('🔍 Tous les éléments avec id:', document.querySelectorAll('[id]'));
+                    
                     // Mettre à jour les informations client
                     const clientNameElement = document.getElementById('client-name');
                     const clientCreditsElement = document.getElementById('client-credits');
