@@ -1453,6 +1453,9 @@
 
         // Charger les données du client
         function loadClientData() {
+            console.log('🔍 loadClientData appelé');
+            console.log('🔍 currentClient:', currentClient);
+            console.log('🔍 demandes:', currentClient?.demandes);
             if (!currentClient) return;
 
             // Calculer les statistiques
