@@ -1484,41 +1484,50 @@
 
         // Charger les données du client
         function loadClientData() {
-            console.log('🔍 loadClientData appelé');
-            console.log('🔍 currentClient:', currentClient);
-            console.log('🔍 demandes:', currentClient?.demandes);
-            if (!currentClient) return;
+    if (!currentClient) return;
 
-            // Calculer les statistiques
-            const pendingCount = currentClient.demandes ? currentClient.demandes.filter(d => 
-                d.statut === "En attente" || !d.statut
-            ).length : 0;
-            
-            const confirmedCount = currentClient.demandes ? currentClient.demandes.filter(d => 
-                d.statut === "Confirmée"
-            ).length : 0;
-            
-            const progressCount = currentClient.demandes ? currentClient.demandes.filter(d => 
-                d.statut === "En cours"
-            ).length : 0;
-            
-            const completedCount = currentClient.demandes ? currentClient.demandes.filter(d => 
-                d.statut === "Terminée" || d.validationClient === "validée"
-            ).length : 0;
+    // CACHER la section statistiques si pas de demandes
+    const statsSection = document.querySelector('.client-section:nth-child(3)'); // Section statistiques
+    const tabsSection = document.querySelector('.client-section:nth-child(5)'); // Section onglets
+    
+    if (!currentClient.demandes || currentClient.demandes.length === 0) {
+        if (statsSection) statsSection.style.display = 'none';
+        if (tabsSection) tabsSection.style.display = 'none';
+        return;
+    } else {
+        if (statsSection) statsSection.style.display = 'block';
+        if (tabsSection) tabsSection.style.display = 'block';
+    }
 
-            // Mettre à jour les statistiques
-            document.getElementById('stats-pending').textContent = pendingCount;
-            document.getElementById('stats-confirmed').textContent = confirmedCount;
-            document.getElementById('stats-progress').textContent = progressCount;
-            document.getElementById('stats-completed').textContent = completedCount;
+    // Calculer les statistiques (seulement si demandes existent)
+    const pendingCount = currentClient.demandes.filter(d => 
+        d.statut === "En attente" || !d.statut
+    ).length;
+    
+    const confirmedCount = currentClient.demandes.filter(d => 
+        d.statut === "Confirmée"
+    ).length;
+    
+    const progressCount = currentClient.demandes.filter(d => 
+        d.statut === "En cours"
+    ).length;
+    
+    const completedCount = currentClient.demandes.filter(d => 
+        d.statut === "Terminée" || d.validationClient === "validée"
+    ).length;
 
-            // Charger les demandes pour chaque onglet
-            loadRequests('pending');
-            loadRequests('confirmed');
-            loadRequests('progress');
-            loadRequests('completed');
-        }
+    // Mettre à jour les statistiques
+    document.getElementById('stats-pending').textContent = pendingCount;
+    document.getElementById('stats-confirmed').textContent = confirmedCount;
+    document.getElementById('stats-progress').textContent = progressCount;
+    document.getElementById('stats-completed').textContent = completedCount;
 
+    // Charger les demandes pour chaque onglet
+    loadRequests('pending');
+    loadRequests('confirmed');
+    loadRequests('progress');
+    loadRequests('completed');
+}
         // Formatage des dates
         function formatDateOrTime(dateString) {
             if (!dateString) return "";
