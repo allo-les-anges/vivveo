@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Prestataire - Viiveo</title>
+    <!-- Remplacement du CDN Tailwind par une version locale ou installation PostCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -904,7 +905,7 @@
                     <span data-translate="login_button">Se connecter</span>
                     <i class="fas fa-arrow-right ml-2"></i>
                 </button>
-                <div id="message" class="mt-4 hidden"></div>
+                <div id="login-message" class="mt-4 hidden"></div>
             </form>
         </div>
 
@@ -1187,7 +1188,7 @@
                         <div class="form-group">
                             <label data-translate="prestataire_password">Nouveau mot de passe</label>
                             <div class="relative">
-                                <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer">
+                                <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer" autocomplete="new-password">
                                 <i class="fas fa-lock form-input-icon"></i>
                             </div>
                         </div>
@@ -1280,7 +1281,7 @@
 
     <!-- Intégration des scripts -->
     <script>
-        window.webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
+        window.webAppUrl = "https://gaetano1747.gm-harchies.workers.dev";
 
         window.currentEmail = null;
         window.currentPrenom = null;
@@ -1384,15 +1385,6 @@
                 profile_updated: "Profil mis à jour avec succès !",
                 fill_fields: "Veuillez remplir tous les champs obligatoires",
                 server_error: "Erreur de communication avec le serveur."
-            },
-            nl: {
-                // ... (traductions pour le néerlandais)
-            },
-            en: {
-                // ... (traductions pour l'anglais)
-            },
-            de: {
-                // ... (traductions pour l'allemand)
             }
         };
 
@@ -1425,12 +1417,12 @@
             localStorage.setItem('viiveo-language', lang);
         }
 
-        // Fonction de connexion adaptée pour prestataires
+        // Fonction de connexion adaptée pour prestataires - CORRIGÉE
         async function handleLogin() {
             console.log("LOGIN: Fonction handleLogin() appelée.");
             const email = document.getElementById("email")?.value.trim();
             const password = document.getElementById("password")?.value.trim();
-            const message = document.getElementById("message");
+            const message = document.getElementById("login-message"); // CORRECTION: ID corrigé
             const loader = document.getElementById("loader");
             const loginSection = document.getElementById("login-section");
             const prestataireInterface = document.getElementById("prestataire-interface");
@@ -1530,7 +1522,7 @@
             document.getElementById('prestataire-interface').classList.add('hidden');
             document.getElementById('menu-container').style.display = 'none';
             document.getElementById('loginForm').reset();
-            document.getElementById('message').classList.add('hidden');
+            document.getElementById('login-message').classList.add('hidden');
         }
 
         // Fonctions pour le menu hamburger
