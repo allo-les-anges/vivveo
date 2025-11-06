@@ -1415,8 +1415,16 @@
                     document.getElementById('client-interface').classList.remove('hidden');
                     
                     // Mettre à jour les informations client
-                    document.getElementById('client-name').textContent = currentClient.client.prenom || "Client";
-                    document.getElementById('client-credits').textContent = currentClient.client.credits || 0;
+                    const clientNameElement = document.getElementById('client-name');
+                    const clientCreditsElement = document.getElementById('client-credits');
+
+                    if (clientNameElement) {
+                    clientNameElement.textContent = currentClient.client.prenom || "Client";
+                    }
+
+                    if (clientCreditsElement) {
+                    clientCreditsElement.textContent = currentClient.client.credits || 0;
+                    }
                     
                     // Gestion de la photo de profil avec fallback
                     const clientPhoto = document.getElementById('client-photo');
