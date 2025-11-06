@@ -1452,7 +1452,9 @@
                     clientPhoto.src = currentClient.client.photoUrl || "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
 
                     // Charger les demandes et statistiques
+                    console.log('🔍 Calling loadClientData...');
                     loadClientData();
+                    console.log('🔍 loadClientData called successfully');
 
                     showNotification(translations[currentLanguage].login_success, 'success');
                     
