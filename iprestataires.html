@@ -1595,6 +1595,575 @@
             localStorage.setItem('viiveo-language', lang);
         }
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Prestataire - Viiveo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <style>
+        :root {
+            --primary-color: #facc15;
+            --primary-dark: #eab308;
+            --secondary-color: #1f2937;
+            --light-color: #f8fafc;
+            --text-color: #374151;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #fefce8 0%, #fef3c7 50%, #fef9c3 100%);
+            min-height: 100vh;
+        }
+
+        /* ... (garder tous les styles CSS précédents) ... */
+    </style>
+</head>
+<body>
+    <!-- Header Commun -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <!-- ... (garder le header identique) ... -->
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Section de connexion -->
+        <div id="login-section" class="prestataire-section max-w-md mx-auto text-center">
+            <div class="mb-8">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 flex items-center justify-center">
+                    <i class="fas fa-user-tie text-white text-2xl"></i>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+                    Espace Prestataire Viiveo
+                </h1>
+                <p class="text-gray-600">
+                    Connectez-vous pour gérer vos missions et interventions
+                </p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Adresse email</label>
+                    <div class="relative">
+                        <input type="email" id="email" class="form-input" placeholder="votre@email.com" required>
+                        <i class="fas fa-envelope form-input-icon"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <div class="relative">
+                        <input type="password" id="password" class="form-input" placeholder="Votre mot de passe" required>
+                        <i class="fas fa-lock form-input-icon"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn-elegant w-full py-4 rounded-lg font-semibold text-lg">
+                    <span>Se connecter</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <div id="login-message" class="mt-4 hidden"></div>
+            </form>
+        </div>
+
+        <!-- Interface prestataire (cachée par défaut) -->
+        <div id="prestataire-interface" class="hidden">
+            <!-- Menu hamburger -->
+            <div class="menu-bubble" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="menu-dropdown" id="menu-dropdown">
+                <div class="menu-item" onclick="showMesDonnees()">
+                    <i class="fas fa-user-edit"></i>
+                    <span>Mes données</span>
+                </div>
+                <div class="menu-item" onclick="showHistorique()">
+                    <i class="fas fa-history"></i>
+                    <span>Historique des Prestations</span>
+                </div>
+            </div>
+
+            <!-- Bouton Accueil -->
+            <a href="https://viiveo.carrd.co/" class="menu-bubble" aria-label="Accueil" style="right: 140px;">
+                <i class="fas fa-home"></i>
+            </a>
+
+            <!-- En-tête prestataire -->
+            <div class="prestataire-section">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="flex items-center space-x-6">
+                        <div class="relative">
+                            <img id="prestataire-photo" src="https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png" 
+                                 alt="Photo prestataire" class="prestataire-photo">
+                            <div class="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
+                        </div>
+                        <div class="text-left">
+                            <h2 class="text-2xl font-bold text-gray-800">
+                                Bienvenue, <span id="prestataire-name" class="text-yellow-500">Prestataire</span> !
+                            </h2>
+                            <p class="text-gray-600 flex items-center">
+                                <i class="fas fa-tools text-yellow-500 mr-2"></i>
+                                <span>Spécialité</span> : 
+                                <strong class="ml-1"><span id="prestataire-specialty">Aide ménagère</span></strong>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-4 md:mt-0 flex flex-wrap gap-3">
+                        <button onclick="showProfileModal()" class="btn-elegant">
+                            <i class="fas fa-user-edit mr-2"></i>
+                            Modifier profil
+                        </button>
+                        <button onclick="logout()" class="bg-red-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors">
+                            <i class="fas fa-sign-out-alt mr-2"></i>
+                            Déconnexion
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scanner QR Code -->
+            <div class="prestataire-section">
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-qrcode text-yellow-500 mr-3"></i>
+                    Scanner QR Code
+                </h3>
+                <div class="qr-scanner">
+                    <div id="reader"></div>
+                    <div id="scan-result" class="mt-4"></div>
+                </div>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="prestataire-section">
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-chart-bar text-yellow-500 mr-3"></i>
+                    Mes Statistiques
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="stats-card">
+                        <div class="stats-number pulse" id="stats-pending">0</div>
+                        <div class="text-gray-600 font-semibold">Missions en attente</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number" id="stats-confirmed">0</div>
+                        <div class="text-gray-600 font-semibold">Missions confirmées</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number" id="stats-progress">0</div>
+                        <div class="text-gray-600 font-semibold">En cours</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number" id="stats-completed">0</div>
+                        <div class="text-gray-600 font-semibold">Terminées</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation par onglets -->
+            <div class="prestataire-section">
+                <div class="border-b border-gray-200 mb-6">
+                    <div class="flex space-x-8 overflow-x-auto">
+                        <button class="tab-button active" onclick="showTab('pending')">
+                            <i class="fas fa-clock mr-2"></i>
+                            En Attente
+                        </button>
+                        <button class="tab-button" onclick="showTab('confirmed')">
+                            <i class="fas fa-calendar-check mr-2"></i>
+                            Confirmées
+                        </button>
+                        <button class="tab-button" onclick="showTab('progress')">
+                            <i class="fas fa-spinner mr-2"></i>
+                            En Cours
+                        </button>
+                        <button class="tab-button" onclick="showTab('completed')">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            Terminées
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Conteneurs pour les missions -->
+                <div id="global-loader" class="text-center py-8 hidden">
+                    <div class="spinner mx-auto"></div>
+                    <p class="mt-4 text-gray-600">Chargement des missions en cours...</p>
+                </div>
+
+                <!-- Onglet Missions en attente -->
+                <div id="tab-pending" class="tab-container active">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Missions en attente de validation</h4>
+                    <div id="missions-attente" class="space-y-4">
+                        <!-- Missions chargées dynamiquement -->
+                    </div>
+                </div>
+
+                <!-- Onglet Missions confirmées -->
+                <div id="tab-confirmed" class="tab-container">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Missions planifiées</h4>
+                    <div id="missions-a-venir" class="space-y-4">
+                        <!-- Missions chargées dynamiquement -->
+                    </div>
+                </div>
+
+                <!-- Onglet Missions en cours -->
+                <div id="tab-progress" class="tab-container">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Missions en cours</h4>
+                    <div id="missions-en-cours" class="space-y-4">
+                        <!-- Missions chargées dynamiquement -->
+                    </div>
+                </div>
+
+                <!-- Onglet Missions terminées -->
+                <div id="tab-completed" class="tab-container">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Missions terminées</h4>
+                    <div id="missions-terminees" class="space-y-4">
+                        <!-- Missions chargées dynamiquement -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Commun -->
+    <footer class="bg-gray-800 text-white py-12">
+        <!-- ... (garder le footer identique) ... -->
+    </footer>
+
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p>Chargement...</p>
+        </div>
+    </div>
+
+    <!-- Modal de profil -->
+    <div id="profile-modal" class="modal">
+        <!-- ... (garder la modal identique) ... -->
+    </div>
+
+    <!-- Modal historique des prestations -->
+    <div id="historique-modal" class="modal">
+        <!-- ... (garder la modal identique) ... -->
+    </div>
+
+    <script>
+        // URL de l'application Google Apps Script
+        window.webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
+
+        // Variables globales
+        window.currentEmail = null;
+        window.currentPrenom = null;
+        window.currentNom = null;
+        let currentPrestataire = null;
+        let html5QrcodeScanner = null;
+        let isLoggingIn = false; // Pour éviter les doubles soumissions
+
+        // Fonction pour définir les données du prestataire
+        window.setPrestataireData = function(email, prenom, nom) {
+            if (!email) {
+                return;
+            }
+
+            if (typeof email === 'string' && email.includes('@')) {
+                window.currentEmail = email;
+                window.currentPrenom = prenom || '';
+                window.currentNom = nom || '';
+                console.log(`Prestataire connecté : ${window.currentPrenom} ${window.currentNom} (${window.currentEmail})`);
+                
+                // Mettre à jour l'interface
+                document.getElementById('prestataire-name').textContent = `${prenom} ${nom}`;
+            } else {
+                console.error("Erreur: L'email du prestataire fourni n'est pas valide (format incorrect).");
+            }
+        };
+
+        // Fonction de connexion améliorée
+        async function handleLogin() {
+            if (isLoggingIn) {
+                console.log('Connexion déjà en cours...');
+                return;
+            }
+
+            isLoggingIn = true;
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('login-message');
+
+            // Afficher le loader
+            document.getElementById('loader').style.display = 'flex';
+            message.classList.add('hidden');
+
+            try {
+                console.log('Tentative de connexion avec email:', email);
+                
+                // Utiliser l'API existante de votre code
+                const apiUrl = `https://gaetano1747.gm-harchies.workers.dev?type=loginpresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+                console.log('URL API:', apiUrl);
+
+                // Méthode JSONP pour contourner CORS
+                await new Promise((resolve, reject) => {
+                    const callbackName = 'cbLogin' + Date.now();
+                    window[callbackName] = function(response) {
+                        console.log('Réponse API login:', response);
+                        
+                        if (response.success) {
+                            // Connexion réussie
+                            currentPrestataire = {
+                                email: response.email,
+                                name: `${response.prenom} ${response.nom}`,
+                                specialty: "Aide ménagère, Courses", // À adapter selon vos données
+                                photo: "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png"
+                            };
+
+                            // Définir les données du prestataire
+                            window.setPrestataireData(response.email, response.prenom, response.nom);
+
+                            document.getElementById('login-section').classList.add('hidden');
+                            document.getElementById('prestataire-interface').classList.remove('hidden');
+                            
+                            // Mettre à jour les informations prestataire
+                            document.getElementById('prestataire-name').textContent = currentPrestataire.name;
+                            document.getElementById('prestataire-specialty').textContent = currentPrestataire.specialty;
+                            document.getElementById('prestataire-photo').src = currentPrestataire.photo;
+
+                            // Charger les missions et statistiques
+                            loadPrestataireData();
+
+                            // Initialiser le scanner QR
+                            initQRScanner();
+
+                            showNotification('Connexion réussie !', 'success');
+                            resolve();
+                        } else {
+                            reject(new Error(response.message || 'Email ou mot de passe incorrect'));
+                        }
+                        
+                        // Nettoyer
+                        delete window[callbackName];
+                        script.remove();
+                    };
+
+                    const script = document.createElement('script');
+                    script.src = `${apiUrl}&callback=${callbackName}`;
+                    document.head.appendChild(script);
+                });
+
+            } catch (error) {
+                console.error('Erreur connexion:', error);
+                message.textContent = error.message;
+                message.classList.remove('hidden');
+                message.className = 'message message-error';
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+                isLoggingIn = false;
+            }
+        }
+
+        // Fonction de déconnexion
+        function logout() {
+            currentPrestataire = null;
+            window.currentEmail = null;
+            window.currentPrenom = null;
+            window.currentNom = null;
+            
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('prestataire-interface').classList.add('hidden');
+            document.getElementById('loginForm').reset();
+            document.getElementById('login-message').classList.add('hidden');
+            
+            // Arrêter le scanner QR
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.clear();
+            }
+        }
+
+        // Charger les données du prestataire
+        async function loadPrestataireData() {
+            if (!window.currentEmail) {
+                console.error('Aucun prestataire connecté');
+                return;
+            }
+
+            // Afficher le loader global
+            document.getElementById('global-loader').classList.remove('hidden');
+
+            try {
+                // Charger les missions depuis l'API
+                const missions = await loadMissionsFromAPI();
+                
+                // Mettre à jour les statistiques
+                updateStatistics(missions);
+                
+                // Afficher les missions dans les onglets
+                displayMissions(missions);
+                
+            } catch (error) {
+                console.error('Erreur chargement données:', error);
+                showNotification('Erreur lors du chargement des missions', 'error');
+            } finally {
+                document.getElementById('global-loader').classList.add('hidden');
+            }
+        }
+
+        // Fonction pour charger les missions depuis l'API
+        async function loadMissionsFromAPI() {
+            return new Promise((resolve, reject) => {
+                const apiUrl = `https://gaetano1747.gm-harchies.workers.dev?type=getmissions&email=${encodeURIComponent(window.currentEmail)}`;
+                const callbackName = 'cbMissions' + Date.now();
+                
+                window[callbackName] = function(response) {
+                    console.log('Réponse missions:', response);
+                    
+                    if (response.success) {
+                        resolve(response.missions || []);
+                    } else {
+                        reject(new Error(response.message || 'Erreur chargement missions'));
+                    }
+                    
+                    delete window[callbackName];
+                    script.remove();
+                };
+
+                const script = document.createElement('script');
+                script.src = `${apiUrl}&callback=${callbackName}`;
+                script.onerror = () => reject(new Error('Erreur réseau'));
+                document.head.appendChild(script);
+            });
+        }
+
+        // Mettre à jour les statistiques
+        function updateStatistics(missions) {
+            const pending = missions.filter(m => m.statut === 'En attente').length;
+            const confirmed = missions.filter(m => m.statut === 'Confirmée').length;
+            const progress = missions.filter(m => m.statut === 'En cours').length;
+            const completed = missions.filter(m => m.statut === 'Terminée').length;
+
+            document.getElementById('stats-pending').textContent = pending;
+            document.getElementById('stats-confirmed').textContent = confirmed;
+            document.getElementById('stats-progress').textContent = progress;
+            document.getElementById('stats-completed').textContent = completed;
+        }
+
+        // Afficher les missions dans les onglets
+        function displayMissions(missions) {
+            const containers = {
+                'pending': document.getElementById('missions-attente'),
+                'confirmed': document.getElementById('missions-a-venir'),
+                'progress': document.getElementById('missions-en-cours'),
+                'completed': document.getElementById('missions-terminees')
+            };
+
+            // Vérifier que tous les conteneurs existent
+            for (const [key, container] of Object.entries(containers)) {
+                if (!container) {
+                    console.error(`Conteneur manquant: ${key}`);
+                    return;
+                }
+            }
+
+            // Filtrer et afficher les missions par statut
+            const pendingMissions = missions.filter(m => m.statut === 'En attente');
+            const confirmedMissions = missions.filter(m => m.statut === 'Confirmée');
+            const progressMissions = missions.filter(m => m.statut === 'En cours');
+            const completedMissions = missions.filter(m => m.statut === 'Terminée');
+
+            containers.pending.innerHTML = formatMissions(pendingMissions, 'pending');
+            containers.confirmed.innerHTML = formatMissions(confirmedMissions, 'confirmed');
+            containers.progress.innerHTML = formatMissions(progressMissions, 'progress');
+            containers.completed.innerHTML = formatMissions(completedMissions, 'completed');
+        }
+
+        // Formater l'affichage des missions
+        function formatMissions(missions, status) {
+            if (missions.length === 0) {
+                return `
+                    <div class="text-center py-8">
+                        <div class="text-6xl mb-4">😊</div>
+                        <h4 class="text-lg font-semibold text-gray-600 mb-2">Aucune mission disponible</h4>
+                    </div>
+                `;
+            }
+
+            return missions.map(mission => `
+                <div class="mission-card">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-gray-800">${mission.service || 'Mission'}</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2 text-sm text-gray-600">
+                                <div>
+                                    <i class="fas fa-user mr-2"></i>
+                                    ${mission.client || 'Non spécifié'}
+                                </div>
+                                <div>
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    ${formatDate(mission.date)}
+                                </div>
+                                <div>
+                                    <i class="fas fa-coins mr-2"></i>
+                                    ${mission.credits || 0} crédits
+                                </div>
+                            </div>
+                            <div class="mt-2 text-sm text-gray-500">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                ${mission.adresse || 'Adresse non spécifiée'}
+                            </div>
+                        </div>
+                        <div class="mt-4 md:mt-0 md:ml-4 flex space-x-2">
+                            ${getMissionActions(status, mission.id)}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'Date non spécifiée';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('fr-FR');
+            } catch {
+                return dateString;
+            }
+        }
+
+        function getMissionActions(status, missionId) {
+            const actions = {
+                'pending': `
+                    <button onclick="acceptMission(${missionId})" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors">
+                        <i class="fas fa-check mr-1"></i>
+                        Accepter
+                    </button>
+                    <button onclick="refuseMission(${missionId})" class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition-colors">
+                        <i class="fas fa-times mr-1"></i>
+                        Refuser
+                    </button>
+                `,
+                'confirmed': `
+                    <button onclick="startMission(${missionId})" class="btn-elegant px-4 py-2 rounded-lg font-semibold">
+                        <i class="fas fa-play mr-1"></i>
+                        Démarrer
+                    </button>
+                `,
+                'progress': `
+                    <button onclick="completeMission(${missionId})" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors">
+                        <i class="fas fa-flag-checkered mr-1"></i>
+                        Terminer
+                    </button>
+                `,
+                'completed': `
+                    <button onclick="showMissionDetails(${missionId})" class="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Détails
+                    </button>
+                `
+            };
+            return actions[status] || '';
+        }
+
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             // Charger la langue sauvegardée
