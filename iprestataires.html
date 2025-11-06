@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Prestataire - Viiveo</title>
-    <!-- Remplacement du CDN Tailwind par une version plus stable -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Version alternative de Tailwind pour éviter l'avertissement -->
+    <script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
@@ -726,12 +726,12 @@
                 
                 <!-- Navigation Desktop -->
                 <nav class="hidden lg:flex items-center space-x-8">
-                    <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
-                    <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
-                    <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Abonnement</a>
-                    <a href="prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
-                    <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_client">Espace Client</a>
-                    <a href="iprestataires.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Accueil</a>
+                    <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Services</a>
+                    <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Abonnement</a>
+                    <a href="prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Découvrir nos Prestataires</a>
+                    <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium">Espace Client</a>
+                    <a href="iprestataires.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500">Espace Prestataire</a>
                 </nav>
 
                 <!-- Sélecteur de langue -->
@@ -774,12 +774,12 @@
             <!-- Menu Mobile -->
             <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
                 <div class="px-4 py-6 space-y-4">
-                    <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
-                    <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
-                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Abonnement</a>
-                    <a href="prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
-                    <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
-                    <a href="iprestataires.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                    <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Accueil</a>
+                    <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Services</a>
+                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Abonnement</a>
+                    <a href="prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Découvrir nos Prestataires</a>
+                    <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors">Espace Client</a>
+                    <a href="iprestataires.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium">Espace Prestataire</a>
                 </div>
             </div>
         </div>
@@ -793,31 +793,31 @@
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 flex items-center justify-center">
                     <i class="fas fa-user-tie text-white text-2xl"></i>
                 </div>
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2" data-translate="login_title">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
                     Espace Prestataire Viiveo
                 </h1>
-                <p class="text-gray-600" data-translate="login_subtitle">
+                <p class="text-gray-600">
                     Connectez-vous pour gérer vos missions et interventions
                 </p>
             </div>
 
             <form id="login-form" onsubmit="event.preventDefault(); login();">
                 <div class="form-group">
-                    <label for="email" data-translate="email_label">Adresse email</label>
+                    <label for="email">Adresse email</label>
                     <div class="relative">
                         <input type="email" id="email" class="form-input" placeholder="votre@email.com" required autocomplete="email">
                         <i class="fas fa-envelope form-input-icon"></i>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password" data-translate="password_label">Mot de passe</label>
+                    <label for="password">Mot de passe</label>
                     <div class="relative">
                         <input type="password" id="password" class="form-input" placeholder="Votre mot de passe" required autocomplete="current-password">
                         <i class="fas fa-lock form-input-icon"></i>
                     </div>
                 </div>
                 <button type="submit" class="btn-elegant w-full py-4 rounded-lg font-semibold text-lg">
-                    <span data-translate="login_button">Se connecter</span>
+                    <span>Se connecter</span>
                     <i class="fas fa-arrow-right ml-2"></i>
                 </button>
                 <div id="login-message" class="mt-4 hidden"></div>
@@ -836,26 +836,26 @@
                             <div class="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
                         </div>
                         <div class="text-left">
-                            <h2 class="text-2xl font-bold text-gray-800" data-translate="welcome">
+                            <h2 class="text-2xl font-bold text-gray-800">
                                 Bienvenue, <span id="prestataire-name" class="text-yellow-500">Prestataire</span> !
                             </h2>
                             <p class="text-gray-600 flex items-center">
                                 <i class="fas fa-star text-yellow-500 mr-2"></i>
-                                <span data-translate="rating">Note moyenne</span> : 
+                                Note moyenne : 
                                 <strong class="ml-1 text-lg"><span id="prestataire-rating">4.8</span>/5</strong>
                             </p>
                         </div>
                     </div>
                     <div class="mt-4 md:mt-0 flex flex-wrap gap-3">
-                        <button onclick="showCompletedMissions()" class="btn-secondary" data-translate="completed_missions">
+                        <button onclick="showCompletedMissions()" class="btn-secondary">
                             <i class="fas fa-history mr-2"></i>
                             Missions terminées
                         </button>
-                        <button onclick="showProfileModal()" class="btn-elegant" data-translate="edit_profile">
+                        <button onclick="showProfileModal()" class="btn-elegant">
                             <i class="fas fa-user-edit mr-2"></i>
                             Modifier profil
                         </button>
-                        <button onclick="logout()" class="bg-red-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors" data-translate="logout">
+                        <button onclick="logout()" class="bg-red-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors">
                             <i class="fas fa-sign-out-alt mr-2"></i>
                             Déconnexion
                         </button>
@@ -865,26 +865,26 @@
 
             <!-- Statistiques -->
             <div class="prestataire-section">
-                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center" data-translate="statistics">
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
                     <i class="fas fa-chart-bar text-yellow-500 mr-3"></i>
                     Mes Statistiques
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div class="stats-card">
                         <div class="stats-number pulse" id="stats-pending">0</div>
-                        <div class="text-gray-600 font-semibold" data-translate="missions_pending">Missions en attente</div>
+                        <div class="text-gray-600 font-semibold">Missions en attente</div>
                     </div>
                     <div class="stats-card">
                         <div class="stats-number" id="stats-today">0</div>
-                        <div class="text-gray-600 font-semibold" data-translate="missions_today">Missions du jour</div>
+                        <div class="text-gray-600 font-semibold">Missions du jour</div>
                     </div>
                     <div class="stats-card">
                         <div class="stats-number" id="stats-planned">0</div>
-                        <div class="text-gray-600 font-semibold" data-translate="missions_planned">Missions planifiées</div>
+                        <div class="text-gray-600 font-semibold">Missions planifiées</div>
                     </div>
                     <div class="stats-card">
                         <div class="stats-number" id="stats-completed">0</div>
-                        <div class="text-gray-600 font-semibold" data-translate="missions_completed">Missions terminées</div>
+                        <div class="text-gray-600 font-semibold">Missions terminées</div>
                     </div>
                 </div>
             </div>
@@ -893,19 +893,19 @@
             <div class="prestataire-section">
                 <div class="border-b border-gray-200 mb-6">
                     <div class="flex space-x-8 overflow-x-auto">
-                        <button class="tab-button active" onclick="showTab('pending')" data-translate="tab_pending">
+                        <button class="tab-button active" onclick="showTab('pending')">
                             <i class="fas fa-clock mr-2"></i>
                             En Attente
                         </button>
-                        <button class="tab-button" onclick="showTab('today')" data-translate="tab_today">
+                        <button class="tab-button" onclick="showTab('today')">
                             <i class="fas fa-calendar-day mr-2"></i>
                             Missions du Jour
                         </button>
-                        <button class="tab-button" onclick="showTab('planned')" data-translate="tab_planned">
+                        <button class="tab-button" onclick="showTab('planned')">
                             <i class="fas fa-calendar-check mr-2"></i>
                             Planifiées
                         </button>
-                        <button class="tab-button" onclick="showTab('completed')" data-translate="tab_completed">
+                        <button class="tab-button" onclick="showTab('completed')">
                             <i class="fas fa-check-circle mr-2"></i>
                             Terminées
                         </button>
@@ -914,18 +914,18 @@
 
                 <!-- Onglet Missions en attente -->
                 <div id="tab-pending" class="tab-container active">
-                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="pending_missions">Missions en attente de validation</h4>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Missions en attente de validation</h4>
                     <div class="table-wrapper">
                         <table class="w-full">
                             <thead>
                                 <tr class="bg-gradient-to-r from-yellow-50 to-yellow-100">
-                                    <th class="p-4 text-left" data-translate="mission_id">ID Mission</th>
-                                    <th class="p-4 text-left" data-translate="client">Client</th>
-                                    <th class="p-4 text-left" data-translate="address">Adresse</th>
-                                    <th class="p-4 text-left" data-translate="service">Service</th>
-                                    <th class="p-4 text-left" data-translate="date">Date</th>
-                                    <th class="p-4 text-left" data-translate="time">Heure</th>
-                                    <th class="p-4 text-left" data-translate="actions">Actions</th>
+                                    <th class="p-4 text-left">ID Mission</th>
+                                    <th class="p-4 text-left">Client</th>
+                                    <th class="p-4 text-left">Adresse</th>
+                                    <th class="p-4 text-left">Service</th>
+                                    <th class="p-4 text-left">Date</th>
+                                    <th class="p-4 text-left">Heure</th>
+                                    <th class="p-4 text-left">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="pending-missions-table">
@@ -940,18 +940,18 @@
 
                 <!-- Onglet Missions du jour -->
                 <div id="tab-today" class="tab-container">
-                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="today_missions">Missions prévues aujourd'hui</h4>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Missions prévues aujourd'hui</h4>
                     <div class="table-wrapper">
                         <table class="w-full">
                             <thead>
                                 <tr class="bg-gradient-to-r from-blue-50 to-blue-100">
-                                    <th class="p-4 text-left" data-translate="mission_id">ID Mission</th>
-                                    <th class="p-4 text-left" data-translate="client">Client</th>
-                                    <th class="p-4 text-left" data-translate="address">Adresse</th>
-                                    <th class="p-4 text-left" data-translate="service">Service</th>
-                                    <th class="p-4 text-left" data-translate="date">Date</th>
-                                    <th class="p-4 text-left" data-translate="time">Heure</th>
-                                    <th class="p-4 text-left" data-translate="actions">Actions</th>
+                                    <th class="p-4 text-left">ID Mission</th>
+                                    <th class="p-4 text-left">Client</th>
+                                    <th class="p-4 text-left">Adresse</th>
+                                    <th class="p-4 text-left">Service</th>
+                                    <th class="p-4 text-left">Date</th>
+                                    <th class="p-4 text-left">Heure</th>
+                                    <th class="p-4 text-left">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="today-missions-table">
@@ -966,18 +966,18 @@
 
                 <!-- Onglet Missions planifiées -->
                 <div id="tab-planned" class="tab-container">
-                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="planned_missions">Missions planifiées</h4>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Missions planifiées</h4>
                     <div class="table-wrapper">
                         <table class="w-full">
                             <thead>
                                 <tr class="bg-gradient-to-r from-purple-50 to-purple-100">
-                                    <th class="p-4 text-left" data-translate="mission_id">ID Mission</th>
-                                    <th class="p-4 text-left" data-translate="client">Client</th>
-                                    <th class="p-4 text-left" data-translate="address">Adresse</th>
-                                    <th class="p-4 text-left" data-translate="service">Service</th>
-                                    <th class="p-4 text-left" data-translate="date">Date</th>
-                                    <th class="p-4 text-left" data-translate="time">Heure</th>
-                                    <th class="p-4 text-left" data-translate="actions">Actions</th>
+                                    <th class="p-4 text-left">ID Mission</th>
+                                    <th class="p-4 text-left">Client</th>
+                                    <th class="p-4 text-left">Adresse</th>
+                                    <th class="p-4 text-left">Service</th>
+                                    <th class="p-4 text-left">Date</th>
+                                    <th class="p-4 text-left">Heure</th>
+                                    <th class="p-4 text-left">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="planned-missions-table">
@@ -992,18 +992,18 @@
 
                 <!-- Onglet Missions terminées -->
                 <div id="tab-completed" class="tab-container">
-                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="completed_missions">Missions terminées</h4>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Missions terminées</h4>
                     <div class="table-wrapper">
                         <table class="w-full">
                             <thead>
                                 <tr class="bg-gradient-to-r from-green-50 to-green-100">
-                                    <th class="p-4 text-left" data-translate="mission_id">ID Mission</th>
-                                    <th class="p-4 text-left" data-translate="client">Client</th>
-                                    <th class="p-4 text-left" data-translate="address">Adresse</th>
-                                    <th class="p-4 text-left" data-translate="service">Service</th>
-                                    <th class="p-4 text-left" data-translate="date">Date</th>
-                                    <th class="p-4 text-left" data-translate="time">Heure</th>
-                                    <th class="p-4 text-left" data-translate="status">Statut</th>
+                                    <th class="p-4 text-left">ID Mission</th>
+                                    <th class="p-4 text-left">Client</th>
+                                    <th class="p-4 text-left">Adresse</th>
+                                    <th class="p-4 text-left">Service</th>
+                                    <th class="p-4 text-left">Date</th>
+                                    <th class="p-4 text-left">Heure</th>
+                                    <th class="p-4 text-left">Statut</th>
                                 </tr>
                             </thead>
                             <tbody id="completed-missions-table">
@@ -1026,34 +1026,34 @@
                 <!-- Logo et description -->
                 <div class="md:col-span-1">
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-10 mb-4">
-                    <p class="text-gray-300 text-sm" data-translate="footer_desc">
+                    <p class="text-gray-300 text-sm">
                         Votre bien-être à domicile, notre priorité.
                     </p>
                 </div>
 
                 <!-- Navigation -->
                 <div>
-                    <h4 class="font-semibold mb-4" data-translate="footer_navigation">Navigation</h4>
+                    <h4 class="font-semibold mb-4">Navigation</h4>
                     <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="index.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_home">Accueil</a></li>
-                        <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_services">Services</a></li>
-                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_formules">Abonnement</a></li>
-                        <li><a href="prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a></li>
+                        <li><a href="index.html" class="hover:text-yellow-400 transition-colors">Accueil</a></li>
+                        <li><a href="nos_services.html" class="hover:text-yellow-400 transition-colors">Services</a></li>
+                        <li><a href="formules.html" class="hover:text-yellow-400 transition-colors">Abonnement</a></li>
+                        <li><a href="prestataires.html" class="hover:text-yellow-400 transition-colors">Découvrir nos Prestataires</a></li>
                     </ul>
                 </div>
 
                 <!-- Espaces -->
                 <div>
-                    <h4 class="font-semibold mb-4" data-translate="footer_spaces">Espaces</h4>
+                    <h4 class="font-semibold mb-4">Espaces</h4>
                     <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="iclient.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_client">Espace Client</a></li>
-                        <li><a href="iprestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a></li>
+                        <li><a href="iclient.html" class="hover:text-yellow-400 transition-colors">Espace Client</a></li>
+                        <li><a href="iprestataires.html" class="hover:text-yellow-400 transition-colors">Espace Prestataire</a></li>
                     </ul>
                 </div>
 
                 <!-- Contact -->
                 <div>
-                    <h4 class="font-semibold mb-4" data-translate="footer_contact">Contact</h4>
+                    <h4 class="font-semibold mb-4">Contact</h4>
                     <div class="text-sm text-gray-300 space-y-2">
                         <p>info@viiveo.com</p>
                         <p>+32 475 32 51 27</p>
@@ -1073,7 +1073,7 @@
             </div>
 
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-                <p data-translate="footer_copyright">© 2024 Viiveo. Tous droits réservés.</p>
+                <p>© 2024 Viiveo. Tous droits réservés.</p>
             </div>
         </div>
     </footer>
@@ -1082,7 +1082,7 @@
     <div id="loader" class="loader">
         <div class="loader-content">
             <div class="spinner"></div>
-            <p data-translate="loading">Chargement...</p>
+            <p>Chargement...</p>
         </div>
     </div>
 
@@ -1090,7 +1090,7 @@
     <div id="completed-missions-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="text-2xl font-bold" data-translate="completed_missions_title">Missions terminées</h2>
+                <h2 class="text-2xl font-bold">Missions terminées</h2>
                 <span class="close" onclick="closeModal('completed-missions-modal')">&times;</span>
             </div>
             <div class="modal-body">
@@ -1098,13 +1098,13 @@
                     <table class="w-full">
                         <thead>
                             <tr class="bg-gradient-to-r from-gray-50 to-gray-100">
-                                <th class="p-4 text-left" data-translate="mission_id">ID Mission</th>
-                                <th class="p-4 text-left" data-translate="client">Client</th>
-                                <th class="p-4 text-left" data-translate="address">Adresse</th>
-                                <th class="p-4 text-left" data-translate="service">Service</th>
-                                <th class="p-4 text-left" data-translate="date">Date</th>
-                                <th class="p-4 text-left" data-translate="time">Heure</th>
-                                <th class="p-4 text-left" data-translate="status">Statut</th>
+                                <th class="p-4 text-left">ID Mission</th>
+                                <th class="p-4 text-left">Client</th>
+                                <th class="p-4 text-left">Adresse</th>
+                                <th class="p-4 text-left">Service</th>
+                                <th class="p-4 text-left">Date</th>
+                                <th class="p-4 text-left">Heure</th>
+                                <th class="p-4 text-left">Statut</th>
                             </tr>
                         </thead>
                         <tbody id="completed-missions-table-modal">
@@ -1123,7 +1123,7 @@
     <div id="profile-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="text-2xl font-bold" data-translate="edit_profile_title">Modifier mes données personnelles</h2>
+                <h2 class="text-2xl font-bold">Modifier mes données personnelles</h2>
                 <span class="close" onclick="closeModal('profile-modal')">&times;</span>
             </div>
             <div class="modal-body">
@@ -1132,18 +1132,18 @@
                     <div class="form-section">
                         <h3 class="form-section-title">
                             <i class="fas fa-user-circle"></i>
-                            <span data-translate="personal_info">Informations personnelles</span>
+                            Informations personnelles
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="form-group">
-                                <label data-translate="prestataire_firstname">Prénom</label>
+                                <label>Prénom</label>
                                 <div class="relative">
                                     <input type="text" id="profile-firstname" class="form-input" required>
                                     <i class="fas fa-user form-input-icon"></i>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label data-translate="prestataire_name">Nom</label>
+                                <label>Nom</label>
                                 <div class="relative">
                                     <input type="text" id="profile-lastname" class="form-input" required>
                                     <i class="fas fa-user form-input-icon"></i>
@@ -1152,7 +1152,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label data-translate="prestataire_email">Email</label>
+                            <label>Email</label>
                             <div class="relative">
                                 <input type="email" id="profile-email" class="form-input" required autocomplete="email">
                                 <i class="fas fa-envelope form-input-icon"></i>
@@ -1160,7 +1160,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label data-translate="prestataire_password">Nouveau mot de passe</label>
+                            <label>Nouveau mot de passe</label>
                             <div class="relative">
                                 <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer" autocomplete="new-password">
                                 <i class="fas fa-lock form-input-icon"></i>
@@ -1172,10 +1172,10 @@
                     <div class="form-section">
                         <h3 class="form-section-title">
                             <i class="fas fa-map-marker-alt"></i>
-                            <span data-translate="contact_info">Coordonnées</span>
+                            Coordonnées
                         </h3>
                         <div class="form-group">
-                            <label data-translate="prestataire_address">Adresse</label>
+                            <label>Adresse</label>
                             <div class="relative">
                                 <input type="text" id="profile-address" class="form-input">
                                 <i class="fas fa-home form-input-icon"></i>
@@ -1184,14 +1184,14 @@
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="form-group">
-                                <label data-translate="prestataire_city">Ville</label>
+                                <label>Ville</label>
                                 <div class="relative">
                                     <input type="text" id="profile-city" class="form-input">
                                     <i class="fas fa-city form-input-icon"></i>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label data-translate="prestataire_postal">Code postal</label>
+                                <label>Code postal</label>
                                 <div class="relative">
                                     <input type="text" id="profile-postal" class="form-input">
                                     <i class="fas fa-mail-bulk form-input-icon"></i>
@@ -1200,7 +1200,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label data-translate="prestataire_phone">Téléphone</label>
+                            <label>Téléphone</label>
                             <div class="relative">
                                 <input type="tel" id="profile-phone" class="form-input">
                                 <i class="fas fa-phone form-input-icon"></i>
@@ -1212,7 +1212,7 @@
                     <div class="form-section">
                         <h3 class="form-section-title">
                             <i class="fas fa-tools"></i>
-                            <span data-translate="services_info">Services proposés</span>
+                            Services proposés
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="form-group">
@@ -1243,11 +1243,11 @@
                     </div>
                     
                     <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
-                        <button type="button" onclick="closeModal('profile-modal')" class="btn-secondary" data-translate="cancel">
+                        <button type="button" onclick="closeModal('profile-modal')" class="btn-secondary">
                             <i class="fas fa-times mr-2"></i>
                             Annuler
                         </button>
-                        <button type="submit" class="btn-elegant" data-translate="save_changes">
+                        <button type="submit" class="btn-elegant">
                             <i class="fas fa-save mr-2"></i>
                             Enregistrer
                         </button>
@@ -1324,9 +1324,8 @@
         const webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
 
         // Variables globales
-        let currentLanguage = 'fr';
-        let currentPrestataire = null;
         let currentEmail = "";
+        let currentMissions = [];
 
         // Variables pour la modale QR
         let currentMissionId = null;
@@ -1353,14 +1352,18 @@
                 window[callbackName] = function(data) {
                     resolve(data);
                     delete window[callbackName];
-                    script.remove();
+                    if (script.parentNode) {
+                        script.parentNode.removeChild(script);
+                    }
                 };
                 const script = document.createElement('script');
                 script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
                 script.onerror = () => {
                     reject(new Error('Erreur JSONP'));
                     delete window[callbackName];
-                    script.remove();
+                    if (script.parentNode) {
+                        script.parentNode.removeChild(script);
+                    }
                 };
                 document.body.appendChild(script);
             });
@@ -1383,7 +1386,6 @@
 
                 if (data.success) {
                     // Connexion réussie
-                    currentPrestataire = data;
                     currentEmail = email;
 
                     document.getElementById('login-section').classList.add('hidden');
@@ -1409,12 +1411,24 @@
             }
         }
 
-        // Charger les missions avec JSONP
+        // Charger les missions avec JSONP - CORRIGÉ
         async function loadMissions(email) {
             try {
                 const callbackName = 'cbMissions' + Date.now();
                 const url = `${webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
-                const missions = await callApiJsonp(url, callbackName);
+                const data = await callApiJsonp(url, callbackName);
+
+                // Vérifier la structure des données
+                console.log("Données reçues:", data);
+                
+                // Les missions peuvent être dans data.missions ou data directement
+                const missions = data.missions || data;
+                
+                if (!Array.isArray(missions)) {
+                    throw new Error("Format de données invalide");
+                }
+
+                currentMissions = missions;
 
                 // Mettre à jour les statistiques
                 updateStats(missions);
@@ -1430,25 +1444,38 @@
 
             } catch (error) {
                 console.error("Erreur lors du chargement des missions:", error);
-                showNotification("Erreur lors du chargement des missions", 'error');
+                showNotification("Erreur lors du chargement des missions: " + error.message, 'error');
             }
         }
 
-        // Mettre à jour les statistiques
+        // Mettre à jour les statistiques - CORRIGÉ
         function updateStats(missions) {
+            if (!Array.isArray(missions)) {
+                console.error("Missions n'est pas un tableau:", missions);
+                return;
+            }
+
             const pendingCount = missions.filter(m => m.statut === "en attente").length;
             const todayCount = missions.filter(m => {
                 if (m.statut !== "confirmée") return false;
-                const missionDate = new Date(m.date);
-                const today = new Date();
-                return missionDate.getDate() === today.getDate() && 
-                       missionDate.getMonth() === today.getMonth() && 
-                       missionDate.getFullYear() === today.getFullYear();
+                try {
+                    const missionDate = new Date(m.date);
+                    const today = new Date();
+                    return missionDate.getDate() === today.getDate() && 
+                           missionDate.getMonth() === today.getMonth() && 
+                           missionDate.getFullYear() === today.getFullYear();
+                } catch (e) {
+                    return false;
+                }
             }).length;
             const plannedCount = missions.filter(m => {
                 if (m.statut !== "confirmée") return false;
-                const missionDate = new Date(m.date);
-                return missionDate > new Date();
+                try {
+                    const missionDate = new Date(m.date);
+                    return missionDate > new Date();
+                } catch (e) {
+                    return false;
+                }
             }).length;
             const completedCount = missions.filter(m => m.statut === "terminée" || m.statut === "validée").length;
 
@@ -1458,7 +1485,7 @@
             document.getElementById('stats-completed').textContent = completedCount;
         }
 
-        // Charger les missions par statut
+        // Charger les missions par statut - CORRIGÉ
         function loadMissionsByStatus(status, missions) {
             const tableBody = document.getElementById(`${status}-missions-table`);
             const cardsContainer = document.getElementById(`${status}-missions-cards`);
@@ -1475,18 +1502,26 @@
                 case 'today':
                     filteredMissions = missions.filter(m => {
                         if (m.statut !== "confirmée") return false;
-                        const missionDate = new Date(m.date);
-                        const today = new Date();
-                        return missionDate.getDate() === today.getDate() && 
-                               missionDate.getMonth() === today.getMonth() && 
-                               missionDate.getFullYear() === today.getFullYear();
+                        try {
+                            const missionDate = new Date(m.date);
+                            const today = new Date();
+                            return missionDate.getDate() === today.getDate() && 
+                                   missionDate.getMonth() === today.getMonth() && 
+                                   missionDate.getFullYear() === today.getFullYear();
+                        } catch (e) {
+                            return false;
+                        }
                     });
                     break;
                 case 'planned':
                     filteredMissions = missions.filter(m => {
                         if (m.statut !== "confirmée") return false;
-                        const missionDate = new Date(m.date);
-                        return missionDate > new Date();
+                        try {
+                            const missionDate = new Date(m.date);
+                            return missionDate > new Date();
+                        } catch (e) {
+                            return false;
+                        }
                     });
                     break;
                 case 'completed':
@@ -1501,10 +1536,10 @@
             } else {
                 tableBody.innerHTML = filteredMissions.map(mission => `
                     <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td class="p-4">${mission.id}</td>
-                        <td class="p-4" data-prenom="${mission.prenom || ''}">${mission.client}</td>
-                        <td class="p-4">${mission.adresse}</td>
-                        <td class="p-4">${mission.service}</td>
+                        <td class="p-4">${mission.id || 'N/A'}</td>
+                        <td class="p-4" data-prenom="${mission.prenom || ''}">${mission.client || 'N/A'}</td>
+                        <td class="p-4">${mission.adresse || 'N/A'}</td>
+                        <td class="p-4">${mission.service || 'N/A'}</td>
                         <td class="p-4">${formatDate(mission.date)}</td>
                         <td class="p-4">${formatTime(mission.heure)}</td>
                         <td class="p-4">${getMissionActions(status, mission)}</td>
@@ -1516,19 +1551,19 @@
                     <div class="request-card">
                         <div class="card-row">
                             <span class="card-label">ID Mission</span>
-                            <span class="card-value">${mission.id}</span>
+                            <span class="card-value">${mission.id || 'N/A'}</span>
                         </div>
                         <div class="card-row">
                             <span class="card-label">Client</span>
-                            <span class="card-value">${mission.client}</span>
+                            <span class="card-value">${mission.client || 'N/A'}</span>
                         </div>
                         <div class="card-row">
                             <span class="card-label">Adresse</span>
-                            <span class="card-value">${mission.adresse}</span>
+                            <span class="card-value">${mission.adresse || 'N/A'}</span>
                         </div>
                         <div class="card-row">
                             <span class="card-label">Service</span>
-                            <span class="card-value">${mission.service}</span>
+                            <span class="card-value">${mission.service || 'N/A'}</span>
                         </div>
                         <div class="card-row">
                             <span class="card-label">Date</span>
@@ -1548,13 +1583,23 @@
 
         // Formatage des dates (comme dans vos embeds)
         function formatDate(dateString) {
-            const d = new Date(dateString);
-            return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
+            if (!dateString) return 'N/A';
+            try {
+                const d = new Date(dateString);
+                return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
+            } catch (e) {
+                return dateString;
+            }
         }
 
         function formatTime(timeString) {
-            const d = new Date(timeString);
-            return isNaN(d) ? timeString : `${String(d.getHours()).padStart(2, '0')}h${String(d.getMinutes()).padStart(2, '0')}`;
+            if (!timeString) return 'N/A';
+            try {
+                const d = new Date(timeString);
+                return isNaN(d) ? timeString : `${String(d.getHours()).padStart(2, '0')}h${String(d.getMinutes()).padStart(2, '0')}`;
+            } catch (e) {
+                return timeString;
+            }
         }
 
         function getMissionActions(status, mission) {
@@ -1773,7 +1818,6 @@
 
         // Fonction de déconnexion
         function logout() {
-            currentPrestataire = null;
             currentEmail = "";
             document.getElementById('login-section').classList.remove('hidden');
             document.getElementById('prestataire-interface').classList.add('hidden');
@@ -1797,6 +1841,80 @@
 
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
+        }
+
+        function showCompletedMissions() {
+            const completedMissions = currentMissions.filter(m => m.statut === "terminée" || m.statut === "validée");
+            
+            const tableBody = document.getElementById("completed-missions-table-modal");
+            const cardsContainer = document.getElementById("completed-missions-cards-modal");
+            
+            if (completedMissions.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">Aucune mission terminée</td></tr>`;
+                cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission terminée</div>`;
+            } else {
+                tableBody.innerHTML = completedMissions.map(mission => `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td class="p-4">${mission.id || 'N/A'}</td>
+                        <td class="p-4">${mission.client || 'N/A'}</td>
+                        <td class="p-4">${mission.adresse || 'N/A'}</td>
+                        <td class="p-4">${mission.service || 'N/A'}</td>
+                        <td class="p-4">${formatDate(mission.date)}</td>
+                        <td class="p-4">${formatTime(mission.heure)}</td>
+                        <td class="p-4">
+                            <span class="status-badge ${mission.statut === 'validée' ? 'status-validated' : 'status-completed'}">
+                                ${mission.statut}
+                            </span>
+                        </td>
+                    </tr>
+                `).join('');
+                
+                cardsContainer.innerHTML = completedMissions.map(mission => `
+                    <div class="request-card">
+                        <div class="card-row">
+                            <span class="card-label">ID Mission</span>
+                            <span class="card-value">${mission.id || 'N/A'}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Client</span>
+                            <span class="card-value">${mission.client || 'N/A'}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Adresse</span>
+                            <span class="card-value">${mission.adresse || 'N/A'}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Service</span>
+                            <span class="card-value">${mission.service || 'N/A'}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Date</span>
+                            <span class="card-value">${formatDate(mission.date)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Heure</span>
+                            <span class="card-value">${formatTime(mission.heure)}</span>
+                        </div>
+                        <div class="card-status">
+                            <span class="status-badge ${mission.statut === 'validée' ? 'status-validated' : 'status-completed'}">
+                                ${mission.statut}
+                            </span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('completed-missions-modal').style.display = 'block';
+        }
+
+        function showProfileModal() {
+            document.getElementById('profile-modal').style.display = 'block';
+        }
+
+        async function saveProfile() {
+            // Implémentation de la sauvegarde du profil
+            showNotification("Profil mis à jour avec succès !", 'success');
+            closeModal('profile-modal');
         }
 
         function showNotification(message, type = 'info') {
@@ -1837,10 +1955,6 @@
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
-            // Charger la langue sauvegardée
-            const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
-            // changeLanguage(savedLanguage); // À implémenter si besoin
-
             // Gestion du sélecteur de langue
             const languageButton = document.getElementById('language-button');
             const languageDropdown = document.getElementById('language-dropdown');
@@ -1858,7 +1972,6 @@
                 document.querySelectorAll('.language-option').forEach(option => {
                     option.addEventListener('click', function() {
                         const lang = this.getAttribute('data-lang');
-                        // changeLanguage(lang); // À implémenter si besoin
                         languageDropdown.classList.remove('show');
                     });
                 });
