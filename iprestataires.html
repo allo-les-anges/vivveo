@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Prestataire - Viiveo</title>
-    <!-- Alternative à Tailwind CDN - utiliser un CDN plus stable -->
-    <script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -85,7 +84,7 @@
         
         .language-option.active {
             background-color: #fce7f3;
-            color: #be185d;
+            color: #9d174d;
         }
 
         .language-option:not(:last-child) {
@@ -190,27 +189,27 @@
             display: inline-block;
         }
 
-        .status-en_attente {
+        .status-pending {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             color: white;
         }
 
-        .status-planifiee {
+        .status-confirmed {
             background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: white;
         }
 
-        .status-en_cours {
+        .status-in-progress {
             background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
             color: white;
         }
 
-        .status-terminee {
+        .status-completed {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
         }
 
-        .status-validee {
+        .status-validated {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
         }
@@ -465,7 +464,7 @@
             display: none;
         }
 
-        .mission-card-view {
+        .request-card {
             background: white;
             border-radius: 1rem;
             padding: 1.5rem;
@@ -476,7 +475,7 @@
             transition: var(--transition);
         }
 
-        .mission-card-view::before {
+        .request-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -487,7 +486,7 @@
             border-radius: 1rem 1rem 0 0;
         }
 
-        .mission-card-view:hover {
+        .request-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
@@ -586,50 +585,63 @@
             transform: translateY(-1px);
         }
 
-        /* Boutons d'action des missions */
-        .mission-actions {
+        /* Styles pour les tableaux de missions */
+        .missions-table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid #f3f4f6;
-            display: flex;
-            gap: 0.5rem;
         }
 
-        .btn-accept, .btn-decline, .btn-complete {
+        .missions-table th {
+            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #9d174d;
+        }
+
+        .missions-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .missions-table tr:hover {
+            background-color: #fdf2f8;
+        }
+
+        .btn-action {
             padding: 0.5rem 1rem;
             border: none;
-            border-radius: 5px;
+            border-radius: 0.5rem;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 0.9rem;
-            flex: 1;
-            transition: all 0.3s ease;
+            transition: var(--transition);
+            margin: 0 0.25rem;
         }
 
-        .btn-accept {
-            background: #4CAF50;
+        .btn-validate {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
         }
 
-        .btn-accept:hover {
-            background: #45a049;
-        }
-
-        .btn-decline {
-            background: #f44336;
+        .btn-refuse {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: white;
         }
 
-        .btn-decline:hover {
-            background: #da190b;
-        }
-
-        .btn-complete {
-            background: #2196F3;
+        .btn-start {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
             color: white;
         }
 
-        .btn-complete:hover {
-            background: #0b7dda;
+        .btn-cloturer {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
         @media (max-width: 768px) {
@@ -648,6 +660,10 @@
             .modal-content {
                 width: 95%;
                 margin: 5% auto;
+            }
+
+            .missions-table {
+                font-size: 14px;
             }
         }
 
@@ -687,6 +703,99 @@
             color: #1e40af;
             border: 1px solid #bfdbfe;
         }
+
+        /* Styles pour le menu hamburger */
+        #menu-container {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 999;
+        }
+
+        #menu-toggle {
+            display: none;
+        }
+
+        #menu-toggle + label {
+            cursor: pointer;
+            display: inline-block;
+            width: 30px;
+            height: 25px;
+            position: relative;
+        }
+
+        #menu-toggle + label span {
+            background: #ec4899;
+            display: block;
+            height: 3px;
+            width: 100%;
+            border-radius: 2px;
+            position: absolute;
+            left: 0;
+            transition: 0.3s;
+        }
+
+        #menu-toggle + label span:nth-child(1) {
+            top: 0;
+        }
+
+        #menu-toggle + label span:nth-child(2) {
+            top: 11px;
+        }
+
+        #menu-toggle + label span:nth-child(3) {
+            top: 22px;
+        }
+
+        #menu-toggle:checked + label span:nth-child(1) {
+            transform: translateY(11px) rotate(45deg);
+        }
+
+        #menu-toggle:checked + label span:nth-child(2) {
+            opacity: 0;
+        }
+
+        #menu-toggle:checked + label span:nth-child(3) {
+            transform: translateY(-11px) rotate(-45deg);
+        }
+
+        #menu {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 40px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 0.5em 1em;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+
+        #menu-toggle:checked + label + #menu {
+            display: block !important;
+        }
+
+        #menu ul {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #menu a {
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+            padding: 0.5em 0;
+            display: inline-block;
+        }
+
+        #menu a:hover {
+            color: #ec4899;
+        }
     </style>
 </head>
 <body>
@@ -706,7 +815,7 @@
                     <a href="formules.html" class="nav-link text-gray-700 hover:text-pink-500 font-medium" data-translate="nav_formules">Abonnement</a>
                     <a href="prestataires.html" class="nav-link text-gray-700 hover:text-pink-500 font-medium" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
                     <a href="iclient.html" class="nav-link text-gray-700 hover:text-pink-500 font-medium" data-translate="nav_client">Espace Client</a>
-                    <a href="iprestataire.html" class="nav-link text-pink-500 font-medium border-b-2 border-pink-500" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                    <a href="iprestataires.html" class="nav-link text-pink-500 font-medium border-b-2 border-pink-500" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </nav>
 
                 <!-- Sélecteur de langue -->
@@ -754,7 +863,7 @@
                     <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-pink-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Abonnement</a>
                     <a href="prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-pink-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
                     <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-pink-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
-                    <a href="iprestataire.html" class="block py-3 px-4 text-pink-500 bg-pink-50 rounded-lg font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
+                    <a href="iprestataires.html" class="block py-3 px-4 text-pink-500 bg-pink-50 rounded-lg font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </div>
             </div>
         </div>
@@ -776,7 +885,7 @@
                 </p>
             </div>
 
-            <form id="login-form" onsubmit="event.preventDefault(); handleLogin();">
+            <form id="loginForm" onsubmit="event.preventDefault(); handleLogin();">
                 <div class="form-group">
                     <label for="email" data-translate="email_label">Adresse email</label>
                     <div class="relative">
@@ -795,12 +904,28 @@
                     <span data-translate="login_button">Se connecter</span>
                     <i class="fas fa-arrow-right ml-2"></i>
                 </button>
-                <div id="login-message" class="mt-4 hidden"></div>
+                <div id="message" class="mt-4 hidden"></div>
             </form>
         </div>
 
         <!-- Interface prestataire (cachée par défaut) -->
         <div id="prestataire-interface" class="hidden">
+            <!-- Menu hamburger -->
+            <div id="menu-container">
+                <input type="checkbox" id="menu-toggle">
+                <label for="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+                <nav id="menu">
+                    <ul>
+                        <li><a href="#" onclick="showMesDonnees(); closeMenu()">Mes données</a></li>
+                        <li><a href="#" onclick="showHistorique(); closeMenu()">Historique des Prestations</a></li>
+                    </ul>
+                </nav>
+            </div>
+
             <!-- En-tête prestataire -->
             <div class="prestataire-section">
                 <div class="flex flex-col md:flex-row items-center justify-between">
@@ -822,13 +947,13 @@
                         </div>
                     </div>
                     <div class="mt-4 md:mt-0 flex flex-wrap gap-3">
-                        <button onclick="showHistorique()" class="btn-secondary" data-translate="history_missions">
+                        <button onclick="showHistorique()" class="btn-secondary" data-translate="history">
                             <i class="fas fa-history mr-2"></i>
-                            Historique des missions
+                            Historique
                         </button>
-                        <button onclick="showProfileModal()" class="btn-elegant" data-translate="edit_profile">
+                        <button onclick="showMesDonnees()" class="btn-elegant" data-translate="edit_profile">
                             <i class="fas fa-user-edit mr-2"></i>
-                            Modifier profil
+                            Mes données
                         </button>
                         <button onclick="logout()" class="bg-red-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors" data-translate="logout">
                             <i class="fas fa-sign-out-alt mr-2"></i>
@@ -846,19 +971,19 @@
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div class="stats-card">
-                        <div class="stats-number pulse" id="stats-en_attente">0</div>
+                        <div class="stats-number pulse" id="stats-pending">0</div>
                         <div class="text-gray-600 font-semibold" data-translate="missions_pending">Missions en attente</div>
                     </div>
                     <div class="stats-card">
-                        <div class="stats-number" id="stats-planifiees">0</div>
-                        <div class="text-gray-600 font-semibold" data-translate="missions_planned">Missions planifiées</div>
+                        <div class="stats-number" id="stats-confirmed">0</div>
+                        <div class="text-gray-600 font-semibold" data-translate="missions_confirmed">Missions confirmées</div>
                     </div>
                     <div class="stats-card">
-                        <div class="stats-number" id="stats-en_cours">0</div>
+                        <div class="stats-number" id="stats-progress">0</div>
                         <div class="text-gray-600 font-semibold" data-translate="missions_progress">En cours</div>
                     </div>
                     <div class="stats-card">
-                        <div class="stats-number" id="stats-terminees">0</div>
+                        <div class="stats-number" id="stats-completed">0</div>
                         <div class="text-gray-600 font-semibold" data-translate="missions_completed">Terminées</div>
                     </div>
                 </div>
@@ -868,19 +993,19 @@
             <div class="prestataire-section">
                 <div class="border-b border-gray-200 mb-6">
                     <div class="flex space-x-8 overflow-x-auto">
-                        <button class="tab-button active" onclick="showTab('en_attente')" data-translate="tab_pending">
+                        <button class="tab-button active" onclick="showTab('pending')" data-translate="tab_pending">
                             <i class="fas fa-clock mr-2"></i>
                             En Attente
                         </button>
-                        <button class="tab-button" onclick="showTab('planifiees')" data-translate="tab_planned">
+                        <button class="tab-button" onclick="showTab('confirmed')" data-translate="tab_confirmed">
                             <i class="fas fa-calendar-check mr-2"></i>
-                            Planifiées
+                            Confirmées
                         </button>
-                        <button class="tab-button" onclick="showTab('en_cours')" data-translate="tab_progress">
+                        <button class="tab-button" onclick="showTab('progress')" data-translate="tab_progress">
                             <i class="fas fa-spinner mr-2"></i>
                             En Cours
                         </button>
-                        <button class="tab-button" onclick="showTab('terminees')" data-translate="tab_completed">
+                        <button class="tab-button" onclick="showTab('completed')" data-translate="tab_completed">
                             <i class="fas fa-check-circle mr-2"></i>
                             Terminées
                         </button>
@@ -888,105 +1013,45 @@
                 </div>
 
                 <!-- Onglet Missions en attente -->
-                <div id="tab-en_attente" class="tab-container active">
+                <div id="tab-pending" class="tab-container active">
                     <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="pending_missions">Missions en attente de validation</h4>
                     <div class="table-wrapper">
-                        <table class="w-full">
-                            <thead>
-                                <tr class="bg-gradient-to-r from-pink-50 to-pink-100">
-                                    <th class="p-4 text-left" data-translate="mission_date">Date mission</th>
-                                    <th class="p-4 text-left" data-translate="service">Service</th>
-                                    <th class="p-4 text-left" data-translate="client">Client</th>
-                                    <th class="p-4 text-left" data-translate="intervention">Intervention</th>
-                                    <th class="p-4 text-left" data-translate="time">Heure</th>
-                                    <th class="p-4 text-left" data-translate="status">Statut</th>
-                                    <th class="p-4 text-left" data-translate="actions">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="en_attente-table">
-                                <!-- Contenu chargé dynamiquement -->
-                            </tbody>
-                        </table>
+                        <div id="missions-attente"></div>
                     </div>
-                    <div class="mobile-card-view" id="en_attente_cards">
+                    <div class="mobile-card-view" id="missions-attente-cards">
                         <!-- Contenu chargé dynamiquement -->
                     </div>
                 </div>
 
-                <!-- Onglet Missions planifiées -->
-                <div id="tab-planifiees" class="tab-container">
-                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="planned_missions">Missions planifiées</h4>
+                <!-- Onglet Missions confirmées -->
+                <div id="tab-confirmed" class="tab-container">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="confirmed_missions">Missions planifiées (validées / confirmées)</h4>
                     <div class="table-wrapper">
-                        <table class="w-full">
-                            <thead>
-                                <tr class="bg-gradient-to-r from-blue-50 to-blue-100">
-                                    <th class="p-4 text-left" data-translate="mission_date">Date mission</th>
-                                    <th class="p-4 text-left" data-translate="service">Service</th>
-                                    <th class="p-4 text-left" data-translate="client">Client</th>
-                                    <th class="p-4 text-left" data-translate="intervention">Intervention</th>
-                                    <th class="p-4 text-left" data-translate="time">Heure</th>
-                                    <th class="p-4 text-left" data-translate="status">Statut</th>
-                                    <th class="p-4 text-left" data-translate="actions">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="planifiees-table">
-                                <!-- Contenu chargé dynamiquement -->
-                            </tbody>
-                        </table>
+                        <div id="missions-a-venir"></div>
                     </div>
-                    <div class="mobile-card-view" id="planifiees_cards">
+                    <div class="mobile-card-view" id="missions-a-venir-cards">
                         <!-- Contenu chargé dynamiquement -->
                     </div>
                 </div>
 
                 <!-- Onglet Missions en cours -->
-                <div id="tab-en_cours" class="tab-container">
+                <div id="tab-progress" class="tab-container">
                     <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="progress_missions">Missions en cours</h4>
                     <div class="table-wrapper">
-                        <table class="w-full">
-                            <thead>
-                                <tr class="bg-gradient-to-r from-purple-50 to-purple-100">
-                                    <th class="p-4 text-left" data-translate="mission_date">Date mission</th>
-                                    <th class="p-4 text-left" data-translate="service">Service</th>
-                                    <th class="p-4 text-left" data-translate="client">Client</th>
-                                    <th class="p-4 text-left" data-translate="intervention">Intervention</th>
-                                    <th class="p-4 text-left" data-translate="time">Heure</th>
-                                    <th class="p-4 text-left" data-translate="status">Statut</th>
-                                    <th class="p-4 text-left" data-translate="actions">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="en_cours-table">
-                                <!-- Contenu chargé dynamiquement -->
-                            </tbody>
-                        </table>
+                        <div id="missions-en-cours"></div>
                     </div>
-                    <div class="mobile-card-view" id="en_cours_cards">
+                    <div class="mobile-card-view" id="missions-en-cours-cards">
                         <!-- Contenu chargé dynamiquement -->
                     </div>
                 </div>
 
                 <!-- Onglet Missions terminées -->
-                <div id="tab-terminees" class="tab-container">
+                <div id="tab-completed" class="tab-container">
                     <h4 class="text-lg font-semibold text-gray-800 mb-4" data-translate="completed_missions">Missions terminées</h4>
                     <div class="table-wrapper">
-                        <table class="w-full">
-                            <thead>
-                                <tr class="bg-gradient-to-r from-green-50 to-green-100">
-                                    <th class="p-4 text-left" data-translate="mission_date">Date mission</th>
-                                    <th class="p-4 text-left" data-translate="service">Service</th>
-                                    <th class="p-4 text-left" data-translate="client">Client</th>
-                                    <th class="p-4 text-left" data-translate="intervention">Intervention</th>
-                                    <th class="p-4 text-left" data-translate="time">Heure</th>
-                                    <th class="p-4 text-left" data-translate="status">Statut</th>
-                                    <th class="p-4 text-left" data-translate="actions">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="terminees-table">
-                                <!-- Contenu chargé dynamiquement -->
-                            </tbody>
-                        </table>
+                        <div id="missions-terminees"></div>
                     </div>
-                    <div class="mobile-card-view" id="terminees_cards">
+                    <div class="mobile-card-view" id="missions-terminees-cards">
                         <!-- Contenu chargé dynamiquement -->
                     </div>
                 </div>
@@ -1022,7 +1087,7 @@
                     <h4 class="font-semibold mb-4" data-translate="footer_spaces">Espaces</h4>
                     <ul class="space-y-2 text-sm text-gray-300">
                         <li><a href="iclient.html" class="hover:text-pink-400 transition-colors" data-translate="nav_client">Espace Client</a></li>
-                        <li><a href="iprestataire.html" class="hover:text-pink-400 transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a></li>
+                        <li><a href="iprestataires.html" class="hover:text-pink-400 transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a></li>
                     </ul>
                 </div>
 
@@ -1061,543 +1126,445 @@
         </div>
     </div>
 
-    <!-- Modal historique des missions -->
-    <div id="historique-modal" class="modal">
+    <!-- Modal missions clôturées -->
+    <div id="closed-missions-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="text-2xl font-bold" data-translate="history_missions_title">Historique des missions</h2>
-                <span class="close" onclick="closeModal('historique-modal')">&times;</span>
+                <h2 class="text-2xl font-bold" data-translate="closed_missions_title">Historique des Prestations</h2>
+                <span class="close" onclick="closeModal('closed-missions-modal')">&times;</span>
             </div>
             <div class="modal-body">
                 <div class="table-wrapper">
-                    <table class="w-full">
-                        <thead>
-                            <tr class="bg-gradient-to-r from-gray-50 to-gray-100">
-                                <th class="p-4 text-left" data-translate="mission_date">Date mission</th>
-                                <th class="p-4 text-left" data-translate="service">Service</th>
-                                <th class="p-4 text-left" data-translate="client">Client</th>
-                                <th class="p-4 text-left" data-translate="intervention">Intervention</th>
-                                <th class="p-4 text-left" data-translate="time">Heure</th>
-                                <th class="p-4 text-left" data-translate="status">Statut</th>
-                            </tr>
-                        </thead>
-                        <tbody id="historique-table">
-                            <!-- Contenu chargé dynamiquement -->
-                        </tbody>
-                    </table>
+                    <div id="historique-missions"></div>
                 </div>
-                <div class="mobile-card-view" id="historique_cards">
+                <div class="mobile-card-view" id="historique-missions-cards">
                     <!-- Contenu chargé dynamiquement -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Script principal corrigé -->
-    <script>
-        // Configuration
-        const CONFIG = {
-            API_BASE_URL: 'https://gaetano1747.gm-harchies.workers.dev',
-            DEBUG: true
-        };
-
-        // State global
-        let appState = {
-            isLoggedIn: false,
-            currentUser: null,
-            missions: []
-        };
-
-        // Fonction de connexion corrigée
-        async function handleLogin() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const message = document.getElementById('login-message');
-
-            if (!email || !password) {
-                showNotification('Veuillez remplir tous les champs', 'error');
-                return;
-            }
-
-            // Afficher le loader
-            document.getElementById('loader').style.display = 'flex';
-
-            try {
-                // Utiliser JSONP pour la connexion
-                const loginResponse = await jsonpRequest(
-                    `${CONFIG.API_BASE_URL}?type=loginpresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
-                    'cbLogin'
-                );
-
-                if (loginResponse.success) {
-                    handleLoginSuccess(loginResponse, email);
-                } else {
-                    throw new Error(loginResponse.message || 'Email ou mot de passe incorrect');
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                message.textContent = error.message;
-                message.className = 'message message-error';
-                message.classList.remove('hidden');
-            } finally {
-                document.getElementById('loader').style.display = 'none';
-            }
-        }
-
-        // Fonction JSONP améliorée
-        function jsonpRequest(url, prefix) {
-            return new Promise((resolve, reject) => {
-                const callbackName = prefix + Date.now();
-                const script = document.createElement('script');
-                const timeout = setTimeout(() => {
-                    reject(new Error('Timeout'));
-                }, 10000); // 10 secondes timeout
-
-                window[callbackName] = function(response) {
-                    clearTimeout(timeout);
-                    delete window[callbackName];
-                    if (script.parentNode) {
-                        script.parentNode.removeChild(script);
-                    }
-                    resolve(response);
-                };
-
-                script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
-                script.onerror = () => {
-                    clearTimeout(timeout);
-                    reject(new Error('Network error'));
-                };
-
-                document.body.appendChild(script);
-            });
-        }
-
-        function handleLoginSuccess(response, email) {
-            console.log('Login success:', response);
-            
-            appState.isLoggedIn = true;
-            appState.currentUser = {
-                email: email,
-                prenom: response.prenom,
-                nom: response.nom
-            };
-
-            // Sauvegarder en localStorage
-            localStorage.setItem('viiveo_prestataire', JSON.stringify(appState.currentUser));
-
-            // Mettre à jour l'interface
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('prestataire-interface').classList.remove('hidden');
-            
-            // Mettre à jour les informations prestataire - CORRECTION ICI
-            const prestataireNameElement = document.getElementById('prestataire-name');
-            if (prestataireNameElement) {
-                prestataireNameElement.textContent = `${response.prenom} ${response.nom}`;
-            }
-
-            showNotification('Connexion réussie !', 'success');
-
-            // Charger les missions
-            loadMissions();
-        }
-
-        // Fonction pour charger les missions
-        async function loadMissions() {
-            if (!appState.currentUser) {
-                console.error('No current user');
-                return;
-            }
-
-            console.log('Loading missions for:', appState.currentUser.email);
-            document.getElementById('loader').style.display = 'flex';
-
-            try {
-                const missionsResponse = await jsonpRequest(
-                    `${CONFIG.API_BASE_URL}?type=getmissions&email=${encodeURIComponent(appState.currentUser.email)}`,
-                    'cbMissions'
-                );
-
-                console.log('Missions response:', missionsResponse);
-
-                if (missionsResponse.success && missionsResponse.missions) {
-                    appState.missions = missionsResponse.missions;
-                    displayMissions();
-                    showNotification(`${missionsResponse.missions.length} mission(s) chargée(s)`, 'success');
-                } else {
-                    // Si pas de missions, utiliser des données de test pour le debug
-                    console.log('No missions found, using test data');
-                    appState.missions = getTestMissions();
-                    displayMissions();
-                    showNotification('Données de test chargées', 'info');
-                }
-            } catch (error) {
-                console.error('Error loading missions:', error);
-                // En cas d'erreur, charger des données de test
-                appState.missions = getTestMissions();
-                displayMissions();
-                showNotification('Erreur de chargement - données de test affichées', 'error');
-            } finally {
-                document.getElementById('loader').style.display = 'none';
-            }
-        }
-
-        // Fonction pour générer des missions de test
-        function getTestMissions() {
-            return [
-                {
-                    id: '1',
-                    service: 'Ménage',
-                    client: 'Marie Dupont',
-                    date: '2024-01-15',
-                    intervention: '2024-01-15',
-                    heure: '14:00',
-                    statut: 'en_attente',
-                    adresse: '123 Rue Example, Paris'
-                },
-                {
-                    id: '2', 
-                    service: 'Jardinage',
-                    client: 'Jean Martin',
-                    date: '2024-01-16',
-                    intervention: '2024-01-16',
-                    heure: '09:00',
-                    statut: 'planifiée',
-                    adresse: '456 Avenue Test, Lyon'
-                },
-                {
-                    id: '3',
-                    service: 'Bricolage',
-                    client: 'Sophie Leroy',
-                    date: '2024-01-17',
-                    intervention: '2024-01-17',
-                    heure: '16:00',
-                    statut: 'en_cours',
-                    adresse: '789 Boulevard Exemple, Marseille'
-                }
-            ];
-        }
-
-        // Fonction pour afficher les missions
-        function displayMissions() {
-            if (!appState.missions || appState.missions.length === 0) {
-                console.log('No missions to display');
-                const noMissionsText = 'Aucune mission disponible';
-                
-                const containers = ['en_attente', 'planifiees', 'en_cours', 'terminees'];
-                containers.forEach(container => {
-                    const table = document.getElementById(`${container}-table`);
-                    const cards = document.getElementById(`${container}_cards`);
-                    
-                    if (table) {
-                        table.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">${noMissionsText}</td></tr>`;
-                    }
-                    if (cards) {
-                        cards.innerHTML = `<div class="text-center p-8 text-gray-500">${noMissionsText}</div>`;
-                    }
-                });
-                return;
-            }
-
-            console.log('Displaying missions:', appState.missions);
-
-            // Calculer les statistiques
-            const enAttenteCount = appState.missions.filter(m => m.statut === 'en_attente').length;
-            const planifieesCount = appState.missions.filter(m => m.statut === 'planifiée').length;
-            const enCoursCount = appState.missions.filter(m => m.statut === 'en_cours').length;
-            const termineesCount = appState.missions.filter(m => m.statut === 'terminée').length;
-
-            // Mettre à jour les statistiques
-            updateStatElement('stats-en_attente', enAttenteCount);
-            updateStatElement('stats-planifiees', planifieesCount);
-            updateStatElement('stats-en_cours', enCoursCount);
-            updateStatElement('stats-terminees', termineesCount);
-
-            // Afficher les missions par statut
-            displayMissionsByStatus('en_attente');
-            displayMissionsByStatus('planifiees');
-            displayMissionsByStatus('en_cours');
-            displayMissionsByStatus('terminees');
-        }
-
-        function updateStatElement(elementId, value) {
-            const element = document.getElementById(elementId);
-            if (element) {
-                element.textContent = value;
-            }
-        }
-
-        function displayMissionsByStatus(status) {
-            let filteredMissions = [];
-            let statusFilter = '';
-            
-            switch(status) {
-                case 'en_attente':
-                    statusFilter = 'en_attente';
-                    break;
-                case 'planifiees':
-                    statusFilter = 'planifiée';
-                    break;
-                case 'en_cours':
-                    statusFilter = 'en_cours';
-                    break;
-                case 'terminees':
-                    statusFilter = 'terminée';
-                    break;
-            }
-            
-            filteredMissions = appState.missions.filter(m => m.statut === statusFilter);
-
-            const tableBody = document.getElementById(`${status}-table`);
-            const cardsContainer = document.getElementById(`${status}_cards`);
-
-            if (filteredMissions.length === 0) {
-                const noMissionsText = 'Aucune mission disponible';
-                if (tableBody) {
-                    tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">${noMissionsText}</td></tr>`;
-                }
-                if (cardsContainer) {
-                    cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${noMissionsText}</div>`;
-                }
-            } else {
-                // Mettre à jour le tableau
-                if (tableBody) {
-                    tableBody.innerHTML = filteredMissions.map(mission => `
-                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                            <td class="p-4">${formatDate(mission.date)}</td>
-                            <td class="p-4">${mission.service || ""}</td>
-                            <td class="p-4">${mission.client || ""}</td>
-                            <td class="p-4">${formatDate(mission.intervention)}</td>
-                            <td class="p-4">${mission.heure || ""}</td>
-                            <td class="p-4">${getStatusBadge(mission.statut)}</td>
-                            <td class="p-4">${getMissionActions(status, mission)}</td>
-                        </tr>
-                    `).join('');
-                }
-
-                // Mettre à jour les cartes mobiles
-                if (cardsContainer) {
-                    cardsContainer.innerHTML = filteredMissions.map(mission => `
-                        <div class="mission-card-view">
-                            <div class="card-row">
-                                <span class="card-label">Date mission</span>
-                                <span class="card-value">${formatDate(mission.date)}</span>
+    <!-- Modal de profil -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-2xl font-bold" data-translate="edit_profile_title">Mes données personnelles</h2>
+                <span class="close" onclick="closeModal('profile-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="profile-form" onsubmit="event.preventDefault(); saveProfile();">
+                    <!-- Section informations personnelles -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-user-circle"></i>
+                            <span data-translate="personal_info">Informations personnelles</span>
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label data-translate="prestataire_firstname">Prénom</label>
+                                <div class="relative">
+                                    <input type="text" id="profile-firstname" class="form-input" required>
+                                    <i class="fas fa-user form-input-icon"></i>
+                                </div>
                             </div>
-                            <div class="card-row">
-                                <span class="card-label">Service</span>
-                                <span class="card-value">${mission.service || ""}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Client</span>
-                                <span class="card-value">${mission.client || ""}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Intervention</span>
-                                <span class="card-value">${formatDate(mission.intervention)}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Heure</span>
-                                <span class="card-value">${mission.heure || ""}</span>
-                            </div>
-                            <div class="card-status">
-                                ${getStatusBadge(mission.statut)}
-                                <div class="mission-actions">
-                                    ${getMissionActions(status, mission)}
+                            <div class="form-group">
+                                <label data-translate="prestataire_name">Nom</label>
+                                <div class="relative">
+                                    <input type="text" id="profile-lastname" class="form-input" required>
+                                    <i class="fas fa-user form-input-icon"></i>
                                 </div>
                             </div>
                         </div>
-                    `).join('');
-                }
-            }
-        }
+                        
+                        <div class="form-group">
+                            <label data-translate="prestataire_email">Email</label>
+                            <div class="relative">
+                                <input type="email" id="profile-email" class="form-input" required>
+                                <i class="fas fa-envelope form-input-icon"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="prestataire_password">Nouveau mot de passe</label>
+                            <div class="relative">
+                                <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer">
+                                <i class="fas fa-lock form-input-icon"></i>
+                            </div>
+                        </div>
+                    </div>
 
-        function formatDate(dateString) {
-            if (!dateString) return "";
-            try {
-                const date = new Date(dateString);
-                if (isNaN(date)) return dateString;
-                
-                const day = date.getDate().toString().padStart(2, '0');
-                const month = (date.getMonth() + 1).toString().padStart(2, '0');
-                const year = date.getFullYear().toString().slice(2);
-                return `${day}/${month}/${year}`;
-            } catch (e) {
-                return dateString;
-            }
-        }
+                    <!-- Section coordonnées -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span data-translate="contact_info">Coordonnées</span>
+                        </h3>
+                        <div class="form-group">
+                            <label data-translate="prestataire_address">Adresse</label>
+                            <div class="relative">
+                                <input type="text" id="profile-address" class="form-input">
+                                <i class="fas fa-home form-input-icon"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label data-translate="prestataire_city">Ville</label>
+                                <div class="relative">
+                                    <input type="text" id="profile-city" class="form-input">
+                                    <i class="fas fa-city form-input-icon"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="prestataire_postal">Code postal</label>
+                                <div class="relative">
+                                    <input type="text" id="profile-postal" class="form-input">
+                                    <i class="fas fa-mail-bulk form-input-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="prestataire_phone">Téléphone</label>
+                            <div class="relative">
+                                <input type="tel" id="profile-phone" class="form-input">
+                                <i class="fas fa-phone form-input-icon"></i>
+                            </div>
+                        </div>
+                    </div>
 
-        function getStatusBadge(status) {
-            if (!status) return '<span class="status-badge status-en_attente">Inconnu</span>';
-            
-            switch(status) {
-                case 'en_attente':
-                    return '<span class="status-badge status-en_attente">En attente</span>';
-                case 'planifiée':
-                    return '<span class="status-badge status-planifiee">Planifiée</span>';
-                case 'en_cours':
-                    return '<span class="status-badge status-en_cours">En cours</span>';
-                case 'terminée':
-                    return '<span class="status-badge status-terminee">Terminée</span>';
-                default:
-                    return `<span class="status-badge status-en_attente">${status}</span>`;
-            }
-        }
+                    <!-- Section spécialités -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-tools"></i>
+                            <span data-translate="specialties">Spécialités</span>
+                        </h3>
+                        <div class="form-group">
+                            <label data-translate="services_offered">Services proposés</label>
+                            <div class="relative">
+                                <select id="profile-services" class="form-input" multiple>
+                                    <option value="menage">Entretien ménager</option>
+                                    <option value="cuisine">Aide en cuisine</option>
+                                    <option value="courses">Courses</option>
+                                    <option value="soins">Soins à domicile</option>
+                                    <option value="administratif">Aide administrative</option>
+                                    <option value="jardinage">Jardinage</option>
+                                </select>
+                                <i class="fas fa-tools form-input-icon"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="availability">Disponibilités</label>
+                            <div class="relative">
+                                <textarea id="profile-availability" class="form-input" rows="3" placeholder="Indiquez vos disponibilités..."></textarea>
+                                <i class="fas fa-calendar-alt form-input-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
+                        <button type="button" onclick="closeModal('profile-modal')" class="btn-secondary" data-translate="cancel">
+                            <i class="fas fa-times mr-2"></i>
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn-elegant" data-translate="save_changes">
+                            <i class="fas fa-save mr-2"></i>
+                            Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-        function getMissionActions(status, mission) {
-            if (!mission || !mission.id) return '';
-            
-            let actions = '';
-            
-            switch(status) {
-                case 'en_attente':
-                    actions = `
-                        <button onclick="updateMissionStatus('${mission.id}', 'planifiée')" class="btn-accept">
-                            <i class="fas fa-check mr-1"></i>Accepter
-                        </button>
-                        <button onclick="updateMissionStatus('${mission.id}', 'refusée')" class="btn-decline">
-                            <i class="fas fa-times mr-1"></i>Refuser
-                        </button>
-                    `;
-                    break;
-                case 'planifiees':
-                    actions = `
-                        <button onclick="updateMissionStatus('${mission.id}', 'en_cours')" class="btn-complete">
-                            <i class="fas fa-play mr-1"></i>Commencer
-                        </button>
-                    `;
-                    break;
-                case 'en_cours':
-                    actions = `
-                        <button onclick="updateMissionStatus('${mission.id}', 'terminée')" class="btn-accept">
-                            <i class="fas fa-flag-checkered mr-1"></i>Terminer
-                        </button>
-                    `;
-                    break;
-                case 'terminees':
-                    actions = `
-                        <button onclick="showMissionDetails('${mission.id}')" class="btn-secondary text-sm">
-                            <i class="fas fa-info-circle mr-1"></i>Détails
-                        </button>
-                    `;
-                    break;
-            }
-            
-            return actions;
-        }
+    <!-- Intégration des scripts -->
+    <script>
+        window.webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
 
-        async function updateMissionStatus(missionId, newStatus) {
-            if (!appState.currentUser) {
-                showNotification('Veuillez vous reconnecter', 'error');
+        window.currentEmail = null;
+        window.currentPrenom = null;
+        window.currentNom = null;
+
+        window.setPrestataireData = function(email, prenom, nom) {
+            if (!email) {
                 return;
             }
 
+            if (typeof email === 'string' && email.includes('@')) {
+                window.currentEmail = email;
+                window.currentPrenom = prenom || '';
+                window.currentNom = nom || '';
+                console.log(`Prestataire connecté : ${window.currentPrenom} ${window.currentNom} (${window.currentEmail})`);
+            } else {
+                console.error("Erreur: L'email du prestataire fourni n'est pas valide (format incorrect).");
+            }
+        };
+    </script>
+
+    <link rel="stylesheet" href="https://allo-les-anges.github.io/viiveo-tableauxviiveo-tableaux-prestataire/viiveo-styles.css">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://allo-les-anges.github.io/viiveo-tableauxviiveo-tableaux-prestataire/viiveo-app.js"></script>
+
+    <script>
+        // Traductions multilingues pour prestataires
+        const translations = {
+            fr: {
+                // Navigation
+                nav_home: "Accueil",
+                nav_services: "Services",
+                nav_formules: "Abonnement",
+                nav_prestataires: "Découvrir nos Prestataires",
+                nav_client: "Espace Client",
+                nav_prestataires_space: "Espace Prestataire",
+                
+                // Login
+                login_title: "Espace Prestataire Viiveo",
+                login_subtitle: "Connectez-vous pour gérer vos missions et interventions",
+                email_label: "Adresse email",
+                password_label: "Mot de passe",
+                login_button: "Se connecter",
+                
+                // Interface prestataire
+                welcome: "Bienvenue",
+                rating: "Note moyenne",
+                edit_profile: "Mes données",
+                history: "Historique",
+                logout: "Déconnexion",
+                statistics: "Mes Statistiques",
+                missions_pending: "Missions en attente",
+                missions_confirmed: "Missions confirmées",
+                missions_progress: "En cours",
+                missions_completed: "Terminées",
+                
+                // Onglets
+                tab_pending: "En Attente",
+                tab_confirmed: "Confirmées",
+                tab_progress: "En Cours",
+                tab_completed: "Terminées",
+                
+                // Titres des onglets
+                pending_missions: "Missions en attente de validation",
+                confirmed_missions: "Missions planifiées (validées / confirmées)",
+                progress_missions: "Missions en cours",
+                completed_missions: "Missions terminées",
+                
+                // Footer
+                footer_desc: "Votre bien-être à domicile, notre priorité.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Espaces",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. Tous droits réservés.",
+                
+                // Loader
+                loading: "Chargement...",
+                
+                // Modales
+                closed_missions_title: "Historique des Prestations",
+                edit_profile_title: "Mes données personnelles",
+                personal_info: "Informations personnelles",
+                contact_info: "Coordonnées",
+                prestataire_name: "Nom",
+                prestataire_firstname: "Prénom",
+                prestataire_email: "Email",
+                prestataire_password: "Nouveau mot de passe",
+                prestataire_address: "Adresse",
+                prestataire_city: "Ville",
+                prestataire_postal: "Code postal",
+                prestataire_phone: "Téléphone",
+                specialties: "Spécialités",
+                services_offered: "Services proposés",
+                availability: "Disponibilités",
+                save_changes: "Enregistrer",
+                cancel: "Annuler",
+                
+                // Messages
+                login_success: "Connexion réussie !",
+                login_error: "Email ou mot de passe incorrect",
+                profile_updated: "Profil mis à jour avec succès !",
+                fill_fields: "Veuillez remplir tous les champs obligatoires",
+                server_error: "Erreur de communication avec le serveur."
+            },
+            nl: {
+                // ... (traductions pour le néerlandais)
+            },
+            en: {
+                // ... (traductions pour l'anglais)
+            },
+            de: {
+                // ... (traductions pour l'allemand)
+            }
+        };
+
+        let currentLanguage = 'fr';
+        let currentPrestataire = null;
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            const flags = { fr: '🇫🇷', nl: '🇳🇱', en: '🇬🇧', de: '🇩🇪' };
+            const codes = { fr: 'FR', nl: 'NL', en: 'EN', de: 'DE' };
+            
+            document.getElementById('current-flag').textContent = flags[lang];
+            document.getElementById('current-language').textContent = codes[lang];
+
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-lang') === lang) {
+                    option.classList.add('active');
+                }
+            });
+
+            localStorage.setItem('viiveo-language', lang);
+        }
+
+        // Fonction de connexion adaptée pour prestataires
+        async function handleLogin() {
+            console.log("LOGIN: Fonction handleLogin() appelée.");
+            const email = document.getElementById("email")?.value.trim();
+            const password = document.getElementById("password")?.value.trim();
+            const message = document.getElementById("message");
+            const loader = document.getElementById("loader");
+            const loginSection = document.getElementById("login-section");
+            const prestataireInterface = document.getElementById("prestataire-interface");
+
+            if (!email || !password) {
+                if (message) {
+                    message.textContent = "Champs requis.";
+                    message.className = "message message-error";
+                    message.classList.remove("hidden");
+                }
+                console.log("LOGIN: Champs email/password requis.");
+                return;
+            }
+            
+            if (message) {
+                message.textContent = "";
+                message.classList.add("hidden");
+            }
+            
             document.getElementById('loader').style.display = 'flex';
+            
+            // Désactiver le bouton de connexion temporairement
+            const submitBtn = document.querySelector("#loginForm button[type='submit']");
+            if (submitBtn) submitBtn.disabled = true;
+
+            console.log("LOGIN: Tentative de connexion avec email:", email);
 
             try {
-                const updateResponse = await jsonpRequest(
-                    `${CONFIG.API_BASE_URL}?type=updatemission&mission_id=${missionId}&statut=${newStatus}&email=${encodeURIComponent(appState.currentUser.email)}`,
-                    'cbUpdateMission'
-                );
-
-                if (updateResponse.success) {
-                    showNotification(`Mission ${newStatus} avec succès`, 'success');
-                    // Recharger les missions
-                    await loadMissions();
-                } else {
-                    throw new Error(updateResponse.message || 'Erreur lors de la mise à jour');
-                }
-            } catch (error) {
-                console.error('Error updating mission:', error);
-                showNotification(error.message, 'error');
-            } finally {
-                document.getElementById('loader').style.display = 'none';
-            }
-        }
-
-        function showMissionDetails(missionId) {
-            const mission = appState.missions.find(m => m.id === missionId);
-            if (mission) {
-                alert(`Détails de la mission:\nService: ${mission.service}\nClient: ${mission.client}\nDate: ${formatDate(mission.intervention)}\nHeure: ${mission.heure}\nStatut: ${mission.statut}\nAdresse: ${mission.adresse || 'Non spécifiée'}`);
-            }
-        }
-
-        function showHistorique() {
-            const historiqueMissions = appState.missions.filter(m => m.statut === 'terminée');
-            
-            const tableBody = document.getElementById("historique-table");
-            const cardsContainer = document.getElementById("historique_cards");
-            
-            if (historiqueMissions.length === 0) {
-                const noMissionsText = 'Aucune mission terminée';
-                if (tableBody) {
-                    tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">${noMissionsText}</td></tr>`;
-                }
-                if (cardsContainer) {
-                    cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${noMissionsText}</div>`;
-                }
-            } else {
-                if (tableBody) {
-                    tableBody.innerHTML = historiqueMissions.map(mission => `
-                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                            <td class="p-4">${formatDate(mission.date)}</td>
-                            <td class="p-4">${mission.service || ""}</td>
-                            <td class="p-4">${mission.client || ""}</td>
-                            <td class="p-4">${formatDate(mission.intervention)}</td>
-                            <td class="p-4">${mission.heure || ""}</td>
-                            <td class="p-4">${getStatusBadge(mission.statut)}</td>
-                        </tr>
-                    `).join('');
+                const callbackName = 'cbLogin' + Date.now();
+                if (!window.webAppUrl) {
+                    console.error("LOGIN ERROR: window.webAppUrl n'est pas défini !");
+                    if (message) {
+                        message.textContent = "Erreur de configuration: URL de l'application manquante.";
+                        message.className = "message message-error";
+                        message.classList.remove("hidden");
+                    }
+                    return;
                 }
                 
-                if (cardsContainer) {
-                    cardsContainer.innerHTML = historiqueMissions.map(mission => `
-                        <div class="mission-card-view">
-                            <div class="card-row">
-                                <span class="card-label">Date mission</span>
-                                <span class="card-value">${formatDate(mission.date)}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Service</span>
-                                <span class="card-value">${mission.service || ""}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Client</span>
-                                <span class="card-value">${mission.client || ""}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Intervention</span>
-                                <span class="card-value">${formatDate(mission.intervention)}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Heure</span>
-                                <span class="card-value">${mission.heure || ""}</span>
-                            </div>
-                            <div class="card-status">
-                                ${getStatusBadge(mission.statut)}
-                            </div>
-                        </div>
-                    `).join('');
+                const url = `${window.webAppUrl}?type=loginpresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+                console.log("LOGIN: URL d'API générée:", url);
+                const data = await window.callApiJsonp(url, callbackName);
+                console.log("LOGIN: Réponse de l'API de login:", data);
+                
+                if (!data.success) {
+                    if (message) {
+                        message.textContent = data.message || "Connexion échouée.";
+                        message.className = "message message-error";
+                        message.classList.remove("hidden");
+                    }
+                    console.log("LOGIN: Connexion échouée. Message:", data.message);
+                    return;
                 }
+
+                // Connexion réussie
+                window.setPrestataireData(data.email, data.prenom, data.nom);
+                currentPrestataire = data;
+
+                // Mettre à jour l'interface
+                loginSection.classList.add("hidden");
+                prestataireInterface.classList.remove("hidden");
+                
+                // Afficher le menu hamburger
+                document.getElementById('menu-container').style.display = 'block';
+                
+                // Mettre à jour les informations du prestataire
+                document.getElementById('prestataire-name').textContent = currentPrestataire.prenom || "Prestataire";
+                document.getElementById('prestataire-photo').src = currentPrestataire.photoUrl || "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
+
+                // Charger les missions
+                await window.loadMissions(window.currentEmail);
+
+                showNotification(translations[currentLanguage].login_success, 'success');
+                
+            } catch (err) {
+                if (message) {
+                    message.textContent = "Erreur serveur ou réseau.";
+                    message.className = "message message-error";
+                    message.classList.remove("hidden");
+                }
+                console.error("LOGIN ERROR: Erreur dans la fonction login():", err);
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+                if (submitBtn) submitBtn.disabled = false;
+                console.log("LOGIN: Fonction login() terminée.");
             }
-            
-            document.getElementById('historique-modal').style.display = 'block';
         }
 
-        function showProfileModal() {
-            alert("Fonctionnalité de modification du profil à venir.");
-        }
-
+        // Fonction de déconnexion
         function logout() {
-            appState.isLoggedIn = false;
-            appState.currentUser = null;
-            appState.missions = [];
-            
-            localStorage.removeItem('viiveo_prestataire');
+            currentPrestataire = null;
+            window.currentEmail = null;
+            window.currentPrenom = null;
+            window.currentNom = null;
             
             document.getElementById('login-section').classList.remove('hidden');
             document.getElementById('prestataire-interface').classList.add('hidden');
-            document.getElementById('login-form').reset();
+            document.getElementById('menu-container').style.display = 'none';
+            document.getElementById('loginForm').reset();
+            document.getElementById('message').classList.add('hidden');
+        }
+
+        // Fonctions pour le menu hamburger
+        function showHistorique() {
+            document.getElementById('closed-missions-modal').style.display = 'block';
+            // Charger l'historique des missions terminées
+            if (window.currentEmail) {
+                // Implémentation à compléter selon vos besoins
+            }
+        }
+
+        function showMesDonnees() {
+            if (!currentPrestataire) return;
             
-            showNotification('Déconnexion réussie', 'success');
+            // Pré-remplir le formulaire avec les données actuelles
+            document.getElementById('profile-firstname').value = currentPrestataire.prenom || '';
+            document.getElementById('profile-lastname').value = currentPrestataire.nom || '';
+            document.getElementById('profile-email').value = currentPrestataire.email || '';
+            document.getElementById('profile-address').value = currentPrestataire.adresse || '';
+            document.getElementById('profile-city').value = currentPrestataire.ville || '';
+            document.getElementById('profile-postal').value = currentPrestataire.codePostal || '';
+            document.getElementById('profile-phone').value = currentPrestataire.telephone || '';
+            
+            document.getElementById('profile-modal').style.display = 'block';
+        }
+
+        function closeMenu() {
+            document.getElementById('menu-toggle').checked = false;
+        }
+
+        async function saveProfile() {
+            // Implémentation de la sauvegarde du profil
+            showNotification(translations[currentLanguage].profile_updated, 'success');
+            closeModal('profile-modal');
         }
 
         function showTab(tabName) {
@@ -1610,13 +1577,8 @@
             });
 
             // Activer l'onglet sélectionné
-            const tabElement = document.getElementById(`tab-${tabName}`);
-            if (tabElement) {
-                tabElement.classList.add('active');
-            }
-            if (event && event.target) {
-                event.target.classList.add('active');
-            }
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.classList.add('active');
         }
 
         function closeModal(modalId) {
@@ -1659,32 +1621,66 @@
             }, 5000);
         }
 
-        // Initialisation au chargement
+        // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Page loaded, checking for saved session...');
+            // Charger la langue sauvegardée
+            const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
+            changeLanguage(savedLanguage);
+
+            // Gestion du sélecteur de langue
+            const languageButton = document.getElementById('language-button');
+            const languageDropdown = document.getElementById('language-dropdown');
             
-            // Vérifier si l'utilisateur était déjà connecté
-            const savedPrestataire = localStorage.getItem('viiveo_prestataire');
-            if (savedPrestataire) {
-                try {
-                    const prestataire = JSON.parse(savedPrestataire);
-                    appState.isLoggedIn = true;
-                    appState.currentUser = prestataire;
-                    
-                    document.getElementById('login-section').classList.add('hidden');
-                    document.getElementById('prestataire-interface').classList.remove('hidden');
-                    
-                    const prestataireNameElement = document.getElementById('prestataire-name');
-                    if (prestataireNameElement) {
-                        prestataireNameElement.textContent = `${prestataire.prenom} ${prestataire.nom}`;
-                    }
-                    
-                    loadMissions();
-                    showNotification('Reconnexion automatique réussie', 'success');
-                } catch (e) {
-                    console.error('Error parsing saved prestataire:', e);
-                    localStorage.removeItem('viiveo_prestataire');
+            if (languageButton && languageDropdown) {
+                languageButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    languageDropdown.classList.toggle('show');
+                });
+
+                document.addEventListener('click', function() {
+                    languageDropdown.classList.remove('show');
+                });
+
+                document.querySelectorAll('.language-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const lang = this.getAttribute('data-lang');
+                        changeLanguage(lang);
+                        languageDropdown.classList.remove('show');
+                    });
+                });
+            }
+
+            // Menu mobile
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('open');
+                });
+            }
+
+            // Fermer les modales en cliquant à l'extérieur
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
                 }
+            });
+
+            // Fermer le menu mobile en cliquant sur un lien
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('open');
+                });
+            });
+
+            // Initialiser le formulaire de connexion
+            const loginForm = document.getElementById("loginForm");
+            if (loginForm) {
+                loginForm.addEventListener("submit", function(e) {
+                    e.preventDefault();
+                    handleLogin();
+                });
             }
         });
     </script>
