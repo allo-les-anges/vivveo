@@ -1242,16 +1242,38 @@
         let currentService = '';
 
         // Configuration du calendrier
-        const calendar = flatpickr("#booking-date", {
-            locale: "fr",
-            minDate: "today",
-            dateFormat: "Y-m-d",
-            disable: [
-                function(date) {
-                    return (date.getDay() === 0 || date.getDay() === 6);
-                }
-            ]
-        });
+        // Configuration du calendrier sécurisée
+let calendar;
+
+function initCalendar() {
+    try {
+        if (typeof flatpickr !== 'undefined') {
+            calendar = flatpickr("#booking-date", {
+                locale: "fr",
+                minDate: "today",
+                dateFormat: "Y-m-d",
+                disable: [
+                    function(date) {
+                        return (date.getDay() === 0 || date.getDay() === 6);
+                    }
+                ]
+            });
+        } else {
+            // Fallback si flatpickr n'est pas disponible
+            const dateInput = document.getElementById('booking-date');
+            dateInput.type = 'date';
+            dateInput.min = new Date().toISOString().split('T')[0];
+        }
+    } catch (error) {
+        console.log('Calendar initialization error:', error);
+        // Fallback simple
+        const dateInput = document.getElementById('booking-date');
+        if (dateInput) {
+            dateInput.type = 'date';
+            dateInput.min = new Date().toISOString().split('T')[0];
+        }
+    }
+}
 
         // Mapping des services pour les prestataires
         const serviceToSpecialiteMap = {
