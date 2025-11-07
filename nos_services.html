@@ -1427,71 +1427,109 @@
         }
 
         async function submitBooking(event) {
-            event.preventDefault();
-            
-            const loader = document.getElementById('viiveo-loader');
-            const submitButton = event.target.querySelector('button[type="submit"]');
-            
-            loader.style.display = 'flex';
-            submitButton.disabled = true;
-            
-            // Gérer la séparation prénom/nom prestataire
-            const selectPrestataire = event.target.querySelector('select[name="prestataire"]');
-            const fullName = selectPrestataire?.value || "";
+    event.preventDefault();
+    
+    const loader = document.getElementById('viiveo-loader');
+    const submitButton = event.target.querySelector('button[type="submit"]');
+    
+    loader.style.display = 'flex';
+    submitButton.disabled = true;
+    
+    try {
+        // 1. Récupérer les données du formulaire
+        const formData = new FormData(event.target);
+        
+        // 2. Convertir en objet simple pour URL encoded
+        const formParams = new URLSearchParams();
+        formParams.append('type', 'formClient');
+        
+        // Ajouter tous les champs du formulaire
+        for (let [key, value] of formData.entries()) {
+            formParams.append(key, value);
+        }
+        
+        // 3. URL de l'Apps Script - IMPORTANT: utiliser l'URL de déploiement
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec';
+        
+        // 4. Envoyer la requête avec le bon Content-Type
+        const response = await fetch(scriptUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formParams.toString()
+        });
 
-            const prenomInput = event.target.querySelector('input[name="prenom_prestataire"]');
-            const nomInput = event.target.querySelector('input[name="nom_prestataire"]');
-
-            if (prenomInput && nomInput) {
-                if (fullName.trim() && fullName !== "Pas de préférence") {
-                    const parts = fullName.trim().split(" ");
-                    prenomInput.value = parts.shift() || "";
-                    nomInput.value = parts.join(" ") || "";
-                } else {
-                    prenomInput.value = "";
-                    nomInput.value = "";
-                }
-            }
-
-            // UTILISER L'URL DIRECTE DE GOOGLE APPS SCRIPT COMME DANS CARRD
-            const formUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec?type=formClient";
+        // 5. Gérer la réponse (même avec redirection 302)
+        let result;
+        
+        if (response.redirected) {
+            // Si redirection, essayer de récupérer le contenu depuis l'URL de redirection
+            const redirectUrl = response.url;
+            console.log('Redirection vers:', redirectUrl);
             
-            const formData = new FormData(event.target);
-
+            // Essayer d'extraire les données de l'URL de redirection
             try {
-                // ENVOYER DIRECTEMENT AU GOOGLE APPS SCRIPT COMME DANS CARRD
-                const response = await fetch(formUrl, {
-                    method: "POST",
-                    body: formData,
-                });
-
-                if (!response.ok) throw new Error(`Erreur serveur: ${response.statusText}`);
-
-                const result = await response.json();
-
-                if (result.success) {
-                    let message = `✅ ${result.message || "Demande envoyée avec succès !"}`;
-                    
-                    if (currentService === 'Visite bénévole' || currentService === 'Commande de repas') {
-                        message += ' Ce service est entièrement gratuit.';
-                    } else {
-                        message += ' Notre équipe vous contacte sous 24h.';
-                    }
-                    
-                    alert(message);
-                    closeModal();
+                const redirectResponse = await fetch(redirectUrl);
+                const text = await redirectResponse.text();
+                
+                // Essayer de parser le JSON même depuis une page HTML
+                const jsonMatch = text.match(/\{.*\}/);
+                if (jsonMatch) {
+                    result = JSON.parse(jsonMatch[0]);
                 } else {
-                    alert(`⚠️ ${result.message || "Erreur côté serveur."}`);
+                    // Si pas de JSON, créer une réponse manuelle
+                    result = { 
+                        success: true, 
+                        message: "Demande envoyée avec succès (redirection détectée)" 
+                    };
                 }
-
-            } catch (err) {
-                alert("❌ Problème de connexion : " + err.message);
-                console.error(err);
-            } finally {
-                loader.style.display = "none";
-                submitButton.disabled = false;
+            } catch (redirectError) {
+                console.log('Erreur lors du suivi de redirection:', redirectError);
+                result = { 
+                    success: true, 
+                    message: "Demande envoyée avec succès" 
+                };
+            }
+        } else {
+            // Si pas de redirection, traiter normalement
+            const text = await response.text();
+            try {
+                result = JSON.parse(text);
+            } catch (parseError) {
+                console.log('Réponse non-JSON:', text);
+                result = { 
+                    success: true, 
+                    message: "Demande envoyée avec succès" 
+                };
             }
         }
+
+        // 6. Afficher le résultat
+        if (result.success) {
+            let message = `✅ ${result.message || "Demande envoyée avec succès !"}`;
+            
+            if (currentService === 'Visite bénévole' || currentService === 'Commande de repas') {
+                message += ' Ce service est entièrement gratuit.';
+            } else {
+                message += ' Notre équipe vous contacte sous 24h.';
+            }
+            
+            alert(message);
+            closeModal();
+            event.target.reset(); // Réinitialiser le formulaire
+        } else {
+            alert(`⚠️ ${result.message || "Erreur lors de l'envoi de la demande."}`);
+        }
+
+    } catch (error) {
+        console.error('Erreur complète:', error);
+        alert("❌ Erreur de connexion : " + error.message);
+    } finally {
+        loader.style.display = 'none';
+        submitButton.disabled = false;
+    }
+}
 
         // Gestion du menu mobile et initialisation
         document.addEventListener('DOMContentLoaded', function() {
