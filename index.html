@@ -136,13 +136,44 @@
             z-index: 0;
         }
 
-/* Décalage de la vidéo sur mobile */
-@media (max-width: 768px) {
-    .video-background {
-        left: 30%; /* Décalage de 20% vers la droite */
-        width: 70%; /* Réduction de la largeur pour compenser le décalage */
-    }
-}
+/* Correction pour mobile */
+        @media (max-width: 768px) {
+            .video-background {
+                left: 20%; /* Décalage vers la droite */
+                width: 120%; /* Largeur augmentée pour couvrir l'espace */
+                object-position: left center; /* Garde le focus sur la partie gauche de la vidéo */
+            }
+            
+            /* Supprime toute marge ou padding qui pourrait causer une bande blanche */
+            .hero-section {
+                margin-left: 0 !important;
+                padding-left: 0 !important;
+            }
+        }
+
+        /* Correction pour très petits écrans */
+        @media (max-width: 480px) {
+            .video-background {
+                left: 25%;
+                width: 130%;
+            }
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3); /* Overlay légèrement plus sombre pour améliorer la lisibilité */
+            z-index: 0;
+        }
+
+        /* Assurer que la section hero n'a pas de débordement */
+        .hero-container {
+            overflow: hidden;
+            position: relative;
+        }
         
     </style>
 </head>
