@@ -1541,7 +1541,8 @@ function initCalendar() {
             // Charger la langue sauvegardée
             const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
             changeLanguage(savedLanguage);
-
+            // Initialiser le calendrier
+            setTimeout(initCalendar, 100); // Petit délai pour être sûr que le DOM est prêt
             // Gestion du sélecteur de langue
             const languageButton = document.getElementById('language-button');
             const languageDropdown = document.getElementById('language-dropdown');
