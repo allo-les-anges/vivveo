@@ -1420,11 +1420,22 @@
         }
 
         function selectPrestataire(fullName) {
-            const select = document.getElementById('prestataire');
-            select.value = fullName;
-            closePrestatairesModal();
-            openServiceModal(currentService);
-        }
+    // Séparer le prénom et nom
+    const parts = fullName.split(' ');
+    const prenom = parts[0];
+    const nom = parts.slice(1).join(' ');
+    
+    // Mettre à jour les champs cachés
+    document.querySelector('input[name="prenom_prestataire"]').value = prenom;
+    document.querySelector('input[name="nom_prestataire"]').value = nom;
+    
+    // Mettre à jour le select
+    const select = document.getElementById('prestataire');
+    select.value = fullName;
+    
+    closePrestatairesModal();
+    // Ne pas rouvrir la modale de service, rester sur la même
+}
 
       async function submitBooking(event) {
     event.preventDefault();
