@@ -1460,7 +1460,7 @@ function initCalendar() {
     // Ne pas rouvrir la modale de service, rester sur la même
 }
 
-      async function submitBooking(event) {
+     async function submitBooking(event) {
     event.preventDefault();
     
     const loader = document.getElementById('viiveo-loader');
@@ -1483,7 +1483,7 @@ function initCalendar() {
             document.querySelector('input[name="nom_prestataire"]').value = nomPrestataire;
         }
 
-        // 2. Préparer les données pour POST (comme Carrd le fait)
+        // 2. Préparer les données pour POST
         const formData = new FormData(event.target);
         const params = new URLSearchParams();
         params.append('type', 'formClient');
@@ -1494,7 +1494,9 @@ function initCalendar() {
             }
         }
         
-        // 3. Envoyer en POST (comme Carrd)
+        console.log('Données envoyées:', params.toString());
+        
+        // 3. Envoyer en POST
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec';
         
         const response = await fetch(scriptUrl, {
@@ -1505,12 +1507,14 @@ function initCalendar() {
             body: params.toString()
         });
 
-        // 4. Votre backend retourne du JSON, on peut le lire
+        // 4. Lire la réponse JSON
         const result = await response.json();
         
-        console.log('Réponse du backend:', result);
+        console.log('Réponse complète du backend:', JSON.stringify(result, null, 2));
+        console.log('Success:', result.success);
+        console.log('Message:', result.message);
 
-        // 5. Message de succès basé sur la réponse réelle
+        // 5. Gérer la réponse
         if (result.success) {
             let message = `✅ ${result.message}`;
             
@@ -1529,10 +1533,8 @@ function initCalendar() {
         }
         
     } catch (error) {
-        console.error('Erreur:', error);
-        // En cas d'erreur réseau, on affiche un message générique
-        alert("✅ Votre demande a été envoyée. Notre équipe vous contactera sous 24h.");
-        closeModal();
+        console.error('Erreur complète:', error);
+        alert("❌ Erreur de connexion : " + error.message);
     } finally {
         loader.style.display = 'none';
         submitButton.disabled = false;
