@@ -1,898 +1,510 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viiveo - Plateforme solidaire pour la vie à domicile</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --rose-pastel: #EDA9D0;
-            --bleu-profond: #0E2B53;
-            --blanc: #FFFFFF;
-            --gris-clair: #F8FAFC;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Viiveo — Plateforme solidaire pour le maintien à domicile</title>
 
-        body {
-            font-family: 'Nunito', sans-serif;
-            scroll-behavior: smooth;
-        }
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;600;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 
-        .gradient-bg {
-            background: linear-gradient(135deg, var(--rose-pastel) 0%, var(--blanc) 50%, var(--bleu-profond) 100%);
-        }
+  <meta name="description" content="Viiveo — Plateforme solidaire pour faciliter la vie à domicile. Rejoignez la phase bêta en tant que client ou prestataire." />
 
-        .card-hover {
-            transition: all 0.3s ease;
-            border-radius: 20px;
-        }
+  <style>
+    :root{
+      --pink:#EDA9D0;
+      --deep:#0E2B53;
+      --white:#ffffff;
+      --muted:#f6f7fb;
+      --radius:14px;
+      --glass: rgba(255,255,255,0.65);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Poppins", "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--deep);
+      background: linear-gradient(180deg, #ffffff 0%, #fbfbfe 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:inherit;text-decoration:none}
+    header{
+      position:sticky; top:0; z-index:60;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.4));
+      border-bottom: 1px solid rgba(14,43,83,0.06);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 26px;
+    }
+    .logo{font-weight:800; color:var(--deep); display:flex; align-items:center; gap:10px; font-size:18px}
+    .logo .leaf{font-size:20px}
+    nav{display:flex; gap:18px; align-items:center}
+    nav a{font-weight:600; color:var(--deep); opacity:0.9}
+    .btn-cta{
+      background:linear-gradient(90deg,var(--pink), #e88fbf);
+      color:#fff; border:none; padding:10px 16px; border-radius:10px; font-weight:700; cursor:pointer;
+      box-shadow:0 8px 20px rgba(237,169,208,0.12);
+    }
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
 
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(237, 169, 208, 0.2);
-        }
+    /* HERO */
+    .hero{
+      display:flex; gap:40px; align-items:center; padding:64px 0 48px;
+    }
+    .hero-left{flex:1; max-width:640px}
+    .eyebrow{display:inline-block;background:var(--muted); color:var(--deep); padding:6px 10px;border-radius:999px;font-weight:700;margin-bottom:18px}
+    h1{font-size:36px; margin:0 0 12px; line-height:1.05; color:var(--deep)}
+    p.lead{font-size:18px; margin:0 0 22px; color:rgba(14,43,83,0.85)}
+    .hero-ctas{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+    .ghost{background:transparent;border:2px solid rgba(14,43,83,0.08); padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer}
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--rose-pastel) 0%, var(--bleu-profond) 100%);
-            transition: all 0.3s ease;
-            border-radius: 50px;
-        }
+    .hero-right{flex:1; display:flex; justify-content:center}
+    .hero-card{
+      width:100%; max-width:420px; border-radius:20px; overflow:hidden;
+      box-shadow: 0 20px 50px rgba(14,43,83,0.08);
+      background: linear-gradient(180deg, #fff, #fff);
+      transform: translateY(0);
+    }
+    .hero-image{width:100%; height:320px; object-fit:cover; display:block}
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(14, 43, 83, 0.3);
-        }
+    /* How it works */
+    .section{padding:48px 0}
+    .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:22px}
+    .step{background:#fff; border-radius:16px; padding:22px; text-align:left; box-shadow: 0 10px 30px rgba(14,43,83,0.03)}
+    .step h3{margin:0 0 8px; font-size:18px}
+    .step p{margin:0; color:rgba(14,43,83,0.75); font-size:14px}
 
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
+    /* Split client / prestataire */
+    .split{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:18px}
+    .card{
+      border-radius:14px; padding:20px; background:linear-gradient(180deg, var(--pink), #fdd6e6);
+      color:#0e2136; box-shadow: 0 12px 30px rgba(237,169,208,0.12);
+    }
+    .card .title{font-weight:800; font-size:18px; margin-bottom:10px}
+    .card ul{padding-left:18px; margin:0; color:rgba(14,43,83,0.9)}
+    .card button{margin-top:14px}
 
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    /* Values */
+    .values{display:flex; gap:18px; justify-content:space-between; margin-top:18px}
+    .value{flex:1; background:var(--white); padding:20px;border-radius:14px;text-align:center; box-shadow: 0 8px 24px rgba(14,43,83,0.04)}
+    .value h4{margin:8px 0}
 
-        .header-scroll {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
+    /* Beta section */
+    .beta{
+      margin-top:20px;
+      padding:26px; border-radius:16px;
+      background: linear-gradient(180deg, rgba(237,169,208,0.06), rgba(14,43,83,0.02));
+      display:flex; gap:18px; align-items:stretch; justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .beta-card{flex:1; min-width:260px; border-radius:14px; padding:18px; background:linear-gradient(180deg,#fff, #fff); box-shadow:0 8px 30px rgba(14,43,83,0.04)}
+    .beta-card h3{margin:0 0 8px}
+    .advantages{list-style:none;padding:0;margin:0}
+    .advantages li{display:flex; gap:10px; align-items:flex-start; margin:8px 0; color:rgba(14,43,83,0.8)}
+    .adv-icon{width:30px; height:30px; border-radius:8px; display:inline-grid; place-items:center; font-weight:800; background:var(--pink); color:#fff}
 
-        .value-card {
-            background: var(--blanc);
-            border-radius: 20px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
+    /* Feedback form */
+    .feedback{display:flex; gap:18px; margin-top:18px; align-items:flex-start; flex-wrap:wrap}
+    .feedback form{flex:1; min-width:280px; background:#fff; padding:16px; border-radius:12px; box-shadow: 0 8px 24px rgba(14,43,83,0.03)}
+    .field{display:flex; flex-direction:column; gap:8px; margin-bottom:12px}
+    input[type="text"], input[type="email"], textarea, select{
+      padding:10px 12px; border-radius:10px; border:1px solid rgba(14,43,83,0.08); font-size:14px;
+    }
+    textarea{min-height:120px; resize:vertical}
 
-        .value-card:hover {
-            border-color: var(--rose-pastel);
-            transform: scale(1.05);
-        }
+    /* Counter */
+    .counter{display:flex; gap:14px; align-items:center; padding:10px 14px; border-radius:12px; background:linear-gradient(90deg,var(--pink), #fbd0e8); color:#0e2136; font-weight:700}
 
-        .language-selector {
-            position: relative;
-        }
-        
-        .language-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            z-index: 50;
-            min-width: 150px;
-            display: none;
-        }
-        
-        .language-dropdown.show {
-            display: block;
-        }
-        
-        .language-option {
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .language-option:hover {
-            background-color: #f9fafb;
-        }
-        
-        .language-option.active {
-            background-color: #fef3c7;
-            color: #92400e;
-        }
-    </style>
+    /* Footer */
+    footer{padding:28px 0; margin-top:28px; border-top:1px solid rgba(14,43,83,0.04); background:transparent}
+    .footer-inner{display:flex; justify-content:space-between; gap:20px; align-items:center; flex-wrap:wrap}
+    .social a{margin-right:8px; font-weight:700; color:var(--deep)}
+
+    /* Modal */
+    .modal-backdrop{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(2,6,23,0.5); z-index:120}
+    .modal{width:calc(100% - 40px); max-width:720px; background:#fff; padding:18px; border-radius:12px; box-shadow:0 30px 80px rgba(2,6,23,0.4)}
+    .modal h2{margin:0 0 8px}
+    .modal .close{position:absolute; top:14px; right:18px; background:transparent;border:none;font-size:18px;cursor:pointer}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .steps{grid-template-columns:repeat(1,1fr)}
+      .split{grid-template-columns:1fr}
+      .hero{flex-direction:column; text-align:center}
+      .hero-right{order:-1}
+      header{padding:12px 18px}
+      h1{font-size:28px}
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Header -->
-    <header class="fixed w-full z-50 transition-all duration-300" id="header">
-        <div class="container mx-auto px-6">
-            <div class="flex items-center justify-between py-4">
-                <!-- Logo -->
-                <a href="#" class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-r from-[#EDA9D0] to-[#0E2B53] rounded-full flex items-center justify-center">
-                        <span class="text-white font-bold text-lg">V</span>
-                    </div>
-                    <span class="text-2xl font-bold text-[#0E2B53]" data-translate="logo">Viiveo</span>
-                </a>
-                
-                <!-- Navigation Desktop -->
-                <nav class="hidden lg:flex items-center space-x-8">
-                    <a href="#decouvrir" class="text-[#0E2B53] hover:text-[#EDA9D0] font-medium transition-colors" data-translate="nav_discover">Découvrir Viiveo</a>
-                    <a href="#beta" class="text-[#0E2B53] hover:text-[#EDA9D0] font-medium transition-colors" data-translate="nav_beta">Phase Bêta</a>
-                    <a href="#valeurs" class="text-[#0E2B53] hover:text-[#EDA9D0] font-medium transition-colors" data-translate="nav_values">Nos valeurs</a>
-                    <a href="#contact" class="text-[#0E2B53] hover:text-[#EDA9D0] font-medium transition-colors" data-translate="nav_contact">Contact</a>
-                </nav>
 
-                <div class="flex items-center space-x-4">
-                    <!-- Sélecteur de langue -->
-                    <div class="language-selector">
-                        <button id="language-button" class="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
-                            <span id="current-flag">🇫🇷</span>
-                            <span class="hidden sm:inline text-sm font-medium">FR</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-                        <div id="language-dropdown" class="language-dropdown">
-                            <div class="language-option active" data-lang="fr">
-                                <span>🇫🇷</span>
-                                <span>Français</span>
-                            </div>
-                            <div class="language-option" data-lang="nl">
-                                <span>🇳🇱</span>
-                                <span>Nederlands</span>
-                            </div>
-                            <div class="language-option" data-lang="en">
-                                <span>🇬🇧</span>
-                                <span>English</span>
-                            </div>
-                            <div class="language-option" data-lang="de">
-                                <span>🇩🇪</span>
-                                <span>Deutsch</span>
-                            </div>
-                        </div>
-                    </div>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="container" style="display:flex;align-items:center;gap:20px;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div class="logo"><span class="leaf">🌿</span> Viiveo</div>
+      </div>
 
-                    <!-- CTA Header -->
-                    <a href="#beta" class="btn-primary text-white px-6 py-3 font-semibold" data-translate="nav_cta">
-                        Participer à la phase bêta
-                    </a>
-                </div>
+      <nav aria-label="Navigation principale">
+        <a href="#decouvrir">Découvrir</a>
+        <a href="#fonctionnement">Comment ça marche</a>
+        <a href="#beta">Phase Bêta</a>
+        <a href="#contact">Contact</a>
+        <button class="btn-cta" id="openBetaBtn">Devenir bêta-testeur</button>
+      </nav>
+    </div>
+  </header>
 
-                <!-- Menu Mobile -->
-                <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg hover:bg-gray-100">
-                    <svg class="w-6 h-6 text-[#0E2B53]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
+  <!-- HERO -->
+  <main class="container">
+    <section class="hero" id="decouvrir">
+      <div class="hero-left">
+        <div class="eyebrow">Nouveau • Phase Bêta</div>
+        <h1>Viiveo — Une plateforme solidaire pour faciliter la vie à domicile</h1>
+        <p class="lead">Développée à Belleuil, pensée pour toute la Belgique. Mettez en relation des particuliers et des prestataires de confiance pour des services à domicile simples, locaux et solidaires.</p>
+
+        <div class="hero-ctas">
+          <button class="btn-cta" onclick="document.getElementById('beta').scrollIntoView({behavior:'smooth'})">Je rejoins la bêta</button>
+          <button class="ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact / Infos</button>
+
+          <div style="margin-left:8px" class="counter" title="Nombre de bêta-testeurs inscrits">
+            <span id="counterNumber">128</span> inscrits
+          </div>
         </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="pt-32 pb-20 gradient-bg min-h-screen flex items-center">
-        <div class="container mx-auto px-6">
-            <div class="max-w-4xl mx-auto text-center fade-in">
-                <h1 class="text-4xl md:text-6xl font-bold text-[#0E2B53] mb-6 leading-tight" data-translate="hero_title">
-                    Viiveo — Une plateforme solidaire pour faciliter la vie à domicile
-                </h1>
-                <p class="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed" data-translate="hero_subtitle">
-                    Développée à Belleuil, pensée pour toute la Belgique
-                </p>
-                <a href="#decouvrir" class="btn-primary text-white px-8 py-4 text-lg font-semibold inline-block" data-translate="hero_cta">
-                    Découvrir le projet
-                </a>
-            </div>
+        <!-- quick summary -->
+        <div style="margin-top:20px; font-size:14px; color:rgba(14,43,83,0.75)">
+          <strong>Modèle :</strong> abonnement client <strong>10 €/mois</strong> — prestataires sans commission — Viiveo = tiers de confiance.
         </div>
+      </div>
+
+      <div class="hero-right">
+        <article class="hero-card" aria-hidden="true">
+          <!-- Suggested image: "Senior and caregiver smiling at home" -->
+          <img class="hero-image" src="https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=1350&q=80" alt="Scène chaleureuse : aide à domicile et sourire">
+        </article>
+      </div>
     </section>
 
-    <!-- Comment ça marche -->
-    <section id="decouvrir" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold text-[#0E2B53] mb-4" data-translate="how_it_works_title">Comment ça marche ?</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto" data-translate="how_it_works_subtitle">Une plateforme simple, transparente et humaine</p>
-            </div>
+    <!-- HOW IT WORKS -->
+    <section id="fonctionnement" class="section">
+      <div class="container">
+        <h2 style="text-align:center">Comment ça marche — Côté client & côté prestataire</h2>
+        <p style="text-align:center; color:rgba(14,43,83,0.75)">Simple en 4 étapes : inscrire → choisir → réaliser → valider. Viiveo vérifie les profils et gère la validation de facturation.</p>
 
-            <div class="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-                <!-- Côté Client -->
-                <div class="card-hover bg-[#F8FAFC] p-8 fade-in">
-                    <div class="text-center mb-6">
-                        <div class="w-20 h-20 bg-[#EDA9D0] rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span class="text-3xl">🏡</span>
-                        </div>
-                        <h3 class="text-2xl font-bold text-[#0E2B53]" data-translate="client_side">Côté Client</h3>
-                    </div>
-                    <div class="space-y-6">
-                        <div class="flex items-start space-x-4">
-                            <div class="w-8 h-8 bg-[#EDA9D0] rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">1</div>
-                            <div>
-                                <h4 class="font-semibold text-[#0E2B53]" data-translate="client_step1_title">Inscription simple</h4>
-                                <p class="text-gray-600" data-translate="client_step1_desc">Créez votre profil en quelques minutes</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start space-x-4">
-                            <div class="w-8 h-8 bg-[#EDA9D0] rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">2</div>
-                            <div>
-                                <h4 class="font-semibold text-[#0E2B53]" data-translate="client_step2_title">Abonnement 10€/mois</h4>
-                                <p class="text-gray-600" data-translate="client_step2_desc">Accès illimité à tous nos prestataires vérifiés</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start space-x-4">
-                            <div class="w-8 h-8 bg-[#EDA9D0] rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">3</div>
-                            <div>
-                                <h4 class="font-semibold text-[#0E2B53]" data-translate="client_step3_title">Choix du prestataire</h4>
-                                <p class="text-gray-600" data-translate="client_step3_desc">Trouvez la personne qui correspond à vos besoins</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start space-x-4">
-                            <div class="w-8 h-8 bg-[#EDA9D0] rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">4</div>
-                            <div>
-                                <h4 class="font-semibold text-[#0E2B53]" data-translate="client_step4_title">Satisfaction validée</h4>
-                                <p class="text-gray-600" data-translate="client_step4_desc">La facturation n'est débloquée qu'après votre accord</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Côté Prestataire -->
-                <div class="card-hover bg-[#F8FAFC] p-8 fade-in">
-                    <div class="text-center mb-6">
-                        <div class="w-20 h-20 bg-[#0E2B53] rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span class="text-3xl">💼</span>
-                        </div>
-                        <h3 class="text-2xl font-bold text-[#0E2B53]" data-translate="provider_side">Côté Prestataire</h3>
-                    </div>
-                    <div class="space-y-6">
-                        <div class="flex items-start space-x-4">
-                            <div class="w-8 h-8 bg-[#0E2B53] rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">1</div>
-                            <div>
-                                <h4 class="font-semibold text-[#0E2B53]" data-translate="provider_step1_title">Création de profil</h4>
-                                <p class="text-gray-600" data-translate="provider_step1_desc">Présentez vos services et compétences</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start space-x-4">
-                            <div class="w-8 h-8 bg-[#0E2B53] rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">2</div>
-                            <div>
-                                <h4 class="font-semibold text-[#0E2B53]" data-translate="provider_step2_title">Vérification par Viiveo</h4>
-                                <p class="text-gray-600" data-translate="provider_step2_desc">Nous validons chaque profil pour votre sécurité</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start space-x-4">
-                            <div class="w-8 h-8 bg-[#0E2B53] rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">3</div>
-                            <div>
-                                <h4 class="font-semibold text-[#0E2B53]" data-translate="provider_step3_title">Missions proposées</h4>
-                                <p class="text-gray-600" data-translate="provider_step3_desc">Recevez des demandes correspondant à vos services</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start space-x-4">
-                            <div class="w-8 h-8 bg-[#0E2B53] rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">4</div>
-                            <div>
-                                <h4 class="font-semibold text-[#0E2B53]" data-translate="provider_step4_title">Facturation après validation</h4>
-                                <p class="text-gray-600" data-translate="provider_step4_desc">Vous conservez 100% de votre rémunération</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="steps" role="list" aria-label="Étapes">
+          <div class="step" role="listitem">
+            <h3>1 — Inscription</h3>
+            <p>Créez un compte en quelques clics. Le prestataire complète son profil et fournit ses justificatifs pour vérification.</p>
+          </div>
+          <div class="step" role="listitem">
+            <h3>2 — Choix & réservation</h3>
+            <p>Consultez les profils, disponibilités et avis. Réservez la date et l’heure qui vous conviennent.</p>
+          </div>
+          <div class="step" role="listitem">
+            <h3>3 — Prestation</h3>
+            <p>Le prestataire réalise la mission. Viiveo suit le bon déroulement et reste disponible en support.</p>
+          </div>
         </div>
+
+        <div class="split" style="margin-top:22px">
+          <div class="card" aria-labelledby="client-title">
+            <div class="title" id="client-title">Côté client</div>
+            <p style="margin:0 0 8px">Abonnement 10 €/mois = accès à tous les prestataires vérifiés dans votre région.</p>
+            <ul>
+              <li>Accès aux profils et disponibilités</li>
+              <li>Réservation simple et sécurisée</li>
+              <li>Validation de satisfaction → autorisation de la facturation</li>
+            </ul>
+            <button class="btn-cta" style="margin-top:14px" onclick="openModal('client')">Je veux tester en tant que client</button>
+          </div>
+
+          <div class="card" aria-labelledby="presta-title" style="background:linear-gradient(180deg,#fff,#f7fbff)">
+            <div class="title" id="presta-title">Côté prestataire</div>
+            <p style="margin:0 0 8px">Inscription gratuite — Viiveo vérifie vos références avant publication.</p>
+            <ul style="color:rgba(14,43,83,0.9)">
+              <li>Recevez des notifications de mission</li>
+              <li>Acceptez/refusez en un clic</li>
+              <li>Facturation autorisée après validation client</li>
+            </ul>
+            <button class="btn-cta" style="margin-top:14px; background:linear-gradient(90deg,#0e2b53,#234b6f)" onclick="openModal('presta')">Je veux tester comme prestataire</button>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Tiers de confiance -->
-    <section class="py-20 bg-gradient-to-r from-[#EDA9D0] to-[#0E2B53]">
-        <div class="container mx-auto px-6">
-            <div class="max-w-4xl mx-auto text-center text-white fade-in">
-                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-8">
-                    <span class="text-4xl">🤝</span>
-                </div>
-                <h2 class="text-3xl md:text-4xl font-bold mb-6" data-translate="trust_title">Tiers de confiance</h2>
-                <p class="text-xl leading-relaxed" data-translate="trust_description">
-                    Viiveo joue le rôle d'intermédiaire de confiance entre clients et prestataires. 
-                    Chaque profil est vérifié, chaque mission suivie, et la facturation validée après satisfaction.
-                </p>
-            </div>
+    <!-- TIER OF TRUST -->
+    <section class="section" aria-labelledby="trust-title">
+      <div class="container">
+        <h2 id="trust-title" style="text-align:center">Viiveo — votre tiers de confiance</h2>
+        <p style="text-align:center; color:rgba(14,43,83,0.75)">Nous validons les profils, assurons le suivi des missions et n'autorisons la facturation que lorsque le client confirme sa satisfaction.</p>
+
+        <div style="display:flex; gap:18px; align-items:center; margin-top:18px; justify-content:center; flex-wrap:wrap">
+          <div style="max-width:520px; text-align:left; padding:18px; border-radius:12px; background:linear-gradient(90deg,var(--muted),#fff); box-shadow:0 12px 30px rgba(14,43,83,0.03)">
+            <strong>Pourquoi ce rôle ?</strong>
+            <p style="margin:8px 0 0;color:rgba(14,43,83,0.85)">Pour protéger l'usager et le prestataire : confiance, transparence et qualité des services. Nous agissons comme médiateur en cas de litige.</p>
+          </div>
+          <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=900&q=80" alt="Poignée de main / confiance" style="width:140px; height:100px; object-fit:cover; border-radius:10px; box-shadow:0 8px 20px rgba(14,43,83,0.05)">
         </div>
+      </div>
     </section>
 
-    <!-- Phase Bêta -->
-    <section id="beta" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold text-[#0E2B53] mb-4" data-translate="beta_title">Participez à la phase de test de Viiveo 🌿</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto" data-translate="beta_subtitle">Aidez-nous à construire une plateforme plus humaine et plus utile</p>
+    <!-- BETA -->
+    <section id="beta" class="section">
+      <div class="container">
+        <h2 style="text-align:center">Phase Bêta — Rejoignez l’aventure 🌿</h2>
+        <p style="text-align:center; color:rgba(14,43,83,0.75)">Participez aux tests, influencez les fonctionnalités et bénéficiez d'avantages exclusifs pendant la phase de lancement.</p>
+
+        <div class="beta" role="region" aria-label="Phase bêta">
+          <div class="beta-card">
+            <h3>Je suis client</h3>
+            <p style="margin:6px 0 12px; color:rgba(14,43,83,0.85)">Testez la plateforme en avant-première et aidez-nous à améliorer l'expérience.</p>
+            <ul class="advantages">
+              <li><span class="adv-icon">✓</span> Accès gratuit pendant la phase de test</li>
+              <li><span class="adv-icon">★</span> Priorité sur les nouvelles fonctionnalités</li>
+              <li><span class="adv-icon">💬</span> Pouvoir donner son avis et influencer le produit</li>
+              <li><span class="adv-icon">⏳</span> Offre : 1er mois d'abonnement gratuit au lancement</li>
+            </ul>
+            <div style="margin-top:12px">
+              <button class="btn-cta" onclick="openModal('client')">Je deviens bêta-testeur client</button>
+            </div>
+          </div>
+
+          <div class="beta-card">
+            <h3>Je suis prestataire</h3>
+            <p style="margin:6px 0 12px; color:rgba(14,43,83,0.85)">Rejoignez notre vitrine locale, bénéficiez d'un accompagnement et d'une visibilité gratuite pendant la bêta.</p>
+            <ul class="advantages">
+              <li><span class="adv-icon">🚀</span> Visibilité gratuite pendant la phase test</li>
+              <li><span class="adv-icon">🤝</span> Accompagnement personnalisé par l'équipe Viiveo</li>
+              <li><span class="adv-icon">🏷️</span> Mention "Bêta-partenaire" sur votre profil</li>
+              <li><span class="adv-icon">📈</span> Feedback direct pour améliorer vos fiches</li>
+            </ul>
+            <div style="margin-top:12px">
+              <button class="btn-cta" style="background:linear-gradient(90deg,#0e2b53,#2a5c86)" onclick="openModal('presta')">Je deviens bêta-testeur prestataire</button>
+            </div>
+          </div>
+
+          <div class="beta-card" aria-hidden="true" style="display:flex;flex-direction:column;justify-content:space-between">
+            <div>
+              <h3 style="margin-bottom:6px">Vos idées comptent</h3>
+              <p style="color:rgba(14,43,83,0.8)">Partagez vos pistes d'amélioration et suggestions : nous intégrons directement vos retours.</p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <!-- Client Testeur -->
-                <div class="card-hover bg-gradient-to-br from-[#EDA9D0] to-[#F8FAFC] p-8 fade-in">
-                    <div class="text-center mb-6">
-                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span class="text-2xl">👤</span>
-                        </div>
-                        <h3 class="text-2xl font-bold text-[#0E2B53]" data-translate="beta_client_title">Client testeur</h3>
-                    </div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-start space-x-3">
-                            <span class="text-[#EDA9D0] text-lg">✓</span>
-                            <span class="text-gray-700" data-translate="beta_client_benefit1">Accès gratuit pendant la phase de test</span>
-                        </li>
-                        <li class="flex items-start space-x-3">
-                            <span class="text-[#EDA9D0] text-lg">✓</span>
-                            <span class="text-gray-700" data-translate="beta_client_benefit2">Priorité pour tester les nouvelles fonctionnalités</span>
-                        </li>
-                        <li class="flex items-start space-x-3">
-                            <span class="text-[#EDA9D0] text-lg">✓</span>
-                            <span class="text-gray-700" data-translate="beta_client_benefit3">Possibilité de proposer des idées d'amélioration</span>
-                        </li>
-                    </ul>
-                    <a href="https://tally.so/r/n0zM26" target="_blank" class="btn-primary text-white w-full py-4 text-center font-semibold block" data-translate="beta_client_cta">
-                        Je deviens bêta-testeur client
-                    </a>
-                </div>
-
-                <!-- Prestataire Partenaire -->
-                <div class="card-hover bg-gradient-to-br from-[#0E2B53] to-[#F8FAFC] p-8 fade-in">
-                    <div class="text-center mb-6">
-                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span class="text-2xl">💼</span>
-                        </div>
-                        <h3 class="text-2xl font-bold text-[#0E2B53]" data-translate="beta_provider_title">Prestataire partenaire</h3>
-                    </div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-start space-x-3">
-                            <span class="text-[#0E2B53] text-lg">✓</span>
-                            <span class="text-gray-700" data-translate="beta_provider_benefit1">Mise en avant gratuite sur la plateforme</span>
-                        </li>
-                        <li class="flex items-start space-x-3">
-                            <span class="text-[#0E2B53] text-lg">✓</span>
-                            <span class="text-gray-700" data-translate="beta_provider_benefit2">Accompagnement personnalisé de l'équipe Viiveo</span>
-                        </li>
-                        <li class="flex items-start space-x-3">
-                            <span class="text-[#0E2B53] text-lg">✓</span>
-                            <span class="text-gray-700" data-translate="beta_provider_benefit3">Mention "Bêta-partenaire" sur votre profil</span>
-                        </li>
-                    </ul>
-                    <a href="https://tally.so/r/mKA0xK" target="_blank" class="btn-primary text-white w-full py-4 text-center font-semibold block" data-translate="beta_provider_cta">
-                        Je deviens bêta-testeur prestataire
-                    </a>
-                </div>
+            <div style="margin-top:12px">
+              <button class="ghost" onclick="document.getElementById('feedback').scrollIntoView({behavior:'smooth'})">Partager une idée</button>
             </div>
+          </div>
         </div>
+
+        <!-- OPTIONAL: show sample images -->
+        <div style="display:flex; gap:12px; margin-top:18px; justify-content:center; flex-wrap:wrap">
+          <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80" alt="Collaborateurs" style="width:220px;height:140px;object-fit:cover;border-radius:12px;box-shadow:0 8px 20px rgba(14,43,83,0.04)">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80" alt="Intergenerational help" style="width:220px;height:140px;object-fit:cover;border-radius:12px;box-shadow:0 8px 20px rgba(14,43,83,0.04)">
+          <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80" alt="Using a tablet" style="width:220px;height:140px;object-fit:cover;border-radius:12px;box-shadow:0 8px 20px rgba(14,43,83,0.04)">
+        </div>
+
+      </div>
     </section>
 
-    <!-- Vos idées comptent -->
-    <section class="py-20 bg-gradient-to-r from-[#EDA9D0] to-[#0E2B53]">
-        <div class="container mx-auto px-6">
-            <div class="max-w-4xl mx-auto text-center text-white fade-in">
-                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6">
-                    <span class="text-3xl">💡</span>
-                </div>
-                <h2 class="text-3xl md:text-4xl font-bold mb-6" data-translate="ideas_title">Vos idées comptent</h2>
-                <p class="text-xl mb-8 leading-relaxed" data-translate="ideas_subtitle">
-                    Viiveo évolue avec vous. Vos retours nous aident à construire une plateforme plus juste, plus efficace et plus humaine.
-                </p>
-                
-                <form class="bg-white rounded-2xl p-8 text-left max-w-2xl mx-auto">
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label class="block text-[#0E2B53] font-semibold mb-2" data-translate="form_name">Nom</label>
-                            <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#EDA9D0]">
-                        </div>
-                        <div>
-                            <label class="block text-[#0E2B53] font-semibold mb-2" data-translate="form_email">Email</label>
-                            <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#EDA9D0]">
-                        </div>
-                    </div>
-                    <div class="mb-6">
-                        <label class="block text-[#0E2B53] font-semibold mb-2" data-translate="form_role">Rôle</label>
-                        <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#EDA9D0]">
-                            <option data-translate="form_role_client">Client</option>
-                            <option data-translate="form_role_provider">Prestataire</option>
-                            <option data-translate="form_role_curious">Curieux</option>
-                        </select>
-                    </div>
-                    <div class="mb-6">
-                        <label class="block text-[#0E2B53] font-semibold mb-2" data-translate="form_message">Votre message ou idée</label>
-                        <textarea rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-[#EDA9D0]"></textarea>
-                    </div>
-                    <button type="submit" class="btn-primary text-white px-8 py-4 font-semibold w-full" data-translate="form_submit">
-                        Partager mon idée 🌱
-                    </button>
-                </form>
+    <!-- FEEDBACK -->
+    <section class="section" id="feedback">
+      <div class="container">
+        <h2 style="text-align:center">Vos idées / Suggestions</h2>
+        <p style="text-align:center; color:rgba(14,43,83,0.75)">Dites-nous ce qui vous plairait et ce qu'on peut améliorer — chaque suggestion compte.</p>
+
+        <div class="feedback">
+          <form id="feedbackForm" onsubmit="submitFeedback(event)" aria-label="Formulaire de suggestions">
+            <div class="field">
+              <label for="name">Nom</label>
+              <input id="name" name="name" type="text" placeholder="Ex : Marie" required>
             </div>
+            <div class="field">
+              <label for="email">E-mail</label>
+              <input id="email" name="email" type="email" placeholder="exemple@email.com" required>
+            </div>
+            <div class="field">
+              <label for="role">Je suis</label>
+              <select id="role" name="role" required>
+                <option value="client">Client / futur utilisateur</option>
+                <option value="presta">Prestataire</option>
+                <option value="autre">Autre / Curieux</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="message">Votre idée / suggestion</label>
+              <textarea id="message" name="message" placeholder="Ex : une fonction X, un mode de facturation Y..." required></textarea>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center">
+              <button type="submit" class="btn-cta">Partager mon idée 🌱</button>
+              <div id="feedbackStatus" style="color:var(--deep); font-weight:700"></div>
+            </div>
+          </form>
+
+          <aside style="min-width:240px; padding:16px; background:linear-gradient(180deg,#fff,#fff); border-radius:12px; box-shadow:0 8px 20px rgba(14,43,83,0.03)">
+            <h4 style="margin:0 0 8px">Pourquoi vos retours ?</h4>
+            <p style="margin:0; color:rgba(14,43,83,0.75)">Vos retours nous aident à prioriser les améliorations et à construire une expérience simple, utile et juste pour tous.</p>
+
+            <div style="margin-top:12px">
+              <strong>Contact :</strong>
+              <div><a href="mailto:contact@anza.be">contact@anza.be</a></div>
+            </div>
+          </aside>
         </div>
+
+      </div>
     </section>
 
-    <!-- Nos valeurs -->
-    <section id="valeurs" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-3xl md:text-4xl font-bold text-[#0E2B53] mb-4" data-translate="values_title">Nos valeurs</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto" data-translate="values_subtitle">Les principes qui guident chaque décision chez Viiveo</p>
-            </div>
+    <!-- VALUES -->
+    <section class="section" aria-labelledby="values-title">
+      <div class="container">
+        <h2 id="values-title" style="text-align:center">Nos valeurs</h2>
+        <p style="text-align:center; color:rgba(14,43,83,0.75)">Humaine • Locale • Solidaire</p>
 
-            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <div class="value-card text-center fade-in">
-                    <div class="w-20 h-20 bg-[#EDA9D0] rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">🤝</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-[#0E2B53] mb-4" data-translate="value1_title">Humaine</h3>
-                    <p class="text-gray-600 leading-relaxed" data-translate="value1_desc">
-                        L'humain avant tout. Chaque interaction compte, chaque relation est précieuse.
-                    </p>
-                </div>
-
-                <div class="value-card text-center fade-in">
-                    <div class="w-20 h-20 bg-[#0E2B53] rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">🏡</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-[#0E2B53] mb-4" data-translate="value2_title">Locale</h3>
-                    <p class="text-gray-600 leading-relaxed" data-translate="value2_desc">
-                        Développée à Belleuil, pensée pour la Belgique. Nous valorisons les circuits courts.
-                    </p>
-                </div>
-
-                <div class="value-card text-center fade-in">
-                    <div class="w-20 h-20 bg-[#EDA9D0] rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">💚</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-[#0E2B53] mb-4" data-translate="value3_title">Solidaire</h3>
-                    <p class="text-gray-600 leading-relaxed" data-translate="value3_desc">
-                        Chaque service est une main tendue. Nous créons du lien entre générations.
-                    </p>
-                </div>
-            </div>
+        <div class="values" style="margin-top:18px">
+          <div class="value">
+            <div style="font-size:28px">🤝</div>
+            <h4>Humaine</h4>
+            <p style="color:rgba(14,43,83,0.8)">Mettre l'humain au cœur des services.</p>
+          </div>
+          <div class="value">
+            <div style="font-size:28px">🏡</div>
+            <h4>Locale</h4>
+            <p style="color:rgba(14,43,83,0.8)">Favoriser les prestataires locaux et la proximité.</p>
+          </div>
+          <div class="value">
+            <div style="font-size:28px">💚</div>
+            <h4>Solidaire</h4>
+            <p style="color:rgba(14,43,83,0.8)">Construire une économie plus équitable et durable.</p>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- Footer -->
-    <footer id="contact" class="bg-[#0E2B53] text-white py-12">
-        <div class="container mx-auto px-6">
-            <div class="grid md:grid-cols-3 gap-8 items-center">
-                <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-8 h-8 bg-[#EDA9D0] rounded-full flex items-center justify-center">
-                            <span class="text-white font-bold">V</span>
-                        </div>
-                        <span class="text-xl font-bold">Viiveo</span>
-                    </div>
-                    <p class="text-gray-300 text-sm" data-translate="footer_slogan">
-                        Ensemble, faisons du domicile un lieu de vie.
-                    </p>
-                </div>
+    <!-- CONTACT & FOOTER -->
+    <section id="contact" class="section">
+      <div class="container">
+        <h2 style="text-align:center">Contact</h2>
+        <p style="text-align:center; color:rgba(14,43,83,0.75)">Pour toute question ou partenariat : <a href="mailto:contact@anza.be">contact@anza.be</a></p>
+      </div>
+    </section>
 
-                <div class="text-center">
-                    <p class="mb-2">contact@anza.be</p>
-                    <div class="flex justify-center space-x-4">
-                        <a href="#" class="hover:text-[#EDA9D0] transition-colors">
-                            <i class="fab fa-facebook text-xl"></i>
-                        </a>
-                        <a href="#" class="hover:text-[#EDA9D0] transition-colors">
-                            <i class="fab fa-linkedin text-xl"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="text-right">
-                    <div class="flex items-center justify-end space-x-2">
-                        <span class="text-gray-300 text-sm">by</span>
-                        <span class="font-bold">Anza</span>
-                    </div>
-                    <p class="text-gray-300 text-sm mt-2" data-translate="footer_copyright">© 2025 Viiveo by Anza</p>
-                </div>
-            </div>
+    <footer>
+      <div class="container footer-inner">
+        <div>© 2025 Viiveo by Anza — Ensemble, faisons du domicile un lieu de vie</div>
+        <div class="social">
+          <a href="#" aria-label="Facebook">Facebook</a> •
+          <a href="#" aria-label="LinkedIn">LinkedIn</a>
         </div>
+      </div>
     </footer>
+  </main>
 
-    <script>
-        // Traductions multilingues complètes
-        const translations = {
-            fr: {
-                // Navigation
-                logo: "Viiveo",
-                nav_discover: "Découvrir Viiveo",
-                nav_beta: "Phase Bêta",
-                nav_values: "Nos valeurs",
-                nav_contact: "Contact",
-                nav_cta: "Participer à la phase bêta",
-                
-                // Hero
-                hero_title: "Viiveo — Une plateforme solidaire pour faciliter la vie à domicile",
-                hero_subtitle: "Développée à Belleuil, pensée pour toute la Belgique",
-                hero_cta: "Découvrir le projet",
-                
-                // Comment ça marche
-                how_it_works_title: "Comment ça marche ?",
-                how_it_works_subtitle: "Une plateforme simple, transparente et humaine",
-                client_side: "Côté Client",
-                client_step1_title: "Inscription simple",
-                client_step1_desc: "Créez votre profil en quelques minutes",
-                client_step2_title: "Abonnement 10€/mois",
-                client_step2_desc: "Accès illimité à tous nos prestataires vérifiés",
-                client_step3_title: "Choix du prestataire",
-                client_step3_desc: "Trouvez la personne qui correspond à vos besoins",
-                client_step4_title: "Satisfaction validée",
-                client_step4_desc: "La facturation n'est débloquée qu'après votre accord",
-                
-                provider_side: "Côté Prestataire",
-                provider_step1_title: "Création de profil",
-                provider_step1_desc: "Présentez vos services et compétences",
-                provider_step2_title: "Vérification par Viiveo",
-                provider_step2_desc: "Nous validons chaque profil pour votre sécurité",
-                provider_step3_title: "Missions proposées",
-                provider_step3_desc: "Recevez des demandes correspondant à vos services",
-                provider_step4_title: "Facturation après validation",
-                provider_step4_desc: "Vous conservez 100% de votre rémunération",
-                
-                // Tiers de confiance
-                trust_title: "Tiers de confiance",
-                trust_description: "Viiveo joue le rôle d'intermédiaire de confiance entre clients et prestataires. Chaque profil est vérifié, chaque mission suivie, et la facturation validée après satisfaction.",
-                
-                // Phase Bêta
-                beta_title: "Participez à la phase de test de Viiveo 🌿",
-                beta_subtitle: "Aidez-nous à construire une plateforme plus humaine et plus utile",
-                beta_client_title: "Client testeur",
-                beta_client_benefit1: "Accès gratuit pendant la phase de test",
-                beta_client_benefit2: "Priorité pour tester les nouvelles fonctionnalités",
-                beta_client_benefit3: "Possibilité de proposer des idées d'amélioration",
-                beta_client_cta: "Je deviens bêta-testeur client",
-                
-                beta_provider_title: "Prestataire partenaire",
-                beta_provider_benefit1: "Mise en avant gratuite sur la plateforme",
-                beta_provider_benefit2: "Accompagnement personnalisé de l'équipe Viiveo",
-                beta_provider_benefit3: "Mention 'Bêta-partenaire' sur votre profil",
-                beta_provider_cta: "Je deviens bêta-testeur prestataire",
-                
-                // Idées
-                ideas_title: "Vos idées comptent",
-                ideas_subtitle: "Viiveo évolue avec vous. Vos retours nous aident à construire une plateforme plus juste, plus efficace et plus humaine.",
-                
-                // Formulaire
-                form_name: "Nom",
-                form_email: "Email",
-                form_role: "Rôle",
-                form_role_client: "Client",
-                form_role_provider: "Prestataire",
-                form_role_curious: "Curieux",
-                form_message: "Votre message ou idée",
-                form_submit: "Partager mon idée 🌱",
-                
-                // Valeurs
-                values_title: "Nos valeurs",
-                values_subtitle: "Les principes qui guident chaque décision chez Viiveo",
-                value1_title: "Humaine",
-                value1_desc: "L'humain avant tout. Chaque interaction compte, chaque relation est précieuse.",
-                value2_title: "Locale",
-                value2_desc: "Développée à Belleuil, pensée pour la Belgique. Nous valorisons les circuits courts.",
-                value3_title: "Solidaire",
-                value3_desc: "Chaque service est une main tendue. Nous créons du lien entre générations.",
-                
-                // Footer
-                footer_slogan: "Ensemble, faisons du domicile un lieu de vie.",
-                footer_copyright: "© 2025 Viiveo by Anza"
-            },
-            nl: {
-                logo: "Viiveo",
-                nav_discover: "Ontdek Viiveo",
-                nav_beta: "Bètafase",
-                nav_values: "Onze waarden",
-                nav_contact: "Contact",
-                nav_cta: "Deelnemen aan de bètatest",
-                hero_title: "Viiveo — Een solidaire platform om thuis wonen te vergemakkelijken",
-                hero_subtitle: "Ontwikkeld in Belleuil, ontworpen voor heel België",
-                hero_cta: "Ontdek het project",
-                how_it_works_title: "Hoe werkt het?",
-                how_it_works_subtitle: "Een eenvoudig, transparant en menselijk platform",
-                client_side: "Klantzijde",
-                client_step1_title: "Eenvoudige inschrijving",
-                client_step1_desc: "Maak uw profiel aan in enkele minuten",
-                client_step2_title: "Abonnement €10/maand",
-                client_step2_desc: "Onbeperkte toegang tot al onze geverifieerde aanbieders",
-                client_step3_title: "Keuze van aanbieder",
-                client_step3_desc: "Vind de persoon die aan uw behoeften voldoet",
-                client_step4_title: "Tevredenheid gevalideerd",
-                client_step4_desc: "Facturatie wordt alleen vrijgegeven na uw akkoord",
-                provider_side: "Aanbiederzijde",
-                provider_step1_title: "Profielcreatie",
-                provider_step1_desc: "Presenteer uw diensten en vaardigheden",
-                provider_step2_title: "Verificatie door Viiveo",
-                provider_step2_desc: "Wij valideren elk profiel voor uw veiligheid",
-                provider_step3_title: "Voorgestelde opdrachten",
-                provider_step3_desc: "Ontvang aanvragen die overeenkomen met uw diensten",
-                provider_step4_title: "Facturatie na validatie",
-                provider_step4_desc: "U behoudt 100% van uw vergoeding",
-                trust_title: "Vertrouwde derde partij",
-                trust_description: "Viiveo fungeert als vertrouwde tussenpersoon tussen klanten en aanbieders. Elk profiel wordt geverifieerd, elke opdracht wordt opgevolgd en de facturatie wordt gevalideerd na tevredenheid.",
-                beta_title: "Neem deel aan de testfase van Viiveo 🌿",
-                beta_subtitle: "Help ons een menselijker en nuttiger platform te bouwen",
-                beta_client_title: "Klant tester",
-                beta_client_benefit1: "Gratis toegang tijdens de testfase",
-                beta_client_benefit2: "Prioriteit om nieuwe functies te testen",
-                beta_client_benefit3: "Mogelijkheid om verbeterideeën voor te stellen",
-                beta_client_cta: "Ik word bèta-tester klant",
-                beta_provider_title: "Partner aanbieder",
-                beta_provider_benefit1: "Gratis zichtbaarheid op het platform",
-                beta_provider_benefit2: "Persoonlijke begeleiding door het Viiveo-team",
-                beta_provider_benefit3: "Vermelding 'Bètapartner' op uw profiel",
-                beta_provider_cta: "Ik word bèta-tester aanbieder",
-                ideas_title: "Uw ideeën tellen",
-                ideas_subtitle: "Viiveo evolueert met u. Uw feedback helpt ons een rechtvaardiger, efficiënter en menselijker platform te bouwen.",
-                form_name: "Naam",
-                form_email: "E-mail",
-                form_role: "Rol",
-                form_role_client: "Klant",
-                form_role_provider: "Aanbieder",
-                form_role_curious: "Nieuwsgierig",
-                form_message: "Uw bericht of idee",
-                form_submit: "Deel mijn idee 🌱",
-                values_title: "Onze waarden",
-                values_subtitle: "De principes die elke beslissing bij Viiveo leiden",
-                value1_title: "Menselijk",
-                value1_desc: "De mens staat voorop. Elke interactie telt, elke relatie is kostbaar.",
-                value2_title: "Lokaal",
-                value2_desc: "Ontwikkeld in Belleuil, ontworpen voor België. We waarderen korte ketens.",
-                value3_title: "Solidaire",
-                value3_desc: "Elke dienst is een uitgestoken hand. We creëren verbinding tussen generaties.",
-                footer_slogan: "Samen maken we van thuis een plek om te leven.",
-                footer_copyright: "© 2025 Viiveo by Anza"
-            },
-            en: {
-                logo: "Viiveo",
-                nav_discover: "Discover Viiveo",
-                nav_beta: "Beta Phase",
-                nav_values: "Our Values",
-                nav_contact: "Contact",
-                nav_cta: "Join the beta test",
-                hero_title: "Viiveo — A solidarity platform to facilitate life at home",
-                hero_subtitle: "Developed in Belleuil, designed for all of Belgium",
-                hero_cta: "Discover the project",
-                how_it_works_title: "How does it work?",
-                how_it_works_subtitle: "A simple, transparent and human platform",
-                client_side: "Client Side",
-                client_step1_title: "Simple registration",
-                client_step1_desc: "Create your profile in a few minutes",
-                client_step2_title: "€10/month subscription",
-                client_step2_desc: "Unlimited access to all our verified providers",
-                client_step3_title: "Choice of provider",
-                client_step3_desc: "Find the person who matches your needs",
-                client_step4_title: "Satisfaction validated",
-                client_step4_desc: "Billing is only released after your approval",
-                provider_side: "Provider Side",
-                provider_step1_title: "Profile creation",
-                provider_step1_desc: "Present your services and skills",
-                provider_step2_title: "Verification by Viiveo",
-                provider_step2_desc: "We validate each profile for your safety",
-                provider_step3_title: "Proposed missions",
-                provider_step3_desc: "Receive requests matching your services",
-                provider_step4_title: "Billing after validation",
-                provider_step4_desc: "You keep 100% of your remuneration",
-                trust_title: "Trusted third party",
-                trust_description: "Viiveo acts as a trusted intermediary between clients and providers. Each profile is verified, each mission is monitored, and billing is validated after satisfaction.",
-                beta_title: "Participate in Viiveo's test phase 🌿",
-                beta_subtitle: "Help us build a more human and useful platform",
-                beta_client_title: "Client tester",
-                beta_client_benefit1: "Free access during the test phase",
-                beta_client_benefit2: "Priority to test new features",
-                beta_client_benefit3: "Opportunity to propose improvement ideas",
-                beta_client_cta: "I become a beta tester client",
-                beta_provider_title: "Partner provider",
-                beta_provider_benefit1: "Free visibility on the platform",
-                beta_provider_benefit2: "Personalized support from the Viiveo team",
-                beta_provider_benefit3: "'Beta partner' mention on your profile",
-                beta_provider_cta: "I become a beta tester provider",
-                ideas_title: "Your ideas matter",
-                ideas_subtitle: "Viiveo evolves with you. Your feedback helps us build a fairer, more efficient and more human platform.",
-                form_name: "Name",
-                form_email: "Email",
-                form_role: "Role",
-                form_role_client: "Client",
-                form_role_provider: "Provider",
-                form_role_curious: "Curious",
-                form_message: "Your message or idea",
-                form_submit: "Share my idea 🌱",
-                values_title: "Our Values",
-                values_subtitle: "The principles that guide every decision at Viiveo",
-                value1_title: "Human",
-                value1_desc: "People first. Every interaction counts, every relationship is precious.",
-                value2_title: "Local",
-                value2_desc: "Developed in Belleuil, designed for Belgium. We value short circuits.",
-                value3_title: "Solidarity",
-                value3_desc: "Every service is an outstretched hand. We create connections between generations.",
-                footer_slogan: "Together, let's make home a place to live.",
-                footer_copyright: "© 2025 Viiveo by Anza"
-            },
-            de: {
-                logo: "Viiveo",
-                nav_discover: "Viiveo entdecken",
-                nav_beta: "Beta-Phase",
-                nav_values: "Unsere Werte",
-                nav_contact: "Kontakt",
-                nav_cta: "Am Beta-Test teilnehmen",
-                hero_title: "Viiveo — Eine Solidaritätsplattform zur Erleichterung des Lebens zu Hause",
-                hero_subtitle: "Entwickelt in Belleuil, konzipiert für ganz Belgien",
-                hero_cta: "Projekt entdecken",
-                how_it_works_title: "Wie funktioniert es?",
-                how_it_works_subtitle: "Eine einfache, transparente und menschliche Plattform",
-                client_side: "Kundenseite",
-                client_step1_title: "Einfache Anmeldung",
-                client_step1_desc: "Erstellen Sie Ihr Profil in wenigen Minuten",
-                client_step2_title: "Abonnement 10€/Monat",
-                client_step2_desc: "Unbegrenzter Zugang zu allen unseren geprüften Anbietern",
-                client_step3_title: "Auswahl des Anbieters",
-                client_step3_desc: "Finden Sie die Person, die Ihren Bedürfnissen entspricht",
-                client_step4_title: "Zufriedenheit bestätigt",
-                client_step4_desc: "Abrechnung wird nur nach Ihrer Zustimmung freigegeben",
-                provider_side: "Anbieterseite",
-                provider_step1_title: "Profilerstellung",
-                provider_step1_desc: "Präsentieren Sie Ihre Dienstleistungen und Fähigkeiten",
-                provider_step2_title: "Überprüfung durch Viiveo",
-                provider_step2_desc: "Wir validieren jedes Profil für Ihre Sicherheit",
-                provider_step3_title: "Vorgeschlagene Aufträge",
-                provider_step3_desc: "Erhalten Sie Anfragen, die Ihren Dienstleistungen entsprechen",
-                provider_step4_title: "Abrechnung nach Validierung",
-                provider_step4_desc: "Sie behalten 100% Ihrer Vergütung",
-                trust_title: "Vertrauenswürdige dritte Partei",
-                trust_description: "Viiveo fungiert als vertrauenswürdiger Vermittler zwischen Kunden und Anbietern. Jedes Profil wird überprüft, jeder Auftrag wird verfolgt und die Abrechnung wird nach Zufriedenheit validiert.",
-                beta_title: "Nehmen Sie an der Testphase von Viiveo teil 🌿",
-                beta_subtitle: "Helfen Sie uns, eine menschlichere und nützlichere Plattform zu bauen",
-                beta_client_title: "Kundentester",
-                beta_client_benefit1: "Kostenloser Zugang während der Testphase",
-                beta_client_benefit2: "Priorität beim Testen neuer Funktionen",
-                beta_client_benefit3: "Möglichkeit, Verbesserungsideen vorzuschlagen",
-                beta_client_cta: "Ich werde Beta-Tester Kunde",
-                beta_provider_title: "Partneranbieter",
-                beta_provider_benefit1: "Kostenlose Sichtbarkeit auf der Plattform",
-                beta_provider_benefit2: "Persönliche Betreuung durch das Viiveo-Team",
-                beta_provider_benefit3: "Vermerk 'Beta-Partner' in Ihrem Profil",
-                beta_provider_cta: "Ich werde Beta-Tester Anbieter",
-                ideas_title: "Ihre Ideen zählen",
-                ideas_subtitle: "Viiveo entwickelt sich mit Ihnen. Ihr Feedback hilft uns, eine gerechtere, effizientere und menschlichere Plattform zu bauen.",
-                form_name: "Name",
-                form_email: "E-Mail",
-                form_role: "Rolle",
-                form_role_client: "Kunde",
-                form_role_provider: "Anbieter",
-                form_role_curious: "Neugierig",
-                form_message: "Ihre Nachricht oder Idee",
-                form_submit: "Meine Idee teilen 🌱",
-                values_title: "Unsere Werte",
-                values_subtitle: "Die Prinzipien, die jede Entscheidung bei Viiveo leiten",
-                value1_title: "Menschlich",
-                value1_desc: "Der Mensch steht im Mittelpunkt. Jede Interaktion zählt, jede Beziehung ist wertvoll.",
-                value2_title: "Lokal",
-                value2_desc: "Entwickelt in Belleuil, konzipiert für Belgien. Wir schätzen kurze Wege.",
-                value3_title: "Solidarische",
-                value3_desc: "Jeder Dienst ist eine ausgestreckte Hand. Wir schaffen Verbindungen zwischen Generationen.",
-                footer_slogan: "Gemeinsam machen wir aus Zuhause einen Lebensort.",
-                footer_copyright: "© 2025 Viiveo by Anza"
-            }
-        };
+  <!-- MODAL BACKDROP for forms -->
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-hidden="true">
+    <div class="modal" role="document" aria-modal="true">
+      <button class="close" aria-label="Fermer" onclick="closeModal()">✕</button>
+      <div id="modalContent">
+        <!-- dynamic content injected by JS -->
+      </div>
+    </div>
+  </div>
 
-        let currentLanguage = 'fr';
+  <script>
+    // Simple JS to handle modals, fake counter, feedback submission
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalContent = document.getElementById('modalContent');
+    const counterNumber = document.getElementById('counterNumber');
 
-        function changeLanguage(lang) {
-            currentLanguage = lang;
-            
-            // Mettre à jour tous les éléments avec data-translate
-            document.querySelectorAll('[data-translate]').forEach(element => {
-                const key = element.getAttribute('data-translate');
-                if (translations[lang] && translations[lang][key]) {
-                    element.textContent = translations[lang][key];
-                }
-            });
+    // initial fake count (you can replace with real value via API)
+    let count = parseInt(counterNumber.textContent || '128', 10);
 
-            // Mettre à jour le sélecteur de langue
-            const flags = { fr: '🇫🇷', nl: '🇳🇱', en: '🇬🇧', de: '🇩🇪' };
-            const codes = { fr: 'FR', nl: 'NL', en: 'EN', de: 'DE' };
-            
-            document.getElementById('current-flag').textContent = flags[lang];
-            const codeElement = document.querySelector('#language-button .hidden');
-            if (codeElement) {
-                codeElement.textContent = codes[lang];
-            }
+    // Expose openBetaBtn
+    document.getElementById('openBetaBtn').addEventListener('click', ()=> {
+      document.getElementById('beta').scrollIntoView({behavior:'smooth'});
+      openModal('choose');
+    });
 
-            // Mettre à jour les options actives
-            document.querySelectorAll('.language-option').forEach(option => {
-                option.classList.remove('active');
-                if (option.getAttribute('data-lang') === lang) {
-                    option.classList.add('active');
-                }
-            });
+    function openModal(type){
+      // type: 'client' | 'presta' | 'choose'
+      modalBackdrop.style.display = 'flex';
+      modalBackdrop.setAttribute('aria-hidden','false');
 
-            localStorage.setItem('viiveo-language', lang);
-        }
+      if(type === 'client'){
+        modalContent.innerHTML = `
+          <h2>Inscription bêta - Client</h2>
+          <p>Remplissez ce formulaire pour participer en tant que client testeur. Votre inscription vous donne accès gratuit à la phase de test.</p>
+          <!-- Replace with your Tally or Google Form embed link -->
+          <iframe src="https://tally.so/embed/REPLACE_WITH_YOUR_FORM_CLIENT" style="width:100%;height:520px;border:0;border-radius:10px"></iframe>
+        `;
+      } else if(type === 'presta'){
+        modalContent.innerHTML = `
+          <h2>Inscription bêta - Prestataire</h2>
+          <p>Remplissez ce formulaire pour rejoindre la communauté de prestataires testeurs.</p>
+          <iframe src="https://tally.so/embed/REPLACE_WITH_YOUR_FORM_PRESTATAIRE" style="width:100%;height:520px;border:0;border-radius:10px"></iframe>
+        `;
+      } else {
+        // choose modal
+        modalContent.innerHTML = `
+          <h2>Devenir bêta-testeur</h2>
+          <p>Choisissez votre rôle :</p>
+          <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap">
+            <button class="btn-cta" onclick="openModal('client')">Bêta-testeur client</button>
+            <button class="btn-cta" style="background:linear-gradient(90deg,#0e2b53,#2a5c86)" onclick="openModal('presta')">Bêta-testeur prestataire</button>
+          </div>
+          <p style="margin-top:12px; color:rgba(14,43,83,0.85)">Vous pouvez aussi <a href='#feedback' onclick='closeModal();setTimeout(()=>document.getElementById(\"feedback\").scrollIntoView({behavior:\"smooth\"}),200)'>partager une idée</a>.</p>
+        `;
+      }
+    }
 
-        // Animation au scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+    function closeModal(){
+      modalBackdrop.style.display = 'none';
+      modalBackdrop.setAttribute('aria-hidden','true');
+      modalContent.innerHTML = '';
+    }
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
+    // Close modal on backdrop click (but not when clicking inside modal)
+    modalBackdrop.addEventListener('click', (e) => {
+      if(e.target === modalBackdrop) closeModal();
+    });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Charger la langue sauvegardée
-            const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
-            changeLanguage(savedLanguage);
+    // Fake counter increment every 6s (for animation demo)
+    setInterval(()=> {
+      count += Math.floor(Math.random()*3); // 0..2
+      counterNumber.textContent = count;
+    }, 6000);
 
-            // Observer tous les éléments avec la classe fade-in
-            const fadeElements = document.querySelectorAll('.fade-in');
-            fadeElements.forEach(el => observer.observe(el));
+    // Handle feedback form (example: send to Google Sheet via webhook or show success)
+    function submitFeedback(e){
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const role = document.getElementById('role').value;
+      const message = document.getElementById('message').value.trim();
 
-            // Header scroll effect
-            const header = document.getElementById('header');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 100) {
-                    header.classList.add('header-scroll');
-                } else {
-                    header.classList.remove('header-scroll');
-                }
-            });
+      // For now, emulate success. Replace this with an actual fetch POST to your endpoint (Google Apps Script / Integromat / Zapier)
+      const status = document.getElementById('feedbackStatus');
+      status.textContent = 'Envoi…';
 
-            // Gestion du sélecteur de langue
-            const languageButton = document.getElementById('language-button');
-            const languageDropdown = document.getElementById('language-dropdown');
-            
-            if (languageButton && languageDropdown) {
-                languageButton.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    languageDropdown.classList.toggle('show');
-                });
+      // simple validation
+      if(!name || !email || !message){ status.textContent = 'Merci de compléter tous les champs.'; return; }
 
-                document.addEventListener('click', function() {
-                    languageDropdown.classList.remove('show');
-                });
+      // Simulate async send
+      setTimeout(()=>{
+        status.textContent = 'Merci ! Votre suggestion a bien été reçue 🌿';
+        document.getElementById('feedbackForm').reset();
 
-                document.querySelectorAll('.language-option').forEach(option => {
-                    option.addEventListener('click', function() {
-                        const lang = this.getAttribute('data-lang');
-                        changeLanguage(lang);
-                        languageDropdown.classList.remove('show');
-                    });
-                });
-            }
+        // Optionally increment count for demonstration: +1
+        count += 1;
+        counterNumber.textContent = count;
+      }, 900);
+    }
 
-            // Menu mobile
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            mobileMenuButton.addEventListener('click', () => {
-                alert('Menu mobile - À implémenter avec votre navigation existante');
-            });
-
-            // Smooth scroll pour les ancres
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
+    // Accessibility: trap focus in modal? (simple)
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && modalBackdrop.style.display === 'flex'){ closeModal(); }
+    });
+  </script>
 </body>
 </html>
