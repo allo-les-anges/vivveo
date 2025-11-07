@@ -19,7 +19,6 @@
         body {
             font-family: 'Inter', sans-serif;
             color: var(--text-color);
-            overflow-x: hidden; /* Empêche le débordement horizontal */
         }
 
         .gradient-bg {
@@ -116,7 +115,7 @@
             display: block;
         }
 
-        /* Styles pour la vidéo de fond - CORRIGÉ */
+        /* Styles pour la vidéo de fond */
         .video-background {
             position: absolute;
             top: 0;
@@ -127,48 +126,19 @@
             z-index: -1;
         }
 
-        /* Correction pour mobile */
-        @media (max-width: 768px) {
-            .video-background {
-                left: 30%; /* Décalage vers la droite */
-                width: 70%; /* Largeur augmentée pour couvrir l'espace */
-                
-            }
-            
-            /* Supprime toute marge ou padding qui pourrait causer une bande blanche */
-            .hero-section {
-                margin-left: 0 !important;
-                padding-left: 0 !important;
-            }
-        }
-
-        /* Correction pour très petits écrans */
-        @media (max-width: 480px) {
-            .video-background {
-                left: 25%;
-                width: 130%;
-            }
-        }
-
         .video-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.3); /* Overlay légèrement plus sombre pour améliorer la lisibilité */
+            background: rgba(0, 0, 0, 0);
             z-index: 0;
-        }
-
-        /* Assurer que la section hero n'a pas de débordement */
-        .hero-container {
-            overflow: hidden;
-            position: relative;
         }
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Header Commun -->
+    <!-- Header Commun CORRIGÉ selon services.html -->
     <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between py-4">
@@ -177,7 +147,7 @@
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
                 </a>
                 
-                <!-- Navigation Desktop -->
+                <!-- Navigation Desktop - MÊME STRUCTURE QUE SERVICES.HTML -->
                 <nav class="hidden lg:flex items-center space-x-8">
                     <a href="index.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
@@ -224,7 +194,7 @@
                 </button>
             </div>
 
-            <!-- Menu Mobile -->
+            <!-- Menu Mobile - MÊME STRUCTURE QUE SERVICES.HTML -->
             <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
                 <div class="px-4 py-6 space-y-4">
                     <a href="index.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_home">Accueil</a>
@@ -238,8 +208,9 @@
         </div>
     </header>
 
-    <!-- Hero Section avec vidéo - CORRIGÉ -->
-    <section class="hero-section relative text-white py-20 md:py-32 min-h-screen flex items-center overflow-hidden">
+    <!-- Le reste du contenu de index.html reste identique -->
+    <!-- Hero Section avec vidéo -->
+    <section class="relative text-white py-20 md:py-32 min-h-screen flex items-center overflow-hidden">
         <!-- Vidéo de fond -->
         <video autoplay muted loop playsinline class="video-background">
             <source src="https://res.cloudinary.com/drn6w4nab/video/upload/v1762272446/WhatsApp_Vid%C3%A9o_2025-11-04_%C3%A0_17.07.07_504a66e1_dgnwfz.mp4" type="video/mp4">
@@ -407,7 +378,7 @@
     </footer>
 
     <script>
-        // Traductions multilingues
+        // Traductions multilingues - AJOUT DES NOUVELLES CLÉS
         const translations = {
             fr: {
                 // Navigation
