@@ -1426,7 +1426,7 @@
             openServiceModal(currentService);
         }
 
-       async function submitBooking(event) {
+      async function submitBooking(event) {
     event.preventDefault();
     
     const loader = document.getElementById('viiveo-loader');
@@ -1436,26 +1436,50 @@
     submitButton.disabled = true;
     
     try {
-        // Récupérer les données du formulaire
+        // 1. Gérer la séparation prénom/nom prestataire AVANT d'envoyer
+        const selectPrestataire = event.target.querySelector('select[name="prestataire"]');
+        const fullName = selectPrestataire?.value || "";
+        
+        // Séparer le prénom et nom du prestataire
+        if (fullName && fullName.trim() && fullName !== "Pas de préférence") {
+            const parts = fullName.trim().split(" ");
+            const prenomPrestataire = parts.shift() || "";
+            const nomPrestataire = parts.join(" ") || "";
+            
+            // Mettre à jour les champs cachés
+            document.querySelector('input[name="prenom_prestataire"]').value = prenomPrestataire;
+            document.querySelector('input[name="nom_prestataire"]').value = nomPrestataire;
+        } else {
+            document.querySelector('input[name="prenom_prestataire"]').value = "";
+            document.querySelector('input[name="nom_prestataire"]').value = "";
+        }
+
+        // 2. Préparer les données du formulaire
         const formData = new FormData(event.target);
         const params = new URLSearchParams();
         params.append('type', 'formClient');
         
         for (let [key, value] of formData.entries()) {
-            params.append(key, value);
+            // Ne pas inclure le champ prestataire (select) car on utilise les champs séparés
+            if (key !== 'prestataire') {
+                params.append(key, value);
+            }
         }
         
-        // Utiliser une requête GET simple - Google Apps Script les accepte aussi
+        // 3. URL de votre Google Apps Script
         const scriptUrl = `https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec?${params.toString()}`;
         
-        // Envoyer avec no-cors pour éviter les problèmes
+        console.log('URL envoyée:', scriptUrl);
+        
+        // 4. Envoyer la requête GET (méthode la plus fiable avec Google Apps Script)
         await fetch(scriptUrl, { 
             method: 'GET',
             mode: 'no-cors'
         });
         
-        // Message de succès
+        // 5. Message de succès
         let message = "✅ Demande envoyée avec succès !";
+        
         if (currentService === 'Visite bénévole' || currentService === 'Commande de repas') {
             message += ' Ce service est entièrement gratuit.';
         } else {
@@ -1468,6 +1492,7 @@
         selectHours(2);
         
     } catch (error) {
+        console.error('Erreur:', error);
         // Même en cas d'erreur, on affiche un message positif
         alert("✅ Votre demande a été envoyée. Notre équipe vous contactera sous 24h.");
         closeModal();
