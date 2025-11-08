@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Prestataire - Viiveo</title>
-    <!-- Version alternative de Tailwind pour éviter l'avertissement -->
     <script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
@@ -124,7 +123,6 @@
             display: block;
         }
 
-        /* Styles spécifiques à l'interface prestataire */
         .prestataire-section {
             background: white;
             border-radius: 1.5rem;
@@ -349,7 +347,6 @@
             padding: 2rem;
         }
 
-        /* Styles élégants pour les formulaires */
         .form-group {
             margin-bottom: 1.5rem;
             position: relative;
@@ -461,7 +458,6 @@
             background: #fef3c7;
         }
 
-        /* Styles pour l'affichage mobile en cartes */
         .mobile-card-view {
             display: none;
         }
@@ -533,7 +529,6 @@
             border-top: 2px solid #f3f4f6;
         }
 
-        /* Boutons améliorés */
         .btn-elegant {
             background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
             color: white;
@@ -587,6 +582,67 @@
             transform: translateY(-1px);
         }
 
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-danger:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .readonly-field {
+            background-color: #f9fafb;
+            color: #6b7280;
+            cursor: not-allowed;
+        }
+
+        .delete-section {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 2px solid #f87171;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .password-match {
+            border-color: #10b981;
+            background-color: #f0fdf4;
+        }
+
+        .password-mismatch {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
+
+        .password-strength {
+            height: 4px;
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .password-weak { background-color: #ef4444; width: 25%; }
+        .password-medium { background-color: #f59e0b; width: 50%; }
+        .password-strong { background-color: #10b981; width: 75%; }
+        .password-very-strong { background-color: #059669; width: 100%; }
+
         @media (max-width: 768px) {
             .table-wrapper {
                 display: none;
@@ -606,7 +662,6 @@
             }
         }
 
-        /* Animation de pulse pour les éléments importants */
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -617,7 +672,6 @@
             animation: pulse 2s infinite;
         }
 
-        /* Styles pour les messages */
         .message {
             padding: 1rem;
             border-radius: 0.75rem;
@@ -643,7 +697,6 @@
             border: 1px solid #bfdbfe;
         }
 
-        /* Styles pour le scanner QR */
         #qr-reader {
             width: 100% !important;
             height: auto !important;
@@ -652,7 +705,6 @@
             margin: 0 auto;
         }
 
-        /* Styles pour les actions de mission */
         .actions {
             display: flex;
             justify-content: center;
@@ -675,7 +727,6 @@
             background-color: #ccc;
         }
 
-        /* Styles pour la modale QR */
         #modalOverlay {
             position: fixed; 
             top: 0; 
@@ -854,6 +905,10 @@
                         <button onclick="showProfileModal()" class="btn-elegant">
                             <i class="fas fa-user-edit mr-2"></i>
                             Modifier profil
+                        </button>
+                        <button onclick="showDeleteAccountModal()" class="btn-danger">
+                            <i class="fas fa-trash-alt mr-2"></i>
+                            Supprimer mon compte
                         </button>
                         <button onclick="logout()" class="bg-red-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors">
                             <i class="fas fa-sign-out-alt mr-2"></i>
@@ -1119,7 +1174,7 @@
         </div>
     </div>
 
-    <!-- Modal de profil -->
+    <!-- Modal de profil MIS À JOUR -->
     <div id="profile-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1158,13 +1213,31 @@
                                 <i class="fas fa-envelope form-input-icon"></i>
                             </div>
                         </div>
-                        
+                    </div>
+
+                    <!-- Section mot de passe -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-lock"></i>
+                            Modifier le mot de passe
+                        </h3>
                         <div class="form-group">
                             <label>Nouveau mot de passe</label>
                             <div class="relative">
                                 <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer" autocomplete="new-password">
                                 <i class="fas fa-lock form-input-icon"></i>
                             </div>
+                            <div id="password-strength" class="password-strength"></div>
+                            <small class="text-gray-500">Minimum 8 caractères avec majuscule, minuscule et chiffre</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Confirmer le nouveau mot de passe</label>
+                            <div class="relative">
+                                <input type="password" id="profile-password-confirm" class="form-input" placeholder="Confirmer le nouveau mot de passe" autocomplete="new-password">
+                                <i class="fas fa-lock form-input-icon"></i>
+                            </div>
+                            <div id="password-match-message" class="mt-2 text-sm hidden"></div>
                         </div>
                     </div>
 
@@ -1182,28 +1255,19 @@
                             </div>
                         </div>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="form-group">
-                                <label>Ville</label>
-                                <div class="relative">
-                                    <input type="text" id="profile-city" class="form-input">
-                                    <i class="fas fa-city form-input-icon"></i>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Code postal</label>
-                                <div class="relative">
-                                    <input type="text" id="profile-postal" class="form-input">
-                                    <i class="fas fa-mail-bulk form-input-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
                         <div class="form-group">
                             <label>Téléphone</label>
                             <div class="relative">
                                 <input type="tel" id="profile-phone" class="form-input">
                                 <i class="fas fa-phone form-input-icon"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Photo (URL)</label>
+                            <div class="relative">
+                                <input type="url" id="profile-photo" class="form-input" placeholder="https://...">
+                                <i class="fas fa-camera form-input-icon"></i>
                             </div>
                         </div>
                     </div>
@@ -1214,30 +1278,58 @@
                             <i class="fas fa-tools"></i>
                             Services proposés
                         </h3>
+                        <div class="form-group">
+                            <label>Spécialité(s)</label>
+                            <div class="relative">
+                                <input type="text" id="profile-specialites" class="form-input" placeholder="Entretien ménager, Jardinage, etc.">
+                                <i class="fas fa-tags form-input-icon"></i>
+                            </div>
+                            <small class="text-gray-500">Séparez les spécialités par des virgules</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Disponibilité</label>
+                            <div class="relative">
+                                <input type="text" id="profile-disponibilite" class="form-input" placeholder="Lundi-Vendredi: 9h-18h">
+                                <i class="fas fa-calendar-alt form-input-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section commentaire -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-comment"></i>
+                            Commentaire
+                        </h3>
+                        <div class="form-group">
+                            <div class="relative">
+                                <textarea id="profile-commentaire" class="form-input" rows="3" placeholder="Informations complémentaires..."></textarea>
+                                <i class="fas fa-edit form-input-icon" style="top: 1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Champs RGPD et Validation (lecture seule) -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-shield-alt"></i>
+                            Informations système
+                        </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="form-group">
-                                <label>
-                                    <input type="checkbox" id="service-entretien" class="mr-2">
-                                    Entretien ménager
-                                </label>
+                                <label>RGPD</label>
+                                <div class="relative">
+                                    <input type="text" id="profile-rgpd" class="form-input readonly-field" readonly>
+                                    <i class="fas fa-file-contract form-input-icon"></i>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label>
-                                    <input type="checkbox" id="service-cuisine" class="mr-2">
-                                    Aide en cuisine
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label>
-                                    <input type="checkbox" id="service-jardinage" class="mr-2">
-                                    Jardinage
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label>
-                                    <input type="checkbox" id="service-bricolage" class="mr-2">
-                                    Petit bricolage
-                                </label>
+                                <label>Validation</label>
+                                <div class="relative">
+                                    <input type="text" id="profile-validation" class="form-input readonly-field" readonly>
+                                    <i class="fas fa-check-circle form-input-icon"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1247,12 +1339,72 @@
                             <i class="fas fa-times mr-2"></i>
                             Annuler
                         </button>
-                        <button type="submit" class="btn-elegant">
+                        <button type="submit" class="btn-elegant" id="profile-submit-btn">
                             <i class="fas fa-save mr-2"></i>
                             Enregistrer
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de suppression de compte -->
+    <div id="delete-account-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                <h2 class="text-2xl font-bold">Supprimer mon compte</h2>
+                <span class="close" onclick="closeModal('delete-account-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="delete-section rounded-lg p-6 mb-6">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-exclamation-triangle text-red-500 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-bold text-red-700">Attention ! Action irréversible</h3>
+                    </div>
+                    <p class="text-red-600 mb-4">
+                        Vous êtes sur le point de supprimer définitivement votre compte prestataire. 
+                        Cette action aura les conséquences suivantes :
+                    </p>
+                    <ul class="list-disc list-inside text-red-600 space-y-2 mb-4">
+                        <li>Toutes vos données personnelles seront supprimées</li>
+                        <li>Vos missions en cours seront annulées</li>
+                        <li>Votre historique de missions sera perdu</li>
+                        <li>Vous ne pourrez plus accéder à l'espace prestataire</li>
+                        <li>Cette action est définitive et ne peut être annulée</li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-email" class="text-gray-700 font-semibold">
+                        Pour confirmer, veuillez saisir votre adresse email :
+                    </label>
+                    <input type="email" id="confirm-email" class="form-input mt-2" 
+                           placeholder="votre@email.com" autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-delete" class="flex items-center space-x-3">
+                        <input type="checkbox" id="confirm-delete" class="w-5 h-5 text-red-600">
+                        <span class="text-gray-700 font-semibold">
+                            Je comprends que cette action est irréversible et je souhaite supprimer mon compte
+                        </span>
+                    </label>
+                </div>
+
+                <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
+                    <button type="button" onclick="closeModal('delete-account-modal')" class="btn-secondary">
+                        <i class="fas fa-times mr-2"></i>
+                        Annuler
+                    </button>
+                    <button type="button" onclick="confirmDeleteAccount()" 
+                            id="delete-account-btn" 
+                            class="btn-danger opacity-50 cursor-not-allowed"
+                            disabled>
+                        <i class="fas fa-trash-alt mr-2"></i>
+                        Supprimer définitivement
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1326,6 +1478,7 @@
         // Variables globales
         let currentEmail = "";
         let currentMissions = [];
+        let currentPrestataireData = null;
 
         // Variables pour la modale QR
         let currentMissionId = null;
@@ -1346,7 +1499,7 @@
         const photosInput = document.getElementById("photos");
         const photosPreview = document.getElementById("photosPreview");
 
-        // Fonction JSONP comme dans vos embeds
+        // Fonction JSONP
         function callApiJsonp(url, callbackName) {
             return new Promise((resolve, reject) => {
                 window[callbackName] = function(data) {
@@ -1375,29 +1528,22 @@
             const password = document.getElementById('password').value;
             const message = document.getElementById('login-message');
 
-            // Afficher le loader
             document.getElementById('loader').style.display = 'flex';
 
             try {
-                // Appel à l'API Google Apps Script avec JSONP
                 const callbackName = 'cbLogin' + Date.now();
                 const url = `${webAppUrl}?type=loginPresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
                 const data = await callApiJsonp(url, callbackName);
 
                 if (data.success) {
-                    // Connexion réussie
                     currentEmail = email;
-
                     document.getElementById('login-section').classList.add('hidden');
                     document.getElementById('prestataire-interface').classList.remove('hidden');
                     
-                    // Mettre à jour les informations prestataire
                     document.getElementById('prestataire-name').textContent = data.prenom || "Prestataire";
                     document.getElementById('prestataire-rating').textContent = data.note || "4.8";
 
-                    // Charger les missions
                     await loadMissions(email);
-
                     showNotification("Connexion réussie !", 'success');
                 } else {
                     throw new Error(data.message || "Email ou mot de passe incorrect");
@@ -1411,17 +1557,13 @@
             }
         }
 
-        // Charger les missions avec JSONP - CORRIGÉ
+        // Charger les missions avec JSONP
         async function loadMissions(email) {
             try {
                 const callbackName = 'cbMissions' + Date.now();
                 const url = `${webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
                 const data = await callApiJsonp(url, callbackName);
 
-                // Vérifier la structure des données
-                console.log("Données reçues:", data);
-                
-                // Les missions peuvent être dans data.missions ou data directement
                 const missions = data.missions || data;
                 
                 if (!Array.isArray(missions)) {
@@ -1429,17 +1571,11 @@
                 }
 
                 currentMissions = missions;
-
-                // Mettre à jour les statistiques
                 updateStats(missions);
-                
-                // Charger les missions pour chaque onglet
                 loadMissionsByStatus('pending', missions);
                 loadMissionsByStatus('today', missions);
                 loadMissionsByStatus('planned', missions);
                 loadMissionsByStatus('completed', missions);
-
-                // Attacher les listeners pour les boutons de démarrage
                 attacherListenersStartPrestation();
 
             } catch (error) {
@@ -1448,7 +1584,7 @@
             }
         }
 
-        // Mettre à jour les statistiques - CORRIGÉ
+        // Mettre à jour les statistiques
         function updateStats(missions) {
             if (!Array.isArray(missions)) {
                 console.error("Missions n'est pas un tableau:", missions);
@@ -1485,14 +1621,13 @@
             document.getElementById('stats-completed').textContent = completedCount;
         }
 
-        // Charger les missions par statut - CORRIGÉ
+        // Charger les missions par statut
         function loadMissionsByStatus(status, missions) {
             const tableBody = document.getElementById(`${status}-missions-table`);
             const cardsContainer = document.getElementById(`${status}-missions-cards`);
             
             if (!tableBody || !cardsContainer) return;
 
-            // Filtrer les missions selon le statut
             let filteredMissions = [];
             
             switch(status) {
@@ -1529,7 +1664,6 @@
                     break;
             }
             
-            // Mettre à jour le tableau
             if (filteredMissions.length === 0) {
                 tableBody.innerHTML = `<tr><td colspan="${status === 'completed' ? '6' : '7'}" class="p-4 text-center text-gray-500">Aucune mission disponible</td></tr>`;
                 cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission disponible</div>`;
@@ -1546,7 +1680,6 @@
                     </tr>
                 `).join('');
                 
-                // Mettre à jour les cartes mobiles
                 cardsContainer.innerHTML = filteredMissions.map(mission => `
                     <div class="request-card">
                         <div class="card-row">
@@ -1581,7 +1714,7 @@
             }
         }
 
-        // Formatage des dates (comme dans vos embeds)
+        // Formatage des dates
         function formatDate(dateString) {
             if (!dateString) return 'N/A';
             try {
@@ -1639,7 +1772,6 @@
                     
                     if (data.success) {
                         showNotification("Mission validée avec succès !", 'success');
-                        // Recharger les données
                         await loadMissions(currentEmail);
                     } else {
                         throw new Error(data.error || "Erreur lors de la validation");
@@ -1666,7 +1798,6 @@
                 
                 if (data.success) {
                     showNotification("Votre proposition a bien été envoyée.", 'success');
-                    // Recharger les données
                     await loadMissions(currentEmail);
                 } else {
                     throw new Error(data.error || "Erreur lors de l'envoi");
@@ -1725,7 +1856,6 @@
                         const email = url.searchParams.get("email");
                         if (!email) throw new Error("QR invalide");
 
-                        // Vérification du client avec JSONP
                         const callbackName = 'cbVerifyClient' + Date.now();
                         const data = await callApiJsonp(`${webAppUrl}?type=verifyClientEmail&email=${encodeURIComponent(email)}`, callbackName);
 
@@ -1802,15 +1932,12 @@
                         .find(tr => tr.children[0].textContent.trim() === missionId);
                     if (!row) return alert("❌ Ligne de mission introuvable");
 
-                    // Extraction dynamique
                     const clientNom = row.children[1]?.textContent.trim() || "";
                     const clientPrenom = row.children[1]?.dataset.prenom?.trim() || clientNom.split(" ")[0];
 
-                    // Récupérer les infos du prestataire
                     const prestatairePrenom = document.getElementById('prestataire-name').textContent || "Prestataire";
-                    const prestataireNom = ""; // À adapter selon vos données
+                    const prestataireNom = "";
 
-                    // Lancement modal
                     openModalStartPrestation(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom);
                 });
             });
@@ -1826,7 +1953,6 @@
         }
 
         function showTab(tabName) {
-            // Désactiver tous les onglets
             document.querySelectorAll('.tab-container').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -1834,7 +1960,6 @@
                 button.classList.remove('active');
             });
 
-            // Activer l'onglet sélectionné
             document.getElementById(`tab-${tabName}`).classList.add('active');
             event.target.classList.add('active');
         }
@@ -1907,18 +2032,238 @@
             document.getElementById('completed-missions-modal').style.display = 'block';
         }
 
-        function showProfileModal() {
+        // FONCTIONS POUR LA GESTION DU PROFIL
+
+        async function showProfileModal() {
+            await loadProfileData();
             document.getElementById('profile-modal').style.display = 'block';
         }
 
+        async function loadProfileData() {
+            try {
+                const callbackName = 'cbProfile' + Date.now();
+                const url = `${webAppUrl}?type=getPrestataireProfile&email=${encodeURIComponent(currentEmail)}`;
+                const data = await callApiJsonp(url, callbackName);
+
+                if (data.success && data.prestataire) {
+                    currentPrestataireData = data.prestataire;
+                    populateProfileForm(data.prestataire);
+                } else {
+                    throw new Error(data.message || "Erreur lors du chargement du profil");
+                }
+            } catch (error) {
+                console.error("Erreur lors du chargement du profil:", error);
+                showNotification("Erreur lors du chargement du profil", 'error');
+            }
+        }
+
+        function populateProfileForm(prestataire) {
+            document.getElementById('profile-firstname').value = prestataire.prénom || '';
+            document.getElementById('profile-lastname').value = prestataire.nom || '';
+            document.getElementById('profile-email').value = prestataire.email || '';
+            document.getElementById('profile-address').value = prestataire.adresse || '';
+            document.getElementById('profile-phone').value = prestataire.téléphone || '';
+            document.getElementById('profile-photo').value = prestataire.photo || '';
+            document.getElementById('profile-specialites').value = prestataire['spécialité(s)'] || prestataire.spécialité || '';
+            document.getElementById('profile-disponibilite').value = prestataire.disponibilité || '';
+            document.getElementById('profile-commentaire').value = prestataire.commentaire || '';
+            
+            document.getElementById('profile-rgpd').value = prestataire.rgpd || 'Non modifiable';
+            document.getElementById('profile-validation').value = prestataire.validation || 'Non modifiable';
+            
+            if (prestataire.photo) {
+                document.getElementById('prestataire-photo').src = prestataire.photo;
+            }
+        }
+
         async function saveProfile() {
-            // Implémentation de la sauvegarde du profil
-            showNotification("Profil mis à jour avec succès !", 'success');
-            closeModal('profile-modal');
+            const password = document.getElementById('profile-password').value;
+            const passwordConfirm = document.getElementById('profile-password-confirm').value;
+
+            // Validation du mot de passe
+            if (password && password !== passwordConfirm) {
+                showNotification("Les mots de passe ne correspondent pas", 'error');
+                return;
+            }
+
+            if (password && !validatePasswordStrength(password)) {
+                showNotification("Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule et chiffre", 'error');
+                return;
+            }
+
+            const formData = {
+                email: currentEmail,
+                prénom: document.getElementById('profile-firstname').value,
+                nom: document.getElementById('profile-lastname').value,
+                adresse: document.getElementById('profile-address').value,
+                téléphone: document.getElementById('profile-phone').value,
+                photo: document.getElementById('profile-photo').value,
+                spécialité: document.getElementById('profile-specialites').value,
+                disponibilité: document.getElementById('profile-disponibilite').value,
+                commentaire: document.getElementById('profile-commentaire').value,
+                password: password || null
+            };
+
+            document.getElementById('loader').style.display = 'flex';
+
+            try {
+                const callbackName = 'cbSaveProfile' + Date.now();
+                let url = `${webAppUrl}?type=updatePrestataireProfile`;
+                
+                Object.keys(formData).forEach(key => {
+                    if (formData[key] !== null) {
+                        url += `&${key}=${encodeURIComponent(formData[key])}`;
+                    }
+                });
+
+                const data = await callApiJsonp(url, callbackName);
+
+                if (data.success) {
+                    showNotification("Profil mis à jour avec succès !", 'success');
+                    closeModal('profile-modal');
+                    await loadProfileData();
+                    document.getElementById('prestataire-name').textContent = formData.prénom || "Prestataire";
+                    
+                    // Réinitialiser les champs mot de passe
+                    document.getElementById('profile-password').value = '';
+                    document.getElementById('profile-password-confirm').value = '';
+                    resetPasswordValidation();
+                } else {
+                    throw new Error(data.message || "Erreur lors de la mise à jour du profil");
+                }
+            } catch (error) {
+                showNotification(error.message, 'error');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+
+        // Validation de la force du mot de passe
+        function validatePasswordStrength(password) {
+            const minLength = 8;
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasNumbers = /\d/.test(password);
+            
+            return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumbers;
+        }
+
+        function checkPasswordStrength(password) {
+            const strengthBar = document.getElementById('password-strength');
+            if (!password) {
+                strengthBar.className = 'password-strength';
+                strengthBar.style.width = '0%';
+                return;
+            }
+
+            let strength = 0;
+            if (password.length >= 8) strength += 25;
+            if (/[A-Z]/.test(password)) strength += 25;
+            if (/[a-z]/.test(password)) strength += 25;
+            if (/\d/.test(password)) strength += 25;
+
+            strengthBar.style.width = strength + '%';
+            
+            if (strength <= 25) {
+                strengthBar.className = 'password-strength password-weak';
+            } else if (strength <= 50) {
+                strengthBar.className = 'password-strength password-medium';
+            } else if (strength <= 75) {
+                strengthBar.className = 'password-strength password-strong';
+            } else {
+                strengthBar.className = 'password-strength password-very-strong';
+            }
+        }
+
+        function checkPasswordMatch() {
+            const password = document.getElementById('profile-password').value;
+            const confirmPassword = document.getElementById('profile-password-confirm').value;
+            const message = document.getElementById('password-match-message');
+            const submitBtn = document.getElementById('profile-submit-btn');
+
+            if (!password) {
+                message.classList.add('hidden');
+                submitBtn.disabled = false;
+                return;
+            }
+
+            if (confirmPassword) {
+                if (password === confirmPassword) {
+                    message.textContent = '✓ Les mots de passe correspondent';
+                    message.className = 'mt-2 text-sm text-green-600';
+                    message.classList.remove('hidden');
+                    submitBtn.disabled = false;
+                } else {
+                    message.textContent = '✗ Les mots de passe ne correspondent pas';
+                    message.className = 'mt-2 text-sm text-red-600';
+                    message.classList.remove('hidden');
+                    submitBtn.disabled = true;
+                }
+            } else {
+                message.classList.add('hidden');
+                submitBtn.disabled = false;
+            }
+        }
+
+        function resetPasswordValidation() {
+            document.getElementById('password-strength').className = 'password-strength';
+            document.getElementById('password-strength').style.width = '0%';
+            document.getElementById('password-match-message').classList.add('hidden');
+            document.getElementById('profile-submit-btn').disabled = false;
+        }
+
+        // FONCTIONS POUR LA SUPPRESSION DE COMPTE
+
+        function showDeleteAccountModal() {
+            document.getElementById('delete-account-modal').style.display = 'block';
+            document.getElementById('confirm-email').value = '';
+            document.getElementById('confirm-delete').checked = false;
+            document.getElementById('delete-account-btn').disabled = true;
+            document.getElementById('delete-account-btn').classList.add('opacity-50', 'cursor-not-allowed');
+        }
+
+        async function confirmDeleteAccount() {
+            const confirmEmail = document.getElementById('confirm-email').value;
+            const confirmCheckbox = document.getElementById('confirm-delete').checked;
+
+            if (confirmEmail !== currentEmail) {
+                showNotification("L'adresse email ne correspond pas", 'error');
+                return;
+            }
+
+            if (!confirmCheckbox) {
+                showNotification("Veuillez confirmer que vous comprenez les conséquences", 'error');
+                return;
+            }
+
+            if (!confirm("Êtes-vous ABSOLUMENT SÛR de vouloir supprimer votre compte ? Cette action est IRREVERSIBLE !")) {
+                return;
+            }
+
+            document.getElementById('loader').style.display = 'flex';
+
+            try {
+                const callbackName = 'cbDeleteAccount' + Date.now();
+                const url = `${webAppUrl}?type=deletePrestataire&email=${encodeURIComponent(currentEmail)}`;
+                const data = await callApiJsonp(url, callbackName);
+
+                if (data.success) {
+                    showNotification("Votre compte a été supprimé avec succès", 'success');
+                    setTimeout(() => {
+                        logout();
+                        closeModal('delete-account-modal');
+                    }, 2000);
+                } else {
+                    throw new Error(data.message || "Erreur lors de la suppression du compte");
+                }
+            } catch (error) {
+                showNotification(error.message, 'error');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
         }
 
         function showNotification(message, type = 'info') {
-            // Créer une notification élégante
             const notification = document.createElement('div');
             notification.className = `fixed top-4 right-4 z-50 message message-${type} transform translate-x-full transition-transform duration-300`;
             notification.innerHTML = `
@@ -1935,12 +2280,10 @@
             
             document.body.appendChild(notification);
             
-            // Animation d'entrée
             setTimeout(() => {
                 notification.classList.remove('translate-x-full');
             }, 100);
             
-            // Suppression automatique après 5 secondes
             setTimeout(() => {
                 if (notification.parentElement) {
                     notification.classList.add('translate-x-full');
@@ -2034,7 +2377,6 @@
                 }
 
                 const heureFin = new Date().toISOString();
-                // Utilisation de FormData pour l'envoi des fichiers
                 const formData = new FormData();
                 formData.append("type", "envoyerFiche");
                 formData.append("missionId", currentMissionId);
@@ -2056,7 +2398,6 @@
                 }
 
                 try {
-                    // Pour l'envoi de fichiers, on utilise fetch avec POST
                     const res = await fetch(webAppUrl, {
                         method: "POST",
                         body: formData,
@@ -2078,6 +2419,46 @@
             document.getElementById("btnCancelQR").onclick = closeModalQR;
             document.getElementById("btnCancelForm").onclick = closeModalQR;
             document.getElementById("btnCloseSuccess").onclick = closeModalQR;
+
+            // Validation du formulaire de suppression
+            const confirmEmail = document.getElementById('confirm-email');
+            const confirmCheckbox = document.getElementById('confirm-delete');
+            const deleteButton = document.getElementById('delete-account-btn');
+
+            function validateDeleteForm() {
+                const emailMatch = confirmEmail.value === currentEmail;
+                const checkboxChecked = confirmCheckbox.checked;
+                
+                if (emailMatch && checkboxChecked) {
+                    deleteButton.disabled = false;
+                    deleteButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    deleteButton.disabled = true;
+                    deleteButton.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            }
+
+            if (confirmEmail) {
+                confirmEmail.addEventListener('input', validateDeleteForm);
+            }
+            if (confirmCheckbox) {
+                confirmCheckbox.addEventListener('change', validateDeleteForm);
+            }
+
+            // Validation des mots de passe
+            const passwordInput = document.getElementById('profile-password');
+            const passwordConfirmInput = document.getElementById('profile-password-confirm');
+
+            if (passwordInput) {
+                passwordInput.addEventListener('input', function() {
+                    checkPasswordStrength(this.value);
+                    checkPasswordMatch();
+                });
+            }
+
+            if (passwordConfirmInput) {
+                passwordConfirmInput.addEventListener('input', checkPasswordMatch);
+            }
         });
     </script>
 </body>
