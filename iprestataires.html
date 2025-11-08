@@ -582,6 +582,24 @@
             transform: translateY(-1px);
         }
 
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+
         .btn-danger {
             background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: white;
@@ -642,6 +660,11 @@
         .password-medium { background-color: #f59e0b; width: 50%; }
         .password-strong { background-color: #10b981; width: 75%; }
         .password-very-strong { background-color: #059669; width: 100%; }
+
+        .optional-field {
+            color: #6b7280;
+            font-style: italic;
+        }
 
         @media (max-width: 768px) {
             .table-wrapper {
@@ -902,7 +925,7 @@
                             <i class="fas fa-history mr-2"></i>
                             Missions terminées
                         </button>
-                        <button onclick="showProfileModal()" class="btn-elegant">
+                        <button onclick="showProfileModal()" class="btn-success">
                             <i class="fas fa-user-edit mr-2"></i>
                             Modifier profil
                         </button>
@@ -910,7 +933,7 @@
                             <i class="fas fa-trash-alt mr-2"></i>
                             Supprimer mon compte
                         </button>
-                        <button onclick="logout()" class="bg-red-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors">
+                        <button onclick="logout()" class="btn-danger">
                             <i class="fas fa-sign-out-alt mr-2"></i>
                             Déconnexion
                         </button>
@@ -1189,28 +1212,27 @@
                             <i class="fas fa-user-circle"></i>
                             Informations personnelles
                         </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="form-group">
-                                <label>Prénom</label>
-                                <div class="relative">
-                                    <input type="text" id="profile-firstname" class="form-input" required>
-                                    <i class="fas fa-user form-input-icon"></i>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Nom</label>
-                                <div class="relative">
-                                    <input type="text" id="profile-lastname" class="form-input" required>
-                                    <i class="fas fa-user form-input-icon"></i>
-                                </div>
+                        <div class="form-group">
+                            <label>Prénom <span class="optional-field">(optionnel)</span></label>
+                            <div class="relative">
+                                <input type="text" id="profile-firstname" class="form-input" placeholder="Votre prénom">
+                                <i class="fas fa-user form-input-icon"></i>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label>Email</label>
+                            <label>Email <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
-                                <input type="email" id="profile-email" class="form-input" required autocomplete="email">
+                                <input type="email" id="profile-email" class="form-input" placeholder="votre@email.com" autocomplete="email">
                                 <i class="fas fa-envelope form-input-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Téléphone <span class="optional-field">(optionnel)</span></label>
+                            <div class="relative">
+                                <input type="tel" id="profile-phone" class="form-input" placeholder="Votre numéro de téléphone">
+                                <i class="fas fa-phone form-input-icon"></i>
                             </div>
                         </div>
                     </div>
@@ -1222,7 +1244,7 @@
                             Modifier le mot de passe
                         </h3>
                         <div class="form-group">
-                            <label>Nouveau mot de passe</label>
+                            <label>Nouveau mot de passe <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
                                 <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer" autocomplete="new-password">
                                 <i class="fas fa-lock form-input-icon"></i>
@@ -1232,43 +1254,12 @@
                         </div>
                         
                         <div class="form-group">
-                            <label>Confirmer le nouveau mot de passe</label>
+                            <label>Confirmer le nouveau mot de passe <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
                                 <input type="password" id="profile-password-confirm" class="form-input" placeholder="Confirmer le nouveau mot de passe" autocomplete="new-password">
                                 <i class="fas fa-lock form-input-icon"></i>
                             </div>
                             <div id="password-match-message" class="mt-2 text-sm hidden"></div>
-                        </div>
-                    </div>
-
-                    <!-- Section coordonnées -->
-                    <div class="form-section">
-                        <h3 class="form-section-title">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Coordonnées
-                        </h3>
-                        <div class="form-group">
-                            <label>Adresse</label>
-                            <div class="relative">
-                                <input type="text" id="profile-address" class="form-input">
-                                <i class="fas fa-home form-input-icon"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Téléphone</label>
-                            <div class="relative">
-                                <input type="tel" id="profile-phone" class="form-input">
-                                <i class="fas fa-phone form-input-icon"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Photo (URL)</label>
-                            <div class="relative">
-                                <input type="url" id="profile-photo" class="form-input" placeholder="https://...">
-                                <i class="fas fa-camera form-input-icon"></i>
-                            </div>
                         </div>
                     </div>
 
@@ -1279,7 +1270,7 @@
                             Services proposés
                         </h3>
                         <div class="form-group">
-                            <label>Spécialité(s)</label>
+                            <label>Spécialité(s) <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
                                 <input type="text" id="profile-specialites" class="form-input" placeholder="Entretien ménager, Jardinage, etc.">
                                 <i class="fas fa-tags form-input-icon"></i>
@@ -1288,7 +1279,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label>Disponibilité</label>
+                            <label>Disponibilité <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
                                 <input type="text" id="profile-disponibilite" class="form-input" placeholder="Lundi-Vendredi: 9h-18h">
                                 <i class="fas fa-calendar-alt form-input-icon"></i>
@@ -1304,33 +1295,19 @@
                         </h3>
                         <div class="form-group">
                             <div class="relative">
-                                <textarea id="profile-commentaire" class="form-input" rows="3" placeholder="Informations complémentaires..."></textarea>
+                                <textarea id="profile-commentaire" class="form-input" rows="3" placeholder="Informations complémentaires... (optionnel)"></textarea>
                                 <i class="fas fa-edit form-input-icon" style="top: 1.5rem;"></i>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Champs RGPD et Validation (lecture seule) -->
-                    <div class="form-section">
-                        <h3 class="form-section-title">
-                            <i class="fas fa-shield-alt"></i>
-                            Informations système
-                        </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="form-group">
-                                <label>RGPD</label>
-                                <div class="relative">
-                                    <input type="text" id="profile-rgpd" class="form-input readonly-field" readonly>
-                                    <i class="fas fa-file-contract form-input-icon"></i>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Validation</label>
-                                <div class="relative">
-                                    <input type="text" id="profile-validation" class="form-input readonly-field" readonly>
-                                    <i class="fas fa-check-circle form-input-icon"></i>
-                                </div>
-                            </div>
+                    <!-- Note sur les champs optionnels -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-info-circle text-blue-500 mr-3"></i>
+                            <p class="text-blue-700 text-sm">
+                                <strong>Note :</strong> Tous les champs sont optionnels. Seuls les champs remplis seront mis à jour.
+                            </p>
                         </div>
                     </div>
                     
@@ -1339,9 +1316,9 @@
                             <i class="fas fa-times mr-2"></i>
                             Annuler
                         </button>
-                        <button type="submit" class="btn-elegant" id="profile-submit-btn">
+                        <button type="submit" class="btn-success" id="profile-submit-btn">
                             <i class="fas fa-save mr-2"></i>
-                            Enregistrer
+                            Enregistrer les modifications
                         </button>
                     </div>
                 </form>
@@ -2059,50 +2036,53 @@
 
         function populateProfileForm(prestataire) {
             document.getElementById('profile-firstname').value = prestataire.prénom || '';
-            document.getElementById('profile-lastname').value = prestataire.nom || '';
             document.getElementById('profile-email').value = prestataire.email || '';
-            document.getElementById('profile-address').value = prestataire.adresse || '';
             document.getElementById('profile-phone').value = prestataire.téléphone || '';
-            document.getElementById('profile-photo').value = prestataire.photo || '';
             document.getElementById('profile-specialites').value = prestataire['spécialité(s)'] || prestataire.spécialité || '';
             document.getElementById('profile-disponibilite').value = prestataire.disponibilité || '';
             document.getElementById('profile-commentaire').value = prestataire.commentaire || '';
-            
-            document.getElementById('profile-rgpd').value = prestataire.rgpd || 'Non modifiable';
-            document.getElementById('profile-validation').value = prestataire.validation || 'Non modifiable';
-            
-            if (prestataire.photo) {
-                document.getElementById('prestataire-photo').src = prestataire.photo;
-            }
         }
 
         async function saveProfile() {
             const password = document.getElementById('profile-password').value;
             const passwordConfirm = document.getElementById('profile-password-confirm').value;
 
-            // Validation du mot de passe
-            if (password && password !== passwordConfirm) {
-                showNotification("Les mots de passe ne correspondent pas", 'error');
-                return;
-            }
+            // Validation du mot de passe seulement si rempli
+            if (password) {
+                if (password !== passwordConfirm) {
+                    showNotification("Les mots de passe ne correspondent pas", 'error');
+                    return;
+                }
 
-            if (password && !validatePasswordStrength(password)) {
-                showNotification("Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule et chiffre", 'error');
-                return;
+                if (!validatePasswordStrength(password)) {
+                    showNotification("Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule et chiffre", 'error');
+                    return;
+                }
             }
 
             const formData = {
                 email: currentEmail,
                 prénom: document.getElementById('profile-firstname').value,
-                nom: document.getElementById('profile-lastname').value,
-                adresse: document.getElementById('profile-address').value,
                 téléphone: document.getElementById('profile-phone').value,
-                photo: document.getElementById('profile-photo').value,
+                email: document.getElementById('profile-email').value,
                 spécialité: document.getElementById('profile-specialites').value,
                 disponibilité: document.getElementById('profile-disponibilite').value,
                 commentaire: document.getElementById('profile-commentaire').value,
                 password: password || null
             };
+
+            // Filtrer les champs vides
+            Object.keys(formData).forEach(key => {
+                if (formData[key] === '' || formData[key] === null) {
+                    delete formData[key];
+                }
+            });
+
+            // Vérifier qu'au moins un champ est rempli
+            if (Object.keys(formData).length <= 1) { // Seulement l'email est présent
+                showNotification("Veuillez remplir au moins un champ à modifier", 'error');
+                return;
+            }
 
             document.getElementById('loader').style.display = 'flex';
 
@@ -2111,7 +2091,7 @@
                 let url = `${webAppUrl}?type=updatePrestataireProfile`;
                 
                 Object.keys(formData).forEach(key => {
-                    if (formData[key] !== null) {
+                    if (formData[key] !== null && formData[key] !== undefined) {
                         url += `&${key}=${encodeURIComponent(formData[key])}`;
                     }
                 });
