@@ -1,510 +1,164 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Viiveo — Plateforme solidaire pour le maintien à domicile</title>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;600;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-
-  <meta name="description" content="Viiveo — Plateforme solidaire pour faciliter la vie à domicile. Rejoignez la phase bêta en tant que client ou prestataire." />
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Viiveo — Phase pilote solidaire</title>
   <style>
-    :root{
-      --pink:#EDA9D0;
-      --deep:#0E2B53;
-      --white:#ffffff;
-      --muted:#f6f7fb;
-      --radius:14px;
-      --glass: rgba(255,255,255,0.65);
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background-color: #faf5ef;
+      color: #0e2b53;
+      line-height: 1.6;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: "Poppins", "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      color:var(--deep);
-      background: linear-gradient(180deg, #ffffff 0%, #fbfbfe 100%);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
+    header {
+      background: linear-gradient(to right, #90c695, #b6d9a8);
+      text-align: center;
+      padding: 4rem 1rem;
+      color: white;
     }
-    a{color:inherit;text-decoration:none}
-    header{
-      position:sticky; top:0; z-index:60;
-      backdrop-filter: blur(6px);
-      background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.4));
-      border-bottom: 1px solid rgba(14,43,83,0.06);
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 26px;
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
     }
-    .logo{font-weight:800; color:var(--deep); display:flex; align-items:center; gap:10px; font-size:18px}
-    .logo .leaf{font-size:20px}
-    nav{display:flex; gap:18px; align-items:center}
-    nav a{font-weight:600; color:var(--deep); opacity:0.9}
-    .btn-cta{
-      background:linear-gradient(90deg,var(--pink), #e88fbf);
-      color:#fff; border:none; padding:10px 16px; border-radius:10px; font-weight:700; cursor:pointer;
-      box-shadow:0 8px 20px rgba(237,169,208,0.12);
+    header p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto;
     }
-    .container{max-width:1100px;margin:0 auto;padding:0 20px}
-
-    /* HERO */
-    .hero{
-      display:flex; gap:40px; align-items:center; padding:64px 0 48px;
+    section {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
     }
-    .hero-left{flex:1; max-width:640px}
-    .eyebrow{display:inline-block;background:var(--muted); color:var(--deep); padding:6px 10px;border-radius:999px;font-weight:700;margin-bottom:18px}
-    h1{font-size:36px; margin:0 0 12px; line-height:1.05; color:var(--deep)}
-    p.lead{font-size:18px; margin:0 0 22px; color:rgba(14,43,83,0.85)}
-    .hero-ctas{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
-    .ghost{background:transparent;border:2px solid rgba(14,43,83,0.08); padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer}
-
-    .hero-right{flex:1; display:flex; justify-content:center}
-    .hero-card{
-      width:100%; max-width:420px; border-radius:20px; overflow:hidden;
-      box-shadow: 0 20px 50px rgba(14,43,83,0.08);
-      background: linear-gradient(180deg, #fff, #fff);
-      transform: translateY(0);
+    h2 {
+      color: #0e2b53;
+      text-align: center;
+      margin-bottom: 1rem;
     }
-    .hero-image{width:100%; height:320px; object-fit:cover; display:block}
-
-    /* How it works */
-    .section{padding:48px 0}
-    .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:22px}
-    .step{background:#fff; border-radius:16px; padding:22px; text-align:left; box-shadow: 0 10px 30px rgba(14,43,83,0.03)}
-    .step h3{margin:0 0 8px; font-size:18px}
-    .step p{margin:0; color:rgba(14,43,83,0.75); font-size:14px}
-
-    /* Split client / prestataire */
-    .split{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:18px}
-    .card{
-      border-radius:14px; padding:20px; background:linear-gradient(180deg, var(--pink), #fdd6e6);
-      color:#0e2136; box-shadow: 0 12px 30px rgba(237,169,208,0.12);
+    p {
+      text-align: justify;
     }
-    .card .title{font-weight:800; font-size:18px; margin-bottom:10px}
-    .card ul{padding-left:18px; margin:0; color:rgba(14,43,83,0.9)}
-    .card button{margin-top:14px}
-
-    /* Values */
-    .values{display:flex; gap:18px; justify-content:space-between; margin-top:18px}
-    .value{flex:1; background:var(--white); padding:20px;border-radius:14px;text-align:center; box-shadow: 0 8px 24px rgba(14,43,83,0.04)}
-    .value h4{margin:8px 0}
-
-    /* Beta section */
-    .beta{
-      margin-top:20px;
-      padding:26px; border-radius:16px;
-      background: linear-gradient(180deg, rgba(237,169,208,0.06), rgba(14,43,83,0.02));
-      display:flex; gap:18px; align-items:stretch; justify-content:space-between;
-      flex-wrap:wrap;
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
     }
-    .beta-card{flex:1; min-width:260px; border-radius:14px; padding:18px; background:linear-gradient(180deg,#fff, #fff); box-shadow:0 8px 30px rgba(14,43,83,0.04)}
-    .beta-card h3{margin:0 0 8px}
-    .advantages{list-style:none;padding:0;margin:0}
-    .advantages li{display:flex; gap:10px; align-items:flex-start; margin:8px 0; color:rgba(14,43,83,0.8)}
-    .adv-icon{width:30px; height:30px; border-radius:8px; display:inline-grid; place-items:center; font-weight:800; background:var(--pink); color:#fff}
-
-    /* Feedback form */
-    .feedback{display:flex; gap:18px; margin-top:18px; align-items:flex-start; flex-wrap:wrap}
-    .feedback form{flex:1; min-width:280px; background:#fff; padding:16px; border-radius:12px; box-shadow: 0 8px 24px rgba(14,43,83,0.03)}
-    .field{display:flex; flex-direction:column; gap:8px; margin-bottom:12px}
-    input[type="text"], input[type="email"], textarea, select{
-      padding:10px 12px; border-radius:10px; border:1px solid rgba(14,43,83,0.08); font-size:14px;
+    .cta-buttons a {
+      background: #0e2b53;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s;
     }
-    textarea{min-height:120px; resize:vertical}
-
-    /* Counter */
-    .counter{display:flex; gap:14px; align-items:center; padding:10px 14px; border-radius:12px; background:linear-gradient(90deg,var(--pink), #fbd0e8); color:#0e2136; font-weight:700}
-
-    /* Footer */
-    footer{padding:28px 0; margin-top:28px; border-top:1px solid rgba(14,43,83,0.04); background:transparent}
-    .footer-inner{display:flex; justify-content:space-between; gap:20px; align-items:center; flex-wrap:wrap}
-    .social a{margin-right:8px; font-weight:700; color:var(--deep)}
-
-    /* Modal */
-    .modal-backdrop{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(2,6,23,0.5); z-index:120}
-    .modal{width:calc(100% - 40px); max-width:720px; background:#fff; padding:18px; border-radius:12px; box-shadow:0 30px 80px rgba(2,6,23,0.4)}
-    .modal h2{margin:0 0 8px}
-    .modal .close{position:absolute; top:14px; right:18px; background:transparent;border:none;font-size:18px;cursor:pointer}
-
-    /* Responsive */
-    @media (max-width:900px){
-      .steps{grid-template-columns:repeat(1,1fr)}
-      .split{grid-template-columns:1fr}
-      .hero{flex-direction:column; text-align:center}
-      .hero-right{order:-1}
-      header{padding:12px 18px}
-      h1{font-size:28px}
+    .cta-buttons a:hover {
+      background: #193f7a;
+    }
+    .form-section {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input, select, textarea {
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    button {
+      background: #90c695;
+      color: #0e2b53;
+      font-weight: bold;
+      border: none;
+      padding: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #7bb883;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      background-color: #0e2b53;
+      color: white;
+      margin-top: 3rem;
     }
   </style>
 </head>
-
 <body>
-  <!-- HEADER -->
-  <header>
-    <div class="container" style="display:flex;align-items:center;gap:20px;justify-content:space-between">
-      <div style="display:flex;align-items:center;gap:14px">
-        <div class="logo"><span class="leaf">🌿</span> Viiveo</div>
-      </div>
 
-      <nav aria-label="Navigation principale">
-        <a href="#decouvrir">Découvrir</a>
-        <a href="#fonctionnement">Comment ça marche</a>
-        <a href="#beta">Phase Bêta</a>
-        <a href="#contact">Contact</a>
-        <button class="btn-cta" id="openBetaBtn">Devenir bêta-testeur</button>
-      </nav>
+  <header>
+    <h1>🌿 Viiveo — Tisser des liens, partager du temps</h1>
+    <p>
+      Viiveo est une initiative solidaire qui relie des bénévoles et des personnes âgées souhaitant partager un moment de compagnie, une promenade ou une simple conversation.
+    </p>
+    <div class="cta-buttons">
+      <a href="#formulaire">Je veux être bénévole 💚</a>
+      <a href="#formulaire">Je souhaite recevoir de la visite 🌞</a>
     </div>
   </header>
 
-  <!-- HERO -->
-  <main class="container">
-    <section class="hero" id="decouvrir">
-      <div class="hero-left">
-        <div class="eyebrow">Nouveau • Phase Bêta</div>
-        <h1>Viiveo — Une plateforme solidaire pour faciliter la vie à domicile</h1>
-        <p class="lead">Développée à Belleuil, pensée pour toute la Belgique. Mettez en relation des particuliers et des prestataires de confiance pour des services à domicile simples, locaux et solidaires.</p>
+  <section>
+    <h2>À propos du projet Viiveo</h2>
+    <p>
+      Viiveo est une plateforme humaine et solidaire, née d’une idée simple : permettre à chacun — qu’il soit âgé, isolé ou simplement en recherche de compagnie — de trouver facilement une présence bienveillante à domicile.
+    </p>
+    <p>
+      Le projet vise à créer un réseau de confiance reliant des bénévoles, des familles et des personnes âgées, afin de renforcer le lien social localement. 
+    </p>
+  </section>
 
-        <div class="hero-ctas">
-          <button class="btn-cta" onclick="document.getElementById('beta').scrollIntoView({behavior:'smooth'})">Je rejoins la bêta</button>
-          <button class="ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact / Infos</button>
+  <section>
+    <h2>Phase actuelle : test communautaire</h2>
+    <p>
+      Nous lançons une première phase de test en Belgique afin de valider le fonctionnement humain et local de Viiveo. 
+      Dans cette étape, nous recherchons :
+    </p>
+    <ul>
+      <li><strong>🩷 Des bénévoles :</strong> prêtes à offrir un peu de leur temps pour une visite, une promenade ou une conversation.</li>
+      <li><strong>💛 Des personnes âgées :</strong> souhaitant recevoir de la compagnie ou un moment de partage.</li>
+    </ul>
+    <p>
+      Cette phase est gratuite et sans engagement. Vous participez simplement à une aventure humaine et locale.
+    </p>
+  </section>
 
-          <div style="margin-left:8px" class="counter" title="Nombre de bêta-testeurs inscrits">
-            <span id="counterNumber">128</span> inscrits
-          </div>
-        </div>
+  <section class="form-section" id="formulaire">
+    <h2>Rejoignez la communauté Viiveo 💬</h2>
+    <form action="https://YOUR_GOOGLE_APPS_SCRIPT_URL_HERE" method="POST">
+      <input type="text" name="Nom" placeholder="Nom et prénom" required />
+      <input type="email" name="Email" placeholder="Adresse e-mail" required />
+      <input type="text" name="Téléphone" placeholder="Téléphone (facultatif)" />
+      <input type="text" name="Commune" placeholder="Commune / Localité" required />
+      <select name="Rôle" required>
+        <option value="">Je souhaite...</option>
+        <option value="Bénévole">Offrir un peu de mon temps comme bénévole</option>
+        <option value="Visite">Recevoir de la compagnie</option>
+      </select>
+      <textarea name="Message" rows="4" placeholder="Message (facultatif)"></textarea>
+      <button type="submit">Envoyer ma demande 🌿</button>
+    </form>
+  </section>
 
-        <!-- quick summary -->
-        <div style="margin-top:20px; font-size:14px; color:rgba(14,43,83,0.75)">
-          <strong>Modèle :</strong> abonnement client <strong>10 €/mois</strong> — prestataires sans commission — Viiveo = tiers de confiance.
-        </div>
-      </div>
+  <footer>
+    <p>Viiveo — Initiative solidaire pour le lien humain</p>
+    <p>📧 contact@anza.be</p>
+  </footer>
 
-      <div class="hero-right">
-        <article class="hero-card" aria-hidden="true">
-          <!-- Suggested image: "Senior and caregiver smiling at home" -->
-          <img class="hero-image" src="https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=1350&q=80" alt="Scène chaleureuse : aide à domicile et sourire">
-        </article>
-      </div>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section id="fonctionnement" class="section">
-      <div class="container">
-        <h2 style="text-align:center">Comment ça marche — Côté client & côté prestataire</h2>
-        <p style="text-align:center; color:rgba(14,43,83,0.75)">Simple en 4 étapes : inscrire → choisir → réaliser → valider. Viiveo vérifie les profils et gère la validation de facturation.</p>
-
-        <div class="steps" role="list" aria-label="Étapes">
-          <div class="step" role="listitem">
-            <h3>1 — Inscription</h3>
-            <p>Créez un compte en quelques clics. Le prestataire complète son profil et fournit ses justificatifs pour vérification.</p>
-          </div>
-          <div class="step" role="listitem">
-            <h3>2 — Choix & réservation</h3>
-            <p>Consultez les profils, disponibilités et avis. Réservez la date et l’heure qui vous conviennent.</p>
-          </div>
-          <div class="step" role="listitem">
-            <h3>3 — Prestation</h3>
-            <p>Le prestataire réalise la mission. Viiveo suit le bon déroulement et reste disponible en support.</p>
-          </div>
-        </div>
-
-        <div class="split" style="margin-top:22px">
-          <div class="card" aria-labelledby="client-title">
-            <div class="title" id="client-title">Côté client</div>
-            <p style="margin:0 0 8px">Abonnement 10 €/mois = accès à tous les prestataires vérifiés dans votre région.</p>
-            <ul>
-              <li>Accès aux profils et disponibilités</li>
-              <li>Réservation simple et sécurisée</li>
-              <li>Validation de satisfaction → autorisation de la facturation</li>
-            </ul>
-            <button class="btn-cta" style="margin-top:14px" onclick="openModal('client')">Je veux tester en tant que client</button>
-          </div>
-
-          <div class="card" aria-labelledby="presta-title" style="background:linear-gradient(180deg,#fff,#f7fbff)">
-            <div class="title" id="presta-title">Côté prestataire</div>
-            <p style="margin:0 0 8px">Inscription gratuite — Viiveo vérifie vos références avant publication.</p>
-            <ul style="color:rgba(14,43,83,0.9)">
-              <li>Recevez des notifications de mission</li>
-              <li>Acceptez/refusez en un clic</li>
-              <li>Facturation autorisée après validation client</li>
-            </ul>
-            <button class="btn-cta" style="margin-top:14px; background:linear-gradient(90deg,#0e2b53,#234b6f)" onclick="openModal('presta')">Je veux tester comme prestataire</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TIER OF TRUST -->
-    <section class="section" aria-labelledby="trust-title">
-      <div class="container">
-        <h2 id="trust-title" style="text-align:center">Viiveo — votre tiers de confiance</h2>
-        <p style="text-align:center; color:rgba(14,43,83,0.75)">Nous validons les profils, assurons le suivi des missions et n'autorisons la facturation que lorsque le client confirme sa satisfaction.</p>
-
-        <div style="display:flex; gap:18px; align-items:center; margin-top:18px; justify-content:center; flex-wrap:wrap">
-          <div style="max-width:520px; text-align:left; padding:18px; border-radius:12px; background:linear-gradient(90deg,var(--muted),#fff); box-shadow:0 12px 30px rgba(14,43,83,0.03)">
-            <strong>Pourquoi ce rôle ?</strong>
-            <p style="margin:8px 0 0;color:rgba(14,43,83,0.85)">Pour protéger l'usager et le prestataire : confiance, transparence et qualité des services. Nous agissons comme médiateur en cas de litige.</p>
-          </div>
-          <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=900&q=80" alt="Poignée de main / confiance" style="width:140px; height:100px; object-fit:cover; border-radius:10px; box-shadow:0 8px 20px rgba(14,43,83,0.05)">
-        </div>
-      </div>
-    </section>
-
-    <!-- BETA -->
-    <section id="beta" class="section">
-      <div class="container">
-        <h2 style="text-align:center">Phase Bêta — Rejoignez l’aventure 🌿</h2>
-        <p style="text-align:center; color:rgba(14,43,83,0.75)">Participez aux tests, influencez les fonctionnalités et bénéficiez d'avantages exclusifs pendant la phase de lancement.</p>
-
-        <div class="beta" role="region" aria-label="Phase bêta">
-          <div class="beta-card">
-            <h3>Je suis client</h3>
-            <p style="margin:6px 0 12px; color:rgba(14,43,83,0.85)">Testez la plateforme en avant-première et aidez-nous à améliorer l'expérience.</p>
-            <ul class="advantages">
-              <li><span class="adv-icon">✓</span> Accès gratuit pendant la phase de test</li>
-              <li><span class="adv-icon">★</span> Priorité sur les nouvelles fonctionnalités</li>
-              <li><span class="adv-icon">💬</span> Pouvoir donner son avis et influencer le produit</li>
-              <li><span class="adv-icon">⏳</span> Offre : 1er mois d'abonnement gratuit au lancement</li>
-            </ul>
-            <div style="margin-top:12px">
-              <button class="btn-cta" onclick="openModal('client')">Je deviens bêta-testeur client</button>
-            </div>
-          </div>
-
-          <div class="beta-card">
-            <h3>Je suis prestataire</h3>
-            <p style="margin:6px 0 12px; color:rgba(14,43,83,0.85)">Rejoignez notre vitrine locale, bénéficiez d'un accompagnement et d'une visibilité gratuite pendant la bêta.</p>
-            <ul class="advantages">
-              <li><span class="adv-icon">🚀</span> Visibilité gratuite pendant la phase test</li>
-              <li><span class="adv-icon">🤝</span> Accompagnement personnalisé par l'équipe Viiveo</li>
-              <li><span class="adv-icon">🏷️</span> Mention "Bêta-partenaire" sur votre profil</li>
-              <li><span class="adv-icon">📈</span> Feedback direct pour améliorer vos fiches</li>
-            </ul>
-            <div style="margin-top:12px">
-              <button class="btn-cta" style="background:linear-gradient(90deg,#0e2b53,#2a5c86)" onclick="openModal('presta')">Je deviens bêta-testeur prestataire</button>
-            </div>
-          </div>
-
-          <div class="beta-card" aria-hidden="true" style="display:flex;flex-direction:column;justify-content:space-between">
-            <div>
-              <h3 style="margin-bottom:6px">Vos idées comptent</h3>
-              <p style="color:rgba(14,43,83,0.8)">Partagez vos pistes d'amélioration et suggestions : nous intégrons directement vos retours.</p>
-            </div>
-
-            <div style="margin-top:12px">
-              <button class="ghost" onclick="document.getElementById('feedback').scrollIntoView({behavior:'smooth'})">Partager une idée</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- OPTIONAL: show sample images -->
-        <div style="display:flex; gap:12px; margin-top:18px; justify-content:center; flex-wrap:wrap">
-          <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80" alt="Collaborateurs" style="width:220px;height:140px;object-fit:cover;border-radius:12px;box-shadow:0 8px 20px rgba(14,43,83,0.04)">
-          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80" alt="Intergenerational help" style="width:220px;height:140px;object-fit:cover;border-radius:12px;box-shadow:0 8px 20px rgba(14,43,83,0.04)">
-          <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80" alt="Using a tablet" style="width:220px;height:140px;object-fit:cover;border-radius:12px;box-shadow:0 8px 20px rgba(14,43,83,0.04)">
-        </div>
-
-      </div>
-    </section>
-
-    <!-- FEEDBACK -->
-    <section class="section" id="feedback">
-      <div class="container">
-        <h2 style="text-align:center">Vos idées / Suggestions</h2>
-        <p style="text-align:center; color:rgba(14,43,83,0.75)">Dites-nous ce qui vous plairait et ce qu'on peut améliorer — chaque suggestion compte.</p>
-
-        <div class="feedback">
-          <form id="feedbackForm" onsubmit="submitFeedback(event)" aria-label="Formulaire de suggestions">
-            <div class="field">
-              <label for="name">Nom</label>
-              <input id="name" name="name" type="text" placeholder="Ex : Marie" required>
-            </div>
-            <div class="field">
-              <label for="email">E-mail</label>
-              <input id="email" name="email" type="email" placeholder="exemple@email.com" required>
-            </div>
-            <div class="field">
-              <label for="role">Je suis</label>
-              <select id="role" name="role" required>
-                <option value="client">Client / futur utilisateur</option>
-                <option value="presta">Prestataire</option>
-                <option value="autre">Autre / Curieux</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="message">Votre idée / suggestion</label>
-              <textarea id="message" name="message" placeholder="Ex : une fonction X, un mode de facturation Y..." required></textarea>
-            </div>
-            <div style="display:flex; gap:10px; align-items:center">
-              <button type="submit" class="btn-cta">Partager mon idée 🌱</button>
-              <div id="feedbackStatus" style="color:var(--deep); font-weight:700"></div>
-            </div>
-          </form>
-
-          <aside style="min-width:240px; padding:16px; background:linear-gradient(180deg,#fff,#fff); border-radius:12px; box-shadow:0 8px 20px rgba(14,43,83,0.03)">
-            <h4 style="margin:0 0 8px">Pourquoi vos retours ?</h4>
-            <p style="margin:0; color:rgba(14,43,83,0.75)">Vos retours nous aident à prioriser les améliorations et à construire une expérience simple, utile et juste pour tous.</p>
-
-            <div style="margin-top:12px">
-              <strong>Contact :</strong>
-              <div><a href="mailto:contact@anza.be">contact@anza.be</a></div>
-            </div>
-          </aside>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- VALUES -->
-    <section class="section" aria-labelledby="values-title">
-      <div class="container">
-        <h2 id="values-title" style="text-align:center">Nos valeurs</h2>
-        <p style="text-align:center; color:rgba(14,43,83,0.75)">Humaine • Locale • Solidaire</p>
-
-        <div class="values" style="margin-top:18px">
-          <div class="value">
-            <div style="font-size:28px">🤝</div>
-            <h4>Humaine</h4>
-            <p style="color:rgba(14,43,83,0.8)">Mettre l'humain au cœur des services.</p>
-          </div>
-          <div class="value">
-            <div style="font-size:28px">🏡</div>
-            <h4>Locale</h4>
-            <p style="color:rgba(14,43,83,0.8)">Favoriser les prestataires locaux et la proximité.</p>
-          </div>
-          <div class="value">
-            <div style="font-size:28px">💚</div>
-            <h4>Solidaire</h4>
-            <p style="color:rgba(14,43,83,0.8)">Construire une économie plus équitable et durable.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT & FOOTER -->
-    <section id="contact" class="section">
-      <div class="container">
-        <h2 style="text-align:center">Contact</h2>
-        <p style="text-align:center; color:rgba(14,43,83,0.75)">Pour toute question ou partenariat : <a href="mailto:contact@anza.be">contact@anza.be</a></p>
-      </div>
-    </section>
-
-    <footer>
-      <div class="container footer-inner">
-        <div>© 2025 Viiveo by Anza — Ensemble, faisons du domicile un lieu de vie</div>
-        <div class="social">
-          <a href="#" aria-label="Facebook">Facebook</a> •
-          <a href="#" aria-label="LinkedIn">LinkedIn</a>
-        </div>
-      </div>
-    </footer>
-  </main>
-
-  <!-- MODAL BACKDROP for forms -->
-  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-hidden="true">
-    <div class="modal" role="document" aria-modal="true">
-      <button class="close" aria-label="Fermer" onclick="closeModal()">✕</button>
-      <div id="modalContent">
-        <!-- dynamic content injected by JS -->
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Simple JS to handle modals, fake counter, feedback submission
-    const modalBackdrop = document.getElementById('modalBackdrop');
-    const modalContent = document.getElementById('modalContent');
-    const counterNumber = document.getElementById('counterNumber');
-
-    // initial fake count (you can replace with real value via API)
-    let count = parseInt(counterNumber.textContent || '128', 10);
-
-    // Expose openBetaBtn
-    document.getElementById('openBetaBtn').addEventListener('click', ()=> {
-      document.getElementById('beta').scrollIntoView({behavior:'smooth'});
-      openModal('choose');
-    });
-
-    function openModal(type){
-      // type: 'client' | 'presta' | 'choose'
-      modalBackdrop.style.display = 'flex';
-      modalBackdrop.setAttribute('aria-hidden','false');
-
-      if(type === 'client'){
-        modalContent.innerHTML = `
-          <h2>Inscription bêta - Client</h2>
-          <p>Remplissez ce formulaire pour participer en tant que client testeur. Votre inscription vous donne accès gratuit à la phase de test.</p>
-          <!-- Replace with your Tally or Google Form embed link -->
-          <iframe src="https://tally.so/embed/REPLACE_WITH_YOUR_FORM_CLIENT" style="width:100%;height:520px;border:0;border-radius:10px"></iframe>
-        `;
-      } else if(type === 'presta'){
-        modalContent.innerHTML = `
-          <h2>Inscription bêta - Prestataire</h2>
-          <p>Remplissez ce formulaire pour rejoindre la communauté de prestataires testeurs.</p>
-          <iframe src="https://tally.so/embed/REPLACE_WITH_YOUR_FORM_PRESTATAIRE" style="width:100%;height:520px;border:0;border-radius:10px"></iframe>
-        `;
-      } else {
-        // choose modal
-        modalContent.innerHTML = `
-          <h2>Devenir bêta-testeur</h2>
-          <p>Choisissez votre rôle :</p>
-          <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap">
-            <button class="btn-cta" onclick="openModal('client')">Bêta-testeur client</button>
-            <button class="btn-cta" style="background:linear-gradient(90deg,#0e2b53,#2a5c86)" onclick="openModal('presta')">Bêta-testeur prestataire</button>
-          </div>
-          <p style="margin-top:12px; color:rgba(14,43,83,0.85)">Vous pouvez aussi <a href='#feedback' onclick='closeModal();setTimeout(()=>document.getElementById(\"feedback\").scrollIntoView({behavior:\"smooth\"}),200)'>partager une idée</a>.</p>
-        `;
-      }
-    }
-
-    function closeModal(){
-      modalBackdrop.style.display = 'none';
-      modalBackdrop.setAttribute('aria-hidden','true');
-      modalContent.innerHTML = '';
-    }
-
-    // Close modal on backdrop click (but not when clicking inside modal)
-    modalBackdrop.addEventListener('click', (e) => {
-      if(e.target === modalBackdrop) closeModal();
-    });
-
-    // Fake counter increment every 6s (for animation demo)
-    setInterval(()=> {
-      count += Math.floor(Math.random()*3); // 0..2
-      counterNumber.textContent = count;
-    }, 6000);
-
-    // Handle feedback form (example: send to Google Sheet via webhook or show success)
-    function submitFeedback(e){
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const role = document.getElementById('role').value;
-      const message = document.getElementById('message').value.trim();
-
-      // For now, emulate success. Replace this with an actual fetch POST to your endpoint (Google Apps Script / Integromat / Zapier)
-      const status = document.getElementById('feedbackStatus');
-      status.textContent = 'Envoi…';
-
-      // simple validation
-      if(!name || !email || !message){ status.textContent = 'Merci de compléter tous les champs.'; return; }
-
-      // Simulate async send
-      setTimeout(()=>{
-        status.textContent = 'Merci ! Votre suggestion a bien été reçue 🌿';
-        document.getElementById('feedbackForm').reset();
-
-        // Optionally increment count for demonstration: +1
-        count += 1;
-        counterNumber.textContent = count;
-      }, 900);
-    }
-
-    // Accessibility: trap focus in modal? (simple)
-    document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape' && modalBackdrop.style.display === 'flex'){ closeModal(); }
-    });
-  </script>
 </body>
 </html>
