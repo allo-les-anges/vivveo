@@ -1766,10 +1766,20 @@ if (!currentClient.demandes || currentClient.demandes.length === 0) {
         }
 
 function showProfileModal() {
-    if (!currentClient) return;
+    console.log('🔍 showProfileModal CALLED');
+    
+    if (!currentClient) {
+        console.error('❌ currentClient is null or undefined');
+        return;
+    }
+    
+    console.log('🔍 currentClient:', currentClient);
+    console.log('🔍 client data:', currentClient.client);
     
     // Pré-remplir le formulaire avec les données actuelles
     const client = currentClient.client;
+    
+    // Remplir les champs avec vérification
     document.getElementById('profile-firstname').value = client.prenom || '';
     document.getElementById('profile-lastname').value = client.nom || '';
     document.getElementById('profile-email').value = client.email || '';
@@ -1786,33 +1796,16 @@ function showProfileModal() {
     document.getElementById('profile-tutor-postal').value = client.codePostalTuteur || '';
     document.getElementById('profile-tutor-phone').value = client.telephoneTuteur || '';
     
-    document.getElementById('profile-modal').style.display = 'block';
+    // Afficher la modale
+    const modal = document.getElementById('profile-modal');
+    console.log('🔍 Modal element:', modal);
+    if (modal) {
+        modal.style.display = 'block';
+        console.log('✅ Modal displayed successfully');
+    } else {
+        console.error('❌ Modal element not found');
+    }
 }
-        
-        function showProfileModal() {
-            if (!currentClient) return;
-            
-            // Pré-remplir le formulaire avec les données actuelles
-            const client = currentClient.client;
-            document.getElementById('profile-firstname').value = client.prenom || '';
-            document.getElementById('profile-lastname').value = client.nom || '';
-            document.getElementById('profile-email').value = client.email || '';
-            document.getElementById('profile-address').value = client.adresse || '';
-            document.getElementById('profile-city').value = client.ville || '';
-            document.getElementById('profile-postal').value = client.codePostal || '';
-            document.getElementById('profile-phone').value = client.telephone || '';
-            
-            // Données du tuteur
-            document.getElementById('profile-tutor-firstname').value = client.prenomTuteur || '';
-            document.getElementById('profile-tutor-lastname').value = client.nomTuteur || '';
-            document.getElementById('profile-tutor-address').value = client.adresseTuteur || '';
-            document.getElementById('profile-tutor-city').value = client.villeTuteur || '';
-            document.getElementById('profile-tutor-postal').value = client.codePostalTuteur || '';
-            document.getElementById('profile-tutor-phone').value = client.telephoneTuteur || '';
-            
-            document.getElementById('profile-modal').style.display = 'block';
-        }
-
         async function saveProfile() {
             // Implémentation de la sauvegarde du profil
             showNotification(translations[currentLanguage].profile_updated, 'success');
