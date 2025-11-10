@@ -1851,6 +1851,7 @@ function showProfileModal() {
         });
         
         const data = await response.json();
+        console.log('🔍 Réponse serveur DÉTAILLÉE:', JSON.stringify(data, null, 2)); // ← AJOUTEZ CETTE LIGNE
         console.log('🔍 Réponse serveur:', data);
         
         if (data.success) {
