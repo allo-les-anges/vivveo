@@ -1812,7 +1812,7 @@ function showProfileModal() {
     // Récupérer les valeurs du formulaire
     const formData = {
         type: 'updateClientProfile',
-        clientId: currentClient.client.id,
+        email: currentClient.client.email, // Utiliser l'email comme identifiant
         prenom: document.getElementById('profile-firstname').value,
         nom: document.getElementById('profile-lastname').value,
         email: document.getElementById('profile-email').value,
@@ -1826,7 +1826,7 @@ function showProfileModal() {
         villeTuteur: document.getElementById('profile-tutor-city').value,
         codePostalTuteur: document.getElementById('profile-tutor-postal').value,
         telephoneTuteur: document.getElementById('profile-tutor-phone').value,
-        password: document.getElementById('profile-password').value || null
+        password: document.getElementById('profile-password').value || ''
     };
     
     console.log('🔍 Données à envoyer:', formData);
@@ -1878,7 +1878,6 @@ function showProfileModal() {
         document.getElementById('loader').style.display = 'none';
     }
 }
-
         function rechargerCredits() {
             alert(translations[currentLanguage].payment_redirect);
         }
