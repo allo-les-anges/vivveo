@@ -1809,13 +1809,14 @@ function showProfileModal() {
         async function saveProfile() {
     console.log('🔍 saveProfile CALLED');
     
-    // Récupérer les valeurs du formulaire - CORRECTION DES NOMS DE PARAMÈTRES
+    // Récupérer les valeurs du formulaire - CORRECTION DU CONFLIT DE PARAMÈTRES
     const formData = {
         type: 'updateClientProfile',
         email: currentClient.client.email, // Email original pour la recherche
         prenom: document.getElementById('profile-firstname').value,
         nom: document.getElementById('profile-lastname').value,
-        email: document.getElementById('profile-email').value, // ← CORRECTION : utiliser 'email' au lieu de 'newEmail'
+        // ⚠️ CORRECTION : Supprimer le deuxième 'email' et utiliser un nom différent pour le nouvel email
+        newEmail: document.getElementById('profile-email').value, // Nouvel email
         adresse: document.getElementById('profile-address').value,
         ville: document.getElementById('profile-city').value,
         codePostal: document.getElementById('profile-postal').value,
@@ -1831,8 +1832,8 @@ function showProfileModal() {
     
     console.log('🔍 Données à envoyer:', formData);
     
-    // Validation basique
-    if (!formData.prenom || !formData.nom || !formData.email) {
+    // Validation basique - CORRECTION : utiliser newEmail
+    if (!formData.prenom || !formData.nom || !formData.newEmail) {
         showNotification(translations[currentLanguage].fill_fields, 'error');
         return;
     }
@@ -1841,6 +1842,7 @@ function showProfileModal() {
     
     try {
         console.log('🔍 Envoi des données au serveur...');
+        console.log('🔍 URLSearchParams:', new URLSearchParams(formData).toString());
         
         const response = await fetch(webAppUrl, {
             method: 'POST',
@@ -1869,7 +1871,7 @@ function showProfileModal() {
             if (currentClient && currentClient.client) {
                 currentClient.client.prenom = formData.prenom;
                 currentClient.client.nom = formData.nom;
-                currentClient.client.email = formData.email; // Mettre à jour l'email
+                currentClient.client.email = formData.newEmail; // Mettre à jour l'email avec newEmail
                 currentClient.client.adresse = formData.adresse;
                 currentClient.client.ville = formData.ville;
                 currentClient.client.codePostal = formData.codePostal;
