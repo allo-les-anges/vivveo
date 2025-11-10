@@ -1809,13 +1809,13 @@ function showProfileModal() {
         async function saveProfile() {
     console.log('🔍 saveProfile CALLED');
     
-    // Récupérer les valeurs du formulaire
+    // Récupérer les valeurs du formulaire - VERSION CORRIGÉE
     const formData = {
         type: 'updateClientProfile',
-        email: currentClient.client.email, // Utiliser l'email comme identifiant
+        email: currentClient.client.email, // ← Email ORIGINAL pour la recherche
         prenom: document.getElementById('profile-firstname').value,
         nom: document.getElementById('profile-lastname').value,
-        email: document.getElementById('profile-email').value,
+        newEmail: document.getElementById('profile-email').value, // ← NOUVEAU email (champ différent !)
         adresse: document.getElementById('profile-address').value,
         ville: document.getElementById('profile-city').value,
         codePostal: document.getElementById('profile-postal').value,
@@ -1831,8 +1831,8 @@ function showProfileModal() {
     
     console.log('🔍 Données à envoyer:', formData);
     
-    // Validation basique
-    if (!formData.prenom || !formData.nom || !formData.email) {
+    // Validation basique - CORRIGÉE pour utiliser newEmail
+    if (!formData.prenom || !formData.nom || !formData.newEmail) {
         showNotification(translations[currentLanguage].fill_fields, 'error');
         return;
     }
@@ -1856,9 +1856,13 @@ function showProfileModal() {
         if (data.success) {
             showNotification(translations[currentLanguage].profile_updated, 'success');
             
-            // Mettre à jour les données locales
+            // Mettre à jour les données locales - CORRIGÉ avec le nouvel email
             if (currentClient && currentClient.client) {
-                currentClient.client = { ...currentClient.client, ...formData };
+                currentClient.client = { 
+                    ...currentClient.client, 
+                    ...formData,
+                    email: formData.newEmail // ← Mettre à jour l'email local
+                };
                 document.getElementById('client-name').textContent = formData.prenom;
             }
             
