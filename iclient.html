@@ -1765,6 +1765,30 @@ if (!currentClient.demandes || currentClient.demandes.length === 0) {
             document.getElementById('closed-missions-modal').style.display = 'block';
         }
 
+function showProfileModal() {
+    if (!currentClient) return;
+    
+    // Pré-remplir le formulaire avec les données actuelles
+    const client = currentClient.client;
+    document.getElementById('profile-firstname').value = client.prenom || '';
+    document.getElementById('profile-lastname').value = client.nom || '';
+    document.getElementById('profile-email').value = client.email || '';
+    document.getElementById('profile-address').value = client.adresse || '';
+    document.getElementById('profile-city').value = client.ville || '';
+    document.getElementById('profile-postal').value = client.codePostal || '';
+    document.getElementById('profile-phone').value = client.telephone || '';
+    
+    // Données du tuteur
+    document.getElementById('profile-tutor-firstname').value = client.prenomTuteur || '';
+    document.getElementById('profile-tutor-lastname').value = client.nomTuteur || '';
+    document.getElementById('profile-tutor-address').value = client.adresseTuteur || '';
+    document.getElementById('profile-tutor-city').value = client.villeTuteur || '';
+    document.getElementById('profile-tutor-postal').value = client.codePostalTuteur || '';
+    document.getElementById('profile-tutor-phone').value = client.telephoneTuteur || '';
+    
+    document.getElementById('profile-modal').style.display = 'block';
+}
+        
         function showProfileModal() {
             if (!currentClient) return;
             
