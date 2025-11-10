@@ -1807,10 +1807,77 @@ function showProfileModal() {
     }
 }
         async function saveProfile() {
-            // Implémentation de la sauvegarde du profil
+    console.log('🔍 saveProfile CALLED');
+    
+    // Récupérer les valeurs du formulaire
+    const formData = {
+        type: 'updateClientProfile',
+        clientId: currentClient.client.id,
+        prenom: document.getElementById('profile-firstname').value,
+        nom: document.getElementById('profile-lastname').value,
+        email: document.getElementById('profile-email').value,
+        adresse: document.getElementById('profile-address').value,
+        ville: document.getElementById('profile-city').value,
+        codePostal: document.getElementById('profile-postal').value,
+        telephone: document.getElementById('profile-phone').value,
+        prenomTuteur: document.getElementById('profile-tutor-firstname').value,
+        nomTuteur: document.getElementById('profile-tutor-lastname').value,
+        adresseTuteur: document.getElementById('profile-tutor-address').value,
+        villeTuteur: document.getElementById('profile-tutor-city').value,
+        codePostalTuteur: document.getElementById('profile-tutor-postal').value,
+        telephoneTuteur: document.getElementById('profile-tutor-phone').value,
+        password: document.getElementById('profile-password').value || null
+    };
+    
+    console.log('🔍 Données à envoyer:', formData);
+    
+    // Validation basique
+    if (!formData.prenom || !formData.nom || !formData.email) {
+        showNotification(translations[currentLanguage].fill_fields, 'error');
+        return;
+    }
+    
+    document.getElementById('loader').style.display = 'flex';
+    
+    try {
+        console.log('🔍 Envoi des données au serveur...');
+        
+        const response = await fetch(webAppUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(formData)
+        });
+        
+        const data = await response.json();
+        console.log('🔍 Réponse serveur:', data);
+        
+        if (data.success) {
             showNotification(translations[currentLanguage].profile_updated, 'success');
+            
+            // Mettre à jour les données locales
+            if (currentClient && currentClient.client) {
+                currentClient.client = { ...currentClient.client, ...formData };
+                document.getElementById('client-name').textContent = formData.prenom;
+            }
+            
             closeModal('profile-modal');
+            
+            // Vider le champ mot de passe
+            document.getElementById('profile-password').value = '';
+            
+        } else {
+            throw new Error(data.message || 'Erreur lors de la mise à jour');
         }
+        
+    } catch (error) {
+        console.error('❌ Erreur sauvegarde profil:', error);
+        showNotification(error.message || translations[currentLanguage].server_error, 'error');
+    } finally {
+        document.getElementById('loader').style.display = 'none';
+    }
+}
 
         function rechargerCredits() {
             alert(translations[currentLanguage].payment_redirect);
