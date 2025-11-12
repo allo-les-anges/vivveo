@@ -1845,13 +1845,13 @@ function showProfileModal() {
 async function saveProfile() {
     console.log('🔍 saveProfile CALLED');
     
-    // Récupérer les valeurs du formulaire
+    // Récupérer les valeurs du formulaire - CORRECTION DE L'EMAIL
     const formData = {
         type: 'updateClientProfile',
-        email: currentClient.client.email, // Email original pour la recherche
+        email: currentClient.client.email, // ⚠️ CORRECTION: Email ORIGINAL du tuteur (gm.harchies@gmail.com)
         prenom: document.getElementById('profile-firstname').value,
         nom: document.getElementById('profile-lastname').value,
-        email: document.getElementById('profile-email').value, // Nouvel email
+        email: document.getElementById('profile-email').value, // Nouvel email personne sous tutelle
         adresse: document.getElementById('profile-address').value,
         ville: document.getElementById('profile-city').value,
         codePostal: document.getElementById('profile-postal').value,
@@ -1867,8 +1867,30 @@ async function saveProfile() {
     
     console.log('🔍 Données à envoyer:', formData);
     
+    // ⚠️ CORRECTION: Utiliser un nom différent pour le nouvel email
+    const updatedFormData = {
+        type: 'updateClientProfile',
+        originalEmail: currentClient.client.email, // Email original pour la recherche
+        prenom: formData.prenom,
+        nom: formData.nom,
+        email: formData.email, // Nouvel email
+        adresse: formData.adresse,
+        ville: formData.ville,
+        codePostal: formData.codePostal,
+        telephone: formData.telephone,
+        prenomTuteur: formData.prenomTuteur,
+        nomTuteur: formData.nomTuteur,
+        adresseTuteur: formData.adresseTuteur,
+        villeTuteur: formData.villeTuteur,
+        codePostalTuteur: formData.codePostalTuteur,
+        telephoneTuteur: formData.telephoneTuteur,
+        password: formData.password
+    };
+    
+    console.log('🔍 Données corrigées:', updatedFormData);
+    
     // Validation basique
-    if (!formData.prenom || !formData.nom || !formData.email) {
+    if (!updatedFormData.prenom || !updatedFormData.nom || !updatedFormData.email) {
         showNotification(translations[currentLanguage].fill_fields, 'error');
         return;
     }
@@ -1880,16 +1902,16 @@ async function saveProfile() {
         
         // CONVERSION EN PARAMÈTRES GET
         const params = new URLSearchParams();
-        Object.keys(formData).forEach(key => {
-            if (formData[key] !== undefined && formData[key] !== null) {
-                params.append(key, formData[key]);
+        Object.keys(updatedFormData).forEach(key => {
+            if (updatedFormData[key] !== undefined && updatedFormData[key] !== null && updatedFormData[key] !== '') {
+                params.append(key, updatedFormData[key]);
             }
         });
         
         const url = `${webAppUrl}?${params.toString()}`;
         console.log('🔍 URL GET:', url);
         
-        const response = await fetch(url); // GET par défaut
+        const response = await fetch(url);
         const responseText = await response.text();
         console.log('🔍 Réponse brute:', responseText);
         
@@ -1907,25 +1929,22 @@ async function saveProfile() {
             
             // Mettre à jour les données locales
             if (currentClient && currentClient.client) {
-                currentClient.client.prenom = formData.prenom;
-                currentClient.client.nom = formData.nom;
-                currentClient.client.email = formData.email; // Mettre à jour l'email
-                currentClient.client.adresse = formData.adresse;
-                currentClient.client.ville = formData.ville;
-                currentClient.client.codePostal = formData.codePostal;
-                currentClient.client.telephone = formData.telephone;
+                // Mettre à jour les données personne sous tutelle
+                currentClient.client.prenomPersonne = updatedFormData.prenom;
+                currentClient.client.nomPersonne = updatedFormData.nom;
+                currentClient.client.emailPersonne = updatedFormData.email;
+                currentClient.client.adressePersonne = updatedFormData.adresse;
+                currentClient.client.villePersonne = updatedFormData.ville;
+                currentClient.client.codePostalPersonne = updatedFormData.codePostal;
+                currentClient.client.telephonePersonne = updatedFormData.telephone;
                 
                 // Mettre à jour les données tuteur
-                currentClient.client.prenomTuteur = formData.prenomTuteur;
-                currentClient.client.nomTuteur = formData.nomTuteur;
-                currentClient.client.adresseTuteur = formData.adresseTuteur;
-                currentClient.client.villeTuteur = formData.villeTuteur;
-                currentClient.client.codePostalTuteur = formData.codePostalTuteur;
-                currentClient.client.telephoneTuteur = formData.telephoneTuteur;
-                
-                // Mettre à jour l'affichage
-                document.getElementById('client-name-display').textContent = formData.prenom;
-                document.getElementById('client-credits').textContent = currentClient.client.credits || 0;
+                currentClient.client.prenomTuteur = updatedFormData.prenomTuteur;
+                currentClient.client.nomTuteur = updatedFormData.nomTuteur;
+                currentClient.client.adresseTuteur = updatedFormData.adresseTuteur;
+                currentClient.client.villeTuteur = updatedFormData.villeTuteur;
+                currentClient.client.codePostalTuteur = updatedFormData.codePostalTuteur;
+                currentClient.client.telephoneTuteur = updatedFormData.telephoneTuteur;
             }
             
             closeModal('profile-modal');
@@ -1944,7 +1963,6 @@ async function saveProfile() {
         document.getElementById('loader').style.display = 'none';
     }
 }
-
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
