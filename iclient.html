@@ -1765,6 +1765,7 @@ if (!currentClient.demandes || currentClient.demandes.length === 0) {
             document.getElementById('closed-missions-modal').style.display = 'block';
         }
 
+// Dans iclient.html - CORRIGEZ showProfileModal
 function showProfileModal() {
     console.log('🔍 showProfileModal CALLED');
     
@@ -1774,31 +1775,29 @@ function showProfileModal() {
     }
     
     console.log('🔍 currentClient:', currentClient);
-    console.log('🔍 client data:', currentClient.client);
+    console.log('🔍 Données client:', currentClient.client);
     
-    // Pré-remplir le formulaire avec les données actuelles
-    const client = currentClient.client;
+    // PRÉ-REMPLIR LE FORMULAIRE
     
-    // Remplir les champs avec vérification
-    document.getElementById('profile-firstname').value = client.prenom || '';
-    document.getElementById('profile-lastname').value = client.nom || '';
-    document.getElementById('profile-email').value = client.email || '';
-    document.getElementById('profile-address').value = client.adresse || '';
-    document.getElementById('profile-city').value = client.ville || '';
-    document.getElementById('profile-postal').value = client.codePostal || '';
-    document.getElementById('profile-phone').value = client.telephone || '';
+    // Section PERSONNE SOUS TUTELLE
+    document.getElementById('profile-firstname').value = currentClient.client.prenom || '';
+    document.getElementById('profile-lastname').value = currentClient.client.nom || '';
+    document.getElementById('profile-email').value = currentClient.client.email || ''; // Email personne sous tutelle
+    document.getElementById('profile-address').value = currentClient.client.adresse || '';
+    document.getElementById('profile-city').value = currentClient.client.ville || '';
+    document.getElementById('profile-postal').value = currentClient.client.codePostal || '';
+    document.getElementById('profile-phone').value = currentClient.client.telephone || '';
     
-    // Données du tuteur
-    document.getElementById('profile-tutor-firstname').value = client.prenomTuteur || '';
-    document.getElementById('profile-tutor-lastname').value = client.nomTuteur || '';
-    document.getElementById('profile-tutor-address').value = client.adresseTuteur || '';
-    document.getElementById('profile-tutor-city').value = client.villeTuteur || '';
-    document.getElementById('profile-tutor-postal').value = client.codePostalTuteur || '';
-    document.getElementById('profile-tutor-phone').value = client.telephoneTuteur || '';
+    // Section TUTEUR
+    document.getElementById('profile-tutor-firstname').value = currentClient.client.prenomTuteur || '';
+    document.getElementById('profile-tutor-lastname').value = currentClient.client.nomTuteur || '';
+    document.getElementById('profile-tutor-address').value = currentClient.client.adresseTuteur || '';
+    document.getElementById('profile-tutor-city').value = currentClient.client.villeTuteur || '';
+    document.getElementById('profile-tutor-postal').value = currentClient.client.codePostalTuteur || '';
+    document.getElementById('profile-tutor-phone').value = currentClient.client.telephoneTuteur || '';
     
     // Afficher la modale
     const modal = document.getElementById('profile-modal');
-    console.log('🔍 Modal element:', modal);
     if (modal) {
         modal.style.display = 'block';
         console.log('✅ Modal displayed successfully');
