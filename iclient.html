@@ -1475,9 +1475,12 @@
     console.log('🔍 demandes count:', currentClient?.demandes?.length);
     console.log('🔍 demandes content:', currentClient?.demandes);
     
-    if (!currentClient) return;
+    if (!currentClient) {
+        console.log('❌ currentClient is null');
+        return;
+    }
 
-    // FILTRER les demandes vides - VERSION CORRIGÉE
+    // FILTRER les demandes vides
     if (currentClient.demandes) {
         console.log('🔍 DEMANDES BEFORE FILTER:', currentClient.demandes);
         
@@ -1506,18 +1509,19 @@
     const statsSection = document.querySelector('.client-section:nth-child(3)');
     const tabsSection = document.querySelector('.client-section:nth-child(5)');
 
+    console.log('🔍 Sections trouvées:', {
+        statsSection: !!statsSection,
+        tabsSection: !!tabsSection,
+        hasDemandes: !!currentClient.demandes,
+        demandesLength: currentClient.demandes ? currentClient.demandes.length : 0
+    });
+
     if (!currentClient.demandes || currentClient.demandes.length === 0) {
         console.log('🔍 NO MISSIONS - hiding sections');
         if (statsSection) statsSection.style.display = 'none';
         if (tabsSection) tabsSection.style.display = 'none';
         
-        // Afficher un message dans chaque onglet
-        ['pending', 'confirmed', 'progress', 'completed'].forEach(status => {
-            const tableBody = document.getElementById(`${status}-requests-table`);
-            const cardsContainer = document.getElementById(`${status}-requests-cards`);
-            if (tableBody) tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">${translations[currentLanguage].no_requests}</td></tr>`;
-            if (cardsContainer) cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${translations[currentLanguage].no_requests}</div>`;
-        });
+        displayNoMissionsMessage();
         return;
     } else {
         console.log('🔍 MISSIONS FOUND - showing sections');
@@ -1542,12 +1546,20 @@
         d.statut === "Terminée" || d.statut === "Clôturée" || d.validationClient === "validée"
     ).length;
 
+    console.log('🔍 Statistiques calculées:', {
+        pending: pendingCount,
+        confirmed: confirmedCount,
+        progress: progressCount,
+        completed: completedCount
+    });
+
     // Mettre à jour les statistiques
     document.getElementById('stats-pending').textContent = pendingCount;
     document.getElementById('stats-confirmed').textContent = confirmedCount;
     document.getElementById('stats-progress').textContent = progressCount;
     document.getElementById('stats-completed').textContent = completedCount;
 
+    console.log('🔍 Chargement des onglets...');
     // Charger les demandes pour chaque onglet
     loadRequests('pending');
     loadRequests('confirmed');
