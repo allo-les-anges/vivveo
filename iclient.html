@@ -1476,32 +1476,38 @@ async function login() {
     console.log('🔍 loadClientData CALLED');
     console.log('🔍 currentClient:', currentClient);
     console.log('🔍 demandes count:', currentClient?.demandes?.length);
-    console.log('🔍 demandes content:', currentClient?.demandes);
     
     if (!currentClient) {
         console.log('❌ currentClient is null');
         return;
     }
 
+    // Debug détaillé des demandes
+    if (currentClient.demandes && currentClient.demandes.length > 0) {
+        console.log('📋 DÉTAIL DES 3 PREMIÈRES DEMANDES:');
+        currentClient.demandes.slice(0, 3).forEach((demande, index) => {
+            console.log(`   ${index + 1}.`, {
+                id: demande.idMission,
+                service: demande.service,
+                intervention: demande.intervention,
+                statut: demande.statut,
+                validation: demande.validationClient
+            });
+        });
+    }
+
     // FILTRER les demandes vides
     if (currentClient.demandes) {
-        console.log('🔍 DEMANDES BEFORE FILTER:', currentClient.demandes);
+        console.log('🔍 DEMANDES BEFORE FILTER:', currentClient.demandes.length);
         
         const avantFiltre = currentClient.demandes.length;
         
         currentClient.demandes = currentClient.demandes.filter(d => {
-            // Convertir en string avant de vérifier
             const serviceStr = String(d.service || '');
             const interventionStr = String(d.intervention || '');
             
             const hasService = serviceStr.trim() !== "";
             const hasIntervention = interventionStr.trim() !== "";
-            
-            console.log('🔍 Filtering demande:', { 
-                service: serviceStr,
-                intervention: interventionStr,
-                passes: hasService && hasIntervention
-            });
             
             return hasService && hasIntervention;
         });
@@ -1509,22 +1515,19 @@ async function login() {
         console.log(`🔍 FILTRE: ${avantFiltre} → ${currentClient.demandes.length} missions`);
     }
 
+    // Vérifier si les sections existent
     const statsSection = document.querySelector('.client-section:nth-child(3)');
     const tabsSection = document.querySelector('.client-section:nth-child(5)');
 
     console.log('🔍 Sections trouvées:', {
         statsSection: !!statsSection,
-        tabsSection: !!tabsSection,
-        hasDemandes: !!currentClient.demandes,
-        demandesLength: currentClient.demandes ? currentClient.demandes.length : 0
+        tabsSection: !!tabsSection
     });
 
     if (!currentClient.demandes || currentClient.demandes.length === 0) {
         console.log('🔍 NO MISSIONS - hiding sections');
         if (statsSection) statsSection.style.display = 'none';
         if (tabsSection) tabsSection.style.display = 'none';
-        
-        displayNoMissionsMessage();
         return;
     } else {
         console.log('🔍 MISSIONS FOUND - showing sections');
@@ -1557,19 +1560,43 @@ async function login() {
     });
 
     // Mettre à jour les statistiques
-    document.getElementById('stats-pending').textContent = pendingCount;
-    document.getElementById('stats-confirmed').textContent = confirmedCount;
-    document.getElementById('stats-progress').textContent = progressCount;
-    document.getElementById('stats-completed').textContent = completedCount;
+    const statsPending = document.getElementById('stats-pending');
+    const statsConfirmed = document.getElementById('stats-confirmed');
+    const statsProgress = document.getElementById('stats-progress');
+    const statsCompleted = document.getElementById('stats-completed');
+
+    console.log('🔍 Éléments stats trouvés:', {
+        pending: !!statsPending,
+        confirmed: !!statsConfirmed,
+        progress: !!statsProgress,
+        completed: !!statsCompleted
+    });
+
+    if (statsPending) statsPending.textContent = pendingCount;
+    if (statsConfirmed) statsConfirmed.textContent = confirmedCount;
+    if (statsProgress) statsProgress.textContent = progressCount;
+    if (statsCompleted) statsCompleted.textContent = completedCount;
 
     console.log('🔍 Chargement des onglets...');
+    
+    // Vérifier si les conteneurs d'onglets existent
+    ['pending', 'confirmed', 'progress', 'completed'].forEach(status => {
+        const tableBody = document.getElementById(`${status}-requests-table`);
+        const cardsContainer = document.getElementById(`${status}-requests-cards`);
+        console.log(`🔍 Conteneurs ${status}:`, {
+            table: !!tableBody,
+            cards: !!cardsContainer
+        });
+    });
+
     // Charger les demandes pour chaque onglet
     loadRequests('pending');
     loadRequests('confirmed');
     loadRequests('progress');
     loadRequests('completed');
-}
 
+    console.log('✅ loadClientData terminé');
+}
         // Formatage des dates
         function formatDateOrTime(dateString) {
             if (!dateString) return "";
@@ -1590,93 +1617,104 @@ async function login() {
 
         // Charger les demandes par statut
         function loadRequests(status) {
-            if (!currentClient || !currentClient.demandes || currentClient.demandes.length === 0) {
-                const tableBody = document.getElementById(`${status}-requests-table`);
-                const cardsContainer = document.getElementById(`${status}-requests-cards`);
-                if (tableBody) tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">${translations[currentLanguage].no_requests}</td></tr>`;
-                if (cardsContainer) cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${translations[currentLanguage].no_requests}</div>`;
-                return;
-            }
+    console.log(`🔍 loadRequests(${status}) appelé`);
+    
+    if (!currentClient || !currentClient.demandes || currentClient.demandes.length === 0) {
+        console.log(`❌ Aucune donnée pour ${status}`);
+        return;
+    }
 
-            const tableBody = document.getElementById(`${status}-requests-table`);
-            const cardsContainer = document.getElementById(`${status}-requests-cards`);
-            
-            // Filtrer les demandes selon le statut
-            let filteredRequests = [];
-            
-            switch(status) {
-                case 'pending':
-                    filteredRequests = currentClient.demandes.filter(d => 
-                        d.statut === "En attente" || !d.statut
-                    );
-                    break;
-                case 'confirmed':
-                    filteredRequests = currentClient.demandes.filter(d => 
-                        d.statut === "Confirmée"
-                    );
-                    break;
-                case 'progress':
-                    filteredRequests = currentClient.demandes.filter(d => 
-                        d.statut === "En cours"
-                    );
-                    break;
-                case 'completed':
-                    filteredRequests = currentClient.demandes.filter(d => 
-                        d.statut === "Terminée" || d.validationClient === "validée"
-                    );
-                    break;
-            }
-            
-            // Si pas de demandes pour ce statut
-            if (filteredRequests.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">${translations[currentLanguage].no_requests}</td></tr>`;
-                cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${translations[currentLanguage].no_requests}</div>`;
-            } else {
-                // Afficher les demandes dans le tableau
-                tableBody.innerHTML = filteredRequests.map(request => `
-                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td class="p-4">${formatDateOrTime(request.dateDemande)}</td>
-                        <td class="p-4">${request.service || ""}</td>
-                        <td class="p-4">${formatDateOrTime(request.intervention)}</td>
-                        <td class="p-4">${formatDateOrTime(request.heure)}</td>
-                        <td class="p-4">${request.tache || ""}</td>
-                        <td class="p-4">${getStatusBadge(request)}</td>
-                        ${status === 'completed' ? `<td class="p-4">${getRequestActions(status, request)}</td>` : '<td></td>'}
-                    </tr>
-                `).join('');
-                
-                // Mettre à jour les cartes mobiles
-                cardsContainer.innerHTML = filteredRequests.map(request => `
-                    <div class="request-card">
-                        <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].request_date}</span>
-                            <span class="card-value">${formatDateOrTime(request.dateDemande)}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].service}</span>
-                            <span class="card-value">${request.service || ""}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].intervention}</span>
-                            <span class="card-value">${formatDateOrTime(request.intervention)}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].time}</span>
-                            <span class="card-value">${formatDateOrTime(request.heure)}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">${translations[currentLanguage].task}</span>
-                            <span class="card-value">${request.tache || ""}</span>
-                        </div>
-                        <div class="card-status">
-                            ${getStatusBadge(request)}
-                            ${status === 'completed' ? getRequestActions(status, request) : ''}
-                        </div>
-                    </div>
-                `).join('');
-            }
+    const tableBody = document.getElementById(`${status}-requests-table`);
+    const cardsContainer = document.getElementById(`${status}-requests-cards`);
+    
+    console.log(`🔍 Conteneurs ${status}:`, {
+        tableBody: !!tableBody,
+        cardsContainer: !!cardsContainer
+    });
+
+    // Filtrer les demandes selon le statut
+    let filteredRequests = [];
+    
+    switch(status) {
+        case 'pending':
+            filteredRequests = currentClient.demandes.filter(d => 
+                d.statut === "en attente" || !d.statut
+            );
+            break;
+        case 'confirmed':
+            filteredRequests = currentClient.demandes.filter(d => 
+                d.statut === "confirmée"
+            );
+            break;
+        case 'progress':
+            filteredRequests = currentClient.demandes.filter(d => 
+                d.statut === "En cours"
+            );
+            break;
+        case 'completed':
+            filteredRequests = currentClient.demandes.filter(d => 
+                d.statut === "Terminée" || d.statut === "Clôturée" || d.validationClient === "validée"
+            );
+            break;
+    }
+    
+    console.log(`📊 ${status}: ${filteredRequests.length} demandes filtrées`);
+
+    if (filteredRequests.length === 0) {
+        const message = translations[currentLanguage].no_requests;
+        if (tableBody) tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">${message}</td></tr>`;
+        if (cardsContainer) cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${message}</div>`;
+    } else {
+        // Afficher les demandes dans le tableau
+        if (tableBody) {
+            tableBody.innerHTML = filteredRequests.map(request => `
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <td class="p-4">${formatDateOrTime(request.dateDemande)}</td>
+                    <td class="p-4">${request.service || ""}</td>
+                    <td class="p-4">${formatDateOrTime(request.intervention)}</td>
+                    <td class="p-4">${formatDateOrTime(request.heure)}</td>
+                    <td class="p-4">${request.tache || ""}</td>
+                    <td class="p-4">${getStatusBadge(request)}</td>
+                    ${status === 'completed' ? `<td class="p-4">${getRequestActions(status, request)}</td>` : '<td></td>'}
+                </tr>
+            `).join('');
         }
-
+        
+        // Mettre à jour les cartes mobiles
+        if (cardsContainer) {
+            cardsContainer.innerHTML = filteredRequests.map(request => `
+                <div class="request-card">
+                    <div class="card-row">
+                        <span class="card-label">${translations[currentLanguage].request_date}</span>
+                        <span class="card-value">${formatDateOrTime(request.dateDemande)}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">${translations[currentLanguage].service}</span>
+                        <span class="card-value">${request.service || ""}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">${translations[currentLanguage].intervention}</span>
+                        <span class="card-value">${formatDateOrTime(request.intervention)}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">${translations[currentLanguage].time}</span>
+                        <span class="card-value">${formatDateOrTime(request.heure)}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">${translations[currentLanguage].task}</span>
+                        <span class="card-value">${request.tache || ""}</span>
+                    </div>
+                    <div class="card-status">
+                        ${getStatusBadge(request)}
+                        ${status === 'completed' ? getRequestActions(status, request) : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+    
+    console.log(`✅ loadRequests(${status}) terminé`);
+}
         function getStatusBadge(request) {
             const status = request.statut || "En attente";
             const validation = request.validationClient;
