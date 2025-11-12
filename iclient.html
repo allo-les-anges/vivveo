@@ -1842,96 +1842,108 @@ function showProfileModal() {
         console.error('❌ Modal element not found');
     }
 }
-        async function saveProfile() {
-            console.log('🔍 saveProfile CALLED');
-            
-            // Récupérer les valeurs du formulaire
-            const formData = {
-                type: 'updateClientProfile',
-                email: currentClient.client.email, // Email original pour la recherche
-                prenom: document.getElementById('profile-firstname').value,
-                nom: document.getElementById('profile-lastname').value,
-                email: document.getElementById('profile-email').value, // Nouvel email
-                adresse: document.getElementById('profile-address').value,
-                ville: document.getElementById('profile-city').value,
-                codePostal: document.getElementById('profile-postal').value,
-                telephone: document.getElementById('profile-phone').value,
-                prenomTuteur: document.getElementById('profile-tutor-firstname').value,
-                nomTuteur: document.getElementById('profile-tutor-lastname').value,
-                adresseTuteur: document.getElementById('profile-tutor-address').value,
-                villeTuteur: document.getElementById('profile-tutor-city').value,
-                codePostalTuteur: document.getElementById('profile-tutor-postal').value,
-                telephoneTuteur: document.getElementById('profile-tutor-phone').value,
-                password: document.getElementById('profile-password').value || ''
-            };
-            
-            console.log('🔍 Données à envoyer:', formData);
-            
-            // Validation basique
-            if (!formData.prenom || !formData.nom || !formData.email) {
-                showNotification(translations[currentLanguage].fill_fields, 'error');
-                return;
+async function saveProfile() {
+    console.log('🔍 saveProfile CALLED');
+    
+    // Récupérer les valeurs du formulaire
+    const formData = {
+        type: 'updateClientProfile',
+        email: currentClient.client.email, // Email original pour la recherche
+        prenom: document.getElementById('profile-firstname').value,
+        nom: document.getElementById('profile-lastname').value,
+        email: document.getElementById('profile-email').value, // Nouvel email
+        adresse: document.getElementById('profile-address').value,
+        ville: document.getElementById('profile-city').value,
+        codePostal: document.getElementById('profile-postal').value,
+        telephone: document.getElementById('profile-phone').value,
+        prenomTuteur: document.getElementById('profile-tutor-firstname').value,
+        nomTuteur: document.getElementById('profile-tutor-lastname').value,
+        adresseTuteur: document.getElementById('profile-tutor-address').value,
+        villeTuteur: document.getElementById('profile-tutor-city').value,
+        codePostalTuteur: document.getElementById('profile-tutor-postal').value,
+        telephoneTuteur: document.getElementById('profile-tutor-phone').value,
+        password: document.getElementById('profile-password').value || ''
+    };
+    
+    console.log('🔍 Données à envoyer:', formData);
+    
+    // Validation basique
+    if (!formData.prenom || !formData.nom || !formData.email) {
+        showNotification(translations[currentLanguage].fill_fields, 'error');
+        return;
+    }
+    
+    document.getElementById('loader').style.display = 'flex';
+    
+    try {
+        console.log('🔍 Envoi des données au serveur via GET...');
+        
+        // CONVERSION EN PARAMÈTRES GET
+        const params = new URLSearchParams();
+        Object.keys(formData).forEach(key => {
+            if (formData[key] !== undefined && formData[key] !== null) {
+                params.append(key, formData[key]);
             }
-            
-            document.getElementById('loader').style.display = 'flex';
-            
-            try {
-                console.log('🔍 Envoi des données au serveur...');
-                
-                const response = await fetch(webAppUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams(formData)
-                });
-                
-                const responseText = await response.text();
-                console.log('🔍 Réponse brute:', responseText);
-                
-                let data;
-                try {
-                    data = JSON.parse(responseText);
-                    console.log('🔍 Réponse parsée:', data);
-                } catch (parseError) {
-                    console.error('❌ Erreur parsing JSON:', parseError);
-                    throw new Error('Réponse serveur invalide: ' + responseText);
-                }
-                
-                if (data.success) {
-                    showNotification(data.message || translations[currentLanguage].profile_updated, 'success');
-                    
-                    // Mettre à jour les données locales
-                    if (currentClient && currentClient.client) {
-                        currentClient.client.prenom = formData.prenom;
-                        currentClient.client.nom = formData.nom;
-                        currentClient.client.email = formData.email; // Mettre à jour l'email
-                        currentClient.client.adresse = formData.adresse;
-                        currentClient.client.ville = formData.ville;
-                        currentClient.client.codePostal = formData.codePostal;
-                        currentClient.client.telephone = formData.telephone;
-                        
-                        // Mettre à jour l'affichage
-                        document.getElementById('client-name-display').textContent = formData.prenom;
-                        document.getElementById('client-credits').textContent = currentClient.client.credits || 0;
-                    }
-                    
-                    closeModal('profile-modal');
-                    
-                    // Vider le champ mot de passe
-                    document.getElementById('profile-password').value = '';
-                    
-                } else {
-                    throw new Error(data.message || 'Erreur lors de la mise à jour');
-                }
-                
-            } catch (error) {
-                console.error('❌ Erreur sauvegarde profil:', error);
-                showNotification(error.message || translations[currentLanguage].server_error, 'error');
-            } finally {
-                document.getElementById('loader').style.display = 'none';
-            }
+        });
+        
+        const url = `${webAppUrl}?${params.toString()}`;
+        console.log('🔍 URL GET:', url);
+        
+        const response = await fetch(url); // GET par défaut
+        const responseText = await response.text();
+        console.log('🔍 Réponse brute:', responseText);
+        
+        let data;
+        try {
+            data = JSON.parse(responseText);
+            console.log('🔍 Réponse parsée:', data);
+        } catch (parseError) {
+            console.error('❌ Erreur parsing JSON:', parseError);
+            throw new Error('Réponse serveur invalide: ' + responseText);
         }
+        
+        if (data.success) {
+            showNotification(data.message || translations[currentLanguage].profile_updated, 'success');
+            
+            // Mettre à jour les données locales
+            if (currentClient && currentClient.client) {
+                currentClient.client.prenom = formData.prenom;
+                currentClient.client.nom = formData.nom;
+                currentClient.client.email = formData.email; // Mettre à jour l'email
+                currentClient.client.adresse = formData.adresse;
+                currentClient.client.ville = formData.ville;
+                currentClient.client.codePostal = formData.codePostal;
+                currentClient.client.telephone = formData.telephone;
+                
+                // Mettre à jour les données tuteur
+                currentClient.client.prenomTuteur = formData.prenomTuteur;
+                currentClient.client.nomTuteur = formData.nomTuteur;
+                currentClient.client.adresseTuteur = formData.adresseTuteur;
+                currentClient.client.villeTuteur = formData.villeTuteur;
+                currentClient.client.codePostalTuteur = formData.codePostalTuteur;
+                currentClient.client.telephoneTuteur = formData.telephoneTuteur;
+                
+                // Mettre à jour l'affichage
+                document.getElementById('client-name-display').textContent = formData.prenom;
+                document.getElementById('client-credits').textContent = currentClient.client.credits || 0;
+            }
+            
+            closeModal('profile-modal');
+            
+            // Vider le champ mot de passe
+            document.getElementById('profile-password').value = '';
+            
+        } else {
+            throw new Error(data.message || 'Erreur lors de la mise à jour');
+        }
+        
+    } catch (error) {
+        console.error('❌ Erreur sauvegarde profil:', error);
+        showNotification(error.message || translations[currentLanguage].server_error, 'error');
+    } finally {
+        document.getElementById('loader').style.display = 'none';
+    }
+}
 
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
