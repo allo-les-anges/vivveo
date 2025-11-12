@@ -1385,6 +1385,7 @@
 
         // Fonction de connexion AMÉLIORÉE
         // Dans iclient.html - CORRIGEZ la partie mise à jour de l'interface
+// Dans iclient.html - UTILISEZ GET pour éviter CORS
 async function login() {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
@@ -1400,23 +1401,14 @@ async function login() {
     document.getElementById('loader').style.display = 'flex';
 
     try {
-        // UTILISER POST
-        const formData = new URLSearchParams();
-        formData.append('type', 'getClientData');
-        formData.append('email', email);
-        formData.append('password', password);
-
-        console.log('🔍 ENVOI REQUÊTE POST:', webAppUrl);
+        // UTILISER GET pour éviter les problèmes CORS
+        const url = `${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
         
-        const response = await fetch(webAppUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: formData
-        });
+        console.log('🔍 ENVOI REQUÊTE GET:', url);
         
+        const response = await fetch(url);
         const data = await response.json();
+        
         console.log('🔍 RÉPONSE SERVEUR:', data);
 
         if (data.success) {
@@ -1425,61 +1417,11 @@ async function login() {
             document.getElementById('login-section').classList.add('hidden');
             document.getElementById('client-interface').classList.remove('hidden');
 
-            // CORRECTION : Attendre que le DOM soit mis à jour
-            setTimeout(() => {
-                try {
-                    // Méthode plus robuste pour trouver l'élément
-                    const clientNameElement = document.getElementById('client-name');
-                    const clientCreditsElement = document.getElementById('client-credits');
-                    
-                    console.log('🔍 Recherche client-name...');
-                    console.log('🔍 Élément client-name trouvé:', clientNameElement);
-                    console.log('🔍 Élément client-credits trouvé:', clientCreditsElement);
-                    
-                    if (clientNameElement) {
-                        clientNameElement.textContent = currentClient.client.prenom || "Client";
-                        console.log('✅ Nom client mis à jour:', currentClient.client.prenom);
-                    } else {
-                        console.error('❌ client-name NON TROUVÉ !');
-                        // Création d'urgence si l'élément n'existe pas
-                        const welcomeElement = document.querySelector('[data-translate="welcome"]');
-                        if (welcomeElement) {
-                            const span = document.createElement('span');
-                            span.id = 'client-name';
-                            span.className = 'text-blue-600';
-                            span.textContent = currentClient.client.prenom || "Client";
-                            welcomeElement.innerHTML = translations[currentLanguage].welcome.replace('{name}', '') + ' ';
-                            welcomeElement.appendChild(span);
-                            console.log('✅ Élément client-name créé manuellement');
-                        }
-                    }
-                    
-                    if (clientCreditsElement) {
-                        clientCreditsElement.textContent = currentClient.client.credits || 0;
-                        console.log('✅ Crédits mis à jour:', currentClient.client.credits);
-                    }
-                    
-                    // Gestion de la photo de profil
-                    const clientPhoto = document.getElementById('client-photo');
-                    if (clientPhoto) {
-                        clientPhoto.onerror = () => {
-                            clientPhoto.src = "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
-                        };
-                        clientPhoto.src = currentClient.client.photoUrl || "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
-                    }
-
-                    // Charger les demandes et statistiques
-                    console.log('🔍 Calling loadClientData...');
-                    loadClientData();
-                    console.log('🔍 loadClientData called successfully');
-
-                    showNotification(translations[currentLanguage].login_success, 'success');
-                    
-                } catch (error) {
-                    console.error('Erreur lors de la mise à jour UI:', error);
-                }
-            }, 100); // Petit délai pour laisser le DOM se mettre à jour
-
+            // Mise à jour immédiate de l'interface
+            updateClientInterface();
+            
+            showNotification(translations[currentLanguage].login_success, 'success');
+            
         } else {
             throw new Error(data.message || translations[currentLanguage].login_error);
         }
@@ -1492,7 +1434,54 @@ async function login() {
         document.getElementById('loader').style.display = 'none';
     }
 }
-        // Fonction de déconnexion
+
+// Fonction séparée pour mettre à jour l'interface
+function updateClientInterface() {
+    if (!currentClient) return;
+    
+    console.log('🔍 Mise à jour interface pour:', currentClient.client.prenom);
+    
+    // Méthode robuste pour trouver/mettre à jour les éléments
+    const clientNameElement = document.getElementById('client-name');
+    const clientCreditsElement = document.getElementById('client-credits');
+    
+    if (clientNameElement) {
+        clientNameElement.textContent = currentClient.client.prenom || "Client";
+        console.log('✅ Nom client mis à jour:', currentClient.client.prenom);
+    } else {
+        console.error('❌ Élément client-name non trouvé');
+        // Création d'urgence
+        createClientNameElement();
+    }
+    
+    if (clientCreditsElement) {
+        clientCreditsElement.textContent = currentClient.client.credits || 0;
+        console.log('✅ Crédits mis à jour:', currentClient.client.credits);
+    }
+    
+    // Charger les données
+    loadClientData();
+}
+
+// Fonction pour créer l'élément client-name si manquant
+function createClientNameElement() {
+    const welcomeElements = document.querySelectorAll('[data-translate="welcome"]');
+    if (welcomeElements.length > 0) {
+        const welcomeElement = welcomeElements[0];
+        const span = document.createElement('span');
+        span.id = 'client-name';
+        span.className = 'text-blue-600';
+        span.textContent = currentClient.client.prenom || "Client";
+        
+        // Vider et reconstruire le contenu
+        welcomeElement.innerHTML = '';
+        welcomeElement.appendChild(document.createTextNode(translations[currentLanguage].welcome.split('{name}')[0] + ' '));
+        welcomeElement.appendChild(span);
+        welcomeElement.appendChild(document.createTextNode(' !'));
+        
+        console.log('✅ Élément client-name créé manuellement');
+    }
+}        // Fonction de déconnexion
         function logout() {
             currentClient = null;
             document.getElementById('login-section').classList.remove('hidden');
