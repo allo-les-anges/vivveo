@@ -573,36 +573,28 @@
         }
 
         async function loadAllPrestataires() {
-            const container = document.getElementById('prestataires-container');
-            container.innerHTML = `<div class="col-span-full text-center py-8"><div class="spinner border-4 border-yellow-500 border-t-transparent rounded-full w-12 h-12 mx-auto mb-4 animate-spin"></div><p>${translations[currentLanguage].providers_loading}</p></div>`;
+    const container = document.getElementById('prestataires-container');
+    container.innerHTML = `<div class="col-span-full text-center py-8"><div class="spinner border-4 border-yellow-500 border-t-transparent rounded-full w-12 h-12 mx-auto mb-4 animate-spin"></div><p>${translations[currentLanguage].providers_loading}</p></div>`;
 
-            try {
-                // Charger les prestataires pour chaque service
-                const promises = services.map(service => 
-                    fetch(`${GOOGLE_SCRIPT_URL}?type=getPrestatairesStylés&specialite=${encodeURIComponent(service)}`)
-                        .then(res => res.json())
-                );
-
-                const results = await Promise.all(promises);
-                
-                allPrestataires = [];
-                results.forEach((result, index) => {
-                    if (result.success && result.prestataires) {
-                        result.prestataires.forEach(presta => {
-                            // Ajouter le service au prestataire
-                            presta.services = [services[index]];
-                            allPrestataires.push(presta);
-                        });
-                    }
-                });
-
-                displayPrestataires(allPrestataires);
-            } catch (error) {
-                console.error('Erreur chargement prestataires:', error);
-                container.innerHTML = `<div class="col-span-full text-center py-8 text-red-600"><p>${translations[currentLanguage].providers_error}</p></div>`;
-            }
+    try {
+        // Charger TOUS les prestataires directement
+        const response = await fetch(`${GOOGLE_SCRIPT_URL}?type=getAllPrestataires`);
+        const result = await response.json();
+        
+        console.log('🔍 Réponse prestataires:', result); // Debug
+        
+        if (result.success && result.prestataires) {
+            allPrestataires = result.prestataires;
+            console.log(`✅ ${allPrestataires.length} prestataires chargés`); // Debug
+            displayPrestataires(allPrestataires);
+        } else {
+            throw new Error(result.message || 'Erreur de chargement');
         }
-
+    } catch (error) {
+        console.error('Erreur chargement prestataires:', error);
+        container.innerHTML = `<div class="col-span-full text-center py-8 text-red-600"><p>${translations[currentLanguage].providers_error}</p></div>`;
+    }
+}
         function displayPrestataires(prestataires) {
             const container = document.getElementById('prestataires-container');
             
