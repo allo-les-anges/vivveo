@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Client - Viiveo</title>
-    <!-- Remplacez le CDN Tailwind par cette version optimisée -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    <!-- CDN Tailwind corrigé pour la production -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -748,11 +748,12 @@
                 <div class="form-group">
                     <label for="email" data-translate="email_label">Adresse email</label>
                     <div class="relative">
+                        <!-- Champ email corrigé avec autocomplete -->
                         <input type="email" id="email" class="form-input" placeholder="votre@email.com" required autocomplete="username">
                         <i class="fas fa-envelope form-input-icon"></i>
                     </div>
                 </div>
-            <div class="form-group">
+                <div class="form-group">
                     <label for="password" data-translate="password_label">Mot de passe</label>
                     <div class="relative">
                         <input type="password" id="password" class="form-input" placeholder="Votre mot de passe" required autocomplete="current-password">
@@ -780,7 +781,7 @@
                         </div>
                         <div class="text-left">
                             <h2 class="text-2xl font-bold text-gray-800" data-translate="welcome">
-                                Bienvenue, <span id="client-name" class="text-blue-600">Client</span> !
+                                Bienvenue, <span id="client-name-display" class="text-blue-600">Client</span> !
                             </h2>
                             <p class="text-gray-600 flex items-center">
                                 <i class="fas fa-coins text-blue-600 mr-2"></i>
@@ -1238,7 +1239,7 @@
     </div>
 
     <script>
-        // URL de l'application Google Apps Script - CORRECTE
+        // URL de l'application Google Apps Script
         const webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
 
         // Traductions multilingues complètes
@@ -1383,105 +1384,81 @@
             localStorage.setItem('viiveo-language', lang);
         }
 
-        // Fonction de connexion AMÉLIORÉE
-        // Dans iclient.html - CORRIGEZ la partie mise à jour de l'interface
-// Dans iclient.html - UTILISEZ GET pour éviter CORS
-async function login() {
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const message = document.getElementById('login-message');
+        // Fonction de connexion CORRIGÉE
+        async function login() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const message = document.getElementById('login-message');
 
-    if (!email || !password) {
-        message.textContent = translations[currentLanguage].fill_fields;
-        message.classList.remove('hidden');
-        message.className = 'message message-error';
-        return;
-    }
+            if (!email || !password) {
+                message.textContent = translations[currentLanguage].fill_fields;
+                message.classList.remove('hidden');
+                message.className = 'message message-error';
+                return;
+            }
 
-    document.getElementById('loader').style.display = 'flex';
+            document.getElementById('loader').style.display = 'flex';
 
-    try {
-        // UTILISER GET pour éviter les problèmes CORS
-        const url = `${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-        
-        console.log('🔍 ENVOI REQUÊTE GET:', url);
-        
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        console.log('🔍 RÉPONSE SERVEUR:', data);
+            try {
+                // Utiliser GET pour éviter les problèmes CORS
+                const url = `${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+                
+                console.log('🔍 ENVOI REQUÊTE GET:', url);
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                console.log('🔍 RÉPONSE SERVEUR:', data);
 
-        if (data.success) {
-            currentClient = data;
+                if (data.success) {
+                    currentClient = data;
 
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('client-interface').classList.remove('hidden');
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('client-interface').classList.remove('hidden');
 
-            // Mise à jour immédiate de l'interface
-            updateClientInterface();
-            
-            showNotification(translations[currentLanguage].login_success, 'success');
-            
-        } else {
-            throw new Error(data.message || translations[currentLanguage].login_error);
+                    // Mise à jour immédiate de l'interface
+                    updateClientInterface();
+                    
+                    showNotification(translations[currentLanguage].login_success, 'success');
+                    
+                } else {
+                    throw new Error(data.message || translations[currentLanguage].login_error);
+                }
+            } catch (error) {
+                console.error('Erreur de connexion:', error);
+                message.textContent = error.message || translations[currentLanguage].login_error;
+                message.classList.remove('hidden');
+                message.className = 'message message-error';
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
         }
-    } catch (error) {
-        console.error('Erreur de connexion:', error);
-        message.textContent = error.message || translations[currentLanguage].login_error;
-        message.classList.remove('hidden');
-        message.className = 'message message-error';
-    } finally {
-        document.getElementById('loader').style.display = 'none';
-    }
-}
 
-// Fonction séparée pour mettre à jour l'interface
-function updateClientInterface() {
-    if (!currentClient) return;
-    
-    console.log('🔍 Mise à jour interface pour:', currentClient.client.prenom);
-    
-    // Méthode robuste pour trouver/mettre à jour les éléments
-    const clientNameElement = document.getElementById('client-name');
-    const clientCreditsElement = document.getElementById('client-credits');
-    
-    if (clientNameElement) {
-        clientNameElement.textContent = currentClient.client.prenom || "Client";
-        console.log('✅ Nom client mis à jour:', currentClient.client.prenom);
-    } else {
-        console.error('❌ Élément client-name non trouvé');
-        // Création d'urgence
-        createClientNameElement();
-    }
-    
-    if (clientCreditsElement) {
-        clientCreditsElement.textContent = currentClient.client.credits || 0;
-        console.log('✅ Crédits mis à jour:', currentClient.client.credits);
-    }
-    
-    // Charger les données
-    loadClientData();
-}
+        // Fonction séparée pour mettre à jour l'interface
+        function updateClientInterface() {
+            if (!currentClient) return;
+            
+            console.log('🔍 Mise à jour interface pour:', currentClient.client.prenom);
+            
+            // Mise à jour du nom client
+            const clientNameElement = document.getElementById('client-name-display');
+            if (clientNameElement) {
+                clientNameElement.textContent = currentClient.client.prenom || "Client";
+                console.log('✅ Nom client mis à jour:', currentClient.client.prenom);
+            }
+            
+            // Mise à jour des crédits
+            const creditsElement = document.getElementById('client-credits');
+            if (creditsElement) {
+                creditsElement.textContent = currentClient.client.credits || 0;
+                console.log('✅ Crédits mis à jour:', currentClient.client.credits);
+            }
+            
+            // Charger les données
+            loadClientData();
+        }
 
-// Fonction pour créer l'élément client-name si manquant
-function createClientNameElement() {
-    const welcomeElements = document.querySelectorAll('[data-translate="welcome"]');
-    if (welcomeElements.length > 0) {
-        const welcomeElement = welcomeElements[0];
-        const span = document.createElement('span');
-        span.id = 'client-name';
-        span.className = 'text-blue-600';
-        span.textContent = currentClient.client.prenom || "Client";
-        
-        // Vider et reconstruire le contenu
-        welcomeElement.innerHTML = '';
-        welcomeElement.appendChild(document.createTextNode(translations[currentLanguage].welcome.split('{name}')[0] + ' '));
-        welcomeElement.appendChild(span);
-        welcomeElement.appendChild(document.createTextNode(' !'));
-        
-        console.log('✅ Élément client-name créé manuellement');
-    }
-}        // Fonction de déconnexion
+        // Fonction de déconnexion
         function logout() {
             currentClient = null;
             document.getElementById('login-section').classList.remove('hidden');
@@ -1492,74 +1469,83 @@ function createClientNameElement() {
 
         // Charger les données du client
         function loadClientData() {
-    console.log('🔍 loadClientData CALLED');
-    console.log('🔍 currentClient:', currentClient);
-    console.log('🔍 demandes count:', currentClient?.demandes?.length);
-    console.log('🔍 demandes content:', currentClient?.demandes);
-    
-    if (!currentClient) return;
+            console.log('🔍 loadClientData CALLED');
+            console.log('🔍 currentClient:', currentClient);
+            console.log('🔍 demandes count:', currentClient?.demandes?.length);
+            console.log('🔍 demandes content:', currentClient?.demandes);
+            
+            if (!currentClient) return;
 
-    // FILTRER les demandes vides
-    if (currentClient.demandes) {
-    console.log('🔍 DEMANDES BEFORE FILTER:', currentClient.demandes);
-    
-    currentClient.demandes = currentClient.demandes.filter(d => {
-        const hasService = d.service && d.service.trim() !== "";
-        const hasIntervention = d.intervention && d.intervention.trim() !== "";
-        console.log('🔍 Filtering demande:', { 
-            service: d.service, 
-            intervention: d.intervention,
-            passes: hasService && hasIntervention
-        });
-        return hasService && hasIntervention;
-    });
-    
-    console.log('🔍 After filtering - demandes count:', currentClient.demandes.length);
-}
+            // FILTRER les demandes vides
+            if (currentClient.demandes) {
+                console.log('🔍 DEMANDES BEFORE FILTER:', currentClient.demandes);
+                
+                currentClient.demandes = currentClient.demandes.filter(d => {
+                    const hasService = d.service && d.service.trim() !== "";
+                    const hasIntervention = d.intervention && d.intervention.trim() !== "";
+                    console.log('🔍 Filtering demande:', { 
+                        service: d.service, 
+                        intervention: d.intervention,
+                        passes: hasService && hasIntervention
+                    });
+                    return hasService && hasIntervention;
+                });
+                
+                console.log('🔍 After filtering - demandes count:', currentClient.demandes.length);
+            }
 
-const statsSection = document.querySelector('.client-section:nth-child(3)');
-const tabsSection = document.querySelector('.client-section:nth-child(5)');
+            const statsSection = document.querySelector('.client-section:nth-child(3)');
+            const tabsSection = document.querySelector('.client-section:nth-child(5)');
 
-if (!currentClient.demandes || currentClient.demandes.length === 0) {
-    console.log('🔍 NO MISSIONS - hiding sections');
-    if (statsSection) statsSection.style.display = 'none';
-    if (tabsSection) tabsSection.style.display = 'none';
-    return;
-} else {
-    console.log('🔍 MISSIONS FOUND - showing sections');
-    if (statsSection) statsSection.style.display = 'block';
-    if (tabsSection) tabsSection.style.display = 'block';
-}
+            if (!currentClient.demandes || currentClient.demandes.length === 0) {
+                console.log('🔍 NO MISSIONS - hiding sections');
+                if (statsSection) statsSection.style.display = 'none';
+                if (tabsSection) tabsSection.style.display = 'none';
+                
+                // Afficher un message dans chaque onglet
+                ['pending', 'confirmed', 'progress', 'completed'].forEach(status => {
+                    const tableBody = document.getElementById(`${status}-requests-table`);
+                    const cardsContainer = document.getElementById(`${status}-requests-cards`);
+                    if (tableBody) tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">${translations[currentLanguage].no_requests}</td></tr>`;
+                    if (cardsContainer) cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${translations[currentLanguage].no_requests}</div>`;
+                });
+                return;
+            } else {
+                console.log('🔍 MISSIONS FOUND - showing sections');
+                if (statsSection) statsSection.style.display = 'block';
+                if (tabsSection) tabsSection.style.display = 'block';
+            }
 
-    // Calculer les statistiques (seulement si demandes existent)
-    const pendingCount = currentClient.demandes.filter(d => 
-        d.statut === "En attente" || !d.statut
-    ).length;
-    
-    const confirmedCount = currentClient.demandes.filter(d => 
-        d.statut === "Confirmée"
-    ).length;
-    
-    const progressCount = currentClient.demandes.filter(d => 
-        d.statut === "En cours"
-    ).length;
-    
-    const completedCount = currentClient.demandes.filter(d => 
-        d.statut === "Terminée" || d.validationClient === "validée"
-    ).length;
+            // Calculer les statistiques
+            const pendingCount = currentClient.demandes.filter(d => 
+                d.statut === "En attente" || !d.statut
+            ).length;
+            
+            const confirmedCount = currentClient.demandes.filter(d => 
+                d.statut === "Confirmée"
+            ).length;
+            
+            const progressCount = currentClient.demandes.filter(d => 
+                d.statut === "En cours"
+            ).length;
+            
+            const completedCount = currentClient.demandes.filter(d => 
+                d.statut === "Terminée" || d.validationClient === "validée"
+            ).length;
 
-    // Mettre à jour les statistiques
-    document.getElementById('stats-pending').textContent = pendingCount;
-    document.getElementById('stats-confirmed').textContent = confirmedCount;
-    document.getElementById('stats-progress').textContent = progressCount;
-    document.getElementById('stats-completed').textContent = completedCount;
+            // Mettre à jour les statistiques
+            document.getElementById('stats-pending').textContent = pendingCount;
+            document.getElementById('stats-confirmed').textContent = confirmedCount;
+            document.getElementById('stats-progress').textContent = progressCount;
+            document.getElementById('stats-completed').textContent = completedCount;
 
-    // Charger les demandes pour chaque onglet
-    loadRequests('pending');
-    loadRequests('confirmed');
-    loadRequests('progress');
-    loadRequests('completed');
-}
+            // Charger les demandes pour chaque onglet
+            loadRequests('pending');
+            loadRequests('confirmed');
+            loadRequests('progress');
+            loadRequests('completed');
+        }
+
         // Formatage des dates
         function formatDateOrTime(dateString) {
             if (!dateString) return "";
@@ -1580,69 +1566,93 @@ if (!currentClient.demandes || currentClient.demandes.length === 0) {
 
         // Charger les demandes par statut
         function loadRequests(status) {
-    if (!currentClient || !currentClient.demandes || currentClient.demandes.length === 0) {
-        // CACHER les tableaux au lieu d'afficher un message
-        document.getElementById(`${status}-requests-table`).innerHTML = '';
-        document.getElementById(`${status}-requests-cards`).innerHTML = '';
-        return;
-    }
+            if (!currentClient || !currentClient.demandes || currentClient.demandes.length === 0) {
+                const tableBody = document.getElementById(`${status}-requests-table`);
+                const cardsContainer = document.getElementById(`${status}-requests-cards`);
+                if (tableBody) tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">${translations[currentLanguage].no_requests}</td></tr>`;
+                if (cardsContainer) cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${translations[currentLanguage].no_requests}</div>`;
+                return;
+            }
 
-    // Le reste du code existant pour filtrer et afficher les demandes...
-    const tableBody = document.getElementById(`${status}-requests-table`);
-    const cardsContainer = document.getElementById(`${status}-requests-cards`);
-    
-    // Filtrer les demandes selon le statut
-    let filteredRequests = [];
-    
-    switch(status) {
-        case 'pending':
-            filteredRequests = currentClient.demandes.filter(d => 
-                d.statut === "En attente" || !d.statut
-            );
-            break;
-        case 'confirmed':
-            filteredRequests = currentClient.demandes.filter(d => 
-                d.statut === "Confirmée"
-            );
-            break;
-        case 'progress':
-            filteredRequests = currentClient.demandes.filter(d => 
-                d.statut === "En cours"
-            );
-            break;
-        case 'completed':
-            filteredRequests = currentClient.demandes.filter(d => 
-                d.statut === "Terminée" || d.validationClient === "validée"
-            );
-            break;
-    }
-    
-    // Si pas de demandes pour ce statut, vider les tableaux
-    if (filteredRequests.length === 0) {
-        tableBody.innerHTML = '';
-        cardsContainer.innerHTML = '';
-    } else {
-        // Afficher les demandes
-        tableBody.innerHTML = filteredRequests.map(request => `
-            <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                <td class="p-4">${formatDateOrTime(request.dateDemande)}</td>
-                <td class="p-4">${request.service || ""}</td>
-                <td class="p-4">${formatDateOrTime(request.intervention)}</td>
-                <td class="p-4">${formatDateOrTime(request.heure)}</td>
-                <td class="p-4">${request.tache || ""}</td>
-                <td class="p-4">${getStatusBadge(request)}</td>
-                ${status === 'completed' ? `<td class="p-4">${getRequestActions(status, request)}</td>` : ''}
-            </tr>
-        `).join('');
-        
-        // Mettre à jour les cartes mobiles
-        cardsContainer.innerHTML = filteredRequests.map(request => `
-            <div class="request-card">
-                <!-- contenu des cartes -->
-            </div>
-        `).join('');
-    }
-}
+            const tableBody = document.getElementById(`${status}-requests-table`);
+            const cardsContainer = document.getElementById(`${status}-requests-cards`);
+            
+            // Filtrer les demandes selon le statut
+            let filteredRequests = [];
+            
+            switch(status) {
+                case 'pending':
+                    filteredRequests = currentClient.demandes.filter(d => 
+                        d.statut === "En attente" || !d.statut
+                    );
+                    break;
+                case 'confirmed':
+                    filteredRequests = currentClient.demandes.filter(d => 
+                        d.statut === "Confirmée"
+                    );
+                    break;
+                case 'progress':
+                    filteredRequests = currentClient.demandes.filter(d => 
+                        d.statut === "En cours"
+                    );
+                    break;
+                case 'completed':
+                    filteredRequests = currentClient.demandes.filter(d => 
+                        d.statut === "Terminée" || d.validationClient === "validée"
+                    );
+                    break;
+            }
+            
+            // Si pas de demandes pour ce statut
+            if (filteredRequests.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">${translations[currentLanguage].no_requests}</td></tr>`;
+                cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${translations[currentLanguage].no_requests}</div>`;
+            } else {
+                // Afficher les demandes dans le tableau
+                tableBody.innerHTML = filteredRequests.map(request => `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td class="p-4">${formatDateOrTime(request.dateDemande)}</td>
+                        <td class="p-4">${request.service || ""}</td>
+                        <td class="p-4">${formatDateOrTime(request.intervention)}</td>
+                        <td class="p-4">${formatDateOrTime(request.heure)}</td>
+                        <td class="p-4">${request.tache || ""}</td>
+                        <td class="p-4">${getStatusBadge(request)}</td>
+                        ${status === 'completed' ? `<td class="p-4">${getRequestActions(status, request)}</td>` : '<td></td>'}
+                    </tr>
+                `).join('');
+                
+                // Mettre à jour les cartes mobiles
+                cardsContainer.innerHTML = filteredRequests.map(request => `
+                    <div class="request-card">
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].request_date}</span>
+                            <span class="card-value">${formatDateOrTime(request.dateDemande)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].service}</span>
+                            <span class="card-value">${request.service || ""}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].intervention}</span>
+                            <span class="card-value">${formatDateOrTime(request.intervention)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].time}</span>
+                            <span class="card-value">${formatDateOrTime(request.heure)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">${translations[currentLanguage].task}</span>
+                            <span class="card-value">${request.tache || ""}</span>
+                        </div>
+                        <div class="card-status">
+                            ${getStatusBadge(request)}
+                            ${status === 'completed' ? getRequestActions(status, request) : ''}
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
         function getStatusBadge(request) {
             const status = request.statut || "En attente";
             const validation = request.validationClient;
@@ -1668,7 +1678,7 @@ if (!currentClient.demandes || currentClient.demandes.length === 0) {
         function getRequestActions(status, request) {
             if (status === 'completed' && request.statut === "Terminée" && request.validationClient !== "validée") {
                 return `
-                    <button onclick="validateRequest('${request.idMission}')" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors text-sm">
+                    <button onclick="validateRequest('${request.idMission}')" class="bg-green-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors text-sm mt-2">
                         <i class="fas fa-check mr-1"></i>
                         ${translations[currentLanguage].request_validate}
                     </button>
@@ -1676,7 +1686,7 @@ if (!currentClient.demandes || currentClient.demandes.length === 0) {
             }
             
             return `
-                <button onclick="showRequestDetails('${request.idMission}')" class="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors text-sm">
+                <button onclick="showRequestDetails('${request.idMission}')" class="border border-blue-500 text-blue-500 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors text-sm mt-2">
                     <i class="fas fa-info-circle mr-1"></i>
                     ${translations[currentLanguage].request_details}
                 </button>
@@ -1771,140 +1781,157 @@ if (!currentClient.demandes || currentClient.demandes.length === 0) {
             document.getElementById('closed-missions-modal').style.display = 'block';
         }
 
-// Dans iclient.html - CORRIGEZ showProfileModal
-function showProfileModal() {
-    console.log('🔍 showProfileModal CALLED');
-    
-    if (!currentClient) {
-        console.error('❌ currentClient is null or undefined');
-        return;
-    }
-    
-    console.log('🔍 currentClient:', currentClient);
-    console.log('🔍 Données client:', currentClient.client);
-    
-    // PRÉ-REMPLIR LE FORMULAIRE
-    
-    // Section PERSONNE SOUS TUTELLE
-    document.getElementById('profile-firstname').value = currentClient.client.prenom || '';
-    document.getElementById('profile-lastname').value = currentClient.client.nom || '';
-    document.getElementById('profile-email').value = currentClient.client.email || ''; // Email personne sous tutelle
-    document.getElementById('profile-address').value = currentClient.client.adresse || '';
-    document.getElementById('profile-city').value = currentClient.client.ville || '';
-    document.getElementById('profile-postal').value = currentClient.client.codePostal || '';
-    document.getElementById('profile-phone').value = currentClient.client.telephone || '';
-    
-    // Section TUTEUR
-    document.getElementById('profile-tutor-firstname').value = currentClient.client.prenomTuteur || '';
-    document.getElementById('profile-tutor-lastname').value = currentClient.client.nomTuteur || '';
-    document.getElementById('profile-tutor-address').value = currentClient.client.adresseTuteur || '';
-    document.getElementById('profile-tutor-city').value = currentClient.client.villeTuteur || '';
-    document.getElementById('profile-tutor-postal').value = currentClient.client.codePostalTuteur || '';
-    document.getElementById('profile-tutor-phone').value = currentClient.client.telephoneTuteur || '';
-    
-    // Afficher la modale
-    const modal = document.getElementById('profile-modal');
-    if (modal) {
-        modal.style.display = 'block';
-        console.log('✅ Modal displayed successfully');
-    } else {
-        console.error('❌ Modal element not found');
-    }
-}
-        async function saveProfile() {
-    console.log('🔍 saveProfile CALLED');
-    
-    // Récupérer les valeurs du formulaire - CORRECTION DÉFINITIVE
-    const formData = {
-        type: 'updateClientProfile',
-        email: currentClient.client.email, // Email original pour la recherche
-        prenom: document.getElementById('profile-firstname').value,
-        nom: document.getElementById('profile-lastname').value,
-        // ⚠️ CORRECTION : utiliser 'email' pour le nouvel email (comme côté serveur)
-        email: document.getElementById('profile-email').value, // Nouvel email
-        adresse: document.getElementById('profile-address').value,
-        ville: document.getElementById('profile-city').value,
-        codePostal: document.getElementById('profile-postal').value,
-        telephone: document.getElementById('profile-phone').value,
-        prenomTuteur: document.getElementById('profile-tutor-firstname').value,
-        nomTuteur: document.getElementById('profile-tutor-lastname').value,
-        adresseTuteur: document.getElementById('profile-tutor-address').value,
-        villeTuteur: document.getElementById('profile-tutor-city').value,
-        codePostalTuteur: document.getElementById('profile-tutor-postal').value,
-        telephoneTuteur: document.getElementById('profile-tutor-phone').value,
-        password: document.getElementById('profile-password').value || ''
-    };
-    
-    console.log('🔍 Données à envoyer:', formData);
-    
-    // Validation basique
-    if (!formData.prenom || !formData.nom || !formData.email) {
-        showNotification(translations[currentLanguage].fill_fields, 'error');
-        return;
-    }
-    
-    document.getElementById('loader').style.display = 'flex';
-    
-    try {
-        console.log('🔍 Envoi des données au serveur...');
-        console.log('🔍 URLSearchParams:', new URLSearchParams(formData).toString());
-        
-        const response = await fetch(webAppUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams(formData)
-        });
-        
-        const responseText = await response.text();
-        console.log('🔍 Réponse brute:', responseText);
-        
-        let data;
-        try {
-            data = JSON.parse(responseText);
-            console.log('🔍 Réponse parsée:', data);
-        } catch (parseError) {
-            console.error('❌ Erreur parsing JSON:', parseError);
-            throw new Error('Réponse serveur invalide: ' + responseText);
-        }
-        
-        if (data.success) {
-            showNotification(data.message || translations[currentLanguage].profile_updated, 'success');
+        function showProfileModal() {
+            console.log('🔍 showProfileModal CALLED');
             
-            // Mettre à jour les données locales
-            if (currentClient && currentClient.client) {
-                currentClient.client.prenom = formData.prenom;
-                currentClient.client.nom = formData.nom;
-                currentClient.client.email = formData.email; // Mettre à jour l'email
-                currentClient.client.adresse = formData.adresse;
-                currentClient.client.ville = formData.ville;
-                currentClient.client.codePostal = formData.codePostal;
-                currentClient.client.telephone = formData.telephone;
-                
-                // Mettre à jour l'affichage
-                document.getElementById('client-name').textContent = formData.prenom;
-                document.getElementById('client-credits').textContent = currentClient.client.credits || 0;
+            if (!currentClient) {
+                console.error('❌ currentClient is null or undefined');
+                return;
             }
             
-            closeModal('profile-modal');
+            console.log('🔍 currentClient:', currentClient);
+            console.log('🔍 Données client:', currentClient.client);
             
-            // Vider le champ mot de passe
-            document.getElementById('profile-password').value = '';
+            // PRÉ-REMPLIR LE FORMULAIRE
             
-        } else {
-            throw new Error(data.message || 'Erreur lors de la mise à jour');
+            // Section PERSONNE SOUS TUTELLE
+            document.getElementById('profile-firstname').value = currentClient.client.prenom || '';
+            document.getElementById('profile-lastname').value = currentClient.client.nom || '';
+            document.getElementById('profile-email').value = currentClient.client.email || ''; // Email personne sous tutelle
+            document.getElementById('profile-address').value = currentClient.client.adresse || '';
+            document.getElementById('profile-city').value = currentClient.client.ville || '';
+            document.getElementById('profile-postal').value = currentClient.client.codePostal || '';
+            document.getElementById('profile-phone').value = currentClient.client.telephone || '';
+            
+            // Section TUTEUR
+            document.getElementById('profile-tutor-firstname').value = currentClient.client.prenomTuteur || '';
+            document.getElementById('profile-tutor-lastname').value = currentClient.client.nomTuteur || '';
+            document.getElementById('profile-tutor-address').value = currentClient.client.adresseTuteur || '';
+            document.getElementById('profile-tutor-city').value = currentClient.client.villeTuteur || '';
+            document.getElementById('profile-tutor-postal').value = currentClient.client.codePostalTuteur || '';
+            document.getElementById('profile-tutor-phone').value = currentClient.client.telephoneTuteur || '';
+            
+            // Afficher la modale
+            const modal = document.getElementById('profile-modal');
+            if (modal) {
+                modal.style.display = 'block';
+                console.log('✅ Modal displayed successfully');
+            } else {
+                console.error('❌ Modal element not found');
+            }
         }
-        
-    } catch (error) {
-        console.error('❌ Erreur sauvegarde profil:', error);
-        showNotification(error.message || translations[currentLanguage].server_error, 'error');
-    } finally {
-        document.getElementById('loader').style.display = 'none';
-    }
-}
+
+        async function saveProfile() {
+            console.log('🔍 saveProfile CALLED');
+            
+            // Récupérer les valeurs du formulaire
+            const formData = {
+                type: 'updateClientProfile',
+                email: currentClient.client.email, // Email original pour la recherche
+                prenom: document.getElementById('profile-firstname').value,
+                nom: document.getElementById('profile-lastname').value,
+                email: document.getElementById('profile-email').value, // Nouvel email
+                adresse: document.getElementById('profile-address').value,
+                ville: document.getElementById('profile-city').value,
+                codePostal: document.getElementById('profile-postal').value,
+                telephone: document.getElementById('profile-phone').value,
+                prenomTuteur: document.getElementById('profile-tutor-firstname').value,
+                nomTuteur: document.getElementById('profile-tutor-lastname').value,
+                adresseTuteur: document.getElementById('profile-tutor-address').value,
+                villeTuteur: document.getElementById('profile-tutor-city').value,
+                codePostalTuteur: document.getElementById('profile-tutor-postal').value,
+                telephoneTuteur: document.getElementById('profile-tutor-phone').value,
+                password: document.getElementById('profile-password').value || ''
+            };
+            
+            console.log('🔍 Données à envoyer:', formData);
+            
+            // Validation basique
+            if (!formData.prenom || !formData.nom || !formData.email) {
+                showNotification(translations[currentLanguage].fill_fields, 'error');
+                return;
+            }
+            
+            document.getElementById('loader').style.display = 'flex';
+            
+            try {
+                console.log('🔍 Envoi des données au serveur...');
+                
+                const response = await fetch(webAppUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(formData)
+                });
+                
+                const responseText = await response.text();
+                console.log('🔍 Réponse brute:', responseText);
+                
+                let data;
+                try {
+                    data = JSON.parse(responseText);
+                    console.log('🔍 Réponse parsée:', data);
+                } catch (parseError) {
+                    console.error('❌ Erreur parsing JSON:', parseError);
+                    throw new Error('Réponse serveur invalide: ' + responseText);
+                }
+                
+                if (data.success) {
+                    showNotification(data.message || translations[currentLanguage].profile_updated, 'success');
+                    
+                    // Mettre à jour les données locales
+                    if (currentClient && currentClient.client) {
+                        currentClient.client.prenom = formData.prenom;
+                        currentClient.client.nom = formData.nom;
+                        currentClient.client.email = formData.email; // Mettre à jour l'email
+                        currentClient.client.adresse = formData.adresse;
+                        currentClient.client.ville = formData.ville;
+                        currentClient.client.codePostal = formData.codePostal;
+                        currentClient.client.telephone = formData.telephone;
+                        
+                        // Mettre à jour l'affichage
+                        document.getElementById('client-name-display').textContent = formData.prenom;
+                        document.getElementById('client-credits').textContent = currentClient.client.credits || 0;
+                    }
+                    
+                    closeModal('profile-modal');
+                    
+                    // Vider le champ mot de passe
+                    document.getElementById('profile-password').value = '';
+                    
+                } else {
+                    throw new Error(data.message || 'Erreur lors de la mise à jour');
+                }
+                
+            } catch (error) {
+                console.error('❌ Erreur sauvegarde profil:', error);
+                showNotification(error.message || translations[currentLanguage].server_error, 'error');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
+        }
+
+        function showTab(tabName) {
+            // Masquer tous les onglets
+            document.querySelectorAll('.tab-container').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Désactiver tous les boutons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Activer l'onglet sélectionné
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            
+            // Activer le bouton sélectionné
+            event.target.classList.add('active');
         }
 
         function showNotification(message, type = 'info') {
@@ -1941,6 +1968,19 @@ function showProfileModal() {
                     }, 300);
                 }
             }, 5000);
+        }
+
+        // Fonctions d'actions rapides
+        function rechargerCredits() {
+            showNotification(translations[currentLanguage].payment_redirect, 'info');
+            // Redirection vers la page de paiement
+            setTimeout(() => {
+                window.open('https://viiveo.com/paiement', '_blank');
+            }, 1000);
+        }
+
+        function voirRapports() {
+            showNotification(translations[currentLanguage].reports_coming, 'info');
         }
 
         // Initialisation
