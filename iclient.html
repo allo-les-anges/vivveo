@@ -1086,142 +1086,143 @@
             </div>
             <div class="modal-body">
                 <form id="profile-form" onsubmit="event.preventDefault(); saveProfile();">
-                    <!-- Section informations personnelles -->
-                    <div class="form-section">
-                        <h3 class="form-section-title">
-                            <i class="fas fa-user-circle"></i>
-                            <span data-translate="personal_info">Informations personnelles</span>
-                        </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="form-group">
-                                <label data-translate="client_firstname">Prénom</label>
-                                <div class="relative">
-                                    <input type="text" id="profile-firstname" class="form-input" required>
-                                    <i class="fas fa-user form-input-icon"></i>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label data-translate="client_name">Nom</label>
-                                <div class="relative">
-                                    <input type="text" id="profile-lastname" class="form-input" required>
-                                    <i class="fas fa-user form-input-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label data-translate="client_email">Email</label>
-                            <div class="relative">
-                                <input type="email" id="profile-email" class="form-input" required>
-                                <i class="fas fa-envelope form-input-icon"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label data-translate="client_password">Nouveau mot de passe</label>
-                            <div class="relative">
-                                <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer" autocomplete="new-password">
-                                <i class="fas fa-lock form-input-icon"></i>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Section 1 : Données du tuteur -->
+<div class="form-section">
+    <h3 class="form-section-title">
+        <i class="fas fa-user-shield"></i>
+        <span data-translate="tutor_info">Données du tuteur</span>
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="form-group">
+            <label data-translate="tutor_firstname">Prénom du tuteur</label>
+            <div class="relative">
+                <input type="text" id="profile-tutor-firstname" class="form-input">
+                <i class="fas fa-user form-input-icon"></i>
+            </div>
+        </div>
+        <div class="form-group">
+            <label data-translate="tutor_name">Nom du tuteur</label>
+            <div class="relative">
+                <input type="text" id="profile-tutor-lastname" class="form-input">
+                <i class="fas fa-user form-input-icon"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label data-translate="tutor_email">Email du tuteur</label>
+        <div class="relative">
+            <input type="email" id="profile-tutor-email" class="form-input" required autocomplete="email">
+            <i class="fas fa-envelope form-input-icon"></i>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label data-translate="tutor_address">Adresse du tuteur</label>
+        <div class="relative">
+            <input type="text" id="profile-tutor-address" class="form-input">
+            <i class="fas fa-home form-input-icon"></i>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="form-group">
+            <label data-translate="tutor_city">Ville du tuteur</label>
+            <div class="relative">
+                <input type="text" id="profile-tutor-city" class="form-input">
+                <i class="fas fa-city form-input-icon"></i>
+            </div>
+        </div>
+        <div class="form-group">
+            <label data-translate="tutor_postal">Code postal du tuteur</label>
+            <div class="relative">
+                <input type="text" id="profile-tutor-postal" class="form-input">
+                <i class="fas fa-mail-bulk form-input-icon"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label data-translate="tutor_phone">Téléphone du tuteur</label>
+        <div class="relative">
+            <input type="tel" id="profile-tutor-phone" class="form-input">
+            <i class="fas fa-phone form-input-icon"></i>
+        </div>
+    </div>
+</div>
 
-                    <!-- Section coordonnées -->
-                    <div class="form-section">
-                        <h3 class="form-section-title">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span data-translate="contact_info">Coordonnées</span>
-                        </h3>
-                        <div class="form-group">
-                            <label data-translate="client_address">Adresse</label>
-                            <div class="relative">
-                                <input type="text" id="profile-address" class="form-input">
-                                <i class="fas fa-home form-input-icon"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="form-group">
-                                <label data-translate="client_city">Ville</label>
-                                <div class="relative">
-                                    <input type="text" id="profile-city" class="form-input">
-                                    <i class="fas fa-city form-input-icon"></i>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label data-translate="client_postal">Code postal</label>
-                                <div class="relative">
-                                    <input type="text" id="profile-postal" class="form-input">
-                                    <i class="fas fa-mail-bulk form-input-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label data-translate="client_phone">Téléphone</label>
-                            <div class="relative">
-                                <input type="tel" id="profile-phone" class="form-input">
-                                <i class="fas fa-phone form-input-icon"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section tuteur -->
-                    <div class="form-section">
-                        <h3 class="form-section-title">
-                            <i class="fas fa-user-shield"></i>
-                            <span data-translate="tutor_info">Données du tuteur</span>
-                        </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="form-group">
-                                <label data-translate="tutor_firstname">Prénom du tuteur</label>
-                                <div class="relative">
-                                    <input type="text" id="profile-tutor-firstname" class="form-input">
-                                    <i class="fas fa-user form-input-icon"></i>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label data-translate="tutor_name">Nom du tuteur</label>
-                                <div class="relative">
-                                    <input type="text" id="profile-tutor-lastname" class="form-input">
-                                    <i class="fas fa-user form-input-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label data-translate="tutor_address">Adresse du tuteur</label>
-                            <div class="relative">
-                                <input type="text" id="profile-tutor-address" class="form-input">
-                                <i class="fas fa-home form-input-icon"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="form-group">
-                                <label data-translate="tutor_city">Ville du tuteur</label>
-                                <div class="relative">
-                                    <input type="text" id="profile-tutor-city" class="form-input">
-                                    <i class="fas fa-city form-input-icon"></i>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label data-translate="tutor_postal">Code postal du tuteur</label>
-                                <div class="relative">
-                                    <input type="text" id="profile-tutor-postal" class="form-input">
-                                    <i class="fas fa-mail-bulk form-input-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label data-translate="tutor_phone">Téléphone du tuteur</label>
-                            <div class="relative">
-                                <input type="tel" id="profile-tutor-phone" class="form-input">
-                                <i class="fas fa-phone form-input-icon"></i>
-                            </div>
-                        </div>
-                    </div>
+<!-- Section 2 : Données de la personne sous tutelle -->
+<div class="form-section">
+    <h3 class="form-section-title">
+        <i class="fas fa-user-circle"></i>
+        <span data-translate="personal_info">Données de la personne sous tutelle</span>
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="form-group">
+            <label data-translate="client_firstname">Prénom</label>
+            <div class="relative">
+                <input type="text" id="profile-firstname" class="form-input" required>
+                <i class="fas fa-user form-input-icon"></i>
+            </div>
+        </div>
+        <div class="form-group">
+            <label data-translate="client_name">Nom</label>
+            <div class="relative">
+                <input type="text" id="profile-lastname" class="form-input" required>
+                <i class="fas fa-user form-input-icon"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label data-translate="client_email">Email</label>
+        <div class="relative">
+            <input type="email" id="profile-email" class="form-input" required autocomplete="email">
+            <i class="fas fa-envelope form-input-icon"></i>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label data-translate="client_password">Nouveau mot de passe</label>
+        <div class="relative">
+            <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer" autocomplete="new-password">
+            <i class="fas fa-lock form-input-icon"></i>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label data-translate="client_address">Adresse</label>
+        <div class="relative">
+            <input type="text" id="profile-address" class="form-input">
+            <i class="fas fa-home form-input-icon"></i>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="form-group">
+            <label data-translate="client_city">Ville</label>
+            <div class="relative">
+                <input type="text" id="profile-city" class="form-input">
+                <i class="fas fa-city form-input-icon"></i>
+            </div>
+        </div>
+        <div class="form-group">
+            <label data-translate="client_postal">Code postal</label>
+            <div class="relative">
+                <input type="text" id="profile-postal" class="form-input">
+                <i class="fas fa-mail-bulk form-input-icon"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label data-translate="client_phone">Téléphone</label>
+        <div class="relative">
+            <input type="tel" id="profile-phone" class="form-input">
+            <i class="fas fa-phone form-input-icon"></i>
+        </div>
+    </div>
+</div>
                     
                     <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
                         <button type="button" onclick="closeModal('profile-modal')" class="btn-secondary" data-translate="cancel">
@@ -1789,46 +1790,58 @@
             document.getElementById('closed-missions-modal').style.display = 'block';
         }
 
-        function showProfileModal() {
-            console.log('🔍 showProfileModal CALLED');
-            
-            if (!currentClient) {
-                console.error('❌ currentClient is null or undefined');
-                return;
-            }
-            
-            console.log('🔍 currentClient:', currentClient);
-            console.log('🔍 Données client:', currentClient.client);
-            
-            // PRÉ-REMPLIR LE FORMULAIRE
-            
-            // Section PERSONNE SOUS TUTELLE
-            document.getElementById('profile-firstname').value = currentClient.client.prenom || '';
-            document.getElementById('profile-lastname').value = currentClient.client.nom || '';
-            document.getElementById('profile-email').value = currentClient.client.email || ''; // Email personne sous tutelle
-            document.getElementById('profile-address').value = currentClient.client.adresse || '';
-            document.getElementById('profile-city').value = currentClient.client.ville || '';
-            document.getElementById('profile-postal').value = currentClient.client.codePostal || '';
-            document.getElementById('profile-phone').value = currentClient.client.telephone || '';
-            
-            // Section TUTEUR
-            document.getElementById('profile-tutor-firstname').value = currentClient.client.prenomTuteur || '';
-            document.getElementById('profile-tutor-lastname').value = currentClient.client.nomTuteur || '';
-            document.getElementById('profile-tutor-address').value = currentClient.client.adresseTuteur || '';
-            document.getElementById('profile-tutor-city').value = currentClient.client.villeTuteur || '';
-            document.getElementById('profile-tutor-postal').value = currentClient.client.codePostalTuteur || '';
-            document.getElementById('profile-tutor-phone').value = currentClient.client.telephoneTuteur || '';
-            
-            // Afficher la modale
-            const modal = document.getElementById('profile-modal');
-            if (modal) {
-                modal.style.display = 'block';
-                console.log('✅ Modal displayed successfully');
-            } else {
-                console.error('❌ Modal element not found');
-            }
-        }
-
+function showProfileModal() {
+    console.log('🔍 showProfileModal CALLED');
+    
+    if (!currentClient) {
+        console.error('❌ currentClient is null or undefined');
+        return;
+    }
+    
+    console.log('🔍 currentClient:', currentClient);
+    console.log('🔍 Données client:', currentClient.client);
+    
+    // CORRECTION : MAPPING CORRECT DES DONNÉES
+    
+    // === SECTION 1 : DONNÉES DU TUTEUR (colonnes A-E) ===
+    document.getElementById('profile-tutor-firstname').value = currentClient.client.prenom || ''; // Colonne A
+    document.getElementById('profile-tutor-lastname').value = currentClient.client.nom || ''; // Colonne B
+    document.getElementById('profile-tutor-address').value = currentClient.client.adresse || ''; // Colonne C
+    document.getElementById('profile-tutor-phone').value = currentClient.client.telephone || ''; // Colonne D
+    document.getElementById('profile-tutor-email').value = currentClient.client.email || ''; // Colonne E
+    document.getElementById('profile-tutor-city').value = currentClient.client.villeTuteur || ''; // Colonne T
+    document.getElementById('profile-tutor-postal').value = currentClient.client.codePostalTuteur || ''; // Colonne U
+    
+    // === SECTION 2 : DONNÉES PERSONNE SOUS TUTELLE (colonnes F-J) ===
+    document.getElementById('profile-firstname').value = currentClient.client.prenomPersonne || ''; // Colonne F
+    document.getElementById('profile-lastname').value = currentClient.client.nomPersonne || ''; // Colonne G
+    document.getElementById('profile-address').value = currentClient.client.adressePersonne || ''; // Colonne H
+    document.getElementById('profile-phone').value = currentClient.client.telephonePersonne || ''; // Colonne I
+    document.getElementById('profile-email').value = currentClient.client.emailPersonne || ''; // Colonne J
+    document.getElementById('profile-city').value = currentClient.client.villePersonne || ''; // Colonne V
+    document.getElementById('profile-postal').value = currentClient.client.codePostalPersonne || ''; // Colonne W
+    
+    console.log('🔍 Données chargées:');
+    console.log('   Tuteur:', {
+        prenom: currentClient.client.prenom,
+        nom: currentClient.client.nom,
+        email: currentClient.client.email
+    });
+    console.log('   Personne sous tutelle:', {
+        prenom: currentClient.client.prenomPersonne,
+        nom: currentClient.client.nomPersonne,
+        email: currentClient.client.emailPersonne
+    });
+    
+    // Afficher la modale
+    const modal = document.getElementById('profile-modal');
+    if (modal) {
+        modal.style.display = 'block';
+        console.log('✅ Modal displayed successfully');
+    } else {
+        console.error('❌ Modal element not found');
+    }
+}
         async function saveProfile() {
             console.log('🔍 saveProfile CALLED');
             
