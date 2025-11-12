@@ -1845,10 +1845,11 @@ function showProfileModal() {
 async function saveProfile() {
     console.log('🔍 saveProfile CALLED');
     
-    // Récupérer les valeurs du formulaire - CORRECTION DE L'EMAIL
+    // Récupérer les valeurs du formulaire - CORRECTION COMPLÈTE
     const formData = {
         type: 'updateClientProfile',
-        email: currentClient.client.email, // ⚠️ CORRECTION: Email ORIGINAL du tuteur (gm.harchies@gmail.com)
+        originalEmail: currentClient.client.email, // Email original pour la recherche
+        prenomTuteurRecherche: currentClient.client.prenom, // ⚠️ NOUVEAU : "Bob" pour identifier la bonne ligne
         prenom: document.getElementById('profile-firstname').value,
         nom: document.getElementById('profile-lastname').value,
         email: document.getElementById('profile-email').value, // Nouvel email personne sous tutelle
@@ -1867,30 +1868,8 @@ async function saveProfile() {
     
     console.log('🔍 Données à envoyer:', formData);
     
-    // ⚠️ CORRECTION: Utiliser un nom différent pour le nouvel email
-    const updatedFormData = {
-        type: 'updateClientProfile',
-        originalEmail: currentClient.client.email, // Email original pour la recherche
-        prenom: formData.prenom,
-        nom: formData.nom,
-        email: formData.email, // Nouvel email
-        adresse: formData.adresse,
-        ville: formData.ville,
-        codePostal: formData.codePostal,
-        telephone: formData.telephone,
-        prenomTuteur: formData.prenomTuteur,
-        nomTuteur: formData.nomTuteur,
-        adresseTuteur: formData.adresseTuteur,
-        villeTuteur: formData.villeTuteur,
-        codePostalTuteur: formData.codePostalTuteur,
-        telephoneTuteur: formData.telephoneTuteur,
-        password: formData.password
-    };
-    
-    console.log('🔍 Données corrigées:', updatedFormData);
-    
     // Validation basique
-    if (!updatedFormData.prenom || !updatedFormData.nom || !updatedFormData.email) {
+    if (!formData.prenom || !formData.nom || !formData.email) {
         showNotification(translations[currentLanguage].fill_fields, 'error');
         return;
     }
@@ -1902,9 +1881,9 @@ async function saveProfile() {
         
         // CONVERSION EN PARAMÈTRES GET
         const params = new URLSearchParams();
-        Object.keys(updatedFormData).forEach(key => {
-            if (updatedFormData[key] !== undefined && updatedFormData[key] !== null && updatedFormData[key] !== '') {
-                params.append(key, updatedFormData[key]);
+        Object.keys(formData).forEach(key => {
+            if (formData[key] !== undefined && formData[key] !== null && formData[key] !== '') {
+                params.append(key, formData[key]);
             }
         });
         
@@ -1930,21 +1909,21 @@ async function saveProfile() {
             // Mettre à jour les données locales
             if (currentClient && currentClient.client) {
                 // Mettre à jour les données personne sous tutelle
-                currentClient.client.prenomPersonne = updatedFormData.prenom;
-                currentClient.client.nomPersonne = updatedFormData.nom;
-                currentClient.client.emailPersonne = updatedFormData.email;
-                currentClient.client.adressePersonne = updatedFormData.adresse;
-                currentClient.client.villePersonne = updatedFormData.ville;
-                currentClient.client.codePostalPersonne = updatedFormData.codePostal;
-                currentClient.client.telephonePersonne = updatedFormData.telephone;
+                currentClient.client.prenomPersonne = formData.prenom;
+                currentClient.client.nomPersonne = formData.nom;
+                currentClient.client.emailPersonne = formData.email;
+                currentClient.client.adressePersonne = formData.adresse;
+                currentClient.client.villePersonne = formData.ville;
+                currentClient.client.codePostalPersonne = formData.codePostal;
+                currentClient.client.telephonePersonne = formData.telephone;
                 
                 // Mettre à jour les données tuteur
-                currentClient.client.prenomTuteur = updatedFormData.prenomTuteur;
-                currentClient.client.nomTuteur = updatedFormData.nomTuteur;
-                currentClient.client.adresseTuteur = updatedFormData.adresseTuteur;
-                currentClient.client.villeTuteur = updatedFormData.villeTuteur;
-                currentClient.client.codePostalTuteur = updatedFormData.codePostalTuteur;
-                currentClient.client.telephoneTuteur = updatedFormData.telephoneTuteur;
+                currentClient.client.prenomTuteur = formData.prenomTuteur;
+                currentClient.client.nomTuteur = formData.nomTuteur;
+                currentClient.client.adresseTuteur = formData.adresseTuteur;
+                currentClient.client.villeTuteur = formData.villeTuteur;
+                currentClient.client.codePostalTuteur = formData.codePostalTuteur;
+                currentClient.client.telephoneTuteur = formData.telephoneTuteur;
             }
             
             closeModal('profile-modal');
