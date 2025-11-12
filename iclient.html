@@ -1384,12 +1384,12 @@
         }
 
         // Fonction de connexion AMÉLIORÉE
-        async function login() {
+        // Dans iclient.html - CORRIGEZ la partie mise à jour de l'interface
+async function login() {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
     const message = document.getElementById('login-message');
 
-    // Validation des champs
     if (!email || !password) {
         message.textContent = translations[currentLanguage].fill_fields;
         message.classList.remove('hidden');
@@ -1397,59 +1397,76 @@
         return;
     }
 
-    // Afficher le loader
     document.getElementById('loader').style.display = 'flex';
 
     try {
-        // Appel à l'API Google Apps Script - CORRECT
-        console.log('🔍 ENVOI REQUÊTE:', `${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
-        
-        const response = await fetch(`${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
-        const data = await response.json();
+        // UTILISER POST
+        const formData = new URLSearchParams();
+        formData.append('type', 'getClientData');
+        formData.append('email', email);
+        formData.append('password', password);
 
+        console.log('🔍 ENVOI REQUÊTE POST:', webAppUrl);
+        
+        const response = await fetch(webAppUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formData
+        });
+        
+        const data = await response.json();
         console.log('🔍 RÉPONSE SERVEUR:', data);
 
         if (data.success) {
-            // Connexion réussie
             currentClient = data;
 
             document.getElementById('login-section').classList.add('hidden');
             document.getElementById('client-interface').classList.remove('hidden');
 
-            // ATTENDRE que le DOM soit mis à jour
+            // CORRECTION : Attendre que le DOM soit mis à jour
             setTimeout(() => {
                 try {
+                    // Méthode plus robuste pour trouver l'élément
                     const clientNameElement = document.getElementById('client-name');
                     const clientCreditsElement = document.getElementById('client-credits');
                     
                     console.log('🔍 Recherche client-name...');
-                    console.log('🔍 Élément trouvé:', clientNameElement);
+                    console.log('🔍 Élément client-name trouvé:', clientNameElement);
+                    console.log('🔍 Élément client-credits trouvé:', clientCreditsElement);
                     
-                    if (!clientNameElement) {
+                    if (clientNameElement) {
+                        clientNameElement.textContent = currentClient.client.prenom || "Client";
+                        console.log('✅ Nom client mis à jour:', currentClient.client.prenom);
+                    } else {
                         console.error('❌ client-name NON TROUVÉ !');
-                        // Créer l'élément manuellement si nécessaire
+                        // Création d'urgence si l'élément n'existe pas
                         const welcomeElement = document.querySelector('[data-translate="welcome"]');
                         if (welcomeElement) {
                             const span = document.createElement('span');
                             span.id = 'client-name';
                             span.className = 'text-blue-600';
                             span.textContent = currentClient.client.prenom || "Client";
+                            welcomeElement.innerHTML = translations[currentLanguage].welcome.replace('{name}', '') + ' ';
                             welcomeElement.appendChild(span);
+                            console.log('✅ Élément client-name créé manuellement');
                         }
-                    } else {
-                        clientNameElement.textContent = currentClient.client.prenom || "Client";
                     }
                     
                     if (clientCreditsElement) {
                         clientCreditsElement.textContent = currentClient.client.credits || 0;
+                        console.log('✅ Crédits mis à jour:', currentClient.client.credits);
                     }
                     
-                    // Gestion de la photo de profil avec fallback
+                    // Gestion de la photo de profil
                     const clientPhoto = document.getElementById('client-photo');
-                    clientPhoto.onerror = () => {
-                        clientPhoto.src = "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
-                    };
-                    clientPhoto.src = currentClient.client.photoUrl || "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
+                    if (clientPhoto) {
+                        clientPhoto.onerror = () => {
+                            clientPhoto.src = "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
+                        };
+                        clientPhoto.src = currentClient.client.photoUrl || "https://i.postimg.cc/NFBpcW0m/logo-viiveo-1.png";
+                    }
 
                     // Charger les demandes et statistiques
                     console.log('🔍 Calling loadClientData...');
@@ -1461,7 +1478,8 @@
                 } catch (error) {
                     console.error('Erreur lors de la mise à jour UI:', error);
                 }
-            }, 50);
+            }, 100); // Petit délai pour laisser le DOM se mettre à jour
+
         } else {
             throw new Error(data.message || translations[currentLanguage].login_error);
         }
@@ -1474,7 +1492,6 @@
         document.getElementById('loader').style.display = 'none';
     }
 }
-
         // Fonction de déconnexion
         function logout() {
             currentClient = null;
