@@ -1215,7 +1215,7 @@
                         <div class="form-group">
                             <label>Prénom <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
-                                <input type="text" id="profile-firstname" class="form-input" placeholder="Votre prénom">
+                                <input type="text" id="profile-firstname" class="form-input" placeholder="Votre prénom" autocomplete="given-name">
                                 <i class="fas fa-user form-input-icon"></i>
                             </div>
                         </div>
@@ -1231,7 +1231,7 @@
                         <div class="form-group">
                             <label>Téléphone <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
-                                <input type="tel" id="profile-phone" class="form-input" placeholder="Votre numéro de téléphone">
+                                <input type="tel" id="profile-phone" class="form-input" placeholder="Votre numéro de téléphone" autocomplete="tel">
                                 <i class="fas fa-phone form-input-icon"></i>
                             </div>
                         </div>
@@ -1272,7 +1272,7 @@
                         <div class="form-group">
                             <label>Spécialité(s) <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
-                                <input type="text" id="profile-specialites" class="form-input" placeholder="Entretien ménager, Jardinage, etc.">
+                                <input type="text" id="profile-specialites" class="form-input" placeholder="Entretien ménager, Jardinage, etc." autocomplete="off">
                                 <i class="fas fa-tags form-input-icon"></i>
                             </div>
                             <small class="text-gray-500">Séparez les spécialités par des virgules</small>
@@ -1281,7 +1281,7 @@
                         <div class="form-group">
                             <label>Disponibilité <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
-                                <input type="text" id="profile-disponibilite" class="form-input" placeholder="Lundi-Vendredi: 9h-18h">
+                                <input type="text" id="profile-disponibilite" class="form-input" placeholder="Lundi-Vendredi: 9h-18h" autocomplete="off">
                                 <i class="fas fa-calendar-alt form-input-icon"></i>
                             </div>
                         </div>
@@ -1295,7 +1295,7 @@
                         </h3>
                         <div class="form-group">
                             <div class="relative">
-                                <textarea id="profile-commentaire" class="form-input" rows="3" placeholder="Informations complémentaires... (optionnel)"></textarea>
+                                <textarea id="profile-commentaire" class="form-input" rows="3" placeholder="Informations complémentaires... (optionnel)" autocomplete="off"></textarea>
                                 <i class="fas fa-edit form-input-icon" style="top: 1.5rem;"></i>
                             </div>
                         </div>
@@ -1357,7 +1357,7 @@
                         Pour confirmer, veuillez saisir votre adresse email :
                     </label>
                     <input type="email" id="confirm-email" class="form-input mt-2" 
-                           placeholder="votre@email.com" autocomplete="off">
+                           placeholder="votre@email.com" autocomplete="email">
                 </div>
 
                 <div class="form-group">
@@ -1405,17 +1405,17 @@
 
                     <div class="form-group">
                         <label>Date de l'observation</label>
-                        <input type="date" id="obsDate" class="form-input" required />
+                        <input type="date" id="obsDate" class="form-input" required autocomplete="off" />
                     </div>
 
                     <div class="form-group">
                         <label>État de santé</label>
-                        <textarea id="etatSante" class="form-input" rows="3" placeholder="Décrire l'état de santé..."></textarea>
+                        <textarea id="etatSante" class="form-input" rows="3" placeholder="Décrire l'état de santé..." autocomplete="off"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>État de forme</label>
-                        <select id="etatForme" class="form-input" required>
+                        <select id="etatForme" class="form-input" required autocomplete="off">
                             <option value="">-- Choisir --</option>
                             <option>Très bon</option>
                             <option>Bon</option>
@@ -1427,12 +1427,12 @@
 
                     <div class="form-group">
                         <label>Environnement</label>
-                        <textarea id="environnement" class="form-input" rows="3" placeholder="Décrire l'environnement..."></textarea>
+                        <textarea id="environnement" class="form-input" rows="3" placeholder="Décrire l'environnement..." autocomplete="off"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Photos (max 3)</label>
-                        <input type="file" id="photos" class="form-input" accept="image/*" multiple />
+                        <input type="file" id="photos" class="form-input" accept="image/*" multiple autocomplete="off" />
                         <div id="photosPreview"></div>
                     </div>
 
@@ -1447,8 +1447,7 @@
             </div>
         </div>
     </div>
-
-    <script>
+        <script>
         // URL de l'application Google Apps Script
         const webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
 
@@ -2009,7 +2008,7 @@
             document.getElementById('completed-missions-modal').style.display = 'block';
         }
 
-        // FONCTIONS POUR LA GESTION DU PROFIL
+        // FONCTIONS POUR LA GESTION DU PROFIL - CORRIGÉES
 
         async function presta_showProfileModal() {
             await presta_loadProfileData();
@@ -2030,7 +2029,7 @@
                 }
             } catch (error) {
                 console.error("Erreur lors du chargement du profil:", error);
-                presta_showNotification("Erreur lors du chargement du profil", 'error');
+                presta_showNotification("Erreur lors du chargement du profil: " + error.message, 'error');
             }
         }
 
