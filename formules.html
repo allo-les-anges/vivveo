@@ -3,54 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abonnement Viiveo - 10€/mois | Tous nos services inclus</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Viiveo - Nos Formules d'Abonnement</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #facc15;
             --primary-dark: #eab308;
-            --secondary-color: #1f2937;
-            --light-color: #f8fafc;
-            --text-color: #374151;
-            --transition: all 0.3s ease;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            color: var(--text-color);
-            background: linear-gradient(135deg, #fefce8 0%, #fef3c7 50%, #fef9c3 100%);
-            min-height: 100vh;
+            background-color: #fdfaf6;
         }
 
-        .gradient-bg {
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
-        }
-        
-        .card-hover {
-            transition: var(--transition);
-            border: 2px solid transparent;
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
-            transition: var(--transition);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(253, 224, 71, 0.4);
+        .subscription-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 3px solid #fef3c7;
+            position: relative;
+            overflow: hidden;
         }
 
+        .subscription-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .subscription-card.popular {
+            border-color: #facc15;
+            transform: scale(1.05);
+        }
+
+        .subscription-card.popular:hover {
+            transform: scale(1.05) translateY(-8px);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 1rem;
+            right: -2rem;
+            background: linear-gradient(135deg, #facc15, #eab308);
+            color: white;
+            padding: 0.5rem 3rem;
+            transform: rotate(45deg);
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .feature-list li i {
+            color: #10b981;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #1f2937;
+            line-height: 1;
+        }
+
+        .price-period {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .savings-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        /* Styles pour le sélecteur de langue */
         .language-selector {
             position: relative;
         }
-        
+
         .language-dropdown {
             display: none;
             position: absolute;
@@ -64,24 +109,24 @@
             border: 1px solid #e5e7eb;
             z-index: 50;
         }
-        
+
         .language-dropdown.show {
             display: block;
         }
-        
+
         .language-option {
             padding: 0.75rem 1rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
         }
-        
+
         .language-option:hover {
             background-color: #f9fafb;
         }
-        
+
         .language-option.active {
             background-color: #fef3c7;
             color: #92400e;
@@ -89,27 +134,6 @@
 
         .language-option:not(:last-child) {
             border-bottom: 1px solid #f3f4f6;
-        }
-
-        /* Navigation unifiée */
-        .nav-link {
-            position: relative;
-            transition: var(--transition);
-        }
-
-        .nav-link:after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary-color);
-            transition: var(--transition);
-        }
-
-        .nav-link:hover:after {
-            width: 100%;
         }
 
         .mobile-menu {
@@ -123,43 +147,29 @@
             display: block;
         }
 
-        /* Hero Section améliorée */
-        .hero-section {
-            background-image: url('https://i.ibb.co/6cJCrCjN/Hero-formules.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            min-height: 70vh;
-            display: flex;
-            align-items: center;
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
         }
 
-        @media (min-height: 800px) {
-            .hero-section {
-                min-height: 80vh;
-            }
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: all 0.3s ease;
         }
 
-        .hero-overlay {
-            background: linear-gradient(135deg, 
-                rgba(0, 0, 0, 0.4) 0%, 
-                rgba(0, 0, 0, 0.3) 50%, 
-                rgba(0, 0, 0, 0.2) 100%);
-        }
-
-        /* Animation pulse pour le prix */
-        @keyframes pulse-gentle {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .pulse-gentle {
-            animation: pulse-gentle 3s infinite;
+        .nav-link:hover:after {
+            width: 100%;
         }
     </style>
 </head>
-<body>
-    <!-- Header Commun avec menu corrigé -->
+<body class="bg-gray-50">
+    <!-- Header Commun -->
     <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between py-4">
@@ -168,7 +178,7 @@
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
                 </a>
                 
-                <!-- Navigation Desktop - MÊME STRUCTURE QUE SERVICES.HTML -->
+                <!-- Navigation Desktop -->
                 <nav class="hidden lg:flex items-center space-x-8">
                     <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
@@ -215,7 +225,7 @@
                 </button>
             </div>
 
-            <!-- Menu Mobile - MÊME STRUCTURE QUE SERVICES.HTML -->
+            <!-- Menu Mobile -->
             <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
                 <div class="px-4 py-6 space-y-4">
                     <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
@@ -229,280 +239,149 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero-section relative text-white">
-        <div class="hero-overlay absolute inset-0"></div>
-        
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="max-w-4xl mx-auto text-center py-20">
-                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 md:mb-8 leading-tight" data-translate="hero_title">
-                    Simple. Clair. Sans surprise.
-                </h1>
-                <p class="text-xl md:text-2xl lg:text-3xl mb-8 md:mb-12 max-w-3xl mx-auto text-yellow-100 leading-relaxed" 
-                   style="text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.3);" 
-                   data-translate="hero_subtitle">
-                    Un forfait unique à <strong>10€/mois</strong> pour accéder à tous nos services
-                </p>
-                
-                <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 md:p-8 max-w-2xl mx-auto mb-8 pulse-gentle">
-                    <div class="text-4xl md:text-5xl font-bold text-white mb-2" data-translate="hero_price">10€<span class="text-xl">/mois</span></div>
-                    <p class="text-yellow-100 text-lg" data-translate="hero_conditions">Sans engagement • Annulation à tout moment</p>
-                </div>
-                
-                <button class="btn-primary text-white px-12 py-5 rounded-full text-xl font-semibold shadow-2xl hover:scale-105 transition-all duration-300" data-translate="hero_cta">
-                    Commencer maintenant
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Avantages Section -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="advantages_title">
-                    Pourquoi choisir l'abonnement Viiveo ?
-                </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-translate="advantages_subtitle">
-                    La simplicité d'un prix unique pour une tranquillité d'esprit totale
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <div class="text-center card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-                    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">💰</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4" data-translate="advantage1_title">Prix transparent</h3>
-                    <p class="text-gray-600" data-translate="advantage1_desc">
-                        10€ par mois, pas de frais cachés. Vous savez exactement à quoi vous attendre.
-                    </p>
-                </div>
-
-                <div class="text-center card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">♾️</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4" data-translate="advantage2_title">Accès complet</h3>
-                    <p class="text-gray-600" data-translate="advantage2_desc">
-                        Tous nos services inclus : ménage, courses, coiffure, jardinage, transport...
-                    </p>
-                </div>
-
-                <div class="text-center card-hover bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-                    <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span class="text-3xl">⏰</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4" data-translate="advantage3_title">Sans engagement</h3>
-                    <p class="text-gray-600" data-translate="advantage3_desc">
-                        Annulez à tout moment. Pas de contrat à long terme, pas de pénalités.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Forfait Unique Section -->
-    <section class="py-20 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="pricing_title">
-                    Un prix, tous les services
-                </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-translate="pricing_subtitle">
-                    Pour seulement 10€ par mois, profitez de notre plateforme complète
-                </p>
-            </div>
-
-            <div class="max-w-2xl mx-auto">
-                <div class="bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-3xl p-8 text-center text-white shadow-2xl card-hover">
-                    <div class="mb-6">
-                        <span class="bg-white text-yellow-600 px-4 py-2 rounded-full text-sm font-bold" data-translate="popular_badge">
-                            CHOIX INTELLIGENT
-                        </span>
-                    </div>
-                    
-                    <h3 class="text-2xl font-bold mb-4" data-translate="plan_title">Forfait Viiveo</h3>
-                    <div class="text-5xl font-bold mb-2" data-translate="plan_price">10€<span class="text-2xl">/mois</span></div>
-                    <p class="text-yellow-100 mb-8" data-translate="plan_billing">Facturation mensuelle • Premier mois offert</p>
-                    
-                    <ul class="space-y-4 mb-8 text-left">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-white mr-3 text-xl"></i>
-                            <span class="text-lg" data-translate="feature1">Accès à tous les services</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-white mr-3 text-xl"></i>
-                            <span class="text-lg" data-translate="feature2">Réservation illimitée</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-white mr-3 text-xl"></i>
-                            <span class="text-lg" data-translate="feature3">Support client inclus</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-white mr-3 text-xl"></i>
-                            <span class="text-lg" data-translate="feature4">Annulation à tout moment</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-white mr-3 text-xl"></i>
-                            <span class="text-lg" data-translate="feature5">Application mobile incluse</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-white mr-3 text-xl"></i>
-                            <span class="text-lg" data-translate="feature6">Mises à jour gratuites</span>
-                        </li>
-                    </ul>
-                    
-                    <button class="bg-white text-yellow-600 w-full py-4 rounded-xl font-semibold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105" data-translate="subscribe_button">
-                        S'abonner maintenant
-                    </button>
-                    
-                    <p class="text-yellow-100 text-sm mt-4" data-translate="trial_text">30 jours satisfaits ou remboursés</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Comparaison Section -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="comparison_title">
-                    Viiveo vs la concurrence
-                </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-translate="comparison_subtitle">
-                    Découvrez pourquoi notre forfait unique est la meilleure solution
-                </p>
-            </div>
-
-            <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead>
-                            <tr class="bg-gradient-to-r from-yellow-400 to-yellow-500 text-white">
-                                <th class="py-4 px-6 text-left font-semibold" data-translate="comparison_feature">Fonctionnalité</th>
-                                <th class="py-4 px-6 text-center font-semibold">Viiveo</th>
-                                <th class="py-4 px-6 text-center font-semibold" data-translate="comparison_others">Autres services</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            <tr class="hover:bg-yellow-50 transition-colors">
-                                <td class="py-4 px-6 font-medium" data-translate="comparison_price">Prix mensuel</td>
-                                <td class="py-4 px-6 text-center">
-                                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">10€</span>
-                                </td>
-                                <td class="py-4 px-6 text-center text-gray-600" data-translate="comparison_price_others">15-30€ + frais</td>
-                            </tr>
-                            <tr class="hover:bg-yellow-50 transition-colors">
-                                <td class="py-4 px-6 font-medium" data-translate="comparison_services">Services inclus</td>
-                                <td class="py-4 px-6 text-center text-green-600 font-semibold" data-translate="comparison_services_all">Tous</td>
-                                <td class="py-4 px-6 text-center text-gray-600" data-translate="comparison_services_limited">Limités</td>
-                            </tr>
-                            <tr class="hover:bg-yellow-50 transition-colors">
-                                <td class="py-4 px-6 font-medium" data-translate="comparison_engagement">Engagement</td>
-                                <td class="py-4 px-6 text-center text-green-600 font-semibold" data-translate="comparison_engagement_none">Aucun</td>
-                                <td class="py-4 px-6 text-center text-gray-600" data-translate="comparison_engagement_yes">Souvent 12 mois</td>
-                            </tr>
-                            <tr class="hover:bg-yellow-50 transition-colors">
-                                <td class="py-4 px-6 font-medium" data-translate="comparison_fees">Frais cachés</td>
-                                <td class="py-4 px-6 text-center text-green-600 font-semibold" data-translate="comparison_fees_none">Aucun</td>
-                                <td class="py-4 px-6 text-center text-gray-600" data-translate="comparison_fees_often">Fréquents</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="py-20 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4" data-translate="faq_title">
-                    Questions Fréquentes
-                </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-translate="faq_subtitle">
-                    Tout ce que vous devez savoir sur notre abonnement
-                </p>
-            </div>
-
-            <div class="max-w-3xl mx-auto space-y-6">
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFAQ(this)">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-gray-800" data-translate="faq1_question">
-                                Puis-je annuler à tout moment ?
-                            </h3>
-                            <svg class="w-6 h-6 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </div>
-                    </button>
-                    <div class="hidden px-6 pb-6">
-                        <p class="text-gray-600 leading-relaxed" data-translate="faq1_answer">
-                            Absolument ! Vous pouvez annuler votre abonnement à tout moment depuis votre espace client. Aucun frais de résiliation, aucune question posée.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFAQ(this)">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-gray-800" data-translate="faq2_question">
-                                Tous les services sont-ils vraiment inclus ?
-                            </h3>
-                            <svg class="w-6 h-6 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </div>
-                    </button>
-                    <div class="hidden px-6 pb-6">
-                        <p class="text-gray-600 leading-relaxed" data-translate="faq2_answer">
-                            Oui ! Ménage, courses, coiffure à domicile, jardinage, transport accompagné... Tous nos services standards sont inclus dans l'abonnement. Seuls les services très spécifiques ou premium peuvent avoir un supplément.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFAQ(this)">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-gray-800" data-translate="faq3_question">
-                                Y a-t-il une période d'essai ?
-                            </h3>
-                            <svg class="w-6 h-6 text-gray-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </div>
-                    </button>
-                    <div class="hidden px-6 pb-6">
-                        <p class="text-gray-600 leading-relaxed" data-translate="faq3_answer">
-                            Nous offrons une garantie satisfait ou remboursé de 30 jours. Si vous n'êtes pas satisfait dans le premier mois, nous vous remboursons intégralement.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Final Section -->
-    <section class="py-20 bg-gradient-to-r from-yellow-400 to-yellow-500">
+    <!-- Hero Section Formules -->
+    <section class="relative py-16 md:py-24 bg-gradient-to-br from-yellow-50 to-yellow-100">
         <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-translate="cta_title">
-                Prêt à simplifier votre quotidien ?
-            </h2>
-            <p class="text-xl text-yellow-100 mb-8 max-w-2xl mx-auto" data-translate="cta_subtitle">
-                Rejoignez des milliers de clients satisfaits pour seulement 10€ par mois
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6" data-translate="subscription_hero_title">
+                Nos Formules d'Abonnement
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8" data-translate="subscription_hero_subtitle">
+                Choisissez la formule qui correspond le mieux à vos besoins et bénéficiez de nos services en illimité
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button class="bg-white text-yellow-600 px-12 py-4 rounded-full text-lg font-semibold inline-block hover:bg-gray-100 transition-all shadow-lg hover:scale-105" data-translate="cta_subscribe">
-                    S'abonner maintenant
-                </button>
-                <a href="nos_services.html" class="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold inline-block hover:bg-white hover:text-yellow-600 transition-all" data-translate="cta_services">
-                    Découvrir nos services
-                </a>
+        </div>
+    </section>
+
+    <!-- Section Abonnements -->
+    <section class="py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12" data-translate="subscription_choose">Choisissez votre abonnement</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Abonnement Mensuel -->
+                <div class="subscription-card">
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2" data-translate="subscription_monthly">Abonnement Mensuel</h3>
+                        <p class="text-gray-600" data-translate="subscription_flexible">Flexible - Résiliable à tout moment</p>
+                    </div>
+                    
+                    <div class="text-center mb-6">
+                        <span class="price">10€</span>
+                        <span class="price-period" data-translate="subscription_month">/mois</span>
+                    </div>
+
+                    <ul class="feature-list mb-8">
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_all_services">Accès à tous les services</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_priority_support">Support prioritaire</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_cancel_anytime">Résiliation à tout moment</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_unlimited_bookings">Réservations illimitées</span></li>
+                    </ul>
+
+                    <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors" data-translate="subscription_subscribe_monthly">
+                        Souscrire - 10€/mois
+                    </button>
+                </div>
+
+                <!-- Abonnement Annuel - POPULAIRE -->
+                <div class="subscription-card popular">
+                    <div class="popular-badge" data-translate="subscription_popular">Populaire</div>
+                    
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2" data-translate="subscription_yearly">Abonnement Annuel</h3>
+                        <p class="text-gray-600" data-translate="subscription_economical">Économique - 20% d'économie</p>
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <span class="price">8€</span>
+                        <span class="price-period" data-translate="subscription_month">/mois</span>
+                    </div>
+
+                    <div class="text-center mb-6">
+                        <span class="savings-badge" data-translate="subscription_savings">Économie de 24€ par an</span>
+                    </div>
+
+                    <ul class="feature-list mb-8">
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_all_services">Accès à tous les services</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_priority_support">Support prioritaire</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_12months">Engagement 12 mois</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_unlimited_bookings">Réservations illimitées</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_premium_support">Support premium inclus</span></li>
+                    </ul>
+
+                    <button class="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors" data-translate="subscription_subscribe_yearly">
+                        Souscrire - 96€/an
+                    </button>
+                </div>
+
+                <!-- Statut actuel -->
+                <div class="subscription-card">
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2" data-translate="subscription_current">Votre abonnement actuel</h3>
+                    </div>
+                    
+                    <div class="text-center mb-6">
+                        <div class="bg-gray-100 rounded-lg p-6 mb-4">
+                            <i class="fas fa-info-circle text-4xl text-gray-400 mb-3"></i>
+                            <p class="text-lg font-semibold text-gray-600" data-translate="subscription_none">Aucun abonnement actif</p>
+                        </div>
+                        <p class="text-gray-600 text-sm" data-translate="subscription_encourage">
+                            Souscrivez à un abonnement pour bénéficier de nos services
+                        </p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <button class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors" data-translate="subscription_manage">
+                            Gérer mon compte
+                        </button>
+                        <button class="w-full border border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors" data-translate="subscription_contact">
+                            Contactez-nous
+                        </button>
+                    </div>
+                </div>
             </div>
-            <p class="text-yellow-100 text-sm mt-6" data-translate="cta_guarantee">Premier mois offert • Sans engagement</p>
+        </div>
+    </section>
+
+    <!-- Section Avantages -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4" data-translate="benefits_title">Pourquoi choisir Viiveo ?</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-translate="benefits_subtitle">Découvrez tous les avantages de nos abonnements</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-2xl text-yellow-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2" data-translate="benefit_quality">Qualité garantie</h3>
+                    <p class="text-gray-600 text-sm" data-translate="benefit_quality_desc">Tous nos prestataires sont vérifiés et qualifiés</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-clock text-2xl text-yellow-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2" data-translate="benefit_flexibility">Flexibilité totale</h3>
+                    <p class="text-gray-600 text-sm" data-translate="benefit_flexibility_desc">Annulation et modification gratuites</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-headset text-2xl text-yellow-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2" data-translate="benefit_support">Support 7j/7</h3>
+                    <p class="text-gray-600 text-sm" data-translate="benefit_support_desc">Notre équipe vous accompagne à tout moment</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-euro-sign text-2xl text-yellow-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2" data-translate="benefit_transparency">Transparence des prix</h3>
+                    <p class="text-gray-600 text-sm" data-translate="benefit_transparency_desc">Pas de frais cachés, tout est inclus</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -510,15 +389,10 @@
     <footer class="bg-gray-800 text-white py-12">
         <div class="container mx-auto px-6">
             <div class="grid md:grid-cols-4 gap-8">
-                <!-- Logo et description -->
                 <div class="md:col-span-1">
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo" class="h-10 mb-4">
-                    <p class="text-gray-300 text-sm" data-translate="footer_desc">
-                        Votre bien-être à domicile, notre priorité. Abonnement simple à 10€/mois.
-                    </p>
+                    <p class="text-gray-300 text-sm" data-translate="footer_desc">Votre bien-être à domicile, notre priorité.</p>
                 </div>
-
-                <!-- Navigation -->
                 <div>
                     <h4 class="font-semibold mb-4" data-translate="footer_navigation">Navigation</h4>
                     <ul class="space-y-2 text-sm text-gray-300">
@@ -528,8 +402,6 @@
                         <li><a href="prestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a></li>
                     </ul>
                 </div>
-
-                <!-- Espaces -->
                 <div>
                     <h4 class="font-semibold mb-4" data-translate="footer_spaces">Espaces</h4>
                     <ul class="space-y-2 text-sm text-gray-300">
@@ -537,30 +409,21 @@
                         <li><a href="iprestataires.html" class="hover:text-yellow-400 transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a></li>
                     </ul>
                 </div>
-
-                <!-- Contact -->
                 <div>
                     <h4 class="font-semibold mb-4" data-translate="footer_contact">Contact</h4>
                     <div class="text-sm text-gray-300 space-y-2">
                         <p>info@viiveo.com</p>
                         <p>+32 475 32 51 27</p>
                         <div class="flex space-x-4 mt-2">
-                            <a href="https://www.facebook.com/viiveo.be" class="hover:text-yellow-400 transition-colors">
-                                <i class="fab fa-facebook"></i>
-                            </a>
-                            <a href="https://www.linkedin.com/in/danydecarpentrie" class="hover:text-yellow-400 transition-colors">
-                                <i class="fab fa-linkedin"></i>
-                            </a>
-                            <a href="https://wa.me/+32475325127" class="hover:text-yellow-400 transition-colors">
-                                <i class="fab fa-whatsapp"></i>
-                            </a>
+                            <a href="https://www.facebook.com/viiveo.be" class="hover:text-yellow-400 transition-colors"><i class="fab fa-facebook"></i></a>
+                            <a href="https://www.linkedin.com/in/danydecarpentrie" class="hover:text-yellow-400 transition-colors"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://wa.me/+32475325127" class="hover:text-yellow-400 transition-colors"><i class="fab fa-whatsapp"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-                <p data-translate="footer_copyright">© 2024 Viiveo. Tous droits réservés. Abonnement 10€/mois.</p>
+                <p data-translate="footer_copyright">© 2024 Viiveo. Tous droits réservés.</p>
             </div>
         </div>
     </footer>
@@ -577,79 +440,55 @@
                 nav_client: "Espace Client",
                 nav_prestataires_space: "Espace Prestataire",
                 
-                // Hero
-                hero_title: "Simple. Clair. Sans surprise.",
-                hero_subtitle: "Un forfait unique à 10€/mois pour accéder à tous nos services",
-                hero_price: "10€/mois",
-                hero_conditions: "Sans engagement • Annulation à tout moment",
-                hero_cta: "Commencer maintenant",
+                // Hero Section
+                subscription_hero_title: "Nos Formules d'Abonnement",
+                subscription_hero_subtitle: "Choisissez la formule qui correspond le mieux à vos besoins et bénéficiez de nos services en illimité",
                 
-                // Avantages
-                advantages_title: "Pourquoi choisir l'abonnement Viiveo ?",
-                advantages_subtitle: "La simplicité d'un prix unique pour une tranquillité d'esprit totale",
-                advantage1_title: "Prix transparent",
-                advantage1_desc: "10€ par mois, pas de frais cachés. Vous savez exactement à quoi vous attendre.",
-                advantage2_title: "Accès complet",
-                advantage2_desc: "Tous nos services inclus : ménage, courses, coiffure, jardinage, transport...",
-                advantage3_title: "Sans engagement",
-                advantage3_desc: "Annulez à tout moment. Pas de contrat à long terme, pas de pénalités.",
+                // Section Abonnements
+                subscription_choose: "Choisissez votre abonnement",
+                subscription_monthly: "Abonnement Mensuel",
+                subscription_flexible: "Flexible - Résiliable à tout moment",
+                subscription_yearly: "Abonnement Annuel",
+                subscription_economical: "Économique - 20% d'économie",
+                subscription_popular: "Populaire",
+                subscription_savings: "Économie de 24€ par an",
+                subscription_current: "Votre abonnement actuel",
+                subscription_none: "Aucun abonnement actif",
+                subscription_encourage: "Souscrivez à un abonnement pour bénéficier de nos services",
+                subscription_month: "/mois",
                 
-                // Pricing
-                pricing_title: "Un prix, tous les services",
-                pricing_subtitle: "Pour seulement 10€ par mois, profitez de notre plateforme complète",
-                popular_badge: "CHOIX INTELLIGENT",
-                plan_title: "Forfait Viiveo",
-                plan_price: "10€/mois",
-                plan_billing: "Facturation mensuelle • Premier mois offert",
-                feature1: "Accès à tous les services",
-                feature2: "Réservation illimitée",
-                feature3: "Support client inclus",
-                feature4: "Annulation à tout moment",
-                feature5: "Application mobile incluse",
-                feature6: "Mises à jour gratuites",
-                subscribe_button: "S'abonner maintenant",
-                trial_text: "30 jours satisfaits ou remboursés",
+                // Features
+                feature_all_services: "Accès à tous les services",
+                feature_priority_support: "Support prioritaire",
+                feature_cancel_anytime: "Résiliation à tout moment",
+                feature_unlimited_bookings: "Réservations illimitées",
+                feature_12months: "Engagement 12 mois",
+                feature_premium_support: "Support premium inclus",
                 
-                // Comparaison
-                comparison_title: "Viiveo vs la concurrence",
-                comparison_subtitle: "Découvrez pourquoi notre forfait unique est la meilleure solution",
-                comparison_feature: "Fonctionnalité",
-                comparison_others: "Autres services",
-                comparison_price: "Prix mensuel",
-                comparison_price_others: "15-30€ + frais",
-                comparison_services: "Services inclus",
-                comparison_services_all: "Tous",
-                comparison_services_limited: "Limités",
-                comparison_engagement: "Engagement",
-                comparison_engagement_none: "Aucun",
-                comparison_engagement_yes: "Souvent 12 mois",
-                comparison_fees: "Frais cachés",
-                comparison_fees_none: "Aucun",
-                comparison_fees_often: "Fréquents",
+                // Boutons
+                subscription_subscribe_monthly: "Souscrire - 10€/mois",
+                subscription_subscribe_yearly: "Souscrire - 96€/an",
+                subscription_manage: "Gérer mon compte",
+                subscription_contact: "Contactez-nous",
                 
-                // FAQ
-                faq_title: "Questions Fréquentes",
-                faq_subtitle: "Tout ce que vous devez savoir sur notre abonnement",
-                faq1_question: "Puis-je annuler à tout moment ?",
-                faq1_answer: "Absolument ! Vous pouvez annuler votre abonnement à tout moment depuis votre espace client. Aucun frais de résiliation, aucune question posée.",
-                faq2_question: "Tous les services sont-ils vraiment inclus ?",
-                faq2_answer: "Oui ! Ménage, courses, coiffure à domicile, jardinage, transport accompagné... Tous nos services standards sont inclus dans l'abonnement. Seuls les services très spécifiques ou premium peuvent avoir un supplément.",
-                faq3_question: "Y a-t-il une période d'essai ?",
-                faq3_answer: "Nous offrons une garantie satisfait ou remboursé de 30 jours. Si vous n'êtes pas satisfait dans le premier mois, nous vous remboursons intégralement.",
-                
-                // CTA
-                cta_title: "Prêt à simplifier votre quotidien ?",
-                cta_subtitle: "Rejoignez des milliers de clients satisfaits pour seulement 10€ par mois",
-                cta_subscribe: "S'abonner maintenant",
-                cta_services: "Découvrir nos services",
-                cta_guarantee: "Premier mois offert • Sans engagement",
+                // Section Avantages
+                benefits_title: "Pourquoi choisir Viiveo ?",
+                benefits_subtitle: "Découvrez tous les avantages de nos abonnements",
+                benefit_quality: "Qualité garantie",
+                benefit_quality_desc: "Tous nos prestataires sont vérifiés et qualifiés",
+                benefit_flexibility: "Flexibilité totale",
+                benefit_flexibility_desc: "Annulation et modification gratuites",
+                benefit_support: "Support 7j/7",
+                benefit_support_desc: "Notre équipe vous accompagne à tout moment",
+                benefit_transparency: "Transparence des prix",
+                benefit_transparency_desc: "Pas de frais cachés, tout est inclus",
                 
                 // Footer
-                footer_desc: "Votre bien-être à domicile, notre priorité. Abonnement simple à 10€/mois.",
+                footer_desc: "Votre bien-être à domicile, notre priorité.",
                 footer_navigation: "Navigation",
                 footer_spaces: "Espaces",
                 footer_contact: "Contact",
-                footer_copyright: "© 2024 Viiveo. Tous droits réservés. Abonnement 10€/mois."
+                footer_copyright: "© 2024 Viiveo. Tous droits réservés."
             },
             nl: {
                 nav_home: "Home",
@@ -658,66 +497,44 @@
                 nav_prestataires: "Onze Dienstverleners Ontdekken",
                 nav_client: "Klantenruimte",
                 nav_prestataires_space: "Dienstverlener Ruimte",
-                hero_title: "Eenvoudig. Duidelijk. Zonder verrassingen.",
-                hero_subtitle: "Eén abonnement van €10/maand voor toegang tot al onze diensten",
-                hero_price: "€10/maand",
-                hero_conditions: "Zonder verplichting • Altijd opzegbaar",
-                hero_cta: "Nu beginnen",
-                advantages_title: "Waarom voor Viiveo abonnement kiezen?",
-                advantages_subtitle: "De eenvoud van één prijs voor totale gemoedsrust",
-                advantage1_title: "Transparante prijs",
-                advantage1_desc: "€10 per maand, geen verborgen kosten. U weet precies waar u aan toe bent.",
-                advantage2_title: "Volledige toegang",
-                advantage2_desc: "Alle diensten inbegrepen: schoonmaak, boodschappen, kapper, tuinonderhoud, vervoer...",
-                advantage3_title: "Zonder verplichting",
-                advantage3_desc: "Altijd opzegbaar. Geen lang contract, geen boetes.",
-                pricing_title: "Eén prijs, alle diensten",
-                pricing_subtitle: "Voor slechts €10 per maand geniet u van ons volledige platform",
-                popular_badge: "SLIMKE KEUZE",
-                plan_title: "Viiveo Abonnement",
-                plan_price: "€10/maand",
-                plan_billing: "Maandelijkse facturering • Eerste maand gratis",
-                feature1: "Toegang tot alle diensten",
-                feature2: "Onbeperkt reserveren",
-                feature3: "Klantenondersteuning inbegrepen",
-                feature4: "Altijd opzegbaar",
-                feature5: "Mobiele app inbegrepen",
-                feature6: "Gratis updates",
-                subscribe_button: "Nu abonneren",
-                trial_text: "30 dagen tevreden of geld terug",
-                comparison_title: "Viiveo vs concurrentie",
-                comparison_subtitle: "Ontdek waarom ons unieke abonnement de beste oplossing is",
-                comparison_feature: "Functie",
-                comparison_others: "Andere diensten",
-                comparison_price: "Maandelijkse prijs",
-                comparison_price_others: "€15-30 + kosten",
-                comparison_services: "Diensten inbegrepen",
-                comparison_services_all: "Alle",
-                comparison_services_limited: "Beperkt",
-                comparison_engagement: "Verplichting",
-                comparison_engagement_none: "Geen",
-                comparison_engagement_yes: "Vaak 12 maanden",
-                comparison_fees: "Verborgen kosten",
-                comparison_fees_none: "Geen",
-                comparison_fees_often: "Vaak",
-                faq_title: "Veelgestelde Vragen",
-                faq_subtitle: "Alles wat u moet weten over ons abonnement",
-                faq1_question: "Kan ik altijd opzeggen?",
-                faq1_answer: "Absoluut! U kunt uw abonnement altijd opzeggen via uw klantenruimte. Geen opzegkosten, geen vragen gesteld.",
-                faq2_question: "Zijn alle diensten echt inbegrepen?",
-                faq2_answer: "Ja! Schoonmaak, boodschappen, kapper aan huis, tuinonderhoud, begeleid vervoer... Al onze standaarddiensten zijn in het abonnement inbegrepen. Alleen zeer specifieke of premium diensten kunnen een toeslag hebben.",
-                faq3_question: "Is er een proefperiode?",
-                faq3_answer: "Wij bieden een 30-dagen tevredenheidsgarantie. Als u niet tevreden bent in de eerste maand, betalen wij u volledig terug.",
-                cta_title: "Klaar om uw dagelijks leven te vereenvoudigen?",
-                cta_subtitle: "Sluit u aan bij duizenden tevreden klanten voor slechts €10 per maand",
-                cta_subscribe: "Nu abonneren",
-                cta_services: "Onze diensten ontdekken",
-                cta_guarantee: "Eerste maand gratis • Zonder verplichting",
-                footer_desc: "Uw welzijn thuis, onze prioriteit. Eenvoudig abonnement van €10/maand.",
+                subscription_hero_title: "Onze Abonnementsformules",
+                subscription_hero_subtitle: "Kies de formule die het beste bij uw behoeften past en geniet van onze onbeperkte diensten",
+                subscription_choose: "Kies uw abonnement",
+                subscription_monthly: "Maandelijks Abonnement",
+                subscription_flexible: "Flexibel - Opzegbaar op elk moment",
+                subscription_yearly: "Jaarabonnement",
+                subscription_economical: "Voordelig - 20% besparing",
+                subscription_popular: "Populair",
+                subscription_savings: "Besparing van €24 per jaar",
+                subscription_current: "Uw huidig abonnement",
+                subscription_none: "Geen actief abonnement",
+                subscription_encourage: "Sluit een abonnement af om van onze diensten te genieten",
+                subscription_month: "/maand",
+                feature_all_services: "Toegang tot alle diensten",
+                feature_priority_support: "Prioritaire ondersteuning",
+                feature_cancel_anytime: "Opzegging op elk moment",
+                feature_unlimited_bookings: "Onbeperkte reserveringen",
+                feature_12months: "Engagement 12 maanden",
+                feature_premium_support: "Premium ondersteuning inbegrepen",
+                subscription_subscribe_monthly: "Abonneren - €10/maand",
+                subscription_subscribe_yearly: "Abonneren - €96/jaar",
+                subscription_manage: "Mijn account beheren",
+                subscription_contact: "Neem contact op",
+                benefits_title: "Waarom Viiveo kiezen?",
+                benefits_subtitle: "Ontdek alle voordelen van onze abonnementen",
+                benefit_quality: "Gegarandeerde kwaliteit",
+                benefit_quality_desc: "Al onze dienstverleners zijn gecontroleerd en gekwalificeerd",
+                benefit_flexibility: "Totale flexibiliteit",
+                benefit_flexibility_desc: "Gratis annulering en wijziging",
+                benefit_support: "Ondersteuning 7/7",
+                benefit_support_desc: "Ons team staat altijd voor u klaar",
+                benefit_transparency: "Transparante prijzen",
+                benefit_transparency_desc: "Geen verborgen kosten, alles inbegrepen",
+                footer_desc: "Uw welzijn thuis, onze prioriteit.",
                 footer_navigation: "Navigatie",
                 footer_spaces: "Ruimtes",
                 footer_contact: "Contact",
-                footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden. Abonnement €10/maand."
+                footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden."
             },
             en: {
                 nav_home: "Home",
@@ -726,66 +543,44 @@
                 nav_prestataires: "Discover our Providers",
                 nav_client: "Client Space",
                 nav_prestataires_space: "Provider Space",
-                hero_title: "Simple. Clear. No surprises.",
-                hero_subtitle: "One subscription at €10/month for access to all our services",
-                hero_price: "€10/month",
-                hero_conditions: "No commitment • Cancel anytime",
-                hero_cta: "Get Started",
-                advantages_title: "Why choose Viiveo subscription?",
-                advantages_subtitle: "The simplicity of one price for total peace of mind",
-                advantage1_title: "Transparent pricing",
-                advantage1_desc: "€10 per month, no hidden fees. You know exactly what to expect.",
-                advantage2_title: "Complete access",
-                advantage2_desc: "All services included: cleaning, shopping, hairdressing, gardening, transport...",
-                advantage3_title: "No commitment",
-                advantage3_desc: "Cancel anytime. No long-term contract, no penalties.",
-                pricing_title: "One price, all services",
-                pricing_subtitle: "For only €10 per month, enjoy our complete platform",
-                popular_badge: "SMART CHOICE",
-                plan_title: "Viiveo Subscription",
-                plan_price: "€10/month",
-                plan_billing: "Monthly billing • First month free",
-                feature1: "Access to all services",
-                feature2: "Unlimited booking",
-                feature3: "Customer support included",
-                feature4: "Cancel anytime",
-                feature5: "Mobile app included",
-                feature6: "Free updates",
-                subscribe_button: "Subscribe Now",
-                trial_text: "30-day satisfaction guarantee",
-                comparison_title: "Viiveo vs Competition",
-                comparison_subtitle: "Discover why our unique subscription is the best solution",
-                comparison_feature: "Feature",
-                comparison_others: "Other services",
-                comparison_price: "Monthly price",
-                comparison_price_others: "€15-30 + fees",
-                comparison_services: "Services included",
-                comparison_services_all: "All",
-                comparison_services_limited: "Limited",
-                comparison_engagement: "Commitment",
-                comparison_engagement_none: "None",
-                comparison_engagement_yes: "Often 12 months",
-                comparison_fees: "Hidden fees",
-                comparison_fees_none: "None",
-                comparison_fees_often: "Often",
-                faq_title: "Frequently Asked Questions",
-                faq_subtitle: "Everything you need to know about our subscription",
-                faq1_question: "Can I cancel at any time?",
-                faq1_answer: "Absolutely! You can cancel your subscription at any time from your client space. No termination fees, no questions asked.",
-                faq2_question: "Are all services really included?",
-                faq2_answer: "Yes! Cleaning, shopping, home hairdressing, gardening, accompanied transport... All our standard services are included in the subscription. Only very specific or premium services may have an additional charge.",
-                faq3_question: "Is there a trial period?",
-                faq3_answer: "We offer a 30-day satisfaction guarantee. If you're not satisfied in the first month, we'll refund you in full.",
-                cta_title: "Ready to simplify your daily life?",
-                cta_subtitle: "Join thousands of satisfied customers for only €10 per month",
-                cta_subscribe: "Subscribe Now",
-                cta_services: "Discover our services",
-                cta_guarantee: "First month free • No commitment",
-                footer_desc: "Your home well-being, our priority. Simple subscription at €10/month.",
+                subscription_hero_title: "Our Subscription Plans",
+                subscription_hero_subtitle: "Choose the plan that best fits your needs and enjoy our unlimited services",
+                subscription_choose: "Choose your subscription",
+                subscription_monthly: "Monthly Subscription",
+                subscription_flexible: "Flexible - Cancel anytime",
+                subscription_yearly: "Yearly Subscription",
+                subscription_economical: "Economical - 20% saving",
+                subscription_popular: "Popular",
+                subscription_savings: "Save €24 per year",
+                subscription_current: "Your current subscription",
+                subscription_none: "No active subscription",
+                subscription_encourage: "Subscribe to a plan to enjoy our services",
+                subscription_month: "/month",
+                feature_all_services: "Access to all services",
+                feature_priority_support: "Priority support",
+                feature_cancel_anytime: "Cancel anytime",
+                feature_unlimited_bookings: "Unlimited bookings",
+                feature_12months: "12-month commitment",
+                feature_premium_support: "Premium support included",
+                subscription_subscribe_monthly: "Subscribe - €10/month",
+                subscription_subscribe_yearly: "Subscribe - €96/year",
+                subscription_manage: "Manage my account",
+                subscription_contact: "Contact us",
+                benefits_title: "Why Choose Viiveo?",
+                benefits_subtitle: "Discover all the benefits of our subscriptions",
+                benefit_quality: "Guaranteed quality",
+                benefit_quality_desc: "All our providers are verified and qualified",
+                benefit_flexibility: "Total flexibility",
+                benefit_flexibility_desc: "Free cancellation and modification",
+                benefit_support: "7/7 support",
+                benefit_support_desc: "Our team supports you at all times",
+                benefit_transparency: "Price transparency",
+                benefit_transparency_desc: "No hidden fees, everything included",
+                footer_desc: "Your home well-being, our priority.",
                 footer_navigation: "Navigation",
                 footer_spaces: "Spaces",
                 footer_contact: "Contact",
-                footer_copyright: "© 2024 Viiveo. All rights reserved. Subscription €10/month."
+                footer_copyright: "© 2024 Viiveo. All rights reserved."
             },
             de: {
                 nav_home: "Startseite",
@@ -794,66 +589,44 @@
                 nav_prestataires: "Unsere Dienstleister Entdecken",
                 nav_client: "Kundenbereich",
                 nav_prestataires_space: "Dienstleister Bereich",
-                hero_title: "Einfach. Klar. Keine Überraschungen.",
-                hero_subtitle: "Ein Abonnement für 10€/Monat für Zugang zu all unseren Dienstleistungen",
-                hero_price: "10€/Monat",
-                hero_conditions: "Ohne Verpflichtung • Jederzeit kündbar",
-                hero_cta: "Jetzt starten",
-                advantages_title: "Warum Viiveo Abonnement wählen?",
-                advantages_subtitle: "Die Einfachheit eines Preises für totale Ruhe",
-                advantage1_title: "Transparenter Preis",
-                advantage1_desc: "10€ pro Monat, keine versteckten Kosten. Sie wissen genau, was Sie erwartet.",
-                advantage2_title: "Vollständiger Zugang",
-                advantage2_desc: "Alle Dienstleistungen inklusive: Reinigung, Einkaufen, Friseur, Gartenarbeit, Transport...",
-                advantage3_title: "Ohne Verpflichtung",
-                advantage3_desc: "Jederzeit kündbar. Kein langfristiger Vertrag, keine Strafen.",
-                pricing_title: "Ein Preis, alle Dienstleistungen",
-                pricing_subtitle: "Für nur 10€ pro Monat genießen Sie unsere vollständige Plattform",
-                popular_badge: "KLUGE WAHL",
-                plan_title: "Viiveo Abonnement",
-                plan_price: "10€/Monat",
-                plan_billing: "Monatliche Abrechnung • Erster Monat kostenlos",
-                feature1: "Zugang zu allen Dienstleistungen",
-                feature2: "Unbegrenzte Buchungen",
-                feature3: "Kundensupport inklusive",
-                feature4: "Jederzeit kündbar",
-                feature5: "Mobile App inklusive",
-                feature6: "Kostenlose Updates",
-                subscribe_button: "Jetzt abonnieren",
-                trial_text: "30 Tage zufrieden oder Geld zurück",
-                comparison_title: "Viiveo vs Konkurrenz",
-                comparison_subtitle: "Entdecken Sie, warum unser einzigartiges Abonnement die beste Lösung ist",
-                comparison_feature: "Funktion",
-                comparison_others: "Andere Dienste",
-                comparison_price: "Monatlicher Preis",
-                comparison_price_others: "15-30€ + Gebühren",
-                comparison_services: "Dienstleistungen inklusive",
-                comparison_services_all: "Alle",
-                comparison_services_limited: "Begrenzt",
-                comparison_engagement: "Verpflichtung",
-                comparison_engagement_none: "Keine",
-                comparison_engagement_yes: "Oft 12 Monate",
-                comparison_fees: "Versteckte Gebühren",
-                comparison_fees_none: "Keine",
-                comparison_fees_often: "Oft",
-                faq_title: "Häufig Gestellte Fragen",
-                faq_subtitle: "Alles, was Sie über unser Abonnement wissen müssen",
-                faq1_question: "Kann ich jederzeit kündigen?",
-                faq1_answer: "Absolut! Sie können Ihr Abonnement jederzeit über Ihren Kundenbereich kündigen. Keine Kündigungsgebühren, keine Fragen.",
-                faq2_question: "Sind wirklich alle Dienstleistungen inbegriffen?",
-                faq2_answer: "Ja! Reinigung, Einkaufen, Friseur zu Hause, Gartenarbeit, Begleiteter Transport... Alle unsere Standarddienstleistungen sind im Abonnement enthalten. Nur sehr spezifische oder Premium-Dienstleistungen können einen Aufpreis haben.",
-                faq3_question: "Gibt es eine Testphase?",
-                faq3_answer: "Wir bieten eine 30-tägige Zufriedenheitsgarantie. Wenn Sie im ersten Monat nicht zufrieden sind, erstatten wir Ihnen den vollen Betrag.",
-                cta_title: "Bereit, Ihren Alltag zu vereinfachen?",
-                cta_subtitle: "Schließen Sie sich Tausenden zufriedenen Kunden für nur 10€ pro Monat an",
-                cta_subscribe: "Jetzt abonnieren",
-                cta_services: "Unsere Dienstleistungen entdecken",
-                cta_guarantee: "Erster Monat kostenlos • Ohne Verpflichtung",
-                footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität. Einfaches Abonnement für 10€/Monat.",
+                subscription_hero_title: "Unsere Abonnement-Pläne",
+                subscription_hero_subtitle: "Wählen Sie den Plan, der am besten zu Ihren Bedürfnissen passt und genießen Sie unsere unbegrenzten Dienstleistungen",
+                subscription_choose: "Wählen Sie Ihr Abonnement",
+                subscription_monthly: "Monatliches Abonnement",
+                subscription_flexible: "Flexibel - Jederzeit kündbar",
+                subscription_yearly: "Jahresabonnement",
+                subscription_economical: "Wirtschaftlich - 20% Ersparnis",
+                subscription_popular: "Beliebt",
+                subscription_savings: "24€ Ersparnis pro Jahr",
+                subscription_current: "Ihr aktuelles Abonnement",
+                subscription_none: "Kein aktives Abonnement",
+                subscription_encourage: "Schließen Sie ein Abonnement ab, um unsere Dienstleistungen zu nutzen",
+                subscription_month: "/Monat",
+                feature_all_services: "Zugang zu allen Dienstleistungen",
+                feature_priority_support: "Prioritärer Support",
+                feature_cancel_anytime: "Jederzeit kündbar",
+                feature_unlimited_bookings: "Unbegrenzte Buchungen",
+                feature_12months: "12-monatige Verpflichtung",
+                feature_premium_support: "Premium-Support inklusive",
+                subscription_subscribe_monthly: "Abonnieren - 10€/Monat",
+                subscription_subscribe_yearly: "Abonnieren - 96€/Jahr",
+                subscription_manage: "Mein Konto verwalten",
+                subscription_contact: "Kontaktieren Sie uns",
+                benefits_title: "Warum Viiveo wählen?",
+                benefits_subtitle: "Entdecken Sie alle Vorteile unserer Abonnements",
+                benefit_quality: "Garantierte Qualität",
+                benefit_quality_desc: "Alle unsere Dienstleister sind geprüft und qualifiziert",
+                benefit_flexibility: "Totale Flexibilität",
+                benefit_flexibility_desc: "Kostenlose Stornierung und Änderung",
+                benefit_support: "Support 7/7",
+                benefit_support_desc: "Unser Team begleitet Sie jederzeit",
+                benefit_transparency: "Preistransparenz",
+                benefit_transparency_desc: "Keine versteckten Kosten, alles inklusive",
+                footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
                 footer_navigation: "Navigation",
                 footer_spaces: "Bereiche",
                 footer_contact: "Kontakt",
-                footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten. Abonnement 10€/Monat."
+                footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten."
             }
         };
 
@@ -888,19 +661,7 @@
             localStorage.setItem('viiveo-language', lang);
         }
 
-        function toggleFAQ(button) {
-            const content = button.nextElementSibling;
-            const icon = button.querySelector('svg');
-            
-            content.classList.toggle('hidden');
-            
-            if (content.classList.contains('hidden')) {
-                icon.style.transform = 'rotate(0deg)';
-            } else {
-                icon.style.transform = 'rotate(180deg)';
-            }
-        }
-
+        // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             // Charger la langue sauvegardée
             const savedLanguage = localStorage.getItem('viiveo-language') || 'fr';
@@ -929,7 +690,10 @@
                 });
             }
 
-            // Menu mobile
+            setupMobileMenu();
+        });
+
+        function setupMobileMenu() {
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             
@@ -939,25 +703,13 @@
                 });
             }
 
-            // Gestion des boutons d'abonnement
-            document.querySelectorAll('button').forEach(button => {
-                if (button.textContent.includes('abonner') || button.textContent.includes('subscribe') || button.textContent.includes('Commencer')) {
-                    button.addEventListener('click', function() {
-                        alert(currentLanguage === 'fr' ? 'Redirection vers la page d\'abonnement...' : 
-                              currentLanguage === 'nl' ? 'Doorverwijzing naar abonnementspagina...' :
-                              currentLanguage === 'en' ? 'Redirecting to subscription page...' :
-                              'Weiterleitung zur Abonnementsseite...');
-                    });
-                }
-            });
-
             // Fermer le menu mobile en cliquant sur un lien
             document.querySelectorAll('#mobile-menu a').forEach(link => {
                 link.addEventListener('click', () => {
                     mobileMenu.classList.remove('open');
                 });
             });
-        });
+        }
     </script>
 </body>
 </html>
