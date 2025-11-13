@@ -641,14 +641,16 @@
         // Mapping des services de la base vers l'interface
         function mapToInterfaceService(databaseService) {
             const mapping = {
-                'Jardinage': '🌳 Jardinage',
-                'Aide ménagère': '🧹 Aide ménagère',
-                'Homme à tout faire': '🔧 Homme à tout faire',
-                'Courses': '🛒 Courses à domicile'
-            };
+            'Jardinage': 'Jardinage',
+            'Aide ménagère': 'Aide ménagère', 
+            'Homme à tout faire': 'Homme à tout faire',
+            'Courses': 'Courses à domicile',
+            'Bénévole': 'Bénévole',
+            'Assistance / Secours': 'Assistance / Secours'
+        };
             return mapping[databaseService] || databaseService;
         }
-
+        
         function displayPrestataires(prestataires) {
             const container = document.getElementById('prestataires-container');
             
@@ -700,40 +702,47 @@
         }
 
         function filterPrestataires(service) {
-            currentFilter = service;
-            
-            // Mettre à jour les boutons actifs
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-yellow-500', 'text-white');
-                btn.classList.add('bg-gray-200', 'text-gray-700');
-            });
+    currentFilter = service;
+    
+    // Mettre à jour les boutons actifs
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-yellow-500', 'text-white');
+        btn.classList.add('bg-gray-200', 'text-gray-700');
+    });
 
-            // Activer le bouton cliqué
-            const activeButton = Array.from(document.querySelectorAll('.filter-btn'))
-                .find(btn => {
-                    if (service === 'all') {
-                        return btn.textContent.includes(translations[currentLanguage].providers_all);
-                    } else {
-                        return btn.textContent.includes(service);
-                    }
-                });
-                
-            if (activeButton) {
-                activeButton.classList.add('active', 'bg-yellow-500', 'text-white');
-                activeButton.classList.remove('bg-gray-200', 'text-gray-700');
-            }
-
+    // Activer le bouton cliqué
+    const activeButton = Array.from(document.querySelectorAll('.filter-btn'))
+        .find(btn => {
             if (service === 'all') {
-                displayPrestataires(allPrestataires);
+                return btn.textContent.includes(translations[currentLanguage].providers_all);
             } else {
-                // Filtrer par le service de l'interface
-                const filtered = allPrestataires.filter(presta => 
-                    presta.services && presta.services.includes(service)
-                );
-                console.log(`🔍 Filtre "${service}": ${filtered.length} prestataires`);
-                displayPrestataires(filtered);
+                return btn.textContent.includes(service);
             }
-        }
+        });
+        
+    if (activeButton) {
+        activeButton.classList.add('active', 'bg-yellow-500', 'text-white');
+        activeButton.classList.remove('bg-gray-200', 'text-gray-700');
+    }
+
+    if (service === 'all') {
+        displayPrestataires(allPrestataires);
+    } else {
+        // CORRECTION : Filtrer en enlevant les emojis pour la comparaison
+        const serviceWithoutEmoji = service.replace(/^[^\w]*\s/, '');
+        const filtered = allPrestataires.filter(presta => {
+            if (!presta.services) return false;
+            
+            // Vérifier si un des services du prestataire correspond (sans emoji)
+            return presta.services.some(prestaService => {
+                const prestaServiceWithoutEmoji = prestaService.replace(/^[^\w]*\s/, '');
+                return prestaServiceWithoutEmoji === serviceWithoutEmoji;
+            });
+        });
+        console.log(`🔍 Filtre "${service}": ${filtered.length} prestataires`);
+        displayPrestataires(filtered);
+    }
+}
     </script>
 </body>
 </html>
