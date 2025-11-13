@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viiveo - Nos Prestataires</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- REMPLACER Tailwind CDN par la version correcte -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -454,14 +455,19 @@
             initializeFilters();
         }
 
-        const API_BASE_URL = 'https://gaetano1747.gm-harchies.workers.dev';
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec';
 
-        // Services disponibles
+        // Services disponibles dans l'interface
         const services = [
-            'Aide ménagère', 'Courses à domicile', 'Coiffure à domicile', 'Jardinage',
-            'Transport accompagné', 'Assistance / Secours', 'Homme à tout faire', 
-            'Bénévole', 'Livraison de repas'
+            '🧹 Aide ménagère',
+            '🛒 Courses à domicile', 
+            '💇 Coiffure à domicile',
+            '🌳 Jardinage',
+            '🚗 Transport accompagné',
+            '🚨 Assistance / Secours',
+            '🔧 Homme à tout faire',
+            '🤝 Bénévole',
+            '🍲 Livraison de repas'
         ];
 
         let allPrestataires = [];
@@ -534,13 +540,15 @@
             services.forEach(service => {
                 const button = document.createElement('button');
                 button.className = 'filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full font-semibold hover:bg-gray-300';
-                button.textContent = getServiceEmoji(service) + ' ' + getTranslatedService(service);
+                button.textContent = service;
                 button.onclick = () => filterPrestataires(service);
                 filtersContainer.appendChild(button);
             });
         }
 
-        function getTranslatedService(service) {
+        function getTranslatedService(serviceWithEmoji) {
+            const serviceName = serviceWithEmoji.replace(/^[^\w]*\s/, '');
+            
             const serviceTranslations = {
                 'Aide ménagère': 'service_cleaning',
                 'Courses à domicile': 'service_shopping',
@@ -553,8 +561,8 @@
                 'Livraison de repas': 'service_meals'
             };
             
-            const key = serviceTranslations[service];
-            return translations[currentLanguage][key] || service;
+            const key = serviceTranslations[serviceName];
+            return translations[currentLanguage][key] || serviceWithEmoji;
         }
 
         function getServiceEmoji(service) {
@@ -573,28 +581,74 @@
         }
 
         async function loadAllPrestataires() {
-    const container = document.getElementById('prestataires-container');
-    container.innerHTML = `<div class="col-span-full text-center py-8"><div class="spinner border-4 border-yellow-500 border-t-transparent rounded-full w-12 h-12 mx-auto mb-4 animate-spin"></div><p>${translations[currentLanguage].providers_loading}</p></div>`;
+            const container = document.getElementById('prestataires-container');
+            container.innerHTML = `<div class="col-span-full text-center py-8"><div class="spinner border-4 border-yellow-500 border-t-transparent rounded-full w-12 h-12 mx-auto mb-4 animate-spin"></div><p>${translations[currentLanguage].providers_loading}</p></div>`;
 
-    try {
-        // Charger TOUS les prestataires directement
-        const response = await fetch(`${GOOGLE_SCRIPT_URL}?type=getAllPrestataires`);
-        const result = await response.json();
-        
-        console.log('🔍 Réponse prestataires:', result); // Debug
-        
-        if (result.success && result.prestataires) {
-            allPrestataires = result.prestataires;
-            console.log(`✅ ${allPrestataires.length} prestataires chargés`); // Debug
-            displayPrestataires(allPrestataires);
-        } else {
-            throw new Error(result.message || 'Erreur de chargement');
+            try {
+                // Charger les prestataires pour les services qui existent dans votre base
+                const existingServices = ['Jardinage', 'Aide ménagère', 'Homme à tout faire', 'Courses'];
+                
+                console.log('🔄 Chargement des prestataires pour:', existingServices);
+                
+                const promises = existingServices.map(service => 
+                    fetch(`${GOOGLE_SCRIPT_URL}?type=getPrestatairesStylés&specialite=${encodeURIComponent(service)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(`✅ ${service}:`, data.prestataires ? data.prestataires.length : 0, 'prestataires');
+                            return data;
+                        })
+                        .catch(error => {
+                            console.log(`❌ Erreur pour ${service}:`, error);
+                            return { success: true, prestataires: [] };
+                        })
+                );
+
+                const results = await Promise.all(promises);
+                
+                allPrestataires = [];
+                results.forEach((result, index) => {
+                    if (result.success && result.prestataires && result.prestataires.length > 0) {
+                        console.log(`📦 Ajout ${result.prestataires.length} prestataires pour ${existingServices[index]}`);
+                        result.prestataires.forEach(presta => {
+                            // Mapper vers les services de l'interface
+                            const interfaceService = mapToInterfaceService(existingServices[index]);
+                            presta.services = [interfaceService];
+                            presta.specialite = existingServices[index];
+                            allPrestataires.push(presta);
+                        });
+                    }
+                });
+
+                console.log(`🎯 TOTAL: ${allPrestataires.length} prestataires chargés`);
+                displayPrestataires(allPrestataires);
+                
+            } catch (error) {
+                console.error('Erreur chargement prestataires:', error);
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-8">
+                        <div class="text-red-600 mb-4">
+                            <i class="fas fa-exclamation-triangle text-4xl mb-2"></i>
+                            <p class="text-lg">${translations[currentLanguage].providers_error}</p>
+                        </div>
+                        <p class="text-gray-600 mb-4">Détail: ${error.message}</p>
+                        <button onclick="loadAllPrestataires()" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors">
+                            <i class="fas fa-redo mr-2"></i>Réessayer
+                        </button>
+                    </div>`;
+            }
         }
-    } catch (error) {
-        console.error('Erreur chargement prestataires:', error);
-        container.innerHTML = `<div class="col-span-full text-center py-8 text-red-600"><p>${translations[currentLanguage].providers_error}</p></div>`;
-    }
-}
+
+        // Mapping des services de la base vers l'interface
+        function mapToInterfaceService(databaseService) {
+            const mapping = {
+                'Jardinage': '🌳 Jardinage',
+                'Aide ménagère': '🧹 Aide ménagère',
+                'Homme à tout faire': '🔧 Homme à tout faire',
+                'Courses': '🛒 Courses à domicile'
+            };
+            return mapping[databaseService] || databaseService;
+        }
+
         function displayPrestataires(prestataires) {
             const container = document.getElementById('prestataires-container');
             
@@ -617,7 +671,7 @@
 
                     <div class="flex flex-wrap gap-1 justify-center mb-3">
                         ${presta.services ? presta.services.map(service => 
-                            `<span class="service-badge text-xs">${getServiceEmoji(service)} ${getTranslatedService(service)}</span>`
+                            `<span class="service-badge text-xs">${service}</span>`
                         ).join('') : ''}
                     </div>
 
@@ -660,7 +714,7 @@
                     if (service === 'all') {
                         return btn.textContent.includes(translations[currentLanguage].providers_all);
                     } else {
-                        return btn.textContent.includes(getTranslatedService(service));
+                        return btn.textContent.includes(service);
                     }
                 });
                 
@@ -672,9 +726,11 @@
             if (service === 'all') {
                 displayPrestataires(allPrestataires);
             } else {
+                // Filtrer par le service de l'interface
                 const filtered = allPrestataires.filter(presta => 
                     presta.services && presta.services.includes(service)
                 );
+                console.log(`🔍 Filtre "${service}": ${filtered.length} prestataires`);
                 displayPrestataires(filtered);
             }
         }
