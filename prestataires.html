@@ -586,7 +586,17 @@
 
             try {
                 // Charger les prestataires pour les services qui existent dans votre base
-                const existingServices = ['Jardinage', 'Aide ménagère', 'Homme à tout faire', 'Courses'];
+                const existingServices = [
+                    'Jardinage', 
+                    'Aide ménagère', 
+                    'Homme à tout faire', 
+                    'Courses',
+                    'Bénévole',
+                    'Assistance / Secours',
+                    'Coiffure à domicile',
+                    'Transport accompagné', 
+                    'Livraison de repas'
+                    ];
                 
                 console.log('🔄 Chargement des prestataires pour:', existingServices);
                 
@@ -641,15 +651,18 @@
         // Mapping des services de la base vers l'interface
         function mapToInterfaceService(databaseService) {
             const mapping = {
-            'Jardinage': 'Jardinage',
-            'Aide ménagère': 'Aide ménagère', 
-            'Homme à tout faire': 'Homme à tout faire',
-            'Courses': 'Courses à domicile',
-            'Bénévole': 'Bénévole',
-            'Assistance / Secours': 'Assistance / Secours'
-        };
-            return mapping[databaseService] || databaseService;
-        }
+        'Jardinage': 'Jardinage',
+        'Aide ménagère': 'Aide ménagère',
+        'Homme à tout faire': 'Homme à tout faire',
+        'Courses': 'Courses à domicile',
+        'Bénévole': 'Bénévole',
+        'Assistance / Secours': 'Assistance / Secours',
+        'Coiffure à domicile': 'Coiffure à domicile',
+        'Transport accompagné': 'Transport accompagné',
+        'Livraison de repas': 'Livraison de repas'
+    };
+    return mapping[databaseService] || databaseService;
+}
         
         function displayPrestataires(prestataires) {
             const container = document.getElementById('prestataires-container');
