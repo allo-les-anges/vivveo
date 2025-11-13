@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
-        /* VOTRE CSS EXISTANT - IL RESTE IDENTIQUE */
         :root {
             --primary-color: #facc15;
             --primary-dark: #eab308;
@@ -25,8 +24,768 @@
             min-height: 100vh;
         }
 
-        /* ... TOUT VOTRE CSS EXISTANT ... */
+        .gradient-bg {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+        }
         
+        .card-hover {
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            transition: var(--transition);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(253, 224, 71, 0.4);
+        }
+
+        .language-selector {
+            position: relative;
+        }
+        
+        .language-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            width: 12rem;
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e5e7eb;
+            z-index: 50;
+        }
+        
+        .language-dropdown.show {
+            display: block;
+        }
+        
+        .language-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .language-option:hover {
+            background-color: #f9fafb;
+        }
+        
+        .language-option.active {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .language-option:not(:last-child) {
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            display: none;
+        }
+
+        .mobile-menu.open {
+            transform: translateY(0);
+            display: block;
+        }
+
+        .prestataire-section {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 2px solid #fef3c7;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prestataire-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+        }
+
+        .prestataire-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fde047;
+            box-shadow: 0 8px 20px rgba(253, 224, 71, 0.3);
+        }
+
+        .mission-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 2px solid #fef3c7;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+        }
+
+        .mission-card:hover {
+            border-color: #fde047;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        .status-confirmed {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .status-in-progress {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .status-completed {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .status-validated {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 2px solid #fef3c7;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #facc15;
+            margin-bottom: 0.5rem;
+        }
+
+        .loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .loader-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #facc15;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 1.5rem;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            padding: 2rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+            color: white;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close:hover {
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #fafafa;
+            position: relative;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #facc15;
+            box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.1);
+            background: white;
+            transform: translateY(-1px);
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .form-input-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            transition: var(--transition);
+        }
+
+        .form-input:focus + .form-input-icon {
+            color: #facc15;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f3f4f6;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .form-section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-section-title i {
+            color: #facc15;
+        }
+
+        .tab-container {
+            display: none;
+        }
+
+        .tab-container.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-button {
+            padding: 1rem 2rem;
+            border: none;
+            background: none;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+            position: relative;
+        }
+
+        .tab-button.active {
+            color: #facc15;
+            border-bottom-color: #facc15;
+        }
+
+        .tab-button:hover:not(.active) {
+            color: #374151;
+            background: #fef3c7;
+        }
+
+        .mobile-card-view {
+            display: none;
+        }
+
+        .request-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 2px solid #fef3c7;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .request-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            border-radius: 1rem 1rem 0 0;
+        }
+
+        .request-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .card-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .card-label {
+            font-weight: 700;
+            color: #6b7280;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            flex-shrink: 0;
+            margin-right: 1rem;
+        }
+
+        .card-value {
+            color: #374151;
+            font-weight: 500;
+            text-align: right;
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+
+        .card-status {
+            text-align: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #f3f4f6;
+        }
+
+        .btn-elegant {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(250, 204, 21, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-elegant::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: var(--transition);
+        }
+
+        .btn-elegant:hover::before {
+            left: 100%;
+        }
+
+        .btn-elegant:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(250, 204, 21, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            padding: 1rem 2rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-secondary:hover {
+            border-color: #facc15;
+            color: #facc15;
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-danger:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .readonly-field {
+            background-color: #f9fafb;
+            color: #6b7280;
+            cursor: not-allowed;
+        }
+
+        .delete-section {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 2px solid #f87171;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .password-match {
+            border-color: #10b981;
+            background-color: #f0fdf4;
+        }
+
+        .password-mismatch {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
+
+        .password-strength {
+            height: 4px;
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .password-weak { background-color: #ef4444; width: 25%; }
+        .password-medium { background-color: #f59e0b; width: 50%; }
+        .password-strong { background-color: #10b981; width: 75%; }
+        .password-very-strong { background-color: #059669; width: 100%; }
+
+        .optional-field {
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .table-wrapper {
+                display: none;
+            }
+
+            .mobile-card-view {
+                display: block;
+            }
+            
+            .prestataire-section {
+                padding: 1.5rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .message-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .message-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .message-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        #qr-reader {
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 1 / 1;
+            max-height: 350px;
+            margin: 0 auto;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .actions button {
+            width: 40px;
+            height: 36px;
+            font-size: 18px;
+            background-color: #E0E0E0;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 2px;
+        }
+
+        .actions button:hover {
+            background-color: #ccc;
+        }
+
+        #modalOverlay {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        #modalContent {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        #photosPreview img {
+            max-width: 80px;
+            margin-right: 10px;
+            margin-top: 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
     </style>
 </head>
 <body>
@@ -116,7 +875,7 @@
                 </p>
             </div>
 
-            <form id="login-form" onsubmit="event.preventDefault(); PrestataireApp.login();">
+            <form id="login-form" onsubmit="event.preventDefault(); presta_login();">
                 <div class="form-group">
                     <label for="email">Adresse email</label>
                     <div class="relative">
@@ -162,19 +921,19 @@
                         </div>
                     </div>
                     <div class="mt-4 md:mt-0 flex flex-wrap gap-3">
-                        <button onclick="PrestataireApp.showCompletedMissions()" class="btn-secondary">
+                        <button onclick="presta_showCompletedMissions()" class="btn-secondary">
                             <i class="fas fa-history mr-2"></i>
                             Missions terminées
                         </button>
-                        <button onclick="PrestataireApp.showProfileModal()" class="btn-success">
+                        <button onclick="presta_showProfileModal()" class="btn-success">
                             <i class="fas fa-user-edit mr-2"></i>
                             Modifier profil
                         </button>
-                        <button onclick="PrestataireApp.showDeleteAccountModal()" class="btn-danger">
+                        <button onclick="presta_showDeleteAccountModal()" class="btn-danger">
                             <i class="fas fa-trash-alt mr-2"></i>
                             Supprimer mon compte
                         </button>
-                        <button onclick="PrestataireApp.logout()" class="btn-danger">
+                        <button onclick="presta_logout()" class="btn-danger">
                             <i class="fas fa-sign-out-alt mr-2"></i>
                             Déconnexion
                         </button>
@@ -212,19 +971,19 @@
             <div class="prestataire-section">
                 <div class="border-b border-gray-200 mb-6">
                     <div class="flex space-x-8 overflow-x-auto">
-                        <button class="tab-button active" onclick="PrestataireApp.showTab('pending')">
+                        <button class="tab-button active" onclick="presta_showTab('pending')">
                             <i class="fas fa-clock mr-2"></i>
                             En Attente
                         </button>
-                        <button class="tab-button" onclick="PrestataireApp.showTab('today')">
+                        <button class="tab-button" onclick="presta_showTab('today')">
                             <i class="fas fa-calendar-day mr-2"></i>
                             Missions du Jour
                         </button>
-                        <button class="tab-button" onclick="PrestataireApp.showTab('planned')">
+                        <button class="tab-button" onclick="presta_showTab('planned')">
                             <i class="fas fa-calendar-check mr-2"></i>
                             Planifiées
                         </button>
-                        <button class="tab-button" onclick="PrestataireApp.showTab('completed')">
+                        <button class="tab-button" onclick="presta_showTab('completed')">
                             <i class="fas fa-check-circle mr-2"></i>
                             Terminées
                         </button>
@@ -410,7 +1169,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="text-2xl font-bold">Missions terminées</h2>
-                <span class="close" onclick="PrestataireApp.closeModal('completed-missions-modal')">&times;</span>
+                <span class="close" onclick="presta_closeModal('completed-missions-modal')">&times;</span>
             </div>
             <div class="modal-body">
                 <div class="table-wrapper">
@@ -438,15 +1197,15 @@
         </div>
     </div>
 
-    <!-- Modal de profil -->
+    <!-- Modal de profil MIS À JOUR -->
     <div id="profile-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="text-2xl font-bold">Modifier mes données personnelles</h2>
-                <span class="close" onclick="PrestataireApp.closeModal('profile-modal')">&times;</span>
+                <span class="close" onclick="presta_closeModal('profile-modal')">&times;</span>
             </div>
             <div class="modal-body">
-                <form id="profile-form" onsubmit="event.preventDefault(); PrestataireApp.saveProfile();">
+                <form id="profile-form" onsubmit="event.preventDefault(); presta_saveProfile();">
                     <!-- Section informations personnelles -->
                     <div class="form-section">
                         <h3 class="form-section-title">
@@ -456,7 +1215,7 @@
                         <div class="form-group">
                             <label>Prénom <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
-                                <input type="text" id="profile-firstname" class="form-input" placeholder="Votre prénom" autocomplete="given-name">
+                                <input type="text" id="profile-firstname" class="form-input" placeholder="Votre prénom">
                                 <i class="fas fa-user form-input-icon"></i>
                             </div>
                         </div>
@@ -472,7 +1231,7 @@
                         <div class="form-group">
                             <label>Téléphone <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
-                                <input type="tel" id="profile-phone" class="form-input" placeholder="Votre numéro de téléphone" autocomplete="tel">
+                                <input type="tel" id="profile-phone" class="form-input" placeholder="Votre numéro de téléphone">
                                 <i class="fas fa-phone form-input-icon"></i>
                             </div>
                         </div>
@@ -553,7 +1312,7 @@
                     </div>
                     
                     <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
-                        <button type="button" onclick="PrestataireApp.closeModal('profile-modal')" class="btn-secondary">
+                        <button type="button" onclick="presta_closeModal('profile-modal')" class="btn-secondary">
                             <i class="fas fa-times mr-2"></i>
                             Annuler
                         </button>
@@ -572,7 +1331,7 @@
         <div class="modal-content">
             <div class="modal-header" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
                 <h2 class="text-2xl font-bold">Supprimer mon compte</h2>
-                <span class="close" onclick="PrestataireApp.closeModal('delete-account-modal')">&times;</span>
+                <span class="close" onclick="presta_closeModal('delete-account-modal')">&times;</span>
             </div>
             <div class="modal-body">
                 <div class="delete-section rounded-lg p-6 mb-6">
@@ -598,7 +1357,7 @@
                         Pour confirmer, veuillez saisir votre adresse email :
                     </label>
                     <input type="email" id="confirm-email" class="form-input mt-2" 
-                           placeholder="votre@email.com" autocomplete="email">
+                           placeholder="votre@email.com" autocomplete="off">
                 </div>
 
                 <div class="form-group">
@@ -611,11 +1370,11 @@
                 </div>
 
                 <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
-                    <button type="button" onclick="PrestataireApp.closeModal('delete-account-modal')" class="btn-secondary">
+                    <button type="button" onclick="presta_closeModal('delete-account-modal')" class="btn-secondary">
                         <i class="fas fa-times mr-2"></i>
                         Annuler
                     </button>
-                    <button type="button" onclick="PrestataireApp.confirmDeleteAccount()" 
+                    <button type="button" onclick="presta_confirmDeleteAccount()" 
                             id="delete-account-btn" 
                             class="btn-danger opacity-50 cursor-not-allowed"
                             disabled>
@@ -690,756 +1449,834 @@
     </div>
 
     <script>
-        // =========================================================================
-        // APPLICATION PRESTATAIRE - TOUTES LES FONCTIONS DANS UN OBJET
-        // =========================================================================
-        const PrestataireApp = {
-            // Variables globales
-            currentEmail: "",
-            currentMissions: [],
-            currentPrestataireData: null,
+        // URL de l'application Google Apps Script
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
 
-            // Variables pour la modale QR
-            currentMissionId: null,
-            currentClientPrenom: "", 
-            currentClientNom: "",
-            currentPrestatairePrenom: "", 
-            currentPrestataireNom: "",
-            currentLatitude: null, 
-            currentLongitude: null,
-            heureDebut: null,
+        // Variables globales
+        let currentEmail = "";
+        let currentMissions = [];
+        let currentPrestataireData = null;
 
-            // URL de l'application Google Apps Script
-            webAppUrl: "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec",
+        // Variables pour la modale QR
+        let currentMissionId = null;
+        let currentClientPrenom = "", currentClientNom = "";
+        let currentPrestatairePrenom = "", currentPrestataireNom = "";
+        let currentLatitude = null, currentLongitude = null;
+        let heureDebut = null;
 
-            // =========================================================================
-            // FONCTIONS PRINCIPALES
-            // =========================================================================
+        const modalOverlay = document.getElementById("modalOverlay");
+        const stepQR = document.getElementById("stepQR");
+        const stepForm = document.getElementById("stepForm");
+        const stepSuccess = document.getElementById("stepSuccess");
+        const clientNameInput = document.getElementById("clientName");
+        const obsDateInput = document.getElementById("obsDate");
+        const etatSanteInput = document.getElementById("etatSante");
+        const etatFormeInput = document.getElementById("etatForme");
+        const environnementInput = document.getElementById("environnement");
+        const photosInput = document.getElementById("photos");
+        const photosPreview = document.getElementById("photosPreview");
 
-            // Fonction de connexion
-            login: async function() {
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const message = document.getElementById('login-message');
-
-                document.getElementById('loader').style.display = 'flex';
-
-                try {
-                    const callbackName = 'cbLogin' + Date.now();
-                    const url = `${this.webAppUrl}?type=loginPresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-                    const data = await this.callApiJsonp(url, callbackName);
-
-                    if (data.success) {
-                        this.currentEmail = email;
-                        document.getElementById('login-section').classList.add('hidden');
-                        document.getElementById('prestataire-interface').classList.remove('hidden');
-                        
-                        document.getElementById('prestataire-name').textContent = data.prenom || "Prestataire";
-                        document.getElementById('prestataire-rating').textContent = data.note || "4.8";
-
-                        await this.loadMissions(email);
-                        this.showNotification("Connexion réussie !", 'success');
-                    } else {
-                        throw new Error(data.message || "Email ou mot de passe incorrect");
+        // Fonction JSONP
+        function callApiJsonp(url, callbackName) {
+            return new Promise((resolve, reject) => {
+                window[callbackName] = function(data) {
+                    resolve(data);
+                    delete window[callbackName];
+                    if (script.parentNode) {
+                        script.parentNode.removeChild(script);
                     }
-                } catch (error) {
-                    message.textContent = error.message;
-                    message.classList.remove('hidden');
-                    message.className = 'message message-error';
-                } finally {
-                    document.getElementById('loader').style.display = 'none';
-                }
-            },
-
-            // Fonction JSONP
-            callApiJsonp: function(url, callbackName) {
-                return new Promise((resolve, reject) => {
-                    window[callbackName] = function(data) {
-                        resolve(data);
-                        delete window[callbackName];
-                        if (script.parentNode) {
-                            script.parentNode.removeChild(script);
-                        }
-                    };
-                    const script = document.createElement('script');
-                    script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
-                    script.onerror = () => {
-                        reject(new Error('Erreur JSONP'));
-                        delete window[callbackName];
-                        if (script.parentNode) {
-                            script.parentNode.removeChild(script);
-                        }
-                    };
-                    document.body.appendChild(script);
-                });
-            },
-
-            // Charger les missions
-            loadMissions: async function(email) {
-                try {
-                    const callbackName = 'cbMissions' + Date.now();
-                    const url = `${this.webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
-                    const data = await this.callApiJsonp(url, callbackName);
-
-                    const missions = data.missions || data;
-                    
-                    if (!Array.isArray(missions)) {
-                        throw new Error("Format de données invalide");
-                    }
-
-                    this.currentMissions = missions;
-                    this.updateStats(missions);
-                    this.loadMissionsByStatus('pending', missions);
-                    this.loadMissionsByStatus('today', missions);
-                    this.loadMissionsByStatus('planned', missions);
-                    this.loadMissionsByStatus('completed', missions);
-                    this.attacherListenersStartPrestation();
-
-                } catch (error) {
-                    console.error("Erreur lors du chargement des missions:", error);
-                    this.showNotification("Erreur lors du chargement des missions: " + error.message, 'error');
-                }
-            },
-
-            // Mettre à jour les statistiques
-            updateStats: function(missions) {
-                if (!Array.isArray(missions)) {
-                    console.error("Missions n'est pas un tableau:", missions);
-                    return;
-                }
-
-                const pendingCount = missions.filter(m => m.statut === "en attente").length;
-                const todayCount = missions.filter(m => {
-                    if (m.statut !== "confirmée") return false;
-                    try {
-                        const missionDate = new Date(m.date);
-                        const today = new Date();
-                        return missionDate.getDate() === today.getDate() && 
-                               missionDate.getMonth() === today.getMonth() && 
-                               missionDate.getFullYear() === today.getFullYear();
-                    } catch (e) {
-                        return false;
-                    }
-                }).length;
-                const plannedCount = missions.filter(m => {
-                    if (m.statut !== "confirmée") return false;
-                    try {
-                        const missionDate = new Date(m.date);
-                        return missionDate > new Date();
-                    } catch (e) {
-                        return false;
-                    }
-                }).length;
-                const completedCount = missions.filter(m => m.statut === "terminée" || m.statut === "validée").length;
-
-                document.getElementById('stats-pending').textContent = pendingCount;
-                document.getElementById('stats-today').textContent = todayCount;
-                document.getElementById('stats-planned').textContent = plannedCount;
-                document.getElementById('stats-completed').textContent = completedCount;
-            },
-
-            // Charger les missions par statut
-            loadMissionsByStatus: function(status, missions) {
-                const tableBody = document.getElementById(`${status}-missions-table`);
-                const cardsContainer = document.getElementById(`${status}-missions-cards`);
-                
-                if (!tableBody || !cardsContainer) return;
-
-                let filteredMissions = [];
-                
-                switch(status) {
-                    case 'pending':
-                        filteredMissions = missions.filter(m => m.statut === "en attente");
-                        break;
-                    case 'today':
-                        filteredMissions = missions.filter(m => {
-                            if (m.statut !== "confirmée") return false;
-                            try {
-                                const missionDate = new Date(m.date);
-                                const today = new Date();
-                                return missionDate.getDate() === today.getDate() && 
-                                       missionDate.getMonth() === today.getMonth() && 
-                                       missionDate.getFullYear() === today.getFullYear();
-                            } catch (e) {
-                                return false;
-                            }
-                        });
-                        break;
-                    case 'planned':
-                        filteredMissions = missions.filter(m => {
-                            if (m.statut !== "confirmée") return false;
-                            try {
-                                const missionDate = new Date(m.date);
-                                return missionDate > new Date();
-                            } catch (e) {
-                                return false;
-                            }
-                        });
-                        break;
-                    case 'completed':
-                        filteredMissions = missions.filter(m => m.statut === "terminée" || m.statut === "validée");
-                        break;
-                }
-                
-                if (filteredMissions.length === 0) {
-                    tableBody.innerHTML = `<tr><td colspan="${status === 'completed' ? '6' : '7'}" class="p-4 text-center text-gray-500">Aucune mission disponible</td></tr>`;
-                    cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission disponible</div>`;
-                } else {
-                    tableBody.innerHTML = filteredMissions.map(mission => `
-                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                            <td class="p-4">${mission.id || 'N/A'}</td>
-                            <td class="p-4" data-prenom="${mission.prenom || ''}">${mission.client || 'N/A'}</td>
-                            <td class="p-4">${mission.adresse || 'N/A'}</td>
-                            <td class="p-4">${mission.service || 'N/A'}</td>
-                            <td class="p-4">${this.formatDate(mission.date)}</td>
-                            <td class="p-4">${this.formatTime(mission.heure)}</td>
-                            <td class="p-4">${this.getMissionActions(status, mission)}</td>
-                        </tr>
-                    `).join('');
-                    
-                    cardsContainer.innerHTML = filteredMissions.map(mission => `
-                        <div class="request-card">
-                            <div class="card-row">
-                                <span class="card-label">ID Mission</span>
-                                <span class="card-value">${mission.id || 'N/A'}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Client</span>
-                                <span class="card-value">${mission.client || 'N/A'}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Adresse</span>
-                                <span class="card-value">${mission.adresse || 'N/A'}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Service</span>
-                                <span class="card-value">${mission.service || 'N/A'}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Date</span>
-                                <span class="card-value">${this.formatDate(mission.date)}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Heure</span>
-                                <span class="card-value">${this.formatTime(mission.heure)}</span>
-                            </div>
-                            <div class="card-status">
-                                ${this.getMissionActions(status, mission)}
-                            </div>
-                        </div>
-                    `).join('');
-                }
-            },
-
-            // Formatage des dates
-            formatDate: function(dateString) {
-                if (!dateString) return 'N/A';
-                try {
-                    const d = new Date(dateString);
-                    return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
-                } catch (e) {
-                    return dateString;
-                }
-            },
-
-            formatTime: function(timeString) {
-                if (!timeString) return 'N/A';
-                try {
-                    const d = new Date(timeString);
-                    return isNaN(d) ? timeString : `${String(d.getHours()).padStart(2, '0')}h${String(d.getMinutes()).padStart(2, '0')}`;
-                } catch (e) {
-                    return timeString;
-                }
-            },
-
-            getMissionActions: function(status, mission) {
-                if (status === 'pending') {
-                    return `
-                        <div class="actions">
-                            <button onclick="PrestataireApp.validerMission('${mission.id}')">✅</button>
-                            <button onclick="PrestataireApp.refuserMission('${mission.id}')">❌</button>
-                        </div>
-                    `;
-                } else if (status === 'today' || status === 'planned') {
-                    return `
-                        <div class="actions">
-                            <button class="btn-start-prestation" data-id="${mission.id}">▶</button>
-                        </div>
-                    `;
-                } else if (status === 'completed') {
-                    return `
-                        <span class="status-badge ${mission.statut === 'validée' ? 'status-validated' : 'status-completed'}">
-                            ${mission.statut}
-                        </span>
-                    `;
-                }
-                
-                return "";
-            },
-
-            // Valider une mission
-            validerMission: async function(id) {
-                if (confirm("Confirmez-vous que vous acceptez cette mission ?")) {
-                    document.getElementById('loader').style.display = 'flex';
-                    
-                    try {
-                        const callbackName = 'cbValider' + Date.now();
-                        const url = `${this.webAppUrl}?type=validerMission&id=${encodeURIComponent(id)}`;
-                        const data = await this.callApiJsonp(url, callbackName);
-                        
-                        if (data.success) {
-                            this.showNotification("Mission validée avec succès !", 'success');
-                            await this.loadMissions(this.currentEmail);
-                        } else {
-                            throw new Error(data.error || "Erreur lors de la validation");
-                        }
-                    } catch (error) {
-                        this.showNotification(error.message, 'error');
-                    } finally {
-                        document.getElementById('loader').style.display = 'none';
-                    }
-                }
-            },
-
-            // Refuser une mission
-            refuserMission: async function(id) {
-                const alternatives = prompt("Indiquez une autre date/heure possible :");
-                if (!alternatives) return;
-                
-                document.getElementById('loader').style.display = 'flex';
-                
-                try {
-                    const callbackName = 'cbRefuser' + Date.now();
-                    const url = `${this.webAppUrl}?type=refuserMission&id=${encodeURIComponent(id)}&alternatives=${encodeURIComponent(alternatives)}`;
-                    const data = await this.callApiJsonp(url, callbackName);
-                    
-                    if (data.success) {
-                        this.showNotification("Votre proposition a bien été envoyée.", 'success');
-                        await this.loadMissions(this.currentEmail);
-                    } else {
-                        throw new Error(data.error || "Erreur lors de l'envoi");
-                    }
-                } catch (error) {
-                    this.showNotification(error.message, 'error');
-                } finally {
-                    document.getElementById('loader').style.display = 'none';
-                }
-            },
-
-            // Fonction de déconnexion
-            logout: function() {
-                this.currentEmail = "";
-                document.getElementById('login-section').classList.remove('hidden');
-                document.getElementById('prestataire-interface').classList.add('hidden');
-                document.getElementById('login-form').reset();
-                document.getElementById('login-message').classList.add('hidden');
-            },
-
-            // Fonction pour afficher les onglets
-            showTab: function(tabName) {
-                document.querySelectorAll('.tab-container').forEach(tab => {
-                    tab.classList.remove('active');
-                });
-                document.querySelectorAll('.tab-button').forEach(button => {
-                    button.classList.remove('active');
-                });
-
-                document.getElementById(`tab-${tabName}`).classList.add('active');
-                event.target.classList.add('active');
-            },
-
-            // Fonction pour fermer les modales
-            closeModal: function(modalId) {
-                document.getElementById(modalId).style.display = 'none';
-            },
-
-            // Fonction de notification
-            showNotification: function(message, type = 'info') {
-                const notification = document.createElement('div');
-                notification.className = `fixed top-4 right-4 z-50 message message-${type} transform translate-x-full transition-transform duration-300`;
-                notification.innerHTML = `
-                    <div class="flex items-center justify-between p-4 rounded-lg shadow-lg max-w-sm">
-                        <div class="flex items-center">
-                            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'} mr-3"></i>
-                            <span>${message}</span>
-                        </div>
-                        <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-gray-500 hover:text-gray-700">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                `;
-                
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    notification.classList.remove('translate-x-full');
-                }, 100);
-                
-                setTimeout(() => {
-                    if (notification.parentElement) {
-                        notification.classList.add('translate-x-full');
-                        setTimeout(() => {
-                            if (notification.parentElement) {
-                                notification.remove();
-                            }
-                        }, 300);
-                    }
-                }, 5000);
-            },
-
-            // =========================================================================
-            // FONCTIONS POUR LA GESTION DU PROFIL
-            // =========================================================================
-
-            showProfileModal: async function() {
-                await this.loadProfileData();
-                document.getElementById('profile-modal').style.display = 'block';
-            },
-
-            loadProfileData: async function() {
-                try {
-                    const callbackName = 'cbProfile' + Date.now();
-                    const url = `${this.webAppUrl}?type=getPrestataireProfile&email=${encodeURIComponent(this.currentEmail)}`;
-                    const data = await this.callApiJsonp(url, callbackName);
-
-                    if (data.success && data.prestataire) {
-                        this.currentPrestataireData = data.prestataire;
-                        this.populateProfileForm(data.prestataire);
-                    } else {
-                        throw new Error(data.message || "Erreur lors du chargement du profil");
-                    }
-                } catch (error) {
-                    console.error("Erreur lors du chargement du profil:", error);
-                    this.showNotification("Erreur lors du chargement du profil", 'error');
-                }
-            },
-
-            populateProfileForm: function(prestataire) {
-                document.getElementById('profile-firstname').value = prestataire.prénom || '';
-                document.getElementById('profile-email').value = prestataire.email || '';
-                document.getElementById('profile-phone').value = prestataire.téléphone || '';
-                document.getElementById('profile-specialites').value = prestataire['spécialité(s)'] || prestataire.spécialité || '';
-                document.getElementById('profile-disponibilite').value = prestataire.disponibilité || '';
-                document.getElementById('profile-commentaire').value = prestataire.commentaire || '';
-            },
-
-            saveProfile: async function() {
-                const password = document.getElementById('profile-password').value;
-                const passwordConfirm = document.getElementById('profile-password-confirm').value;
-
-                // Validation du mot de passe seulement si rempli
-                if (password) {
-                    if (password !== passwordConfirm) {
-                        this.showNotification("Les mots de passe ne correspondent pas", 'error');
-                        return;
-                    }
-
-                    if (!this.validatePasswordStrength(password)) {
-                        this.showNotification("Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule et chiffre", 'error');
-                        return;
-                    }
-                }
-
-                const formData = {
-                    email: this.currentEmail,
-                    prénom: document.getElementById('profile-firstname').value,
-                    téléphone: document.getElementById('profile-phone').value,
-                    email: document.getElementById('profile-email').value,
-                    spécialité: document.getElementById('profile-specialites').value,
-                    disponibilité: document.getElementById('profile-disponibilite').value,
-                    commentaire: document.getElementById('profile-commentaire').value,
-                    password: password || null
                 };
-
-                // Filtrer les champs vides
-                Object.keys(formData).forEach(key => {
-                    if (formData[key] === '' || formData[key] === null) {
-                        delete formData[key];
+                const script = document.createElement('script');
+                script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
+                script.onerror = () => {
+                    reject(new Error('Erreur JSONP'));
+                    delete window[callbackName];
+                    if (script.parentNode) {
+                        script.parentNode.removeChild(script);
                     }
-                });
+                };
+                document.body.appendChild(script);
+            });
+        }
 
-                // Vérifier qu'au moins un champ est rempli
-                if (Object.keys(formData).length <= 1) {
-                    this.showNotification("Veuillez remplir au moins un champ à modifier", 'error');
-                    return;
-                }
+        // Fonction de connexion avec JSONP
+        async function presta_login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('login-message');
 
-                document.getElementById('loader').style.display = 'flex';
+            document.getElementById('loader').style.display = 'flex';
 
-                try {
-                    const callbackName = 'cbSaveProfile' + Date.now();
-                    let url = `${this.webAppUrl}?type=updatePrestataireProfile`;
+            try {
+                const callbackName = 'cbLogin' + Date.now();
+                const url = `${webAppUrl}?type=loginPresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+                const data = await callApiJsonp(url, callbackName);
+
+                if (data.success) {
+                    currentEmail = email;
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('prestataire-interface').classList.remove('hidden');
                     
-                    Object.keys(formData).forEach(key => {
-                        if (formData[key] !== null && formData[key] !== undefined) {
-                            url += `&${key}=${encodeURIComponent(formData[key])}`;
-                        }
-                    });
+                    document.getElementById('prestataire-name').textContent = data.prenom || "Prestataire";
+                    document.getElementById('prestataire-rating').textContent = data.note || "4.8";
 
-                    const data = await this.callApiJsonp(url, callbackName);
-
-                    if (data.success) {
-                        this.showNotification("Profil mis à jour avec succès !", 'success');
-                        this.closeModal('profile-modal');
-                        await this.loadProfileData();
-                        document.getElementById('prestataire-name').textContent = formData.prénom || "Prestataire";
-                        
-                        // Réinitialiser les champs mot de passe
-                        document.getElementById('profile-password').value = '';
-                        document.getElementById('profile-password-confirm').value = '';
-                        this.resetPasswordValidation();
-                    } else {
-                        throw new Error(data.message || "Erreur lors de la mise à jour du profil");
-                    }
-                } catch (error) {
-                    this.showNotification(error.message, 'error');
-                } finally {
-                    document.getElementById('loader').style.display = 'none';
-                }
-            },
-
-            // Validation de la force du mot de passe
-            validatePasswordStrength: function(password) {
-                const minLength = 8;
-                const hasUpperCase = /[A-Z]/.test(password);
-                const hasLowerCase = /[a-z]/.test(password);
-                const hasNumbers = /\d/.test(password);
-                
-                return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumbers;
-            },
-
-            checkPasswordStrength: function(password) {
-                const strengthBar = document.getElementById('password-strength');
-                if (!password) {
-                    strengthBar.className = 'password-strength';
-                    strengthBar.style.width = '0%';
-                    return;
-                }
-
-                let strength = 0;
-                if (password.length >= 8) strength += 25;
-                if (/[A-Z]/.test(password)) strength += 25;
-                if (/[a-z]/.test(password)) strength += 25;
-                if (/\d/.test(password)) strength += 25;
-
-                strengthBar.style.width = strength + '%';
-                
-                if (strength <= 25) {
-                    strengthBar.className = 'password-strength password-weak';
-                } else if (strength <= 50) {
-                    strengthBar.className = 'password-strength password-medium';
-                } else if (strength <= 75) {
-                    strengthBar.className = 'password-strength password-strong';
+                    await presta_loadMissions(email);
+                    presta_showNotification("Connexion réussie !", 'success');
                 } else {
-                    strengthBar.className = 'password-strength password-very-strong';
+                    throw new Error(data.message || "Email ou mot de passe incorrect");
                 }
-            },
+            } catch (error) {
+                message.textContent = error.message;
+                message.classList.remove('hidden');
+                message.className = 'message message-error';
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
 
-            checkPasswordMatch: function() {
-                const password = document.getElementById('profile-password').value;
-                const confirmPassword = document.getElementById('profile-password-confirm').value;
-                const message = document.getElementById('password-match-message');
-                const submitBtn = document.getElementById('profile-submit-btn');
+        // Charger les missions avec JSONP
+        async function presta_loadMissions(email) {
+            try {
+                const callbackName = 'cbMissions' + Date.now();
+                const url = `${webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
+                const data = await callApiJsonp(url, callbackName);
 
-                if (!password) {
-                    message.classList.add('hidden');
-                    submitBtn.disabled = false;
-                    return;
-                }
-
-                if (confirmPassword) {
-                    if (password === confirmPassword) {
-                        message.textContent = '✓ Les mots de passe correspondent';
-                        message.className = 'mt-2 text-sm text-green-600';
-                        message.classList.remove('hidden');
-                        submitBtn.disabled = false;
-                    } else {
-                        message.textContent = '✗ Les mots de passe ne correspondent pas';
-                        message.className = 'mt-2 text-sm text-red-600';
-                        message.classList.remove('hidden');
-                        submitBtn.disabled = true;
-                    }
-                } else {
-                    message.classList.add('hidden');
-                    submitBtn.disabled = false;
-                }
-            },
-
-            resetPasswordValidation: function() {
-                document.getElementById('password-strength').className = 'password-strength';
-                document.getElementById('password-strength').style.width = '0%';
-                document.getElementById('password-match-message').classList.add('hidden');
-                document.getElementById('profile-submit-btn').disabled = false;
-            },
-
-            // =========================================================================
-            // FONCTIONS POUR LA SUPPRESSION DE COMPTE
-            // =========================================================================
-
-            showDeleteAccountModal: function() {
-                document.getElementById('delete-account-modal').style.display = 'block';
-                document.getElementById('confirm-email').value = '';
-                document.getElementById('confirm-delete').checked = false;
-                document.getElementById('delete-account-btn').disabled = true;
-                document.getElementById('delete-account-btn').classList.add('opacity-50', 'cursor-not-allowed');
-            },
-
-            confirmDeleteAccount: async function() {
-                const confirmEmail = document.getElementById('confirm-email').value;
-                const confirmCheckbox = document.getElementById('confirm-delete').checked;
-
-                if (confirmEmail !== this.currentEmail) {
-                    this.showNotification("L'adresse email ne correspond pas", 'error');
-                    return;
-                }
-
-                if (!confirmCheckbox) {
-                    this.showNotification("Veuillez confirmer que vous comprenez les conséquences", 'error');
-                    return;
-                }
-
-                if (!confirm("Êtes-vous ABSOLUMENT SÛR de vouloir supprimer votre compte ? Cette action est IRREVERSIBLE !")) {
-                    return;
-                }
-
-                document.getElementById('loader').style.display = 'flex';
-
-                try {
-                    const callbackName = 'cbDeleteAccount' + Date.now();
-                    const url = `${this.webAppUrl}?type=deletePrestataire&email=${encodeURIComponent(this.currentEmail)}`;
-                    const data = await this.callApiJsonp(url, callbackName);
-
-                    if (data.success) {
-                        this.showNotification("Votre compte a été supprimé avec succès", 'success');
-                        setTimeout(() => {
-                            this.logout();
-                            this.closeModal('delete-account-modal');
-                        }, 2000);
-                    } else {
-                        throw new Error(data.message || "Erreur lors de la suppression du compte");
-                    }
-                } catch (error) {
-                    this.showNotification(error.message, 'error');
-                } finally {
-                    document.getElementById('loader').style.display = 'none';
-                }
-            },
-
-            // =========================================================================
-            // FONCTIONS POUR LES MISSIONS TERMINÉES
-            // =========================================================================
-
-            showCompletedMissions: function() {
-                const completedMissions = this.currentMissions.filter(m => m.statut === "terminée" || m.statut === "validée");
+                const missions = data.missions || data;
                 
-                const tableBody = document.getElementById("completed-missions-table-modal");
-                const cardsContainer = document.getElementById("completed-missions-cards-modal");
-                
-                if (completedMissions.length === 0) {
-                    tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">Aucune mission terminée</td></tr>`;
-                    cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission terminée</div>`;
-                } else {
-                    tableBody.innerHTML = completedMissions.map(mission => `
-                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                            <td class="p-4">${mission.id || 'N/A'}</td>
-                            <td class="p-4">${mission.client || 'N/A'}</td>
-                            <td class="p-4">${mission.adresse || 'N/A'}</td>
-                            <td class="p-4">${mission.service || 'N/A'}</td>
-                            <td class="p-4">${this.formatDate(mission.date)}</td>
-                            <td class="p-4">${this.formatTime(mission.heure)}</td>
-                            <td class="p-4">
-                                <span class="status-badge ${mission.statut === 'validée' ? 'status-validated' : 'status-completed'}">
-                                    ${mission.statut}
-                                </span>
-                            </td>
-                        </tr>
-                    `).join('');
-                    
-                    cardsContainer.innerHTML = completedMissions.map(mission => `
-                        <div class="request-card">
-                            <div class="card-row">
-                                <span class="card-label">ID Mission</span>
-                                <span class="card-value">${mission.id || 'N/A'}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Client</span>
-                                <span class="card-value">${mission.client || 'N/A'}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Adresse</span>
-                                <span class="card-value">${mission.adresse || 'N/A'}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Service</span>
-                                <span class="card-value">${mission.service || 'N/A'}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Date</span>
-                                <span class="card-value">${this.formatDate(mission.date)}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Heure</span>
-                                <span class="card-value">${this.formatTime(mission.heure)}</span>
-                            </div>
-                            <div class="card-status">
-                                <span class="status-badge ${mission.statut === 'validée' ? 'status-validated' : 'status-completed'}">
-                                    ${mission.statut}
-                                </span>
-                            </div>
-                        </div>
-                    `).join('');
+                if (!Array.isArray(missions)) {
+                    throw new Error("Format de données invalide");
                 }
-                
-                document.getElementById('completed-missions-modal').style.display = 'block';
-            },
 
-            // =========================================================================
-            // FONCTIONS POUR LA MODALE QR (à compléter selon vos besoins)
-            // =========================================================================
+                currentMissions = missions;
+                presta_updateStats(missions);
+                presta_loadMissionsByStatus('pending', missions);
+                presta_loadMissionsByStatus('today', missions);
+                presta_loadMissionsByStatus('planned', missions);
+                presta_loadMissionsByStatus('completed', missions);
+                presta_attacherListenersStartPrestation();
 
-            attacherListenersStartPrestation: function() {
-                // Votre code existant pour attacher les listeners
-                document.querySelectorAll(".btn-start-prestation").forEach(btn => {
-                    btn.addEventListener("click", () => {
-                        const missionId = btn.dataset.id;
-                        const row = [...document.querySelectorAll("table tbody tr")]
-                            .find(tr => tr.children[0].textContent.trim() === missionId);
-                        if (!row) return alert("❌ Ligne de mission introuvable");
+            } catch (error) {
+                console.error("Erreur lors du chargement des missions:", error);
+                presta_showNotification("Erreur lors du chargement des missions: " + error.message, 'error');
+            }
+        }
 
-                        const clientNom = row.children[1]?.textContent.trim() || "";
-                        const clientPrenom = row.children[1]?.dataset.prenom?.trim() || clientNom.split(" ")[0];
-
-                        const prestatairePrenom = document.getElementById('prestataire-name').textContent || "Prestataire";
-                        const prestataireNom = "";
-
-                        this.openModalStartPrestation(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom);
-                    });
-                });
-            },
-
-            openModalStartPrestation: function(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom) {
-                this.currentMissionId = missionId;
-                this.currentClientPrenom = clientPrenom;
-                this.currentClientNom = clientNom;
-                this.currentPrestatairePrenom = prestatairePrenom;
-                this.currentPrestataireNom = prestataireNom;
-
-                document.getElementById("stepQR").style.display = "flex";
-                document.getElementById("stepForm").style.display = "none";
-                document.getElementById("stepSuccess").style.display = "none";
-                document.getElementById("modalOverlay").style.display = "flex";
-
-                this.startQrScanner();
+        // Mettre à jour les statistiques
+        function presta_updateStats(missions) {
+            if (!Array.isArray(missions)) {
+                console.error("Missions n'est pas un tableau:", missions);
+                return;
             }
 
-            // =========================================================================
-            // AJOUTEZ ICI TOUTES VOS AUTRES FONCTIONS...
-            // =========================================================================
-        };
+            const pendingCount = missions.filter(m => m.statut === "en attente").length;
+            const todayCount = missions.filter(m => {
+                if (m.statut !== "confirmée") return false;
+                try {
+                    const missionDate = new Date(m.date);
+                    const today = new Date();
+                    return missionDate.getDate() === today.getDate() && 
+                           missionDate.getMonth() === today.getMonth() && 
+                           missionDate.getFullYear() === today.getFullYear();
+                } catch (e) {
+                    return false;
+                }
+            }).length;
+            const plannedCount = missions.filter(m => {
+                if (m.statut !== "confirmée") return false;
+                try {
+                    const missionDate = new Date(m.date);
+                    return missionDate > new Date();
+                } catch (e) {
+                    return false;
+                }
+            }).length;
+            const completedCount = missions.filter(m => m.statut === "terminée" || m.statut === "validée").length;
 
-        // =========================================================================
-        // INITIALISATION
-        // =========================================================================
+            document.getElementById('stats-pending').textContent = pendingCount;
+            document.getElementById('stats-today').textContent = todayCount;
+            document.getElementById('stats-planned').textContent = plannedCount;
+            document.getElementById('stats-completed').textContent = completedCount;
+        }
+
+        // Charger les missions par statut
+        function presta_loadMissionsByStatus(status, missions) {
+            const tableBody = document.getElementById(`${status}-missions-table`);
+            const cardsContainer = document.getElementById(`${status}-missions-cards`);
+            
+            if (!tableBody || !cardsContainer) return;
+
+            let filteredMissions = [];
+            
+            switch(status) {
+                case 'pending':
+                    filteredMissions = missions.filter(m => m.statut === "en attente");
+                    break;
+                case 'today':
+                    filteredMissions = missions.filter(m => {
+                        if (m.statut !== "confirmée") return false;
+                        try {
+                            const missionDate = new Date(m.date);
+                            const today = new Date();
+                            return missionDate.getDate() === today.getDate() && 
+                                   missionDate.getMonth() === today.getMonth() && 
+                                   missionDate.getFullYear() === today.getFullYear();
+                        } catch (e) {
+                            return false;
+                        }
+                    });
+                    break;
+                case 'planned':
+                    filteredMissions = missions.filter(m => {
+                        if (m.statut !== "confirmée") return false;
+                        try {
+                            const missionDate = new Date(m.date);
+                            return missionDate > new Date();
+                        } catch (e) {
+                            return false;
+                        }
+                    });
+                    break;
+                case 'completed':
+                    filteredMissions = missions.filter(m => m.statut === "terminée" || m.statut === "validée");
+                    break;
+            }
+            
+            if (filteredMissions.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="${status === 'completed' ? '6' : '7'}" class="p-4 text-center text-gray-500">Aucune mission disponible</td></tr>`;
+                cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission disponible</div>`;
+            } else {
+                tableBody.innerHTML = filteredMissions.map(mission => `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td class="p-4">${mission.id || 'N/A'}</td>
+                        <td class="p-4" data-prenom="${mission.prenom || ''}">${mission.client || 'N/A'}</td>
+                        <td class="p-4">${mission.adresse || 'N/A'}</td>
+                        <td class="p-4">${mission.service || 'N/A'}</td>
+                        <td class="p-4">${presta_formatDate(mission.date)}</td>
+                        <td class="p-4">${presta_formatTime(mission.heure)}</td>
+                        <td class="p-4">${presta_getMissionActions(status, mission)}</td>
+                    </tr>
+                `).join('');
+                
+                cardsContainer.innerHTML = filteredMissions.map(mission => `
+                    <div class="request-card">
+                        <div class="card-row">
+                            <span class="card-label">ID Mission</span>
+                            <span class="card-value">${mission.id || 'N/A'}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Client</span>
+                            <span class="card-value">${mission.client || 'N/A'}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Adresse</span>
+                            <span class="card-value">${mission.adresse || 'N/A'}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Service</span>
+                            <span class="card-value">${mission.service || 'N/A'}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Date</span>
+                            <span class="card-value">${presta_formatDate(mission.date)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Heure</span>
+                            <span class="card-value">${presta_formatTime(mission.heure)}</span>
+                        </div>
+                        <div class="card-status">
+                            ${presta_getMissionActions(status, mission)}
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Formatage des dates
+        function presta_formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            try {
+                const d = new Date(dateString);
+                return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
+            } catch (e) {
+                return dateString;
+            }
+        }
+
+        function presta_formatTime(timeString) {
+            if (!timeString) return 'N/A';
+            try {
+                const d = new Date(timeString);
+                return isNaN(d) ? timeString : `${String(d.getHours()).padStart(2, '0')}h${String(d.getMinutes()).padStart(2, '0')}`;
+            } catch (e) {
+                return timeString;
+            }
+        }
+
+        function presta_getMissionActions(status, mission) {
+            if (status === 'pending') {
+                return `
+                    <div class="actions">
+                        <button onclick="presta_validerMission('${mission.id}')">✅</button>
+                        <button onclick="presta_refuserMission('${mission.id}')">❌</button>
+                    </div>
+                `;
+            } else if (status === 'today' || status === 'planned') {
+                return `
+                    <div class="actions">
+                        <button class="btn-start-prestation" data-id="${mission.id}">▶</button>
+                    </div>
+                `;
+            } else if (status === 'completed') {
+                return `
+                    <span class="status-badge ${mission.statut === 'validée' ? 'status-validated' : 'status-completed'}">
+                        ${mission.statut}
+                    </span>
+                `;
+            }
+            
+            return "";
+        }
+
+        // Valider une mission avec JSONP
+        async function presta_validerMission(id) {
+            if (confirm("Confirmez-vous que vous acceptez cette mission ?")) {
+                document.getElementById('loader').style.display = 'flex';
+                
+                try {
+                    const callbackName = 'cbValider' + Date.now();
+                    const url = `${webAppUrl}?type=validerMission&id=${encodeURIComponent(id)}`;
+                    const data = await callApiJsonp(url, callbackName);
+                    
+                    if (data.success) {
+                        presta_showNotification("Mission validée avec succès !", 'success');
+                        await presta_loadMissions(currentEmail);
+                    } else {
+                        throw new Error(data.error || "Erreur lors de la validation");
+                    }
+                } catch (error) {
+                    presta_showNotification(error.message, 'error');
+                } finally {
+                    document.getElementById('loader').style.display = 'none';
+                }
+            }
+        }
+
+        // Refuser une mission avec JSONP
+        async function presta_refuserMission(id) {
+            const alternatives = prompt("Indiquez une autre date/heure possible :");
+            if (!alternatives) return;
+            
+            document.getElementById('loader').style.display = 'flex';
+            
+            try {
+                const callbackName = 'cbRefuser' + Date.now();
+                const url = `${webAppUrl}?type=refuserMission&id=${encodeURIComponent(id)}&alternatives=${encodeURIComponent(alternatives)}`;
+                const data = await callApiJsonp(url, callbackName);
+                
+                if (data.success) {
+                    presta_showNotification("Votre proposition a bien été envoyée.", 'success');
+                    await presta_loadMissions(currentEmail);
+                } else {
+                    throw new Error(data.error || "Erreur lors de l'envoi");
+                }
+            } catch (error) {
+                presta_showNotification(error.message, 'error');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+
+        // Fonctions pour la modale QR et fiche d'observation
+        function presta_setTodayDate() {
+            obsDateInput.value = new Date().toISOString().split("T")[0];
+        }
+
+        function presta_openModalStartPrestation(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom) {
+            currentMissionId = missionId;
+            currentClientPrenom = clientPrenom;
+            currentClientNom = clientNom;
+            currentPrestatairePrenom = prestatairePrenom;
+            currentPrestataireNom = prestataireNom;
+
+            stepQR.style.display = "flex";
+            stepForm.style.display = "none";
+            stepSuccess.style.display = "none";
+            modalOverlay.style.display = "flex";
+
+            presta_startQrScanner();
+        }
+
+        function presta_closeModalQR() {
+            modalOverlay.style.display = "none";
+            presta_clearForm();
+        }
+
+        function presta_clearForm() {
+            obsDateInput.value = "";
+            etatSanteInput.value = "";
+            etatFormeInput.value = "";
+            environnementInput.value = "";
+            photosInput.value = "";
+            photosPreview.innerHTML = "";
+        }
+
+        async function presta_startQrScanner() {
+            document.getElementById("qr-reader").innerHTML = "";
+            const qrReader = new Html5Qrcode("qr-reader");
+            qrReader.start(
+                { facingMode: "environment" },
+                { fps: 10, qrbox: 250 },
+                async (decodedText) => {
+                    qrReader.stop();
+                    try {
+                        const url = new URL(decodedText);
+                        const email = url.searchParams.get("email");
+                        if (!email) throw new Error("QR invalide");
+
+                        const callbackName = 'cbVerifyClient' + Date.now();
+                        const data = await callApiJsonp(`${webAppUrl}?type=verifyClientEmail&email=${encodeURIComponent(email)}`, callbackName);
+
+                        if (!data.success || !currentClientNom.toUpperCase().trim().includes((data.nom || "").toUpperCase().trim())) {
+                            alert("❌ Ce QR ne correspond pas au client de cette mission.");
+                            presta_closeModalQR();
+                            return;
+                        }
+                        heureDebut = new Date().toISOString();
+                        presta_getGeolocationAndShowForm();
+
+                    } catch (err) {
+                        alert("Erreur lors du scan QR.");
+                        console.error(err);
+                        presta_closeModalQR();
+                    }
+                },
+                () => {}
+            ).catch(err => {
+                alert("Impossible d'activer la caméra.");
+                console.error(err);
+                presta_closeModalQR();
+            });
+        }
+
+        function presta_getGeolocationAndShowForm() {
+            if (!navigator.geolocation) {
+                alert("❌ Votre appareil ne supporte pas la géolocalisation.");
+                presta_closeModalQR();
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    currentLatitude = position.coords.latitude;
+                    currentLongitude = position.coords.longitude;
+                    presta_showForm();
+                },
+                error => {
+                    let message = "⚠️ Erreur de géolocalisation.";
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            message = "❌ Vous devez autoriser la géolocalisation pour continuer.";
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            message = "📍 Position non disponible.";
+                            break;
+                        case error.TIMEOUT:
+                            message = "⏱️ Le délai de localisation est dépassé.";
+                            break;
+                        default:
+                            message = "❌ Erreur inconnue.";
+                    }
+                    alert(message);
+                    presta_closeModalQR();
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        }
+
+        function presta_showForm() {
+            stepQR.style.display = "none";
+            stepForm.style.display = "block";
+            clientNameInput.value = `${currentClientPrenom} ${currentClientNom}`;
+            presta_setTodayDate();
+        }
+
+        // Attacher les écouteurs d'événements pour les boutons de démarrage de prestation
+        function presta_attacherListenersStartPrestation() {
+            document.querySelectorAll(".btn-start-prestation").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const missionId = btn.dataset.id;
+                    const row = [...document.querySelectorAll("table tbody tr")]
+                        .find(tr => tr.children[0].textContent.trim() === missionId);
+                    if (!row) return alert("❌ Ligne de mission introuvable");
+
+                    const clientNom = row.children[1]?.textContent.trim() || "";
+                    const clientPrenom = row.children[1]?.dataset.prenom?.trim() || clientNom.split(" ")[0];
+
+                    const prestatairePrenom = document.getElementById('prestataire-name').textContent || "Prestataire";
+                    const prestataireNom = "";
+
+                    presta_openModalStartPrestation(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom);
+                });
+            });
+        }
+
+        // Fonction de déconnexion
+        function presta_logout() {
+            currentEmail = "";
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('prestataire-interface').classList.add('hidden');
+            document.getElementById('login-form').reset();
+            document.getElementById('login-message').classList.add('hidden');
+        }
+
+        function presta_showTab(tabName) {
+            document.querySelectorAll('.tab-container').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function presta_closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function presta_showCompletedMissions() {
+            const completedMissions = currentMissions.filter(m => m.statut === "terminée" || m.statut === "validée");
+            
+            const tableBody = document.getElementById("completed-missions-table-modal");
+            const cardsContainer = document.getElementById("completed-missions-cards-modal");
+            
+            if (completedMissions.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">Aucune mission terminée</td></tr>`;
+                cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission terminée</div>`;
+            } else {
+                tableBody.innerHTML = completedMissions.map(mission => `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td class="p-4">${mission.id || 'N/A'}</td>
+                        <td class="p-4">${mission.client || 'N/A'}</td>
+                        <td class="p-4">${mission.adresse || 'N/A'}</td>
+                        <td class="p-4">${mission.service || 'N/A'}</td>
+                        <td class="p-4">${presta_formatDate(mission.date)}</td>
+                        <td class="p-4">${presta_formatTime(mission.heure)}</td>
+                        <td class="p-4">
+                            <span class="status-badge ${mission.statut === 'validée' ? 'status-validated' : 'status-completed'}">
+                                ${mission.statut}
+                            </span>
+                        </td>
+                    </tr>
+                `).join('');
+                
+                cardsContainer.innerHTML = completedMissions.map(mission => `
+                    <div class="request-card">
+                        <div class="card-row">
+                            <span class="card-label">ID Mission</span>
+                            <span class="card-value">${mission.id || 'N/A'}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Client</span>
+                            <span class="card-value">${mission.client || 'N/A'}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Adresse</span>
+                            <span class="card-value">${mission.adresse || 'N/A'}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Service</span>
+                            <span class="card-value">${mission.service || 'N/A'}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Date</span>
+                            <span class="card-value">${presta_formatDate(mission.date)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Heure</span>
+                            <span class="card-value">${presta_formatTime(mission.heure)}</span>
+                        </div>
+                        <div class="card-status">
+                            <span class="status-badge ${mission.statut === 'validée' ? 'status-validated' : 'status-completed'}">
+                                ${mission.statut}
+                            </span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('completed-missions-modal').style.display = 'block';
+        }
+
+        // FONCTIONS POUR LA GESTION DU PROFIL
+
+        async function presta_showProfileModal() {
+            await presta_loadProfileData();
+            document.getElementById('profile-modal').style.display = 'block';
+        }
+
+        async function presta_loadProfileData() {
+            try {
+                const callbackName = 'cbProfile' + Date.now();
+                const url = `${webAppUrl}?type=getPrestataireProfile&email=${encodeURIComponent(currentEmail)}`;
+                const data = await callApiJsonp(url, callbackName);
+
+                if (data.success && data.prestataire) {
+                    currentPrestataireData = data.prestataire;
+                    presta_populateProfileForm(data.prestataire);
+                } else {
+                    throw new Error(data.message || "Erreur lors du chargement du profil");
+                }
+            } catch (error) {
+                console.error("Erreur lors du chargement du profil:", error);
+                presta_showNotification("Erreur lors du chargement du profil", 'error');
+            }
+        }
+
+        function presta_populateProfileForm(prestataire) {
+            document.getElementById('profile-firstname').value = prestataire.prénom || '';
+            document.getElementById('profile-email').value = prestataire.email || '';
+            document.getElementById('profile-phone').value = prestataire.téléphone || '';
+            document.getElementById('profile-specialites').value = prestataire['spécialité(s)'] || prestataire.spécialité || '';
+            document.getElementById('profile-disponibilite').value = prestataire.disponibilité || '';
+            document.getElementById('profile-commentaire').value = prestataire.commentaire || '';
+        }
+
+        async function presta_saveProfile() {
+            const password = document.getElementById('profile-password').value;
+            const passwordConfirm = document.getElementById('profile-password-confirm').value;
+
+            // Validation du mot de passe seulement si rempli
+            if (password) {
+                if (password !== passwordConfirm) {
+                    presta_showNotification("Les mots de passe ne correspondent pas", 'error');
+                    return;
+                }
+
+                if (!presta_validatePasswordStrength(password)) {
+                    presta_showNotification("Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule et chiffre", 'error');
+                    return;
+                }
+            }
+
+            const formData = {
+                email: currentEmail,
+                prénom: document.getElementById('profile-firstname').value,
+                téléphone: document.getElementById('profile-phone').value,
+                email: document.getElementById('profile-email').value,
+                spécialité: document.getElementById('profile-specialites').value,
+                disponibilité: document.getElementById('profile-disponibilite').value,
+                commentaire: document.getElementById('profile-commentaire').value,
+                password: password || null
+            };
+
+            // Filtrer les champs vides
+            Object.keys(formData).forEach(key => {
+                if (formData[key] === '' || formData[key] === null) {
+                    delete formData[key];
+                }
+            });
+
+            // Vérifier qu'au moins un champ est rempli
+            if (Object.keys(formData).length <= 1) { // Seulement l'email est présent
+                presta_showNotification("Veuillez remplir au moins un champ à modifier", 'error');
+                return;
+            }
+
+            document.getElementById('loader').style.display = 'flex';
+
+            try {
+                const callbackName = 'cbSaveProfile' + Date.now();
+                let url = `${webAppUrl}?type=updatePrestataireProfile`;
+                
+                Object.keys(formData).forEach(key => {
+                    if (formData[key] !== null && formData[key] !== undefined) {
+                        url += `&${key}=${encodeURIComponent(formData[key])}`;
+                    }
+                });
+
+                const data = await callApiJsonp(url, callbackName);
+
+                if (data.success) {
+                    presta_showNotification("Profil mis à jour avec succès !", 'success');
+                    presta_closeModal('profile-modal');
+                    await presta_loadProfileData();
+                    document.getElementById('prestataire-name').textContent = formData.prénom || "Prestataire";
+                    
+                    // Réinitialiser les champs mot de passe
+                    document.getElementById('profile-password').value = '';
+                    document.getElementById('profile-password-confirm').value = '';
+                    presta_resetPasswordValidation();
+                } else {
+                    throw new Error(data.message || "Erreur lors de la mise à jour du profil");
+                }
+            } catch (error) {
+                presta_showNotification(error.message, 'error');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+
+        // Validation de la force du mot de passe
+        function presta_validatePasswordStrength(password) {
+            const minLength = 8;
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasNumbers = /\d/.test(password);
+            
+            return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumbers;
+        }
+
+        function presta_checkPasswordStrength(password) {
+            const strengthBar = document.getElementById('password-strength');
+            if (!password) {
+                strengthBar.className = 'password-strength';
+                strengthBar.style.width = '0%';
+                return;
+            }
+
+            let strength = 0;
+            if (password.length >= 8) strength += 25;
+            if (/[A-Z]/.test(password)) strength += 25;
+            if (/[a-z]/.test(password)) strength += 25;
+            if (/\d/.test(password)) strength += 25;
+
+            strengthBar.style.width = strength + '%';
+            
+            if (strength <= 25) {
+                strengthBar.className = 'password-strength password-weak';
+            } else if (strength <= 50) {
+                strengthBar.className = 'password-strength password-medium';
+            } else if (strength <= 75) {
+                strengthBar.className = 'password-strength password-strong';
+            } else {
+                strengthBar.className = 'password-strength password-very-strong';
+            }
+        }
+
+        function presta_checkPasswordMatch() {
+            const password = document.getElementById('profile-password').value;
+            const confirmPassword = document.getElementById('profile-password-confirm').value;
+            const message = document.getElementById('password-match-message');
+            const submitBtn = document.getElementById('profile-submit-btn');
+
+            if (!password) {
+                message.classList.add('hidden');
+                submitBtn.disabled = false;
+                return;
+            }
+
+            if (confirmPassword) {
+                if (password === confirmPassword) {
+                    message.textContent = '✓ Les mots de passe correspondent';
+                    message.className = 'mt-2 text-sm text-green-600';
+                    message.classList.remove('hidden');
+                    submitBtn.disabled = false;
+                } else {
+                    message.textContent = '✗ Les mots de passe ne correspondent pas';
+                    message.className = 'mt-2 text-sm text-red-600';
+                    message.classList.remove('hidden');
+                    submitBtn.disabled = true;
+                }
+            } else {
+                message.classList.add('hidden');
+                submitBtn.disabled = false;
+            }
+        }
+
+        function presta_resetPasswordValidation() {
+            document.getElementById('password-strength').className = 'password-strength';
+            document.getElementById('password-strength').style.width = '0%';
+            document.getElementById('password-match-message').classList.add('hidden');
+            document.getElementById('profile-submit-btn').disabled = false;
+        }
+
+        // FONCTIONS POUR LA SUPPRESSION DE COMPTE
+
+        function presta_showDeleteAccountModal() {
+            document.getElementById('delete-account-modal').style.display = 'block';
+            document.getElementById('confirm-email').value = '';
+            document.getElementById('confirm-delete').checked = false;
+            document.getElementById('delete-account-btn').disabled = true;
+            document.getElementById('delete-account-btn').classList.add('opacity-50', 'cursor-not-allowed');
+        }
+
+        async function presta_confirmDeleteAccount() {
+            const confirmEmail = document.getElementById('confirm-email').value;
+            const confirmCheckbox = document.getElementById('confirm-delete').checked;
+
+            if (confirmEmail !== currentEmail) {
+                presta_showNotification("L'adresse email ne correspond pas", 'error');
+                return;
+            }
+
+            if (!confirmCheckbox) {
+                presta_showNotification("Veuillez confirmer que vous comprenez les conséquences", 'error');
+                return;
+            }
+
+            if (!confirm("Êtes-vous ABSOLUMENT SÛR de vouloir supprimer votre compte ? Cette action est IRREVERSIBLE !")) {
+                return;
+            }
+
+            document.getElementById('loader').style.display = 'flex';
+
+            try {
+                const callbackName = 'cbDeleteAccount' + Date.now();
+                const url = `${webAppUrl}?type=deletePrestataire&email=${encodeURIComponent(currentEmail)}`;
+                const data = await callApiJsonp(url, callbackName);
+
+                if (data.success) {
+                    presta_showNotification("Votre compte a été supprimé avec succès", 'success');
+                    setTimeout(() => {
+                        presta_logout();
+                        presta_closeModal('delete-account-modal');
+                    }, 2000);
+                } else {
+                    throw new Error(data.message || "Erreur lors de la suppression du compte");
+                }
+            } catch (error) {
+                presta_showNotification(error.message, 'error');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+
+        function presta_showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 message message-${type} transform translate-x-full transition-transform duration-300`;
+            notification.innerHTML = `
+                <div class="flex items-center justify-between p-4 rounded-lg shadow-lg max-w-sm">
+                    <div class="flex items-center">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'} mr-3"></i>
+                        <span>${message}</span>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.classList.add('translate-x-full');
+                    setTimeout(() => {
+                        if (notification.parentElement) {
+                            notification.remove();
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+
+        // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             // Gestion du sélecteur de langue
             const languageButton = document.getElementById('language-button');
@@ -1479,8 +2316,7 @@
                     event.target.style.display = 'none';
                 }
                 if (event.target.id === 'modalOverlay') {
-                    // Fermer la modale QR
-                    document.getElementById("modalOverlay").style.display = "none";
+                    presta_closeModalQR();
                 }
             });
 
@@ -1491,19 +2327,117 @@
                 });
             });
 
+            // Gestion des photos dans la modale QR
+            photosInput.addEventListener("change", e => {
+                photosPreview.innerHTML = "";
+                const files = e.target.files;
+                if (files.length > 3) {
+                    alert("Vous ne pouvez sélectionner que 3 photos max.");
+                    photosInput.value = "";
+                    return;
+                }
+                [...files].forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = ev => {
+                        const img = document.createElement("img");
+                        img.src = ev.target.result;
+                        photosPreview.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            // Soumission du formulaire d'observation
+            document.getElementById("obsForm").addEventListener("submit", async e => {
+                e.preventDefault();
+
+                if (photosInput.files.length > 3) {
+                    alert("Maximum 3 photos autorisées.");
+                    return;
+                }
+
+                const heureFin = new Date().toISOString();
+                const formData = new FormData();
+                formData.append("type", "envoyerFiche");
+                formData.append("missionId", currentMissionId);
+                formData.append("prenomClient", currentClientPrenom);
+                formData.append("nomClient", currentClientNom);
+                formData.append("obsDate", obsDateInput.value);
+                formData.append("etatSante", etatSanteInput.value);
+                formData.append("etatForme", etatFormeInput.value);
+                formData.append("environnement", environnementInput.value);
+                formData.append("latitude", currentLatitude);
+                formData.append("longitude", currentLongitude);
+                formData.append("heureDebut", heureDebut);
+                formData.append("heureFin", heureFin);
+                formData.append("prestatairePrenom", currentPrestatairePrenom);
+                formData.append("prestataireNom", currentPrestataireNom);
+                formData.append("prestataireEmail", currentEmail);
+                for (let file of photosInput.files) {
+                    formData.append("photos", file);
+                }
+
+                try {
+                    const res = await fetch(webAppUrl, {
+                        method: "POST",
+                        body: formData,
+                    });
+                    const json = await res.json();
+                    if (json.success) {
+                        stepForm.style.display = "none";
+                        stepSuccess.style.display = "block";
+                    } else {
+                        alert("Erreur : " + (json.message || "Envoi échoué"));
+                    }
+                } catch (err) {
+                    alert("Erreur réseau.");
+                    console.error(err);
+                }
+            });
+
+            // Boutons d'annulation et fermeture
+            document.getElementById("btnCancelQR").onclick = presta_closeModalQR;
+            document.getElementById("btnCancelForm").onclick = presta_closeModalQR;
+            document.getElementById("btnCloseSuccess").onclick = presta_closeModalQR;
+
+            // Validation du formulaire de suppression
+            const confirmEmail = document.getElementById('confirm-email');
+            const confirmCheckbox = document.getElementById('confirm-delete');
+            const deleteButton = document.getElementById('delete-account-btn');
+
+            function validateDeleteForm() {
+                const emailMatch = confirmEmail.value === currentEmail;
+                const checkboxChecked = confirmCheckbox.checked;
+                
+                if (emailMatch && checkboxChecked) {
+                    deleteButton.disabled = false;
+                    deleteButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    deleteButton.disabled = true;
+                    deleteButton.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            }
+
+            if (confirmEmail) {
+                confirmEmail.addEventListener('input', validateDeleteForm);
+            }
+            if (confirmCheckbox) {
+                confirmCheckbox.addEventListener('change', validateDeleteForm);
+            }
+
             // Validation des mots de passe
             const passwordInput = document.getElementById('profile-password');
             const passwordConfirmInput = document.getElementById('profile-password-confirm');
 
             if (passwordInput) {
                 passwordInput.addEventListener('input', function() {
-                    PrestataireApp.checkPasswordStrength(this.value);
-                    PrestataireApp.checkPasswordMatch();
+                    presta_checkPasswordStrength(this.value);
+                    presta_checkPasswordMatch();
                 });
             }
 
             if (passwordConfirmInput) {
-                passwordConfirmInput.addEventListener('input', PrestataireApp.checkPasswordMatch);
+                passwordConfirmInput.addEventListener('input', presta_checkPasswordMatch);
             }
         });
     </script>
