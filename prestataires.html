@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viiveo - Nos Prestataires</title>
-    <!-- REMPLACER Tailwind CDN par la version correcte -->
+    <title>Viiveo - Nos Formules d'Abonnement</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -18,49 +17,78 @@
             background-color: #fdfaf6;
         }
 
-        .prestataire-card {
+        .subscription-card {
             background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 2px solid #fef3c7;
+            border: 3px solid #fef3c7;
+            position: relative;
+            overflow: hidden;
         }
 
-        .prestataire-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        .subscription-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
         }
 
-        .prestataire-photo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #facc15;
-            margin: 0 auto 1rem;
+        .subscription-card.popular {
+            border-color: #facc15;
+            transform: scale(1.05);
         }
 
-        .service-badge {
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+        .subscription-card.popular:hover {
+            transform: scale(1.05) translateY(-8px);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 1rem;
+            right: -2rem;
+            background: linear-gradient(135deg, #facc15, #eab308);
             color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
+            padding: 0.5rem 3rem;
+            transform: rotate(45deg);
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .feature-list li i {
+            color: #10b981;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #1f2937;
+            line-height: 1;
+        }
+
+        .price-period {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .savings-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 2rem;
             font-size: 0.875rem;
             font-weight: 600;
-        }
-
-        .rating-stars {
-            color: #fbbf24;
-        }
-
-        .filter-btn {
-            transition: all 0.3s ease;
-        }
-
-        .filter-btn.active {
-            background: #facc15;
-            color: white;
         }
 
         /* Styles pour le sélecteur de langue */
@@ -141,7 +169,7 @@
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Header Commun avec menu corrigé -->
+    <!-- Header Commun -->
     <header class="bg-white shadow-sm sticky top-0 z-40">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between py-4">
@@ -150,12 +178,12 @@
                     <img src="https://i.ibb.co/9mqgvbfP/logo-viiveo-2.png" alt="Viiveo Logo" class="h-10 w-auto">
                 </a>
                 
-                <!-- Navigation Desktop - MÊME STRUCTURE QUE SERVICES.HTML -->
+                <!-- Navigation Desktop -->
                 <nav class="hidden lg:flex items-center space-x-8">
                     <a href="index.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_services">Services</a>
-                    <a href="formules.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_formules">Abonnement</a>
-                    <a href="prestataires.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
+                    <a href="formules.html" class="nav-link text-yellow-500 font-medium border-b-2 border-yellow-500" data-translate="nav_formules">Abonnement</a>
+                    <a href="prestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
                     <a href="iclient.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_client">Espace Client</a>
                     <a href="iprestataires.html" class="nav-link text-gray-700 hover:text-yellow-500 font-medium" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </nav>
@@ -197,13 +225,13 @@
                 </button>
             </div>
 
-            <!-- Menu Mobile - MÊME STRUCTURE QUE SERVICES.HTML -->
+            <!-- Menu Mobile -->
             <div id="mobile-menu" class="mobile-menu lg:hidden absolute left-0 right-0 bg-white border-t border-gray-100 shadow-lg">
                 <div class="px-4 py-6 space-y-4">
                     <a href="index.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_home">Accueil</a>
                     <a href="nos_services.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_services">Services</a>
-                    <a href="formules.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_formules">Abonnement</a>
-                    <a href="prestataires.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
+                    <a href="formules.html" class="block py-3 px-4 text-yellow-500 bg-yellow-50 rounded-lg font-medium" data-translate="nav_formules">Abonnement</a>
+                    <a href="prestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires">Découvrir nos Prestataires</a>
                     <a href="iclient.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_client">Espace Client</a>
                     <a href="iprestataires.html" class="block py-3 px-4 text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded-lg font-medium transition-colors" data-translate="nav_prestataires_space">Espace Prestataire</a>
                 </div>
@@ -211,35 +239,148 @@
         </div>
     </header>
 
-    <!-- Hero Section Prestataires -->
+    <!-- Hero Section Formules -->
     <section class="relative py-16 md:py-24 bg-gradient-to-br from-yellow-50 to-yellow-100">
         <div class="container mx-auto px-6 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6" data-translate="providers_hero_title">
-                Nos Prestataires
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6" data-translate="subscription_hero_title">
+                Nos Formules d'Abonnement
             </h1>
-            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8" data-translate="providers_hero_subtitle">
-                Découvrez nos professionnels qualifiés, sélectionnés avec soin pour vous offrir le meilleur service
+            <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8" data-translate="subscription_hero_subtitle">
+                Choisissez la formule qui correspond le mieux à vos besoins et bénéficiez de nos services en illimité
             </p>
         </div>
     </section>
 
-    <!-- Filtres par Service -->
-    <section class="py-8 bg-white">
+    <!-- Section Abonnements -->
+    <section class="py-16">
         <div class="container mx-auto px-6">
-            <div class="text-center mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4" data-translate="providers_filter_title">Filtrer par service</h2>
-                <div class="flex flex-wrap justify-center gap-2" id="service-filters">
-                    <!-- Les filtres seront générés dynamiquement -->
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12" data-translate="subscription_choose">Choisissez votre abonnement</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Abonnement Mensuel -->
+                <div class="subscription-card">
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2" data-translate="subscription_monthly">Abonnement Mensuel</h3>
+                        <p class="text-gray-600" data-translate="subscription_flexible">Flexible - Résiliable à tout moment</p>
+                    </div>
+                    
+                    <div class="text-center mb-6">
+                        <span class="price">10€</span>
+                        <span class="price-period" data-translate="subscription_month">/mois</span>
+                    </div>
+
+                    <ul class="feature-list mb-8">
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_all_services">Accès à tous les services</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_priority_support">Support prioritaire</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_cancel_anytime">Résiliation à tout moment</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_unlimited_bookings">Réservations illimitées</span></li>
+                    </ul>
+
+                    <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors" data-translate="subscription_subscribe_monthly">
+                        Souscrire - 10€/mois
+                    </button>
+                </div>
+
+                <!-- Abonnement Annuel - POPULAIRE -->
+                <div class="subscription-card popular">
+                    <div class="popular-badge" data-translate="subscription_popular">Populaire</div>
+                    
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2" data-translate="subscription_yearly">Abonnement Annuel</h3>
+                        <p class="text-gray-600" data-translate="subscription_economical">Économique - 20% d'économie</p>
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <span class="price">8€</span>
+                        <span class="price-period" data-translate="subscription_month">/mois</span>
+                    </div>
+
+                    <div class="text-center mb-6">
+                        <span class="savings-badge" data-translate="subscription_savings">Économie de 24€ par an</span>
+                    </div>
+
+                    <ul class="feature-list mb-8">
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_all_services">Accès à tous les services</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_priority_support">Support prioritaire</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_12months">Engagement 12 mois</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_unlimited_bookings">Réservations illimitées</span></li>
+                        <li><i class="fas fa-check-circle"></i> <span data-translate="feature_premium_support">Support premium inclus</span></li>
+                    </ul>
+
+                    <button class="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors" data-translate="subscription_subscribe_yearly">
+                        Souscrire - 96€/an
+                    </button>
+                </div>
+
+                <!-- Statut actuel -->
+                <div class="subscription-card">
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2" data-translate="subscription_current">Votre abonnement actuel</h3>
+                    </div>
+                    
+                    <div class="text-center mb-6">
+                        <div class="bg-gray-100 rounded-lg p-6 mb-4">
+                            <i class="fas fa-info-circle text-4xl text-gray-400 mb-3"></i>
+                            <p class="text-lg font-semibold text-gray-600" data-translate="subscription_none">Aucun abonnement actif</p>
+                        </div>
+                        <p class="text-gray-600 text-sm" data-translate="subscription_encourage">
+                            Souscrivez à un abonnement pour bénéficier de nos services
+                        </p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <button class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors" data-translate="subscription_manage">
+                            Gérer mon compte
+                        </button>
+                        <button class="w-full border border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors" data-translate="subscription_contact">
+                            Contactez-nous
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Grille des Prestataires -->
-    <section class="py-16">
+    <!-- Section Avantages -->
+    <section class="py-16 bg-white">
         <div class="container mx-auto px-6">
-            <div id="prestataires-container" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <!-- Les prestataires seront chargés ici -->
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4" data-translate="benefits_title">Pourquoi choisir Viiveo ?</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto" data-translate="benefits_subtitle">Découvrez tous les avantages de nos abonnements</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-2xl text-yellow-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2" data-translate="benefit_quality">Qualité garantie</h3>
+                    <p class="text-gray-600 text-sm" data-translate="benefit_quality_desc">Tous nos prestataires sont vérifiés et qualifiés</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-clock text-2xl text-yellow-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2" data-translate="benefit_flexibility">Flexibilité totale</h3>
+                    <p class="text-gray-600 text-sm" data-translate="benefit_flexibility_desc">Annulation et modification gratuites</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-headset text-2xl text-yellow-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2" data-translate="benefit_support">Support 7j/7</h3>
+                    <p class="text-gray-600 text-sm" data-translate="benefit_support_desc">Notre équipe vous accompagne à tout moment</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-euro-sign text-2xl text-yellow-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2" data-translate="benefit_transparency">Transparence des prix</h3>
+                    <p class="text-gray-600 text-sm" data-translate="benefit_transparency_desc">Pas de frais cachés, tout est inclus</p>
+                </div>
             </div>
         </div>
     </section>
@@ -300,27 +441,47 @@
                 nav_prestataires_space: "Espace Prestataire",
                 
                 // Hero Section
-                providers_hero_title: "Nos Prestataires",
-                providers_hero_subtitle: "Découvrez nos professionnels qualifiés, sélectionnés avec soin pour vous offrir le meilleur service",
+                subscription_hero_title: "Nos Formules d'Abonnement",
+                subscription_hero_subtitle: "Choisissez la formule qui correspond le mieux à vos besoins et bénéficiez de nos services en illimité",
                 
-                // Filtres
-                providers_filter_title: "Filtrer par service",
-                providers_all: "👥 Tous les prestataires",
-                providers_loading: "Chargement des prestataires...",
-                providers_error: "Erreur lors du chargement des prestataires",
-                providers_none: "Aucun prestataire trouvé",
-                providers_book: "Réserver",
+                // Section Abonnements
+                subscription_choose: "Choisissez votre abonnement",
+                subscription_monthly: "Abonnement Mensuel",
+                subscription_flexible: "Flexible - Résiliable à tout moment",
+                subscription_yearly: "Abonnement Annuel",
+                subscription_economical: "Économique - 20% d'économie",
+                subscription_popular: "Populaire",
+                subscription_savings: "Économie de 24€ par an",
+                subscription_current: "Votre abonnement actuel",
+                subscription_none: "Aucun abonnement actif",
+                subscription_encourage: "Souscrivez à un abonnement pour bénéficier de nos services",
+                subscription_month: "/mois",
                 
-                // Services
-                service_cleaning: "Aide ménagère",
-                service_shopping: "Courses à domicile",
-                service_haircare: "Coiffure à domicile",
-                service_gardening: "Jardinage",
-                service_transport: "Transport accompagné",
-                service_assistance: "Assistance / Secours",
-                service_handyman: "Homme à tout faire",
-                service_volunteer: "Bénévole",
-                service_meals: "Livraison de repas",
+                // Features
+                feature_all_services: "Accès à tous les services",
+                feature_priority_support: "Support prioritaire",
+                feature_cancel_anytime: "Résiliation à tout moment",
+                feature_unlimited_bookings: "Réservations illimitées",
+                feature_12months: "Engagement 12 mois",
+                feature_premium_support: "Support premium inclus",
+                
+                // Boutons
+                subscription_subscribe_monthly: "Souscrire - 10€/mois",
+                subscription_subscribe_yearly: "Souscrire - 96€/an",
+                subscription_manage: "Gérer mon compte",
+                subscription_contact: "Contactez-nous",
+                
+                // Section Avantages
+                benefits_title: "Pourquoi choisir Viiveo ?",
+                benefits_subtitle: "Découvrez tous les avantages de nos abonnements",
+                benefit_quality: "Qualité garantie",
+                benefit_quality_desc: "Tous nos prestataires sont vérifiés et qualifiés",
+                benefit_flexibility: "Flexibilité totale",
+                benefit_flexibility_desc: "Annulation et modification gratuites",
+                benefit_support: "Support 7j/7",
+                benefit_support_desc: "Notre équipe vous accompagne à tout moment",
+                benefit_transparency: "Transparence des prix",
+                benefit_transparency_desc: "Pas de frais cachés, tout est inclus",
                 
                 // Footer
                 footer_desc: "Votre bien-être à domicile, notre priorité.",
@@ -336,23 +497,39 @@
                 nav_prestataires: "Onze Dienstverleners Ontdekken",
                 nav_client: "Klantenruimte",
                 nav_prestataires_space: "Dienstverlener Ruimte",
-                providers_hero_title: "Onze Dienstverleners",
-                providers_hero_subtitle: "Ontdek onze gekwalificeerde professionals, zorgvuldig geselecteerd om u de beste service te bieden",
-                providers_filter_title: "Filteren op dienst",
-                providers_all: "👥 Alle dienstverleners",
-                providers_loading: "Dienstverleners laden...",
-                providers_error: "Fout bij het laden van dienstverleners",
-                providers_none: "Geen dienstverleners gevonden",
-                providers_book: "Reserveren",
-                service_cleaning: "Huishoudhulp",
-                service_shopping: "Boodschappen aan huis",
-                service_haircare: "Kapper aan huis",
-                service_gardening: "Tuinonderhoud",
-                service_transport: "Begeleid vervoer",
-                service_assistance: "Assistentie / Hulp",
-                service_handyman: "Klusjesman",
-                service_volunteer: "Vrijwilliger",
-                service_meals: "Maaltijdbezorging",
+                subscription_hero_title: "Onze Abonnementsformules",
+                subscription_hero_subtitle: "Kies de formule die het beste bij uw behoeften past en geniet van onze onbeperkte diensten",
+                subscription_choose: "Kies uw abonnement",
+                subscription_monthly: "Maandelijks Abonnement",
+                subscription_flexible: "Flexibel - Opzegbaar op elk moment",
+                subscription_yearly: "Jaarabonnement",
+                subscription_economical: "Voordelig - 20% besparing",
+                subscription_popular: "Populair",
+                subscription_savings: "Besparing van €24 per jaar",
+                subscription_current: "Uw huidig abonnement",
+                subscription_none: "Geen actief abonnement",
+                subscription_encourage: "Sluit een abonnement af om van onze diensten te genieten",
+                subscription_month: "/maand",
+                feature_all_services: "Toegang tot alle diensten",
+                feature_priority_support: "Prioritaire ondersteuning",
+                feature_cancel_anytime: "Opzegging op elk moment",
+                feature_unlimited_bookings: "Onbeperkte reserveringen",
+                feature_12months: "Engagement 12 maanden",
+                feature_premium_support: "Premium ondersteuning inbegrepen",
+                subscription_subscribe_monthly: "Abonneren - €10/maand",
+                subscription_subscribe_yearly: "Abonneren - €96/jaar",
+                subscription_manage: "Mijn account beheren",
+                subscription_contact: "Neem contact op",
+                benefits_title: "Waarom Viiveo kiezen?",
+                benefits_subtitle: "Ontdek alle voordelen van onze abonnementen",
+                benefit_quality: "Gegarandeerde kwaliteit",
+                benefit_quality_desc: "Al onze dienstverleners zijn gecontroleerd en gekwalificeerd",
+                benefit_flexibility: "Totale flexibiliteit",
+                benefit_flexibility_desc: "Gratis annulering en wijziging",
+                benefit_support: "Ondersteuning 7/7",
+                benefit_support_desc: "Ons team staat altijd voor u klaar",
+                benefit_transparency: "Transparante prijzen",
+                benefit_transparency_desc: "Geen verborgen kosten, alles inbegrepen",
                 footer_desc: "Uw welzijn thuis, onze prioriteit.",
                 footer_navigation: "Navigatie",
                 footer_spaces: "Ruimtes",
@@ -366,23 +543,39 @@
                 nav_prestataires: "Discover our Providers",
                 nav_client: "Client Space",
                 nav_prestataires_space: "Provider Space",
-                providers_hero_title: "Our Providers",
-                providers_hero_subtitle: "Discover our qualified professionals, carefully selected to offer you the best service",
-                providers_filter_title: "Filter by service",
-                providers_all: "👥 All providers",
-                providers_loading: "Loading providers...",
-                providers_error: "Error loading providers",
-                providers_none: "No providers found",
-                providers_book: "Book",
-                service_cleaning: "Home cleaning",
-                service_shopping: "Home shopping",
-                service_haircare: "Home hairdressing",
-                service_gardening: "Gardening",
-                service_transport: "Accompanied transport",
-                service_assistance: "Assistance / Help",
-                service_handyman: "Handyman",
-                service_volunteer: "Volunteer",
-                service_meals: "Meal delivery",
+                subscription_hero_title: "Our Subscription Plans",
+                subscription_hero_subtitle: "Choose the plan that best fits your needs and enjoy our unlimited services",
+                subscription_choose: "Choose your subscription",
+                subscription_monthly: "Monthly Subscription",
+                subscription_flexible: "Flexible - Cancel anytime",
+                subscription_yearly: "Yearly Subscription",
+                subscription_economical: "Economical - 20% saving",
+                subscription_popular: "Popular",
+                subscription_savings: "Save €24 per year",
+                subscription_current: "Your current subscription",
+                subscription_none: "No active subscription",
+                subscription_encourage: "Subscribe to a plan to enjoy our services",
+                subscription_month: "/month",
+                feature_all_services: "Access to all services",
+                feature_priority_support: "Priority support",
+                feature_cancel_anytime: "Cancel anytime",
+                feature_unlimited_bookings: "Unlimited bookings",
+                feature_12months: "12-month commitment",
+                feature_premium_support: "Premium support included",
+                subscription_subscribe_monthly: "Subscribe - €10/month",
+                subscription_subscribe_yearly: "Subscribe - €96/year",
+                subscription_manage: "Manage my account",
+                subscription_contact: "Contact us",
+                benefits_title: "Why Choose Viiveo?",
+                benefits_subtitle: "Discover all the benefits of our subscriptions",
+                benefit_quality: "Guaranteed quality",
+                benefit_quality_desc: "All our providers are verified and qualified",
+                benefit_flexibility: "Total flexibility",
+                benefit_flexibility_desc: "Free cancellation and modification",
+                benefit_support: "7/7 support",
+                benefit_support_desc: "Our team supports you at all times",
+                benefit_transparency: "Price transparency",
+                benefit_transparency_desc: "No hidden fees, everything included",
                 footer_desc: "Your home well-being, our priority.",
                 footer_navigation: "Navigation",
                 footer_spaces: "Spaces",
@@ -396,23 +589,39 @@
                 nav_prestataires: "Unsere Dienstleister Entdecken",
                 nav_client: "Kundenbereich",
                 nav_prestataires_space: "Dienstleister Bereich",
-                providers_hero_title: "Unsere Dienstleister",
-                providers_hero_subtitle: "Entdecken Sie unsere qualifizierten Fachkräfte, sorgfältig ausgewählt, um Ihnen den besten Service zu bieten",
-                providers_filter_title: "Nach Dienstleistung filtern",
-                providers_all: "👥 Alle Dienstleister",
-                providers_loading: "Dienstleister werden geladen...",
-                providers_error: "Fehler beim Laden der Dienstleister",
-                providers_none: "Keine Dienstleister gefunden",
-                providers_book: "Buchen",
-                service_cleaning: "Haushaltshilfe",
-                service_shopping: "Einkaufsservice",
-                service_haircare: "Friseur zu Hause",
-                service_gardening: "Gartenarbeit",
-                service_transport: "Begleiteter Transport",
-                service_assistance: "Assistenz / Hilfe",
-                service_handyman: "Handwerker",
-                service_volunteer: "Freiwilliger",
-                service_meals: "Essenslieferung",
+                subscription_hero_title: "Unsere Abonnement-Pläne",
+                subscription_hero_subtitle: "Wählen Sie den Plan, der am besten zu Ihren Bedürfnissen passt und genießen Sie unsere unbegrenzten Dienstleistungen",
+                subscription_choose: "Wählen Sie Ihr Abonnement",
+                subscription_monthly: "Monatliches Abonnement",
+                subscription_flexible: "Flexibel - Jederzeit kündbar",
+                subscription_yearly: "Jahresabonnement",
+                subscription_economical: "Wirtschaftlich - 20% Ersparnis",
+                subscription_popular: "Beliebt",
+                subscription_savings: "24€ Ersparnis pro Jahr",
+                subscription_current: "Ihr aktuelles Abonnement",
+                subscription_none: "Kein aktives Abonnement",
+                subscription_encourage: "Schließen Sie ein Abonnement ab, um unsere Dienstleistungen zu nutzen",
+                subscription_month: "/Monat",
+                feature_all_services: "Zugang zu allen Dienstleistungen",
+                feature_priority_support: "Prioritärer Support",
+                feature_cancel_anytime: "Jederzeit kündbar",
+                feature_unlimited_bookings: "Unbegrenzte Buchungen",
+                feature_12months: "12-monatige Verpflichtung",
+                feature_premium_support: "Premium-Support inklusive",
+                subscription_subscribe_monthly: "Abonnieren - 10€/Monat",
+                subscription_subscribe_yearly: "Abonnieren - 96€/Jahr",
+                subscription_manage: "Mein Konto verwalten",
+                subscription_contact: "Kontaktieren Sie uns",
+                benefits_title: "Warum Viiveo wählen?",
+                benefits_subtitle: "Entdecken Sie alle Vorteile unserer Abonnements",
+                benefit_quality: "Garantierte Qualität",
+                benefit_quality_desc: "Alle unsere Dienstleister sind geprüft und qualifiziert",
+                benefit_flexibility: "Totale Flexibilität",
+                benefit_flexibility_desc: "Kostenlose Stornierung und Änderung",
+                benefit_support: "Support 7/7",
+                benefit_support_desc: "Unser Team begleitet Sie jederzeit",
+                benefit_transparency: "Preistransparenz",
+                benefit_transparency_desc: "Keine versteckten Kosten, alles inklusive",
                 footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
                 footer_navigation: "Navigation",
                 footer_spaces: "Bereiche",
@@ -450,28 +659,7 @@
             });
 
             localStorage.setItem('viiveo-language', lang);
-            
-            // Recharger les filtres avec les nouvelles traductions
-            initializeFilters();
         }
-
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec';
-
-        // Services disponibles dans l'interface
-        const services = [
-            '🧹 Aide ménagère',
-            '🛒 Courses à domicile', 
-            '💇 Coiffure à domicile',
-            '🌳 Jardinage',
-            '🚗 Transport accompagné',
-            '🚨 Assistance / Secours',
-            '🔧 Homme à tout faire',
-            '🤝 Bénévole',
-            '🍲 Livraison de repas'
-        ];
-
-        let allPrestataires = [];
-        let currentFilter = 'all';
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
@@ -502,8 +690,6 @@
                 });
             }
 
-            initializeFilters();
-            loadAllPrestataires();
             setupMobileMenu();
         });
 
@@ -524,238 +710,6 @@
                 });
             });
         }
-
-        function initializeFilters() {
-            const filtersContainer = document.getElementById('service-filters');
-            filtersContainer.innerHTML = '';
-            
-            // Bouton "Tous"
-            const allButton = document.createElement('button');
-            allButton.className = 'filter-btn active bg-yellow-500 text-white px-4 py-2 rounded-full font-semibold';
-            allButton.textContent = translations[currentLanguage].providers_all;
-            allButton.onclick = () => filterPrestataires('all');
-            filtersContainer.appendChild(allButton);
-
-            // Boutons pour chaque service
-            services.forEach(service => {
-                const button = document.createElement('button');
-                button.className = 'filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-full font-semibold hover:bg-gray-300';
-                button.textContent = service;
-                button.onclick = () => filterPrestataires(service);
-                filtersContainer.appendChild(button);
-            });
-        }
-
-        function getTranslatedService(serviceWithEmoji) {
-            const serviceName = serviceWithEmoji.replace(/^[^\w]*\s/, '');
-            
-            const serviceTranslations = {
-                'Aide ménagère': 'service_cleaning',
-                'Courses à domicile': 'service_shopping',
-                'Coiffure à domicile': 'service_haircare',
-                'Jardinage': 'service_gardening',
-                'Transport accompagné': 'service_transport',
-                'Assistance / Secours': 'service_assistance',
-                'Homme à tout faire': 'service_handyman',
-                'Bénévole': 'service_volunteer',
-                'Livraison de repas': 'service_meals'
-            };
-            
-            const key = serviceTranslations[serviceName];
-            return translations[currentLanguage][key] || serviceWithEmoji;
-        }
-
-        function getServiceEmoji(service) {
-            const emojis = {
-                'Aide ménagère': '🧹',
-                'Courses à domicile': '🛒',
-                'Coiffure à domicile': '💇',
-                'Jardinage': '🌳',
-                'Transport accompagné': '🚗',
-                'Assistance / Secours': '🚨',
-                'Homme à tout faire': '🔧',
-                'Bénévole': '🤝',
-                'Livraison de repas': '🍲'
-            };
-            return emojis[service] || '👤';
-        }
-
-        async function loadAllPrestataires() {
-            const container = document.getElementById('prestataires-container');
-            container.innerHTML = `<div class="col-span-full text-center py-8"><div class="spinner border-4 border-yellow-500 border-t-transparent rounded-full w-12 h-12 mx-auto mb-4 animate-spin"></div><p>${translations[currentLanguage].providers_loading}</p></div>`;
-
-            try {
-                // Charger les prestataires pour les services qui existent dans votre base
-                const existingServices = [
-                    'Jardinage', 
-                    'Aide ménagère', 
-                    'Homme à tout faire', 
-                    'Courses',
-                    'Bénévole',
-                    'Assistance / Secours',
-                    'Coiffure à domicile',
-                    'Transport accompagné', 
-                    'Livraison de repas'
-                    ];
-                
-                console.log('🔄 Chargement des prestataires pour:', existingServices);
-                
-                const promises = existingServices.map(service => 
-                    fetch(`${GOOGLE_SCRIPT_URL}?type=getPrestatairesStylés&specialite=${encodeURIComponent(service)}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(`✅ ${service}:`, data.prestataires ? data.prestataires.length : 0, 'prestataires');
-                            return data;
-                        })
-                        .catch(error => {
-                            console.log(`❌ Erreur pour ${service}:`, error);
-                            return { success: true, prestataires: [] };
-                        })
-                );
-
-                const results = await Promise.all(promises);
-                
-                allPrestataires = [];
-                results.forEach((result, index) => {
-                    if (result.success && result.prestataires && result.prestataires.length > 0) {
-                        console.log(`📦 Ajout ${result.prestataires.length} prestataires pour ${existingServices[index]}`);
-                        result.prestataires.forEach(presta => {
-                            // Mapper vers les services de l'interface
-                            const interfaceService = mapToInterfaceService(existingServices[index]);
-                            presta.services = [interfaceService];
-                            presta.specialite = existingServices[index];
-                            allPrestataires.push(presta);
-                        });
-                    }
-                });
-
-                console.log(`🎯 TOTAL: ${allPrestataires.length} prestataires chargés`);
-                displayPrestataires(allPrestataires);
-                
-            } catch (error) {
-                console.error('Erreur chargement prestataires:', error);
-                container.innerHTML = `
-                    <div class="col-span-full text-center py-8">
-                        <div class="text-red-600 mb-4">
-                            <i class="fas fa-exclamation-triangle text-4xl mb-2"></i>
-                            <p class="text-lg">${translations[currentLanguage].providers_error}</p>
-                        </div>
-                        <p class="text-gray-600 mb-4">Détail: ${error.message}</p>
-                        <button onclick="loadAllPrestataires()" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors">
-                            <i class="fas fa-redo mr-2"></i>Réessayer
-                        </button>
-                    </div>`;
-            }
-        }
-
-        // Mapping des services de la base vers l'interface
-        function mapToInterfaceService(databaseService) {
-            const mapping = {
-        'Jardinage': 'Jardinage',
-        'Aide ménagère': 'Aide ménagère',
-        'Homme à tout faire': 'Homme à tout faire',
-        'Courses': 'Courses à domicile',
-        'Bénévole': 'Bénévole',
-        'Assistance / Secours': 'Assistance / Secours',
-        'Coiffure à domicile': 'Coiffure à domicile',
-        'Transport accompagné': 'Transport accompagné',
-        'Livraison de repas': 'Livraison de repas'
-    };
-    return mapping[databaseService] || databaseService;
-}
-        
-        function displayPrestataires(prestataires) {
-            const container = document.getElementById('prestataires-container');
-            
-            if (prestataires.length === 0) {
-                container.innerHTML = `<div class="col-span-full text-center py-8 text-gray-500"><p>${translations[currentLanguage].providers_none}</p></div>`;
-                return;
-            }
-
-            container.innerHTML = prestataires.map(presta => `
-                <div class="prestataire-card">
-                    <img src="${presta.photo || 'https://via.placeholder.com/120/facc15/FFFFFF?text=?'}" 
-                         alt="${presta.prenom} ${presta.nom}" 
-                         class="prestataire-photo">
-                    <h3 class="text-xl font-bold text-gray-800 text-center mb-2">${presta.prenom} ${presta.nom}</h3>
-                    
-                    <div class="rating-stars text-center mb-3">
-                        ${generateStars(presta.rating || 4)}
-                        <span class="text-sm text-gray-600 ml-1">${presta.rating || 4}/5</span>
-                    </div>
-
-                    <div class="flex flex-wrap gap-1 justify-center mb-3">
-                        ${presta.services ? presta.services.map(service => 
-                            `<span class="service-badge text-xs">${service}</span>`
-                        ).join('') : ''}
-                    </div>
-
-                    <p class="text-gray-600 text-sm text-center mb-4">${presta.commentaire || 'Prestataire qualifié et disponible'}</p>
-
-                    <div class="text-center">
-                        <a href="nos_services.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors inline-block">
-                            <i class="fas fa-calendar-check mr-1"></i>${translations[currentLanguage].providers_book}
-                        </a>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function generateStars(rating) {
-            const fullStars = Math.floor(rating);
-            const halfStar = rating % 1 >= 0.5;
-            const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-
-            let starsHtml = '';
-            for (let i = 0; i < fullStars; i++) starsHtml += '<i class="fas fa-star"></i>';
-            if (halfStar) starsHtml += '<i class="fas fa-star-half-alt"></i>';
-            for (let i = 0; i < emptyStars; i++) starsHtml += '<i class="far fa-star"></i>';
-            
-            return starsHtml;
-        }
-
-        function filterPrestataires(service) {
-    currentFilter = service;
-    
-    // Mettre à jour les boutons actifs
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active', 'bg-yellow-500', 'text-white');
-        btn.classList.add('bg-gray-200', 'text-gray-700');
-    });
-
-    // Activer le bouton cliqué
-    const activeButton = Array.from(document.querySelectorAll('.filter-btn'))
-        .find(btn => {
-            if (service === 'all') {
-                return btn.textContent.includes(translations[currentLanguage].providers_all);
-            } else {
-                return btn.textContent.includes(service);
-            }
-        });
-        
-    if (activeButton) {
-        activeButton.classList.add('active', 'bg-yellow-500', 'text-white');
-        activeButton.classList.remove('bg-gray-200', 'text-gray-700');
-    }
-
-    if (service === 'all') {
-        displayPrestataires(allPrestataires);
-    } else {
-        // CORRECTION : Filtrer en enlevant les emojis pour la comparaison
-        const serviceWithoutEmoji = service.replace(/^[^\w]*\s/, '');
-        const filtered = allPrestataires.filter(presta => {
-            if (!presta.services) return false;
-            
-            // Vérifier si un des services du prestataire correspond (sans emoji)
-            return presta.services.some(prestaService => {
-                const prestaServiceWithoutEmoji = prestaService.replace(/^[^\w]*\s/, '');
-                return prestaServiceWithoutEmoji === serviceWithoutEmoji;
-            });
-        });
-        console.log(`🔍 Filtre "${service}": ${filtered.length} prestataires`);
-        displayPrestataires(filtered);
-    }
-}
     </script>
 </body>
 </html>
