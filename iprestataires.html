@@ -2077,23 +2077,13 @@ function presta_callApiJsonp(url, callbackName) {
         
         const data = await presta_callApiJsonp(url, callbackName);
         console.log("📦 Réponse API COMPLÈTE:", data);
-        console.log("📦 data.success:", data.success);
-        console.log("📦 data.prestataire:", data.prestataire);
-        console.log("📦 data.profile:", data.profile); // Vérifiez aussi ce champ
-        console.log("📦 Toutes les clés:", Object.keys(data));
 
-        // Vérification plus flexible
-        if (data.success) {
-            const prestataireData = data.prestataire || data.profile;
-            if (prestataireData) {
-                console.log("✅ Profil chargé avec succès:", prestataireData);
-                presta_currentPrestataireData = prestataireData;
-                presta_populateProfileForm(prestataireData);
-                return data;
-            } else {
-                console.error("❌ Données prestataire manquantes dans la réponse");
-                throw new Error("Données du profil non disponibles");
-            }
+        // CORRECTION : Utiliser data.profile au lieu de data.prestataire
+        if (data.success && data.profile) {
+            console.log("✅ Profil chargé avec succès:", data.profile);
+            presta_currentPrestataireData = data.profile;
+            presta_populateProfileForm(data.profile);
+            return data;
         } else {
             console.error("❌ Erreur API:", data.message);
             throw new Error(data.message || "Erreur lors du chargement du profil");
@@ -2106,14 +2096,18 @@ function presta_callApiJsonp(url, callbackName) {
 }
 
         function presta_populateProfileForm(prestataire) {
-            document.getElementById('presta-profile-firstname').value = prestataire.prénom || '';
-            document.getElementById('presta-profile-email').value = prestataire.email || '';
-            document.getElementById('presta-profile-phone').value = prestataire.téléphone || '';
-            document.getElementById('presta-profile-specialites').value = prestataire['spécialité(s)'] || prestataire.spécialité || '';
-            document.getElementById('presta-profile-disponibilite').value = prestataire.disponibilité || '';
-            document.getElementById('presta-profile-commentaire').value = prestataire.commentaire || '';
-        }
-
+    console.log("📝 Remplissage du formulaire avec:", prestataire);
+    
+    // CORRECTION : Utiliser les noms exacts des champs de la réponse
+    document.getElementById('presta-profile-firstname').value = prestataire.prénom || '';
+    document.getElementById('presta-profile-email').value = prestataire.email || '';
+    document.getElementById('presta-profile-phone').value = prestataire.téléphone || '';
+    document.getElementById('presta-profile-specialites').value = prestataire.spécialité || '';
+    document.getElementById('presta-profile-disponibilite').value = prestataire.disponibilité || '';
+    document.getElementById('presta-profile-commentaire').value = prestataire.commentaire || '';
+    
+    console.log("✅ Formulaire rempli avec succès");
+}
         async function presta_saveProfile() {
             const password = document.getElementById('presta-profile-password').value;
             const passwordConfirm = document.getElementById('presta-profile-password-confirm').value;
