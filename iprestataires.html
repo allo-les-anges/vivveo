@@ -1504,17 +1504,17 @@ function presta_callApiJsonp(url, callbackName) {
             }
         };
         
-        // ⚠️ AUGMENTER LE TIMEOUT à 30 secondes pour les mises à jour
+        // Timeout de sécurité
         const timeoutId = setTimeout(() => {
             if (window[callbackName]) {
-                console.error('⏰ Timeout JSONP après 30 secondes');
-                reject(new Error('Timeout JSONP - Le serveur met trop de temps à répondre'));
+                console.error('⏰ Timeout JSONP après 10 secondes');
+                reject(new Error('Timeout JSONP'));
                 delete window[callbackName];
                 if (script.parentNode) {
                     script.parentNode.removeChild(script);
                 }
             }
-        }, 30000); // 30 secondes au lieu de 10
+        }, 10000);
         
         // Nettoyer le timeout si la réponse arrive
         const originalCallback = window[callbackName];
@@ -1527,6 +1527,7 @@ function presta_callApiJsonp(url, callbackName) {
         document.body.appendChild(script);
     });
 }
+
         // Fonction de connexion avec JSONP
         async function presta_login() {
             const email = document.getElementById('presta-email').value;
@@ -2108,87 +2109,80 @@ function presta_callApiJsonp(url, callbackName) {
     console.log("✅ Formulaire rempli avec succès");
 }
         async function presta_saveProfile() {
-    console.log("💾 Début de la sauvegarde du profil");
-    
-    const password = document.getElementById('presta-profile-password').value;
-    const passwordConfirm = document.getElementById('presta-profile-password-confirm').value;
+            const password = document.getElementById('presta-profile-password').value;
+            const passwordConfirm = document.getElementById('presta-profile-password-confirm').value;
 
-    // Validation du mot de passe seulement si rempli
-    if (password) {
-        if (password !== passwordConfirm) {
-            presta_showNotification("Les mots de passe ne correspondent pas", 'error');
-            return;
-        }
+            // Validation du mot de passe seulement si rempli
+            if (password) {
+                if (password !== passwordConfirm) {
+                    presta_showNotification("Les mots de passe ne correspondent pas", 'error');
+                    return;
+                }
 
-        if (!presta_validatePasswordStrength(password)) {
-            presta_showNotification("Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule et chiffre", 'error');
-            return;
-        }
-    }
-
-    const formData = {
-        email: presta_currentEmail,
-        prénom: document.getElementById('presta-profile-firstname').value,
-        téléphone: document.getElementById('presta-profile-phone').value,
-        email: document.getElementById('presta-profile-email').value,
-        spécialité: document.getElementById('presta-profile-specialites').value,
-        disponibilité: document.getElementById('presta-profile-disponibilite').value,
-        commentaire: document.getElementById('presta-profile-commentaire').value,
-        password: password || null
-    };
-
-    // Filtrer les champs vides
-    Object.keys(formData).forEach(key => {
-        if (formData[key] === '' || formData[key] === null) {
-            delete formData[key];
-        }
-    });
-
-    // Vérifier qu'au moins un champ est rempli
-    if (Object.keys(formData).length <= 1) {
-        presta_showNotification("Veuillez remplir au moins un champ à modifier", 'error');
-        return;
-    }
-
-    console.log("📤 Données à sauvegarder:", formData);
-
-    document.getElementById('loader').style.display = 'flex';
-
-    try {
-        const callbackName = 'cbSaveProfile' + Date.now();
-        let url = `${presta_webAppUrl}?type=updatePrestataireProfile`;
-        
-        Object.keys(formData).forEach(key => {
-            if (formData[key] !== null && formData[key] !== undefined) {
-                url += `&${key}=${encodeURIComponent(formData[key])}`;
+                if (!presta_validatePasswordStrength(password)) {
+                    presta_showNotification("Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule et chiffre", 'error');
+                    return;
+                }
             }
-        });
 
-        console.log("📡 URL de sauvegarde:", url);
+            const formData = {
+                email: presta_currentEmail,
+                prénom: document.getElementById('presta-profile-firstname').value,
+                téléphone: document.getElementById('presta-profile-phone').value,
+                email: document.getElementById('presta-profile-email').value,
+                spécialité: document.getElementById('presta-profile-specialites').value,
+                disponibilité: document.getElementById('presta-profile-disponibilite').value,
+                commentaire: document.getElementById('presta-profile-commentaire').value,
+                password: password || null
+            };
 
-        const data = await presta_callApiJsonp(url, callbackName);
+            // Filtrer les champs vides
+            Object.keys(formData).forEach(key => {
+                if (formData[key] === '' || formData[key] === null) {
+                    delete formData[key];
+                }
+            });
 
-        if (data.success) {
-            console.log("✅ Profil mis à jour avec succès");
-            presta_showNotification("Profil mis à jour avec succès !", 'success');
-            presta_closeModal('presta-profile-modal');
-            await presta_loadProfileData();
-            document.getElementById('prestataire-name').textContent = formData.prénom || "Prestataire";
-            
-            // Réinitialiser les champs mot de passe
-            document.getElementById('presta-profile-password').value = '';
-            document.getElementById('presta-profile-password-confirm').value = '';
-            presta_resetPasswordValidation();
-        } else {
-            throw new Error(data.message || "Erreur lors de la mise à jour du profil");
+            // Vérifier qu'au moins un champ est rempli
+            if (Object.keys(formData).length <= 1) { // Seulement l'email est présent
+                presta_showNotification("Veuillez remplir au moins un champ à modifier", 'error');
+                return;
+            }
+
+            document.getElementById('loader').style.display = 'flex';
+
+            try {
+                const callbackName = 'cbSaveProfile' + Date.now();
+                let url = `${presta_webAppUrl}?type=updatePrestataireProfile`;
+                
+                Object.keys(formData).forEach(key => {
+                    if (formData[key] !== null && formData[key] !== undefined) {
+                        url += `&${key}=${encodeURIComponent(formData[key])}`;
+                    }
+                });
+
+                const data = await presta_callApiJsonp(url, callbackName);
+
+                if (data.success) {
+                    presta_showNotification("Profil mis à jour avec succès !", 'success');
+                    presta_closeModal('presta-profile-modal');
+                    await presta_loadProfileData();
+                    document.getElementById('prestataire-name').textContent = formData.prénom || "Prestataire";
+                    
+                    // Réinitialiser les champs mot de passe
+                    document.getElementById('presta-profile-password').value = '';
+                    document.getElementById('presta-profile-password-confirm').value = '';
+                    presta_resetPasswordValidation();
+                } else {
+                    throw new Error(data.message || "Erreur lors de la mise à jour du profil");
+                }
+            } catch (error) {
+                presta_showNotification(error.message, 'error');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
         }
-    } catch (error) {
-        console.error("💥 Erreur sauvegarde:", error);
-        presta_showNotification("Erreur lors de la sauvegarde: " + error.message, 'error');
-    } finally {
-        document.getElementById('loader').style.display = 'none';
-    }
-}
+
         // Validation de la force du mot de passe
         function presta_validatePasswordStrength(password) {
             const minLength = 8;
