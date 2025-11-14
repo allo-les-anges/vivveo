@@ -877,16 +877,16 @@
 
             <form id="login-form" onsubmit="event.preventDefault(); presta_login();">
                 <div class="form-group">
-                    <label for="email">Adresse email</label>
+                    <label for="presta-email">Adresse email</label>
                     <div class="relative">
-                        <input type="email" id="email" class="form-input" placeholder="votre@email.com" required autocomplete="email">
+                        <input type="email" id="presta-email" class="form-input" placeholder="votre@email.com" required autocomplete="email">
                         <i class="fas fa-envelope form-input-icon"></i>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password">Mot de passe</label>
+                    <label for="presta-password">Mot de passe</label>
                     <div class="relative">
-                        <input type="password" id="password" class="form-input" placeholder="Votre mot de passe" required autocomplete="current-password">
+                        <input type="password" id="presta-password" class="form-input" placeholder="Votre mot de passe" required autocomplete="current-password">
                         <i class="fas fa-lock form-input-icon"></i>
                     </div>
                 </div>
@@ -1198,14 +1198,14 @@
     </div>
 
     <!-- Modal de profil MIS À JOUR -->
-    <div id="profile-modal" class="modal">
+    <div id="presta-profile-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="text-2xl font-bold">Modifier mes données personnelles</h2>
-                <span class="close" onclick="presta_closeModal('profile-modal')">&times;</span>
+                <span class="close" onclick="presta_closeModal('presta-profile-modal')">&times;</span>
             </div>
             <div class="modal-body">
-                <form id="profile-form" onsubmit="event.preventDefault(); presta_saveProfile();">
+                <form id="presta-profile-form" onsubmit="event.preventDefault(); presta_saveProfile();">
                     <!-- Section informations personnelles -->
                     <div class="form-section">
                         <h3 class="form-section-title">
@@ -1215,7 +1215,7 @@
                         <div class="form-group">
                             <label>Prénom <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
-                                <input type="text" id="profile-firstname" class="form-input" placeholder="Votre prénom" autocomplete="given-name">
+                                <input type="text" id="presta-profile-firstname" class="form-input" placeholder="Votre prénom" autocomplete="given-name">
                                 <i class="fas fa-user form-input-icon"></i>
                             </div>
                         </div>
@@ -1223,7 +1223,7 @@
                         <div class="form-group">
                             <label>Email <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
-                                <input type="email" id="profile-email" class="form-input" placeholder="votre@email.com" autocomplete="email">
+                                <input type="email" id="presta-profile-email" class="form-input" placeholder="votre@email.com" autocomplete="email">
                                 <i class="fas fa-envelope form-input-icon"></i>
                             </div>
                         </div>
@@ -1231,7 +1231,7 @@
                         <div class="form-group">
                             <label>Téléphone <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
-                                <input type="tel" id="profile-phone" class="form-input" placeholder="Votre numéro de téléphone" autocomplete="tel">
+                                <input type="tel" id="presta-profile-phone" class="form-input" placeholder="Votre numéro de téléphone" autocomplete="tel">
                                 <i class="fas fa-phone form-input-icon"></i>
                             </div>
                         </div>
@@ -1246,20 +1246,20 @@
                         <div class="form-group">
                             <label>Nouveau mot de passe <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
-                                <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer" autocomplete="new-password">
+                                <input type="password" id="presta-profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer" autocomplete="new-password">
                                 <i class="fas fa-lock form-input-icon"></i>
                             </div>
-                            <div id="password-strength" class="password-strength"></div>
+                            <div id="presta-password-strength" class="password-strength"></div>
                             <small class="text-gray-500">Minimum 8 caractères avec majuscule, minuscule et chiffre</small>
                         </div>
                         
                         <div class="form-group">
                             <label>Confirmer le nouveau mot de passe <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
-                                <input type="password" id="profile-password-confirm" class="form-input" placeholder="Confirmer le nouveau mot de passe" autocomplete="new-password">
+                                <input type="password" id="presta-profile-password-confirm" class="form-input" placeholder="Confirmer le nouveau mot de passe" autocomplete="new-password">
                                 <i class="fas fa-lock form-input-icon"></i>
                             </div>
-                            <div id="password-match-message" class="mt-2 text-sm hidden"></div>
+                            <div id="presta-password-match-message" class="mt-2 text-sm hidden"></div>
                         </div>
                     </div>
 
@@ -1272,7 +1272,7 @@
                         <div class="form-group">
                             <label>Spécialité(s) <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
-                                <input type="text" id="profile-specialites" class="form-input" placeholder="Entretien ménager, Jardinage, etc." autocomplete="off">
+                                <input type="text" id="presta-profile-specialites" class="form-input" placeholder="Entretien ménager, Jardinage, etc." autocomplete="off">
                                 <i class="fas fa-tags form-input-icon"></i>
                             </div>
                             <small class="text-gray-500">Séparez les spécialités par des virgules</small>
@@ -1281,7 +1281,7 @@
                         <div class="form-group">
                             <label>Disponibilité <span class="optional-field">(optionnel)</span></label>
                             <div class="relative">
-                                <input type="text" id="profile-disponibilite" class="form-input" placeholder="Lundi-Vendredi: 9h-18h" autocomplete="off">
+                                <input type="text" id="presta-profile-disponibilite" class="form-input" placeholder="Lundi-Vendredi: 9h-18h" autocomplete="off">
                                 <i class="fas fa-calendar-alt form-input-icon"></i>
                             </div>
                         </div>
@@ -1295,7 +1295,7 @@
                         </h3>
                         <div class="form-group">
                             <div class="relative">
-                                <textarea id="profile-commentaire" class="form-input" rows="3" placeholder="Informations complémentaires... (optionnel)" autocomplete="off"></textarea>
+                                <textarea id="presta-profile-commentaire" class="form-input" rows="3" placeholder="Informations complémentaires... (optionnel)" autocomplete="off"></textarea>
                                 <i class="fas fa-edit form-input-icon" style="top: 1.5rem;"></i>
                             </div>
                         </div>
@@ -1312,11 +1312,11 @@
                     </div>
                     
                     <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
-                        <button type="button" onclick="presta_closeModal('profile-modal')" class="btn-secondary">
+                        <button type="button" onclick="presta_closeModal('presta-profile-modal')" class="btn-secondary">
                             <i class="fas fa-times mr-2"></i>
                             Annuler
                         </button>
-                        <button type="submit" class="btn-success" id="profile-submit-btn">
+                        <button type="submit" class="btn-success" id="presta-profile-submit-btn">
                             <i class="fas fa-save mr-2"></i>
                             Enregistrer les modifications
                         </button>
@@ -1327,11 +1327,11 @@
     </div>
 
     <!-- Modal de suppression de compte -->
-    <div id="delete-account-modal" class="modal">
+    <div id="presta-delete-account-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
                 <h2 class="text-2xl font-bold">Supprimer mon compte</h2>
-                <span class="close" onclick="presta_closeModal('delete-account-modal')">&times;</span>
+                <span class="close" onclick="presta_closeModal('presta-delete-account-modal')">&times;</span>
             </div>
             <div class="modal-body">
                 <div class="delete-section rounded-lg p-6 mb-6">
@@ -1353,16 +1353,16 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="confirm-email" class="text-gray-700 font-semibold">
+                    <label for="presta-confirm-email" class="text-gray-700 font-semibold">
                         Pour confirmer, veuillez saisir votre adresse email :
                     </label>
-                    <input type="email" id="confirm-email" class="form-input mt-2" 
+                    <input type="email" id="presta-confirm-email" class="form-input mt-2" 
                            placeholder="votre@email.com" autocomplete="email">
                 </div>
 
                 <div class="form-group">
-                    <label for="confirm-delete" class="flex items-center space-x-3">
-                        <input type="checkbox" id="confirm-delete" class="w-5 h-5 text-red-600">
+                    <label for="presta-confirm-delete" class="flex items-center space-x-3">
+                        <input type="checkbox" id="presta-confirm-delete" class="w-5 h-5 text-red-600">
                         <span class="text-gray-700 font-semibold">
                             Je comprends que cette action est irréversible et je souhaite supprimer mon compte
                         </span>
@@ -1370,12 +1370,12 @@
                 </div>
 
                 <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
-                    <button type="button" onclick="presta_closeModal('delete-account-modal')" class="btn-secondary">
+                    <button type="button" onclick="presta_closeModal('presta-delete-account-modal')" class="btn-secondary">
                         <i class="fas fa-times mr-2"></i>
                         Annuler
                     </button>
                     <button type="button" onclick="presta_confirmDeleteAccount()" 
-                            id="delete-account-btn" 
+                            id="presta-delete-account-btn" 
                             class="btn-danger opacity-50 cursor-not-allowed"
                             disabled>
                         <i class="fas fa-trash-alt mr-2"></i>
@@ -1387,35 +1387,35 @@
     </div>
 
     <!-- Modal QR Code et fiche d'observation -->
-    <div id="modalOverlay">
-        <div id="modalContent">
-            <div id="stepQR" style="display:flex; flex-direction:column; align-items:center;">
+    <div id="presta-modalOverlay">
+        <div id="presta-modalContent">
+            <div id="presta-stepQR" style="display:flex; flex-direction:column; align-items:center;">
                 <h2 class="text-xl font-bold mb-4">📸 Scanner le QR code client</h2>
-                <div id="qr-reader"></div>
-                <button id="btnCancelQR" class="btn-secondary mt-4" style="background:#d32f2f;">Annuler</button>
+                <div id="presta-qr-reader"></div>
+                <button id="presta-btnCancelQR" class="btn-secondary mt-4" style="background:#d32f2f;">Annuler</button>
             </div>
 
-            <div id="stepForm" style="display:none;">
+            <div id="presta-stepForm" style="display:none;">
                 <h2 class="text-xl font-bold mb-4">📝 Fiche d'observation</h2>
-                <form id="obsForm">
+                <form id="presta-obsForm">
                     <div class="form-group">
                         <label>Nom du client</label>
-                        <input type="text" id="clientName" class="form-input" readonly />
+                        <input type="text" id="presta-clientName" class="form-input" readonly />
                     </div>
 
                     <div class="form-group">
                         <label>Date de l'observation</label>
-                        <input type="date" id="obsDate" class="form-input" required autocomplete="off" />
+                        <input type="date" id="presta-obsDate" class="form-input" required autocomplete="off" />
                     </div>
 
                     <div class="form-group">
                         <label>État de santé</label>
-                        <textarea id="etatSante" class="form-input" rows="3" placeholder="Décrire l'état de santé..." autocomplete="off"></textarea>
+                        <textarea id="presta-etatSante" class="form-input" rows="3" placeholder="Décrire l'état de santé..." autocomplete="off"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>État de forme</label>
-                        <select id="etatForme" class="form-input" required autocomplete="off">
+                        <select id="presta-etatForme" class="form-input" required autocomplete="off">
                             <option value="">-- Choisir --</option>
                             <option>Très bon</option>
                             <option>Bon</option>
@@ -1427,56 +1427,58 @@
 
                     <div class="form-group">
                         <label>Environnement</label>
-                        <textarea id="environnement" class="form-input" rows="3" placeholder="Décrire l'environnement..." autocomplete="off"></textarea>
+                        <textarea id="presta-environnement" class="form-input" rows="3" placeholder="Décrire l'environnement..." autocomplete="off"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label>Photos (max 3)</label>
-                        <input type="file" id="photos" class="form-input" accept="image/*" multiple autocomplete="off" />
-                        <div id="photosPreview"></div>
+                        <input type="file" id="presta-photos" class="form-input" accept="image/*" multiple autocomplete="off" />
+                        <div id="presta-photosPreview"></div>
                     </div>
 
                     <button type="submit" class="btn-elegant w-full">Envoyer la fiche</button>
-                    <button type="button" id="btnCancelForm" class="btn-secondary w-full mt-2" style="background:#d32f2f;">Annuler</button>
+                    <button type="button" id="presta-btnCancelForm" class="btn-secondary w-full mt-2" style="background:#d32f2f;">Annuler</button>
                 </form>
             </div>
 
-            <div id="stepSuccess" style="display:none; text-align:center;">
+            <div id="presta-stepSuccess" style="display:none; text-align:center;">
                 <h2 class="text-xl font-bold mb-4">✅ Fiche envoyée avec succès !</h2>
-                <button id="btnCloseSuccess" class="btn-elegant">Fermer</button>
+                <button id="presta-btnCloseSuccess" class="btn-elegant">Fermer</button>
             </div>
         </div>
     </div>
-        <script>
+
+    <script>
         // URL de l'application Google Apps Script
-        const webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
+        const presta_webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
 
-        // Variables globales
-        let currentEmail = "";
-        let currentMissions = [];
-        let currentPrestataireData = null;
+        // Variables globales PRESTATAIRE (préfixées)
+        let presta_currentEmail = "";
+        let presta_currentMissions = [];
+        let presta_currentPrestataireData = null;
 
-        // Variables pour la modale QR
-        let currentMissionId = null;
-        let currentClientPrenom = "", currentClientNom = "";
-        let currentPrestatairePrenom = "", currentPrestataireNom = "";
-        let currentLatitude = null, currentLongitude = null;
-        let heureDebut = null;
+        // Variables pour la modale QR (préfixées)
+        let presta_currentMissionId = null;
+        let presta_currentClientPrenom = "", presta_currentClientNom = "";
+        let presta_currentPrestatairePrenom = "", presta_currentPrestataireNom = "";
+        let presta_currentLatitude = null, presta_currentLongitude = null;
+        let presta_heureDebut = null;
 
-        const modalOverlay = document.getElementById("modalOverlay");
-        const stepQR = document.getElementById("stepQR");
-        const stepForm = document.getElementById("stepForm");
-        const stepSuccess = document.getElementById("stepSuccess");
-        const clientNameInput = document.getElementById("clientName");
-        const obsDateInput = document.getElementById("obsDate");
-        const etatSanteInput = document.getElementById("etatSante");
-        const etatFormeInput = document.getElementById("etatForme");
-        const environnementInput = document.getElementById("environnement");
-        const photosInput = document.getElementById("photos");
-        const photosPreview = document.getElementById("photosPreview");
+        // Éléments DOM préfixés
+        const presta_modalOverlay = document.getElementById("presta-modalOverlay");
+        const presta_stepQR = document.getElementById("presta-stepQR");
+        const presta_stepForm = document.getElementById("presta-stepForm");
+        const presta_stepSuccess = document.getElementById("presta-stepSuccess");
+        const presta_clientNameInput = document.getElementById("presta-clientName");
+        const presta_obsDateInput = document.getElementById("presta-obsDate");
+        const presta_etatSanteInput = document.getElementById("presta-etatSante");
+        const presta_etatFormeInput = document.getElementById("presta-etatForme");
+        const presta_environnementInput = document.getElementById("presta-environnement");
+        const presta_photosInput = document.getElementById("presta-photos");
+        const presta_photosPreview = document.getElementById("presta-photosPreview");
 
         // Fonction JSONP
-        function callApiJsonp(url, callbackName) {
+        function presta_callApiJsonp(url, callbackName) {
             return new Promise((resolve, reject) => {
                 window[callbackName] = function(data) {
                     resolve(data);
@@ -1500,19 +1502,19 @@
 
         // Fonction de connexion avec JSONP
         async function presta_login() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const email = document.getElementById('presta-email').value;
+            const password = document.getElementById('presta-password').value;
             const message = document.getElementById('login-message');
 
             document.getElementById('loader').style.display = 'flex';
 
             try {
                 const callbackName = 'cbLogin' + Date.now();
-                const url = `${webAppUrl}?type=loginPresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-                const data = await callApiJsonp(url, callbackName);
+                const url = `${presta_webAppUrl}?type=loginPresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+                const data = await presta_callApiJsonp(url, callbackName);
 
                 if (data.success) {
-                    currentEmail = email;
+                    presta_currentEmail = email;
                     document.getElementById('login-section').classList.add('hidden');
                     document.getElementById('prestataire-interface').classList.remove('hidden');
                     
@@ -1537,8 +1539,8 @@
         async function presta_loadMissions(email) {
             try {
                 const callbackName = 'cbMissions' + Date.now();
-                const url = `${webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
-                const data = await callApiJsonp(url, callbackName);
+                const url = `${presta_webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
+                const data = await presta_callApiJsonp(url, callbackName);
 
                 const missions = data.missions || data;
                 
@@ -1546,7 +1548,7 @@
                     throw new Error("Format de données invalide");
                 }
 
-                currentMissions = missions;
+                presta_currentMissions = missions;
                 presta_updateStats(missions);
                 presta_loadMissionsByStatus('pending', missions);
                 presta_loadMissionsByStatus('today', missions);
@@ -1743,12 +1745,12 @@
                 
                 try {
                     const callbackName = 'cbValider' + Date.now();
-                    const url = `${webAppUrl}?type=validerMission&id=${encodeURIComponent(id)}`;
-                    const data = await callApiJsonp(url, callbackName);
+                    const url = `${presta_webAppUrl}?type=validerMission&id=${encodeURIComponent(id)}`;
+                    const data = await presta_callApiJsonp(url, callbackName);
                     
                     if (data.success) {
                         presta_showNotification("Mission validée avec succès !", 'success');
-                        await presta_loadMissions(currentEmail);
+                        await presta_loadMissions(presta_currentEmail);
                     } else {
                         throw new Error(data.error || "Erreur lors de la validation");
                     }
@@ -1769,12 +1771,12 @@
             
             try {
                 const callbackName = 'cbRefuser' + Date.now();
-                const url = `${webAppUrl}?type=refuserMission&id=${encodeURIComponent(id)}&alternatives=${encodeURIComponent(alternatives)}`;
-                const data = await callApiJsonp(url, callbackName);
+                const url = `${presta_webAppUrl}?type=refuserMission&id=${encodeURIComponent(id)}&alternatives=${encodeURIComponent(alternatives)}`;
+                const data = await presta_callApiJsonp(url, callbackName);
                 
                 if (data.success) {
                     presta_showNotification("Votre proposition a bien été envoyée.", 'success');
-                    await presta_loadMissions(currentEmail);
+                    await presta_loadMissions(presta_currentEmail);
                 } else {
                     throw new Error(data.error || "Erreur lors de l'envoi");
                 }
@@ -1787,41 +1789,41 @@
 
         // Fonctions pour la modale QR et fiche d'observation
         function presta_setTodayDate() {
-            obsDateInput.value = new Date().toISOString().split("T")[0];
+            presta_obsDateInput.value = new Date().toISOString().split("T")[0];
         }
 
         function presta_openModalStartPrestation(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom) {
-            currentMissionId = missionId;
-            currentClientPrenom = clientPrenom;
-            currentClientNom = clientNom;
-            currentPrestatairePrenom = prestatairePrenom;
-            currentPrestataireNom = prestataireNom;
+            presta_currentMissionId = missionId;
+            presta_currentClientPrenom = clientPrenom;
+            presta_currentClientNom = clientNom;
+            presta_currentPrestatairePrenom = prestatairePrenom;
+            presta_currentPrestataireNom = prestataireNom;
 
-            stepQR.style.display = "flex";
-            stepForm.style.display = "none";
-            stepSuccess.style.display = "none";
-            modalOverlay.style.display = "flex";
+            presta_stepQR.style.display = "flex";
+            presta_stepForm.style.display = "none";
+            presta_stepSuccess.style.display = "none";
+            presta_modalOverlay.style.display = "flex";
 
             presta_startQrScanner();
         }
 
         function presta_closeModalQR() {
-            modalOverlay.style.display = "none";
+            presta_modalOverlay.style.display = "none";
             presta_clearForm();
         }
 
         function presta_clearForm() {
-            obsDateInput.value = "";
-            etatSanteInput.value = "";
-            etatFormeInput.value = "";
-            environnementInput.value = "";
-            photosInput.value = "";
-            photosPreview.innerHTML = "";
+            presta_obsDateInput.value = "";
+            presta_etatSanteInput.value = "";
+            presta_etatFormeInput.value = "";
+            presta_environnementInput.value = "";
+            presta_photosInput.value = "";
+            presta_photosPreview.innerHTML = "";
         }
 
         async function presta_startQrScanner() {
-            document.getElementById("qr-reader").innerHTML = "";
-            const qrReader = new Html5Qrcode("qr-reader");
+            document.getElementById("presta-qr-reader").innerHTML = "";
+            const qrReader = new Html5Qrcode("presta-qr-reader");
             qrReader.start(
                 { facingMode: "environment" },
                 { fps: 10, qrbox: 250 },
@@ -1833,14 +1835,14 @@
                         if (!email) throw new Error("QR invalide");
 
                         const callbackName = 'cbVerifyClient' + Date.now();
-                        const data = await callApiJsonp(`${webAppUrl}?type=verifyClientEmail&email=${encodeURIComponent(email)}`, callbackName);
+                        const data = await presta_callApiJsonp(`${presta_webAppUrl}?type=verifyClientEmail&email=${encodeURIComponent(email)}`, callbackName);
 
-                        if (!data.success || !currentClientNom.toUpperCase().trim().includes((data.nom || "").toUpperCase().trim())) {
+                        if (!data.success || !presta_currentClientNom.toUpperCase().trim().includes((data.nom || "").toUpperCase().trim())) {
                             alert("❌ Ce QR ne correspond pas au client de cette mission.");
                             presta_closeModalQR();
                             return;
                         }
-                        heureDebut = new Date().toISOString();
+                        presta_heureDebut = new Date().toISOString();
                         presta_getGeolocationAndShowForm();
 
                     } catch (err) {
@@ -1866,8 +1868,8 @@
 
             navigator.geolocation.getCurrentPosition(
                 position => {
-                    currentLatitude = position.coords.latitude;
-                    currentLongitude = position.coords.longitude;
+                    presta_currentLatitude = position.coords.latitude;
+                    presta_currentLongitude = position.coords.longitude;
                     presta_showForm();
                 },
                 error => {
@@ -1893,9 +1895,9 @@
         }
 
         function presta_showForm() {
-            stepQR.style.display = "none";
-            stepForm.style.display = "block";
-            clientNameInput.value = `${currentClientPrenom} ${currentClientNom}`;
+            presta_stepQR.style.display = "none";
+            presta_stepForm.style.display = "block";
+            presta_clientNameInput.value = `${presta_currentClientPrenom} ${presta_currentClientNom}`;
             presta_setTodayDate();
         }
 
@@ -1921,7 +1923,7 @@
 
         // Fonction de déconnexion
         function presta_logout() {
-            currentEmail = "";
+            presta_currentEmail = "";
             document.getElementById('login-section').classList.remove('hidden');
             document.getElementById('prestataire-interface').classList.add('hidden');
             document.getElementById('login-form').reset();
@@ -1945,7 +1947,7 @@
         }
 
         function presta_showCompletedMissions() {
-            const completedMissions = currentMissions.filter(m => m.statut === "terminée" || m.statut === "validée");
+            const completedMissions = presta_currentMissions.filter(m => m.statut === "terminée" || m.statut === "validée");
             
             const tableBody = document.getElementById("completed-missions-table-modal");
             const cardsContainer = document.getElementById("completed-missions-cards-modal");
@@ -2012,17 +2014,17 @@
 
         async function presta_showProfileModal() {
             await presta_loadProfileData();
-            document.getElementById('profile-modal').style.display = 'block';
+            document.getElementById('presta-profile-modal').style.display = 'block';
         }
 
         async function presta_loadProfileData() {
             try {
                 const callbackName = 'cbProfile' + Date.now();
-                const url = `${webAppUrl}?type=getPrestataireProfile&email=${encodeURIComponent(currentEmail)}`;
-                const data = await callApiJsonp(url, callbackName);
+                const url = `${presta_webAppUrl}?type=getPrestataireProfile&email=${encodeURIComponent(presta_currentEmail)}`;
+                const data = await presta_callApiJsonp(url, callbackName);
 
                 if (data.success && data.prestataire) {
-                    currentPrestataireData = data.prestataire;
+                    presta_currentPrestataireData = data.prestataire;
                     presta_populateProfileForm(data.prestataire);
                 } else {
                     throw new Error(data.message || "Erreur lors du chargement du profil");
@@ -2034,17 +2036,17 @@
         }
 
         function presta_populateProfileForm(prestataire) {
-            document.getElementById('profile-firstname').value = prestataire.prénom || '';
-            document.getElementById('profile-email').value = prestataire.email || '';
-            document.getElementById('profile-phone').value = prestataire.téléphone || '';
-            document.getElementById('profile-specialites').value = prestataire['spécialité(s)'] || prestataire.spécialité || '';
-            document.getElementById('profile-disponibilite').value = prestataire.disponibilité || '';
-            document.getElementById('profile-commentaire').value = prestataire.commentaire || '';
+            document.getElementById('presta-profile-firstname').value = prestataire.prénom || '';
+            document.getElementById('presta-profile-email').value = prestataire.email || '';
+            document.getElementById('presta-profile-phone').value = prestataire.téléphone || '';
+            document.getElementById('presta-profile-specialites').value = prestataire['spécialité(s)'] || prestataire.spécialité || '';
+            document.getElementById('presta-profile-disponibilite').value = prestataire.disponibilité || '';
+            document.getElementById('presta-profile-commentaire').value = prestataire.commentaire || '';
         }
 
         async function presta_saveProfile() {
-            const password = document.getElementById('profile-password').value;
-            const passwordConfirm = document.getElementById('profile-password-confirm').value;
+            const password = document.getElementById('presta-profile-password').value;
+            const passwordConfirm = document.getElementById('presta-profile-password-confirm').value;
 
             // Validation du mot de passe seulement si rempli
             if (password) {
@@ -2060,13 +2062,13 @@
             }
 
             const formData = {
-                email: currentEmail,
-                prénom: document.getElementById('profile-firstname').value,
-                téléphone: document.getElementById('profile-phone').value,
-                email: document.getElementById('profile-email').value,
-                spécialité: document.getElementById('profile-specialites').value,
-                disponibilité: document.getElementById('profile-disponibilite').value,
-                commentaire: document.getElementById('profile-commentaire').value,
+                email: presta_currentEmail,
+                prénom: document.getElementById('presta-profile-firstname').value,
+                téléphone: document.getElementById('presta-profile-phone').value,
+                email: document.getElementById('presta-profile-email').value,
+                spécialité: document.getElementById('presta-profile-specialites').value,
+                disponibilité: document.getElementById('presta-profile-disponibilite').value,
+                commentaire: document.getElementById('presta-profile-commentaire').value,
                 password: password || null
             };
 
@@ -2087,7 +2089,7 @@
 
             try {
                 const callbackName = 'cbSaveProfile' + Date.now();
-                let url = `${webAppUrl}?type=updatePrestataireProfile`;
+                let url = `${presta_webAppUrl}?type=updatePrestataireProfile`;
                 
                 Object.keys(formData).forEach(key => {
                     if (formData[key] !== null && formData[key] !== undefined) {
@@ -2095,17 +2097,17 @@
                     }
                 });
 
-                const data = await callApiJsonp(url, callbackName);
+                const data = await presta_callApiJsonp(url, callbackName);
 
                 if (data.success) {
                     presta_showNotification("Profil mis à jour avec succès !", 'success');
-                    presta_closeModal('profile-modal');
+                    presta_closeModal('presta-profile-modal');
                     await presta_loadProfileData();
                     document.getElementById('prestataire-name').textContent = formData.prénom || "Prestataire";
                     
                     // Réinitialiser les champs mot de passe
-                    document.getElementById('profile-password').value = '';
-                    document.getElementById('profile-password-confirm').value = '';
+                    document.getElementById('presta-profile-password').value = '';
+                    document.getElementById('presta-profile-password-confirm').value = '';
                     presta_resetPasswordValidation();
                 } else {
                     throw new Error(data.message || "Erreur lors de la mise à jour du profil");
@@ -2128,7 +2130,7 @@
         }
 
         function presta_checkPasswordStrength(password) {
-            const strengthBar = document.getElementById('password-strength');
+            const strengthBar = document.getElementById('presta-password-strength');
             if (!password) {
                 strengthBar.className = 'password-strength';
                 strengthBar.style.width = '0%';
@@ -2155,10 +2157,10 @@
         }
 
         function presta_checkPasswordMatch() {
-            const password = document.getElementById('profile-password').value;
-            const confirmPassword = document.getElementById('profile-password-confirm').value;
-            const message = document.getElementById('password-match-message');
-            const submitBtn = document.getElementById('profile-submit-btn');
+            const password = document.getElementById('presta-profile-password').value;
+            const confirmPassword = document.getElementById('presta-profile-password-confirm').value;
+            const message = document.getElementById('presta-password-match-message');
+            const submitBtn = document.getElementById('presta-profile-submit-btn');
 
             if (!password) {
                 message.classList.add('hidden');
@@ -2185,27 +2187,27 @@
         }
 
         function presta_resetPasswordValidation() {
-            document.getElementById('password-strength').className = 'password-strength';
-            document.getElementById('password-strength').style.width = '0%';
-            document.getElementById('password-match-message').classList.add('hidden');
-            document.getElementById('profile-submit-btn').disabled = false;
+            document.getElementById('presta-password-strength').className = 'password-strength';
+            document.getElementById('presta-password-strength').style.width = '0%';
+            document.getElementById('presta-password-match-message').classList.add('hidden');
+            document.getElementById('presta-profile-submit-btn').disabled = false;
         }
 
         // FONCTIONS POUR LA SUPPRESSION DE COMPTE
 
         function presta_showDeleteAccountModal() {
-            document.getElementById('delete-account-modal').style.display = 'block';
-            document.getElementById('confirm-email').value = '';
-            document.getElementById('confirm-delete').checked = false;
-            document.getElementById('delete-account-btn').disabled = true;
-            document.getElementById('delete-account-btn').classList.add('opacity-50', 'cursor-not-allowed');
+            document.getElementById('presta-delete-account-modal').style.display = 'block';
+            document.getElementById('presta-confirm-email').value = '';
+            document.getElementById('presta-confirm-delete').checked = false;
+            document.getElementById('presta-delete-account-btn').disabled = true;
+            document.getElementById('presta-delete-account-btn').classList.add('opacity-50', 'cursor-not-allowed');
         }
 
         async function presta_confirmDeleteAccount() {
-            const confirmEmail = document.getElementById('confirm-email').value;
-            const confirmCheckbox = document.getElementById('confirm-delete').checked;
+            const confirmEmail = document.getElementById('presta-confirm-email').value;
+            const confirmCheckbox = document.getElementById('presta-confirm-delete').checked;
 
-            if (confirmEmail !== currentEmail) {
+            if (confirmEmail !== presta_currentEmail) {
                 presta_showNotification("L'adresse email ne correspond pas", 'error');
                 return;
             }
@@ -2223,14 +2225,14 @@
 
             try {
                 const callbackName = 'cbDeleteAccount' + Date.now();
-                const url = `${webAppUrl}?type=deletePrestataire&email=${encodeURIComponent(currentEmail)}`;
-                const data = await callApiJsonp(url, callbackName);
+                const url = `${presta_webAppUrl}?type=deletePrestataire&email=${encodeURIComponent(presta_currentEmail)}`;
+                const data = await presta_callApiJsonp(url, callbackName);
 
                 if (data.success) {
                     presta_showNotification("Votre compte a été supprimé avec succès", 'success');
                     setTimeout(() => {
                         presta_logout();
-                        presta_closeModal('delete-account-modal');
+                        presta_closeModal('presta-delete-account-modal');
                     }, 2000);
                 } else {
                     throw new Error(data.message || "Erreur lors de la suppression du compte");
@@ -2314,7 +2316,7 @@
                 if (event.target.classList.contains('modal')) {
                     event.target.style.display = 'none';
                 }
-                if (event.target.id === 'modalOverlay') {
+                if (event.target.id === 'presta-modalOverlay') {
                     presta_closeModalQR();
                 }
             });
@@ -2327,12 +2329,12 @@
             });
 
             // Gestion des photos dans la modale QR
-            photosInput.addEventListener("change", e => {
-                photosPreview.innerHTML = "";
+            presta_photosInput.addEventListener("change", e => {
+                presta_photosPreview.innerHTML = "";
                 const files = e.target.files;
                 if (files.length > 3) {
                     alert("Vous ne pouvez sélectionner que 3 photos max.");
-                    photosInput.value = "";
+                    presta_photosInput.value = "";
                     return;
                 }
                 [...files].forEach(file => {
@@ -2340,17 +2342,17 @@
                     reader.onload = ev => {
                         const img = document.createElement("img");
                         img.src = ev.target.result;
-                        photosPreview.appendChild(img);
+                        presta_photosPreview.appendChild(img);
                     };
                     reader.readAsDataURL(file);
                 });
             });
 
             // Soumission du formulaire d'observation
-            document.getElementById("obsForm").addEventListener("submit", async e => {
+            document.getElementById("presta-obsForm").addEventListener("submit", async e => {
                 e.preventDefault();
 
-                if (photosInput.files.length > 3) {
+                if (presta_photosInput.files.length > 3) {
                     alert("Maximum 3 photos autorisées.");
                     return;
                 }
@@ -2358,33 +2360,33 @@
                 const heureFin = new Date().toISOString();
                 const formData = new FormData();
                 formData.append("type", "envoyerFiche");
-                formData.append("missionId", currentMissionId);
-                formData.append("prenomClient", currentClientPrenom);
-                formData.append("nomClient", currentClientNom);
-                formData.append("obsDate", obsDateInput.value);
-                formData.append("etatSante", etatSanteInput.value);
-                formData.append("etatForme", etatFormeInput.value);
-                formData.append("environnement", environnementInput.value);
-                formData.append("latitude", currentLatitude);
-                formData.append("longitude", currentLongitude);
-                formData.append("heureDebut", heureDebut);
+                formData.append("missionId", presta_currentMissionId);
+                formData.append("prenomClient", presta_currentClientPrenom);
+                formData.append("nomClient", presta_currentClientNom);
+                formData.append("obsDate", presta_obsDateInput.value);
+                formData.append("etatSante", presta_etatSanteInput.value);
+                formData.append("etatForme", presta_etatFormeInput.value);
+                formData.append("environnement", presta_environnementInput.value);
+                formData.append("latitude", presta_currentLatitude);
+                formData.append("longitude", presta_currentLongitude);
+                formData.append("heureDebut", presta_heureDebut);
                 formData.append("heureFin", heureFin);
-                formData.append("prestatairePrenom", currentPrestatairePrenom);
-                formData.append("prestataireNom", currentPrestataireNom);
-                formData.append("prestataireEmail", currentEmail);
-                for (let file of photosInput.files) {
+                formData.append("prestatairePrenom", presta_currentPrestatairePrenom);
+                formData.append("prestataireNom", presta_currentPrestataireNom);
+                formData.append("prestataireEmail", presta_currentEmail);
+                for (let file of presta_photosInput.files) {
                     formData.append("photos", file);
                 }
 
                 try {
-                    const res = await fetch(webAppUrl, {
+                    const res = await fetch(presta_webAppUrl, {
                         method: "POST",
                         body: formData,
                     });
                     const json = await res.json();
                     if (json.success) {
-                        stepForm.style.display = "none";
-                        stepSuccess.style.display = "block";
+                        presta_stepForm.style.display = "none";
+                        presta_stepSuccess.style.display = "block";
                     } else {
                         alert("Erreur : " + (json.message || "Envoi échoué"));
                     }
@@ -2395,17 +2397,17 @@
             });
 
             // Boutons d'annulation et fermeture
-            document.getElementById("btnCancelQR").onclick = presta_closeModalQR;
-            document.getElementById("btnCancelForm").onclick = presta_closeModalQR;
-            document.getElementById("btnCloseSuccess").onclick = presta_closeModalQR;
+            document.getElementById("presta-btnCancelQR").onclick = presta_closeModalQR;
+            document.getElementById("presta-btnCancelForm").onclick = presta_closeModalQR;
+            document.getElementById("presta-btnCloseSuccess").onclick = presta_closeModalQR;
 
             // Validation du formulaire de suppression
-            const confirmEmail = document.getElementById('confirm-email');
-            const confirmCheckbox = document.getElementById('confirm-delete');
-            const deleteButton = document.getElementById('delete-account-btn');
+            const confirmEmail = document.getElementById('presta-confirm-email');
+            const confirmCheckbox = document.getElementById('presta-confirm-delete');
+            const deleteButton = document.getElementById('presta-delete-account-btn');
 
             function validateDeleteForm() {
-                const emailMatch = confirmEmail.value === currentEmail;
+                const emailMatch = confirmEmail.value === presta_currentEmail;
                 const checkboxChecked = confirmCheckbox.checked;
                 
                 if (emailMatch && checkboxChecked) {
@@ -2425,8 +2427,8 @@
             }
 
             // Validation des mots de passe
-            const passwordInput = document.getElementById('profile-password');
-            const passwordConfirmInput = document.getElementById('profile-password-confirm');
+            const passwordInput = document.getElementById('presta-profile-password');
+            const passwordConfirmInput = document.getElementById('presta-profile-password-confirm');
 
             if (passwordInput) {
                 passwordInput.addEventListener('input', function() {
