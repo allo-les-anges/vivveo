@@ -1477,28 +1477,56 @@
         const presta_photosInput = document.getElementById("presta-photos");
         const presta_photosPreview = document.getElementById("presta-photosPreview");
 
-        // Fonction JSONP
-        function presta_callApiJsonp(url, callbackName) {
-            return new Promise((resolve, reject) => {
-                window[callbackName] = function(data) {
-                    resolve(data);
-                    delete window[callbackName];
-                    if (script.parentNode) {
-                        script.parentNode.removeChild(script);
-                    }
-                };
-                const script = document.createElement('script');
-                script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
-                script.onerror = () => {
-                    reject(new Error('Erreur JSONP'));
-                    delete window[callbackName];
-                    if (script.parentNode) {
-                        script.parentNode.removeChild(script);
-                    }
-                };
-                document.body.appendChild(script);
-            });
-        }
+        // Fonction JSONP - VERSION AMÉLIORÉE
+function presta_callApiJsonp(url, callbackName) {
+    return new Promise((resolve, reject) => {
+        console.log(`📞 Appel JSONP: ${url}`);
+        console.log(`📞 Callback: ${callbackName}`);
+        
+        window[callbackName] = function(data) {
+            console.log(`📨 Réponse JSONP reçue:`, data);
+            resolve(data);
+            delete window[callbackName];
+            if (script.parentNode) {
+                script.parentNode.removeChild(script);
+            }
+        };
+        
+        const script = document.createElement('script');
+        script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
+        
+        script.onerror = () => {
+            console.error('❌ Erreur script JSONP - Impossible de charger le script');
+            reject(new Error('Erreur JSONP'));
+            delete window[callbackName];
+            if (script.parentNode) {
+                script.parentNode.removeChild(script);
+            }
+        };
+        
+        // Timeout de sécurité
+        const timeoutId = setTimeout(() => {
+            if (window[callbackName]) {
+                console.error('⏰ Timeout JSONP après 10 secondes');
+                reject(new Error('Timeout JSONP'));
+                delete window[callbackName];
+                if (script.parentNode) {
+                    script.parentNode.removeChild(script);
+                }
+            }
+        }, 10000);
+        
+        // Nettoyer le timeout si la réponse arrive
+        const originalCallback = window[callbackName];
+        window[callbackName] = function(data) {
+            clearTimeout(timeoutId);
+            originalCallback(data);
+        };
+        
+        console.log("🔄 Ajout du script au DOM");
+        document.body.appendChild(script);
+    });
+}
 
         // Fonction de connexion avec JSONP
         async function presta_login() {
@@ -2013,27 +2041,58 @@
         // FONCTIONS POUR LA GESTION DU PROFIL - CORRIGÉES
 
         async function presta_showProfileModal() {
-            await presta_loadProfileData();
-            document.getElementById('presta-profile-modal').style.display = 'block';
-        }
-
+    console.log("🎯 Ouverture modal profil");
+    
+    try {
+        // Afficher le loader immédiatement
+        document.getElementById('loader').style.display = 'flex';
+        
+        await presta_loadProfileData(); // Attendre que le profil soit chargé
+        
+        // Cacher le loader une fois les données chargées
+        document.getElementById('loader').style.display = 'none';
+        
+        // Afficher le modal
+        document.getElementById('presta-profile-modal').style.display = 'block';
+        console.log("✅ Modal affiché avec succès");
+        
+    } catch (error) {
+        // Cacher le loader en cas d'erreur
+        document.getElementById('loader').style.display = 'none';
+        console.error("❌ Erreur lors de l'ouverture du modal:", error);
+        // Ne pas relancer l'erreur ici - elle est déjà gérée par presta_loadProfileData
+    }
+}
         async function presta_loadProfileData() {
-            try {
-                const callbackName = 'cbProfile' + Date.now();
-                const url = `${presta_webAppUrl}?type=getPrestataireProfile&email=${encodeURIComponent(presta_currentEmail)}`;
-                const data = await presta_callApiJsonp(url, callbackName);
-
-                if (data.success && data.prestataire) {
-                    presta_currentPrestataireData = data.prestataire;
-                    presta_populateProfileForm(data.prestataire);
-                } else {
-                    throw new Error(data.message || "Erreur lors du chargement du profil");
-                }
-            } catch (error) {
-                console.error("Erreur lors du chargement du profil:", error);
-                presta_showNotification("Erreur lors du chargement du profil: " + error.message, 'error');
-            }
+    console.log("🚀 Début du chargement du profil pour:", presta_currentEmail);
+    
+    try {
+        if (!presta_currentEmail) {
+            throw new Error("Aucun email défini pour charger le profil");
         }
+
+        const callbackName = 'cbProfile' + Date.now();
+        const url = `${presta_webAppUrl}?type=getPrestataireProfile&email=${encodeURIComponent(presta_currentEmail)}`;
+        console.log("📡 Appel API:", url);
+        
+        const data = await presta_callApiJsonp(url, callbackName);
+        console.log("📦 Réponse API:", data);
+
+        if (data.success && data.prestataire) {
+            console.log("✅ Profil chargé avec succès");
+            presta_currentPrestataireData = data.prestataire;
+            presta_populateProfileForm(data.prestataire);
+            return data; // Retourner les données
+        } else {
+            console.error("❌ Erreur API:", data.message);
+            throw new Error(data.message || "Erreur lors du chargement du profil");
+        }
+    } catch (error) {
+        console.error("💥 Erreur complète:", error);
+        presta_showNotification("Erreur lors du chargement du profil: " + error.message, 'error');
+        throw error; // IMPORTANT: propager l'erreur
+    }
+}
 
         function presta_populateProfileForm(prestataire) {
             document.getElementById('presta-profile-firstname').value = prestataire.prénom || '';
