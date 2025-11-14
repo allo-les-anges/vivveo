@@ -2076,13 +2076,24 @@ function presta_callApiJsonp(url, callbackName) {
         console.log("📡 Appel API:", url);
         
         const data = await presta_callApiJsonp(url, callbackName);
-        console.log("📦 Réponse API:", data);
+        console.log("📦 Réponse API COMPLÈTE:", data);
+        console.log("📦 data.success:", data.success);
+        console.log("📦 data.prestataire:", data.prestataire);
+        console.log("📦 data.profile:", data.profile); // Vérifiez aussi ce champ
+        console.log("📦 Toutes les clés:", Object.keys(data));
 
-        if (data.success && data.prestataire) {
-            console.log("✅ Profil chargé avec succès");
-            presta_currentPrestataireData = data.prestataire;
-            presta_populateProfileForm(data.prestataire);
-            return data; // Retourner les données
+        // Vérification plus flexible
+        if (data.success) {
+            const prestataireData = data.prestataire || data.profile;
+            if (prestataireData) {
+                console.log("✅ Profil chargé avec succès:", prestataireData);
+                presta_currentPrestataireData = prestataireData;
+                presta_populateProfileForm(prestataireData);
+                return data;
+            } else {
+                console.error("❌ Données prestataire manquantes dans la réponse");
+                throw new Error("Données du profil non disponibles");
+            }
         } else {
             console.error("❌ Erreur API:", data.message);
             throw new Error(data.message || "Erreur lors du chargement du profil");
@@ -2090,7 +2101,7 @@ function presta_callApiJsonp(url, callbackName) {
     } catch (error) {
         console.error("💥 Erreur complète:", error);
         presta_showNotification("Erreur lors du chargement du profil: " + error.message, 'error');
-        throw error; // IMPORTANT: propager l'erreur
+        throw error;
     }
 }
 
