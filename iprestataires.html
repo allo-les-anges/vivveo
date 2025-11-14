@@ -2076,11 +2076,11 @@ function presta_callApiJsonp(url, callbackName) {
         console.log("📡 Appel API:", url);
         
         const data = await presta_callApiJsonp(url, callbackName);
-        console.log("📦 Réponse API COMPLÈTE:", data);
+        console.log("📦 Réponse API:", data);
 
-        // CORRECTION : Utiliser data.profile au lieu de data.prestataire
+        // CORRECTION CRITIQUE : Utiliser data.profile
         if (data.success && data.profile) {
-            console.log("✅ Profil chargé avec succès:", data.profile);
+            console.log("✅ Profil chargé avec succès");
             presta_currentPrestataireData = data.profile;
             presta_populateProfileForm(data.profile);
             return data;
