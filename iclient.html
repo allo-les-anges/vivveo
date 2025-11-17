@@ -598,6 +598,25 @@
             transform: translateY(-1px);
         }
 
+        /* Styles pour le statut d'abonnement */
+        .subscription-status {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: inline-block;
+        }
+
+        .subscription-pending {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .subscription-inactive {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        }
+
         @media (max-width: 768px) {
             .table-wrapper {
                 display: none;
@@ -779,18 +798,16 @@
                                  alt="Photo client" class="client-photo">
                             <div class="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
                         </div>
-                        <button onclick="showDeleteAccountModal()" class="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors" data-translate="delete_account">
-                            <i class="fas fa-trash-alt mr-2"></i>
-                            Supprimer mon compte
-                        </button>
                         <div class="text-left">
                             <h2 class="text-2xl font-bold text-gray-800">
-                                Bienvenue, <span id="client-fullname" class="text-blue-600">Client</span> !
+                                <span data-translate="welcome">Bienvenue</span>, <span id="client-fullname" class="text-blue-600">Client</span> !
                             </h2>
+                            <!-- REMPLACEMENT: Statut d'abonnement au lieu des crédits -->
                             <p class="text-gray-600 flex items-center">
-                                <i class="fas fa-coins text-blue-600 mr-2"></i>
-                                <span data-translate="credits_available">Crédits disponibles</span> : 
-                                <strong class="ml-1 text-lg"><span id="client-credits">0</span></strong>
+                                <i class="fas fa-crown text-yellow-500 mr-2"></i>
+                                <span data-translate="subscription_status">Statut d'abonnement</span> : 
+                                <strong class="ml-1 text-lg" id="subscription-status-text">En ordre</strong>
+                                <span id="subscription-badge" class="subscription-status ml-2">Actif</span>
                             </p>
                         </div>
                     </div>
@@ -837,80 +854,98 @@
                 </div>
             </div>
 
-            <!-- Actions rapides - Abonnements -->
+            <!-- NOUVELLE SECTION: Abonnements -->
             <div class="client-section">
                 <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
                     <i class="fas fa-crown text-yellow-500 mr-3"></i>
                     Mes Abonnements
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Abonnement Mensuel -->
-                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl p-6 shadow-lg">
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h4 class="text-xl font-bold">Abonnement Mensuel</h4>
-                                <p class="text-blue-100">Flexible - Résiliable à tout moment</p>
-                            </div>
-                            <span class="bg-white text-blue-600 px-3 py-1 rounded-full text-sm font-bold">10€/mois</span>
+                
+                <!-- Statut actuel -->
+                <div class="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-6 mb-6">
+                    <h4 class="text-lg font-bold text-blue-800 mb-2" data-translate="current_subscription">Votre abonnement actuel</h4>
+                    <div class="flex flex-col md:flex-row justify-between items-center">
+                        <div>
+                            <p class="text-blue-700" id="current-subscription-text">Aucun abonnement actif</p>
+                            <p class="text-blue-600 text-sm" id="subscription-details">Souscrivez à un abonnement pour bénéficier de nos services</p>
                         </div>
-                        <ul class="text-blue-100 mb-6 space-y-2">
-                            <li class="flex items-center">
-                                <i class="fas fa-check mr-2"></i>
-                                Accès à tous les services
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check mr-2"></i>
-                                Support prioritaire
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check mr-2"></i>
-                                Résiliation à tout moment
-                            </li>
-                        </ul>
-                        <button onclick="souscrireAbonnement('mensuel')" class="w-full bg-white text-blue-600 py-3 rounded-lg font-bold hover:bg-blue-50 transition-colors">
-                            Souscrire - 10€/mois
-                        </button>
-                    </div>
-
-                    <!-- Abonnement Annuel -->
-                    <div class="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl p-6 shadow-lg">
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h4 class="text-xl font-bold">Abonnement Annuel</h4>
-                                <p class="text-green-100">Économique - 20% d'économie</p>
-                            </div>
-                            <span class="bg-white text-green-600 px-3 py-1 rounded-full text-sm font-bold">8€/mois</span>
-                        </div>
-                        <ul class="text-green-100 mb-6 space-y-2">
-                            <li class="flex items-center">
-                                <i class="fas fa-check mr-2"></i>
-                                Tous les avantages du mensuel
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check mr-2"></i>
-                                Économie de 24€ par an
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fas fa-check mr-2"></i>
-                                Engagement 12 mois
-                            </li>
-                        </ul>
-                        <button onclick="souscrireAbonnement('annuel')" class="w-full bg-white text-green-600 py-3 rounded-lg font-bold hover:bg-green-50 transition-colors">
-                            Souscrire - 96€/an
+                        <button onclick="gererAbonnement()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors mt-4 md:mt-0">
+                            <i class="fas fa-cog mr-2"></i>
+                            <span data-translate="subscription_management">Gérer</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Statut actuel de l'abonnement -->
-                <div class="mt-8 p-4 bg-gray-50 rounded-lg">
-                    <h4 class="font-semibold text-gray-800 mb-2">Votre abonnement actuel</h4>
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-600" id="abonnement-status">Aucun abonnement actif</p>
-                            <p class="text-sm text-gray-500" id="abonnement-details">Souscrivez à un abonnement pour bénéficier de nos services</p>
+                <!-- Formules disponibles -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Abonnement Mensuel -->
+                    <div class="bg-white border-2 border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all">
+                        <div class="text-center mb-4">
+                            <h4 class="text-xl font-bold text-gray-800 mb-2" data-translate="monthly_subscription">Abonnement Mensuel</h4>
+                            <p class="text-gray-600 text-sm" data-translate="flexible_subscription">Flexible - Résiliable à tout moment</p>
                         </div>
-                        <button onclick="gererAbonnement()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                            Gérer
+                        
+                        <div class="text-center mb-4">
+                            <div class="text-3xl font-bold text-gray-800">10€ <span class="text-lg text-gray-600">/mois</span></div>
+                        </div>
+                        
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span data-translate="subscription_features">Accès à tous les services</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span data-translate="priority_support">Support prioritaire</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span data-translate="cancel_anytime">Résiliation à tout moment</span>
+                            </li>
+                        </ul>
+                        
+                        <button onclick="souscrireAbonnement('mensuel')" 
+                                class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all">
+                            <span data-translate="subscribe">Souscrire</span> - 10€/mois
+                        </button>
+                    </div>
+
+                    <!-- Abonnement Annuel -->
+                    <div class="bg-white border-2 border-yellow-400 rounded-xl p-6 hover:shadow-lg transition-all relative">
+                        <div class="absolute top-4 right-4">
+                            <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                                Populaire
+                            </span>
+                        </div>
+                        
+                        <div class="text-center mb-4">
+                            <h4 class="text-xl font-bold text-gray-800 mb-2" data-translate="yearly_subscription">Abonnement Annuel</h4>
+                            <p class="text-gray-600 text-sm" data-translate="economical_subscription">Économique - 20% d'économie</p>
+                        </div>
+                        
+                        <div class="text-center mb-4">
+                            <div class="text-3xl font-bold text-gray-800">8€ <span class="text-lg text-gray-600">/mois</span></div>
+                            <div class="text-green-600 font-semibold" data-translate="annual_savings">Économie de 24€ par an</div>
+                        </div>
+                        
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span data-translate="subscription_features">Tous les avantages du mensuel</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span data-translate="annual_savings">Économie de 24€ par an</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                <span data-translate="annual_commitment">Engagement 12 mois</span>
+                            </li>
+                        </ul>
+                        
+                        <button onclick="souscrireAbonnement('annuel')" 
+                                class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-3 rounded-lg font-semibold hover:from-yellow-600 hover:to-yellow-700 transition-all">
+                            <span data-translate="subscribe">Souscrire</span> - 96€/an
                         </button>
                     </div>
                 </div>
@@ -1423,7 +1458,7 @@
                 tutor_address: "Adresse du tuteur",
                 tutor_city: "Ville du tuteur",
                 tutor_postal: "Code postal du tuteur",
-                tutor_phone: "Téléphone du tuteur",
+                tutor_phone: "Telephone du tuteur",
                 save_changes: "Enregistrer",
                 cancel: "Annuler",
                 
@@ -1439,13 +1474,13 @@
                 validation_success: "Merci ! Votre validation a bien été enregistrée.",
                 server_error: "Erreur de communication avec le serveur.",
 
-                // Nouvelles traductions
+                // Nouvelles traductions pour les abonnements
                 delete_account: "Supprimer mon compte",
                 delete_account_title: "Supprimer mon compte",
                 delete_account_confirm: "Êtes-vous sûr de vouloir supprimer votre compte ?",
                 delete_account_warning: "Cette action est irréversible. Toutes vos données et historiques seront définitivement supprimés.",
                 confirm_delete: "Confirmer la suppression",
-                subscription_management: "Gérer mon abonnement",
+                subscription_management: "Gérer",
                 monthly_subscription: "Abonnement Mensuel",
                 yearly_subscription: "Abonnement Annuel",
                 subscribe: "Souscrire",
@@ -1457,7 +1492,8 @@
                 priority_support: "Support prioritaire",
                 cancel_anytime: "Résiliation à tout moment",
                 annual_savings: "Économie de 24€ par an",
-                annual_commitment: "Engagement 12 mois"
+                annual_commitment: "Engagement 12 mois",
+                subscription_status: "Statut d'abonnement"
             },
             nl: {
                 // Navigation
@@ -1559,13 +1595,13 @@
                 validation_success: "Bedankt! Uw validatie is goed geregistreerd.",
                 server_error: "Communicatiefout met de server.",
 
-                // Nouvelles traductions
+                // Nouvelles traductions pour les abonnements
                 delete_account: "Mijn account verwijderen",
                 delete_account_title: "Mijn account verwijderen",
                 delete_account_confirm: "Weet u zeker dat u uw account wilt verwijderen?",
                 delete_account_warning: "Deze actie is onomkeerbaar. Al uw gegevens en geschiedenis worden permanent verwijderd.",
                 confirm_delete: "Verwijdering bevestigen",
-                subscription_management: "Mijn abonnement beheren",
+                subscription_management: "Beheren",
                 monthly_subscription: "Maandabonnement",
                 yearly_subscription: "Jaarabonnement",
                 subscribe: "Abonneren",
@@ -1577,7 +1613,8 @@
                 priority_support: "Prioritaire ondersteuning",
                 cancel_anytime: "Opzegbaar op elk moment",
                 annual_savings: "Besparing van €24 per jaar",
-                annual_commitment: "Verbinding 12 maanden"
+                annual_commitment: "Verbinding 12 maanden",
+                subscription_status: "Abonnementsstatus"
             },
             en: {
                 // Navigation
@@ -1679,13 +1716,13 @@
                 validation_success: "Thank you! Your validation has been recorded.",
                 server_error: "Server communication error.",
 
-                // Nouvelles traductions
+                // Nouvelles traductions pour les abonnements
                 delete_account: "Delete my account",
                 delete_account_title: "Delete my account",
                 delete_account_confirm: "Are you sure you want to delete your account?",
                 delete_account_warning: "This action is irreversible. All your data and history will be permanently deleted.",
                 confirm_delete: "Confirm deletion",
-                subscription_management: "Manage my subscription",
+                subscription_management: "Manage",
                 monthly_subscription: "Monthly Subscription",
                 yearly_subscription: "Annual Subscription",
                 subscribe: "Subscribe",
@@ -1697,7 +1734,8 @@
                 priority_support: "Priority support",
                 cancel_anytime: "Cancel anytime",
                 annual_savings: "Savings of €24 per year",
-                annual_commitment: "12-month commitment"
+                annual_commitment: "12-month commitment",
+                subscription_status: "Subscription status"
             },
             de: {
                 // Navigation
@@ -1799,13 +1837,13 @@
                 validation_success: "Vielen Dank! Ihre Validierung wurde gespeichert.",
                 server_error: "Kommunikationsfehler mit dem Server.",
 
-                // Nouvelles traductions
+                // Nouvelles traductions pour les abonnements
                 delete_account: "Mein Konto löschen",
                 delete_account_title: "Mein Konto löschen",
                 delete_account_confirm: "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?",
                 delete_account_warning: "Diese Aktion ist unwiderruflich. Alle Ihre Daten und Verläufe werden endgültig gelöscht.",
                 confirm_delete: "Löschung bestätigen",
-                subscription_management: "Mein Abonnement verwalten",
+                subscription_management: "Verwalten",
                 monthly_subscription: "Monatsabonnement",
                 yearly_subscription: "Jahresabonnement",
                 subscribe: "Abonnieren",
@@ -1817,7 +1855,8 @@
                 priority_support: "Prioritärer Support",
                 cancel_anytime: "Jederzeit kündbar",
                 annual_savings: "Ersparnis von 24€ pro Jahr",
-                annual_commitment: "12-monatige Bindung"
+                annual_commitment: "12-monatige Bindung",
+                subscription_status: "Abonnementstatus"
             }
         };
 
@@ -1861,6 +1900,9 @@
                     // Charger les données des missions
                     loadClientData();
                     
+                    // ⭐ AJOUT: Charger le statut d'abonnement
+                    await chargerStatutAbonnement();
+                    
                     showNotification(translations[currentLanguage].login_success, 'success');
                     
                 } else {
@@ -1891,13 +1933,81 @@
                 clientFullnameElement.textContent = fullName || "Client";
                 console.log('✅ Nom complet mis à jour:', fullName);
             }
-            
-            // Mise à jour des crédits
-            const creditsElement = document.getElementById('client-credits');
-            if (creditsElement) {
-                creditsElement.textContent = currentClient.client.credits || 0;
-                console.log('✅ Crédits mis à jour:', currentClient.client.credits);
+        }
+
+        // Charger le statut d'abonnement
+        async function chargerStatutAbonnement() {
+            if (!currentClient) return;
+
+            try {
+                const url = `${webAppUrl}?type=getStatutAbonnement&email=${encodeURIComponent(currentClient.client.email)}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.success && data.abonnement) {
+                    afficherStatutAbonnement(data.abonnement);
+                } else {
+                    afficherAucunAbonnement();
+                }
+            } catch (error) {
+                console.log('Aucun abonnement trouvé');
+                afficherAucunAbonnement();
             }
+        }
+
+        // Afficher le statut d'abonnement
+        function afficherStatutAbonnement(abonnement) {
+            const statusText = document.getElementById('subscription-status-text');
+            const statusBadge = document.getElementById('subscription-badge');
+            const currentSubText = document.getElementById('current-subscription-text');
+            const subscriptionDetails = document.getElementById('subscription-details');
+
+            const estActif = abonnement.statut === 'actif';
+            const estEnRetard = abonnement.statut === 'en_retard';
+            
+            if (estActif) {
+                statusText.textContent = "En ordre";
+                statusBadge.textContent = "Actif";
+                statusBadge.className = "subscription-status ml-2";
+                
+                const dateFin = new Date(abonnement.date_fin);
+                const maintenant = new Date();
+                const joursRestants = Math.ceil((dateFin - maintenant) / (1000 * 60 * 60 * 24));
+                
+                currentSubText.textContent = `Abonnement ${abonnement.type}`;
+                subscriptionDetails.textContent = `Valide jusqu'au ${formatDateOrTime(abonnement.date_fin)} (${joursRestants} jours restants)`;
+                
+            } else if (estEnRetard) {
+                statusText.textContent = "En attente de paiement";
+                statusBadge.textContent = "En retard";
+                statusBadge.className = "subscription-status subscription-pending ml-2";
+                
+                currentSubText.textContent = `Abonnement ${abonnement.type}`;
+                subscriptionDetails.textContent = "Paiement en attente - Régularisez votre situation";
+                
+            } else {
+                statusText.textContent = "Inactif";
+                statusBadge.textContent = "Inactif";
+                statusBadge.className = "subscription-status subscription-inactive ml-2";
+                
+                currentSubText.textContent = "Aucun abonnement actif";
+                subscriptionDetails.textContent = "Souscrivez à un abonnement pour bénéficier de nos services";
+            }
+        }
+
+        // Afficher aucun abonnement
+        function afficherAucunAbonnement() {
+            const statusText = document.getElementById('subscription-status-text');
+            const statusBadge = document.getElementById('subscription-badge');
+            const currentSubText = document.getElementById('current-subscription-text');
+            const subscriptionDetails = document.getElementById('subscription-details');
+
+            statusText.textContent = "Inactif";
+            statusBadge.textContent = "Inactif";
+            statusBadge.className = "subscription-status subscription-inactive ml-2";
+            
+            currentSubText.textContent = "Aucun abonnement actif";
+            subscriptionDetails.textContent = "Souscrivez à un abonnement pour bénéficier de nos services";
         }
 
         // Fonction de déconnexion
@@ -2201,6 +2311,26 @@
             }
         }
 
+        // Fonctions d'abonnement
+        function souscrireAbonnement(type) {
+            const plans = {
+                'mensuel': { prix: 10, nom: 'Mensuel', url: 'https://viiveo.com/abonnement-mensuel' },
+                'annuel': { prix: 96, nom: 'Annuel', url: 'https://viiveo.com/abonnement-annuel' }
+            };
+            
+            const plan = plans[type];
+            if (confirm(`Souscrire à l'abonnement ${plan.nom} pour ${plan.prix}€ ?`)) {
+                showNotification(`Redirection vers la page de paiement pour l'abonnement ${plan.nom}...`, 'info');
+                setTimeout(() => {
+                    window.open(plan.url, '_blank');
+                }, 1000);
+            }
+        }
+
+        function gererAbonnement() {
+            showNotification("Page de gestion d'abonnement à venir...", 'info');
+        }
+
         function showClosedMissions() {
             if (!currentClient) return;
             
@@ -2488,28 +2618,6 @@
 
         function voirRapports() {
             showNotification(translations[currentLanguage].reports_coming, 'info');
-        }
-
-        // Fonctions d'abonnement
-        function souscrireAbonnement(type) {
-            const plans = {
-                'mensuel': { prix: 10, nom: 'Mensuel', url: 'https://viiveo.com/abonnement-mensuel' },
-                'annuel': { prix: 96, nom: 'Annuel', url: 'https://viiveo.com/abonnement-annuel' }
-            };
-            
-            const plan = plans[type];
-            if (confirm(`Souscrire à l'abonnement ${plan.nom} pour ${plan.prix}€ ?`)) {
-                showNotification(`Redirection vers la page de paiement pour l'abonnement ${plan.nom}...`, 'info');
-                setTimeout(() => {
-                    window.open(plan.url, '_blank');
-                }, 1000);
-            }
-        }
-
-        function gererAbonnement() {
-            showNotification("Page de gestion d'abonnement à venir...", 'info');
-            // Redirection vers la page de gestion des abonnements
-            // window.open('https://viiveo.com/gestion-abonnement', '_blank');
         }
 
         async function deleteAccount() {
