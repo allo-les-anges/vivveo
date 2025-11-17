@@ -839,84 +839,114 @@
 
             <!-- Actions rapides -->
             <!-- Actions rapides - Abonnements -->
+<!-- Section Abonnements Complète -->
+<!-- Section Abonnements Complète -->
 <div class="client-section">
-    <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
-        <i class="fas fa-crown text-yellow-500 mr-3"></i>
-        Mes Abonnements
-    </h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Abonnement Mensuel -->
-        <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl p-6 shadow-lg">
-            <div class="flex justify-between items-start mb-4">
-                <div>
-                    <h4 class="text-xl font-bold">Abonnement Mensuel</h4>
-                    <p class="text-blue-100">Flexible - Résiliable à tout moment</p>
-                </div>
-                <span class="bg-white text-blue-600 px-3 py-1 rounded-full text-sm font-bold">10€/mois</span>
-            </div>
-            <ul class="text-blue-100 mb-6 space-y-2">
-                <li class="flex items-center">
-                    <i class="fas fa-check mr-2"></i>
-                    Accès à tous les services
-                </li>
-                <li class="flex items-center">
-                    <i class="fas fa-check mr-2"></i>
-                    Support prioritaire
-                </li>
-                <li class="flex items-center">
-                    <i class="fas fa-check mr-2"></i>
-                    Résiliation à tout moment
-                </li>
-            </ul>
-            <button onclick="souscrireAbonnement('mensuel')" class="w-full bg-white text-blue-600 py-3 rounded-lg font-bold hover:bg-blue-50 transition-colors">
-                Souscrire - 10€/mois
-            </button>
-        </div>
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-4" data-translate="subscription_management">
+        Nos Formules d'Abonnement
+    </h2>
+    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
+        Choisissez la formule qui correspond le mieux à vos besoins et bénéficiez de nos services en illimité
+    </p>
 
-        <!-- Abonnement Annuel -->
-        <div class="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl p-6 shadow-lg">
-            <div class="flex justify-between items-start mb-4">
-                <div>
-                    <h4 class="text-xl font-bold">Abonnement Annuel</h4>
-                    <p class="text-green-100">Économique - 20% d'économie</p>
-                </div>
-                <span class="bg-white text-green-600 px-3 py-1 rounded-full text-sm font-bold">8€/mois</span>
-            </div>
-            <ul class="text-green-100 mb-6 space-y-2">
-                <li class="flex items-center">
-                    <i class="fas fa-check mr-2"></i>
-                    Tous les avantages du mensuel
-                </li>
-                <li class="flex items-center">
-                    <i class="fas fa-check mr-2"></i>
-                    Économie de 24€ par an
-                </li>
-                <li class="flex items-center">
-                    <i class="fas fa-check mr-2"></i>
-                    Engagement 12 mois
-                </li>
-            </ul>
-            <button onclick="souscrireAbonnement('annuel')" class="w-full bg-white text-green-600 py-3 rounded-lg font-bold hover:bg-green-50 transition-colors">
-                Souscrire - 96€/an
-            </button>
+    <!-- Statut d'abonnement actuel -->
+    <div id="statut-abonnement" class="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-6 mb-8">
+        <h3 class="text-xl font-bold text-blue-800 mb-2" data-translate="current_subscription">Votre abonnement actuel</h3>
+        <div id="info-abonnement" class="flex flex-col md:flex-row justify-between items-center">
+            <!-- Contenu dynamique -->
         </div>
     </div>
-
-    <!-- Statut actuel de l'abonnement -->
-    <div class="mt-8 p-4 bg-gray-50 rounded-lg">
-        <h4 class="font-semibold text-gray-800 mb-2">Votre abonnement actuel</h4>
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-gray-600" id="abonnement-status">Aucun abonnement actif</p>
-                <p class="text-sm text-gray-500" id="abonnement-details">Souscrivez à un abonnement pour bénéficier de nos services</p>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Abonnement Mensuel -->
+        <div class="bg-white border-2 border-gray-200 rounded-xl p-8 hover:shadow-lg transition-all">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-2" data-translate="monthly_subscription">Abonnement Mensuel</h3>
+                <p class="text-gray-600 text-sm" data-translate="flexible_subscription">Flexible - Résiliable à tout moment</p>
             </div>
-            <button onclick="gererAbonnement()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                Gérer
+            
+            <div class="text-center mb-6">
+                <div class="text-4xl font-bold text-gray-800">10€ <span class="text-lg text-gray-600">/mois</span></div>
+            </div>
+            
+                        <ul class="space-y-3 mb-8">
+                <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-3"></i>
+                    <span data-translate="subscription_features">Accès à tous les services</span>
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-3"></i>
+                    <span data-translate="priority_support">Support prioritaire</span>
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-3"></i>
+                    <span data-translate="cancel_anytime">Résiliation à tout moment</span>
+                </li>
+                            
+                <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-3"></i>
+                    <span>Résiliation à tout moment</span>
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-3"></i>
+                    <span>Réservations illimitées</span>
+                </li>
+            </ul>
+            
+                        <button onclick="souscrireAbonnement('mensuel')" 
+                    class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-4 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all">
+                <span data-translate="subscribe">Souscrire</span> - 10€/mois
+            </button>
+
+        <!-- Abonnement Annuel -->
+                <!-- Abonnement Annuel -->
+        <div class="bg-white border-2 border-yellow-400 rounded-xl p-8 hover:shadow-lg transition-all relative">
+            <div class="absolute top-4 right-4">
+                <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                    Populaire
+                </span>
+            </div>
+            
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-2" data-translate="yearly_subscription">Abonnement Annuel</h3>
+                <p class="text-gray-600 text-sm" data-translate="economical_subscription">Économique - 20% d'économie</p>
+            </div>
+            
+                        <div class="text-center mb-4">
+                <div class="text-4xl font-bold text-gray-800">8€ <span class="text-lg text-gray-600">/mois</span></div>
+                <div class="text-green-600 font-semibold" data-translate="annual_savings">Économie de 24€ par an</div>
+            </div>
+            
+                        <ul class="space-y-3 mb-8">
+                <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-3"></i>
+                    <span>Accès à tous les services</span>
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-3"></i>
+                    <span>Support prioritaire</span>
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-3"></i>
+                    <span>Engagement 12 mois</span>
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-3"></i>
+                    <span>Réservations illimitées</span>
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-check text-green-500 mr-3"></i>
+                    <span>Support premium inclus</span>
+                </li>
+            </ul>
+            
+                        <button onclick="souscrireAbonnement('annuel')" 
+                    class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-4 rounded-lg font-semibold hover:from-yellow-600 hover:to-yellow-700 transition-all">
+                <span data-translate="subscribe">Souscrire</span> - 96€/an
             </button>
         </div>
     </div>
 </div>
-
             <!-- Navigation par onglets -->
             <div class="client-section">
                 <div class="border-b border-gray-200 mb-6">
@@ -1725,6 +1755,20 @@ const translations = {
         request_validate: "Validieren",
         request_details: "Details",
         no_requests: "Keine Anfragen verfügbar",
+
+        // Subscription
+        subscription_active: "Actif",
+        subscription_expired: "Inactif",
+        payment_pending: "Paiement en attente",
+        valid_until: "Valide jusqu'au",
+        days_remaining: "jours restants",
+        payment_pending_message: "Paiement en attente - Régularisez votre situation",
+        subscribe_to_benefit: "Souscrivez à un abonnement pour bénéficier de nos services",
+        manage: "Gérer",
+        regularize: "Régulariser",
+        support: "Support",
+        contact_us: "Contactez-nous"
+    },
         
         // Footer
         footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
@@ -1822,7 +1866,6 @@ let currentClient = null;
         }
 
         // Fonction de connexion CORRIGÉE
-        // Fonction de connexion CORRIGÉE
 async function login() {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
@@ -1858,7 +1901,7 @@ async function login() {
             
             // ⚠️ AJOUTEZ CETTE LIGNE - Charger les données des missions
             loadClientData();
-            
+            await chargerStatutAbonnement(); // Charger le statut d'abonnement
             showNotification(translations[currentLanguage].login_success, 'success');
             
         } else {
@@ -2612,6 +2655,404 @@ async function saveProfile() {
     // Redirection vers la page de gestion des abonnements
     // window.open('https://viiveo.com/gestion-abonnement', '_blank');
 }   
+
+// ==================== GESTION DES ABONNEMENTS ====================
+
+let abonnementActuel = null;
+const prixAbonnements = {
+    mensuel: { montant: 10, periode: 'month', nom: 'Mensuel' },
+    annuel: { montant: 96, periode: 'year', nom: 'Annuel' }
+};
+
+// Charger le statut d'abonnement
+async function chargerStatutAbonnement() {
+    if (!currentClient) return;
+
+    try {
+        const url = `${webAppUrl}?type=getStatutAbonnement&email=${encodeURIComponent(currentClient.client.email)}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.success && data.abonnement) {
+            abonnementActuel = data.abonnement;
+            afficherStatutAbonnement(data.abonnement);
+        } else {
+            afficherAucunAbonnement();
+        }
+    } catch (error) {
+        console.log('Mode simulation - Aucun abonnement actif');
+        afficherAucunAbonnement();
+    }
+}
+
+// Afficher le statut d'abonnement
+function afficherStatutAbonnement(abonnement) {
+    const statutDiv = document.getElementById('statut-abonnement');
+    const infoDiv = document.getElementById('info-abonnement');
+    
+    const estActif = abonnement.statut === 'actif';
+    const estEnRetard = abonnement.statut === 'en_retard';
+    
+    // Mettre à jour les couleurs selon le statut
+    if (estEnRetard) {
+        statutDiv.className = 'bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200 rounded-xl p-6 mb-8';
+    } else if (estActif) {
+        statutDiv.className = 'bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-xl p-6 mb-8';
+    }
+    
+    const dateFin = new Date(abonnement.date_fin);
+    const maintenant = new Date();
+    const joursRestants = Math.ceil((dateFin - maintenant) / (1000 * 60 * 60 * 24));
+    
+    infoDiv.innerHTML = `
+        <div class="flex-1">
+            <div class="flex items-center mb-2">
+                <span class="text-2xl font-bold text-gray-800 mr-4">${abonnement.type}</span>
+                <span class="status-badge ${estActif ? 'status-validated' : estEnRetard ? 'status-pending' : 'status-completed'}">
+                    ${estActif ? 'Actif' : estEnRetard ? 'Paiement en attente' : 'Inactif'}
+                </span>
+            </div>
+            <div class="text-gray-600">
+                ${estActif ? 
+                    `Valide jusqu'au ${formatDateOrTime(abonnement.date_fin)} (${joursRestants} jours restants)` :
+                    estEnRetard ?
+                    `Paiement en attente - Régularisez votre situation` :
+                    'Abonnement expiré'
+                }
+            </div>
+        </div>
+        <div class="flex space-x-3 mt-4 md:mt-0">
+            ${estActif ? `
+                <button onclick="gererAbonnementModal()" class="btn-secondary">
+                    <i class="fas fa-cog mr-2"></i>Gérer
+                </button>
+            ` : ''}
+            ${estEnRetard ? `
+                <button onclick="regulariserPaiement()" class="btn-elegant">
+                    <i class="fas fa-credit-card mr-2"></i>Régulariser
+                </button>
+            ` : ''}
+            <button onclick="contacterSupport()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                <i class="fas fa-headset mr-2"></i>Support
+            </button>
+        </div>
+    `;
+}
+
+// Afficher aucun abonnement
+function afficherAucunAbonnement() {
+    const infoDiv = document.getElementById('info-abonnement');
+    infoDiv.innerHTML = `
+        <div class="flex-1">
+            <div class="text-2xl font-bold text-gray-800 mb-2">Aucun abonnement actif</div>
+            <p class="text-gray-600">Souscrivez à un abonnement pour bénéficier de nos services</p>
+        </div>
+        <div class="flex space-x-3 mt-4 md:mt-0">
+            <button onclick="contacterSupport()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                <i class="fas fa-headset mr-2"></i>Contactez-nous
+            </button>
+        </div>
+    `;
+}
+
+// Processus de souscription COMPLET
+async function souscrireAbonnement(type) {
+    if (!currentClient) {
+        showNotification("Veuillez vous connecter pour souscrire à un abonnement", 'error');
+        return;
+    }
+
+    const abonnement = prixAbonnements[type];
+    
+    // Vérifier si un abonnement est déjà actif
+    if (abonnementActuel && abonnementActuel.statut === 'actif') {
+        const confirmation = confirm(
+            `Vous avez déjà un abonnement ${abonnementActuel.type} actif.\n\n` +
+            `Souhaitez-vous le remplacer par l'abonnement ${abonnement.nom} ?`
+        );
+        if (!confirmation) return;
+    }
+
+    // Afficher le modal de confirmation
+    afficherModalConfirmation(type, abonnement);
+}
+
+// Modal de confirmation de souscription
+function afficherModalConfirmation(type, abonnement) {
+    const modalHTML = `
+        <div class="modal" id="modal-confirmation-abonnement">
+            <div class="modal-content" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h2 class="text-2xl font-bold">Confirmation d'abonnement</h2>
+                    <span class="close" onclick="closeModal('modal-confirmation-abonnement')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-gem text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Abonnement ${abonnement.nom}</h3>
+                        <div class="text-3xl font-bold text-gray-800">
+                            ${type === 'mensuel' ? '10€' : '96€'} 
+                            <span class="text-lg text-gray-600">/ ${type === 'mensuel' ? 'mois' : 'an'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                        <h4 class="font-semibold text-gray-800 mb-3">Récapitulatif :</h4>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li class="flex justify-between">
+                                <span>Abonnement ${abonnement.nom}</span>
+                                <span class="font-semibold">${type === 'mensuel' ? '10€' : '96€'}</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span>Période</span>
+                                <span class="font-semibold">${type === 'mensuel' ? '1 mois' : '12 mois'}</span>
+                            </li>
+                            <li class="flex justify-between border-t border-gray-200 pt-2">
+                                <span class="font-semibold">Total</span>
+                                <span class="font-bold text-lg">${type === 'mensuel' ? '10€' : '96€'}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-info-circle text-blue-500 mr-3 mt-1"></i>
+                            <div class="text-sm text-blue-700">
+                                <strong>Mode simulation :</strong> Aucun paiement réel ne sera effectué. 
+                                En production, vous seriez redirigé vers une page de paiement sécurisée.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button onclick="closeModal('modal-confirmation-abonnement')" class="btn-secondary flex-1">
+                            Annuler
+                        </button>
+                        <button onclick="confirmerSouscription('${type}')" class="btn-elegant flex-1">
+                            <i class="fas fa-credit-card mr-2"></i>
+                            Confirmer la souscription
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    document.getElementById('modal-confirmation-abonnement').style.display = 'block';
+}
+
+// Confirmation finale de souscription
+async function confirmerSouscription(type) {
+    closeModal('modal-confirmation-abonnement');
+    document.getElementById('loader').style.display = 'flex';
+    
+    try {
+        // Simulation du processus de paiement
+        await simulerProcessusPaiement(type);
+        
+        // Enregistrement de l'abonnement
+        const url = `${webAppUrl}?type=souscrireAbonnement` +
+            `&email=${encodeURIComponent(currentClient.client.email)}` +
+            `&type_abonnement=${type}` +
+            `&montant=${prixAbonnements[type].montant}`;
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification(
+                `✅ Abonnement ${prixAbonnements[type].nom} activé avec succès !`, 
+                'success'
+            );
+            
+            // Recharger le statut
+            await chargerStatutAbonnement();
+            
+        } else {
+            throw new Error(data.message || "Erreur lors de la souscription");
+        }
+        
+    } catch (error) {
+        showNotification("Erreur lors de la souscription: " + error.message, 'error');
+    } finally {
+        document.getElementById('loader').style.display = 'none';
+    }
+}
+
+// Simulation réaliste du processus de paiement
+async function simulerProcessusPaiement(type) {
+    return new Promise((resolve) => {
+        const etapes = [
+            "🔄 Création de la souscription...",
+            "🔐 Connexion au système de paiement...",
+            "💳 Traitement du paiement...",
+            "✅ Paiement accepté...",
+            "📦 Activation de l'abonnement..."
+        ];
+        
+        let etapeActuelle = 0;
+        
+        const modalPaiement = document.createElement('div');
+        modalPaiement.className = 'modal';
+        modalPaiement.innerHTML = `
+            <div class="modal-content" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h2 class="text-2xl font-bold">Traitement du paiement</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-6">
+                        <div class="text-2xl font-bold text-gray-800 mb-2">${type === 'mensuel' ? '10€' : '96€'}</div>
+                        <div class="text-gray-600">Abonnement ${prixAbonnements[type].nom}</div>
+                    </div>
+                    
+                    <div id="etapes-paiement" class="space-y-3 mb-6">
+                        ${etapes.map((etape, index) => `
+                            <div class="flex items-center text-gray-500" id="etape-paiement-${index}">
+                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 mr-3 flex items-center justify-center text-xs">
+                                    ${index + 1}
+                                </div>
+                                <span>${etape}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="progress-bar bg-gray-200 rounded-full h-2">
+                        <div id="progress-paiement" class="bg-green-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modalPaiement);
+        modalPaiement.style.display = 'block';
+        
+        const interval = setInterval(() => {
+            if (etapeActuelle > 0) {
+                const etapePrecedente = document.getElementById(`etape-paiement-${etapeActuelle-1}`);
+                etapePrecedente.classList.remove('text-gray-500');
+                etapePrecedente.classList.add('text-green-600', 'font-semibold');
+                etapePrecedente.querySelector('div').innerHTML = '✅';
+                etapePrecedente.querySelector('div').classList.remove('border-gray-300');
+                etapePrecedente.querySelector('div').classList.add('border-green-500', 'bg-green-50');
+            }
+            
+            if (etapeActuelle < etapes.length) {
+                const etapeCourante = document.getElementById(`etape-paiement-${etapeActuelle}`);
+                etapeCourante.classList.remove('text-gray-500');
+                etapeCourante.classList.add('text-blue-600', 'font-semibold');
+                
+                const progress = ((etapeActuelle + 1) / etapes.length) * 100;
+                document.getElementById('progress-paiement').style.width = progress + '%';
+                
+                etapeActuelle++;
+            } else {
+                clearInterval(interval);
+                setTimeout(() => {
+                    modalPaiement.remove();
+                    resolve();
+                }, 1000);
+            }
+        }, 800);
+    });
+}
+
+// Gestion de l'abonnement (version complète)
+function gererAbonnementModal() {
+    const modalHTML = `
+        <div class="modal" id="modal-gerer-abonnement">
+            <div class="modal-content" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h2 class="text-2xl font-bold">Gérer mon abonnement</h2>
+                    <span class="close" onclick="closeModal('modal-gerer-abonnement')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                        <h4 class="font-semibold text-gray-800 mb-2">Abonnement actuel</h4>
+                        <div class="text-lg font-bold text-gray-800">${abonnementActuel.type}</div>
+                        <div class="text-sm text-gray-600">
+                            Valide jusqu'au ${formatDateOrTime(abonnementActuel.date_fin)}
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <button onclick="changerAbonnement()" class="w-full btn-elegant text-left p-4">
+                            <i class="fas fa-sync-alt mr-3"></i>
+                            Changer de formule d'abonnement
+                        </button>
+                        
+                        <button onclick="telechargerFacture()" class="w-full btn-secondary text-left p-4">
+                            <i class="fas fa-receipt mr-3"></i>
+                            Télécharger ma facture
+                        </button>
+                        
+                        ${abonnementActuel.type === 'Mensuel' ? `
+                            <button onclick="resilierAbonnement()" class="w-full bg-red-50 text-red-600 border border-red-200 rounded-lg text-left p-4 hover:bg-red-100 transition-colors">
+                                <i class="fas fa-times-circle mr-3"></i>
+                                Résilier l'abonnement
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    document.getElementById('modal-gerer-abonnement').style.display = 'block';
+}
+
+// Fonctions supplémentaires
+function regulariserPaiement() {
+    showNotification("Redirection vers la page de régularisation...", 'info');
+    // En production : redirection vers Stripe/Mollie
+}
+
+function contacterSupport() {
+    window.open('https://wa.me/+32475325127', '_blank');
+}
+
+function changerAbonnement() {
+    closeModal('modal-gerer-abonnement');
+    // Faire défiler jusqu'aux formules
+    document.querySelector('.client-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function telechargerFacture() {
+    showNotification("Génération de la facture...", 'info');
+    // En production : appel API pour générer la facture
+}
+
+function resilierAbonnement() {
+    if (confirm("Êtes-vous sûr de vouloir résilier votre abonnement ? Cette action est irréversible.")) {
+        showNotification("Demande de résiliation envoyée...", 'info');
+        closeModal('modal-gerer-abonnement');
+    }
+}
+
+// REMPLACER les fonctions existantes simples
+function souscrireAbonnement(type) {
+    // Cette fonction est maintenant remplacée par la version complète ci-dessus
+    const plans = {
+        'mensuel': { prix: 10, nom: 'Mensuel' },
+        'annuel': { prix: 96, nom: 'Annuel' }
+    };
+    
+    const plan = plans[type];
+    afficherModalConfirmation(type, plan);
+}
+
+function gererAbonnement() {
+    // Cette fonction est maintenant remplacée par gererAbonnementModal()
+    if (abonnementActuel) {
+        gererAbonnementModal();
+    } else {
+        showNotification("Aucun abonnement actif à gérer", 'info');
+    }
+}
+        
     </script>
 <!-- Modal suppression de compte -->
 <div id="delete-account-modal" class="modal">
