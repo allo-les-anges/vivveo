@@ -837,9 +837,6 @@
                 </div>
             </div>
 
-            <!-- Actions rapides -->
-            <!-- Actions rapides - Abonnements -->
-<!-- Section Abonnements Complète -->
 <!-- Section Abonnements Complète -->
 <div class="client-section">
     <h2 class="text-3xl font-bold text-center text-gray-800 mb-4" data-translate="subscription_management">
@@ -858,7 +855,7 @@
     </div>
     
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <!-- Abonnement Mensuel -->
+        <!-- Abonnement Mensuel -->
         <div class="bg-white border-2 border-gray-200 rounded-xl p-8 hover:shadow-lg transition-all">
             <div class="text-center mb-6">
                 <h3 class="text-2xl font-bold text-gray-800 mb-2" data-translate="monthly_subscription">Abonnement Mensuel</h3>
@@ -869,7 +866,7 @@
                 <div class="text-4xl font-bold text-gray-800">10€ <span class="text-lg text-gray-600">/mois</span></div>
             </div>
             
-                        <ul class="space-y-3 mb-8">
+            <ul class="space-y-3 mb-8">
                 <li class="flex items-center">
                     <i class="fas fa-check text-green-500 mr-3"></i>
                     <span data-translate="subscription_features">Accès à tous les services</span>
@@ -882,24 +879,19 @@
                     <i class="fas fa-check text-green-500 mr-3"></i>
                     <span data-translate="cancel_anytime">Résiliation à tout moment</span>
                 </li>
-                            
-                <li class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-3"></i>
-                    <span>Résiliation à tout moment</span>
-                </li>
                 <li class="flex items-center">
                     <i class="fas fa-check text-green-500 mr-3"></i>
                     <span>Réservations illimitées</span>
                 </li>
             </ul>
             
-                        <button onclick="souscrireAbonnement('mensuel')" 
+            <button onclick="souscrireAbonnement('mensuel')" 
                     class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-4 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all">
                 <span data-translate="subscribe">Souscrire</span> - 10€/mois
             </button>
+        </div> <!-- Fermeture de la div Mensuel -->
 
         <!-- Abonnement Annuel -->
-                <!-- Abonnement Annuel -->
         <div class="bg-white border-2 border-yellow-400 rounded-xl p-8 hover:shadow-lg transition-all relative">
             <div class="absolute top-4 right-4">
                 <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-bold">
@@ -912,12 +904,12 @@
                 <p class="text-gray-600 text-sm" data-translate="economical_subscription">Économique - 20% d'économie</p>
             </div>
             
-                        <div class="text-center mb-4">
+            <div class="text-center mb-4">
                 <div class="text-4xl font-bold text-gray-800">8€ <span class="text-lg text-gray-600">/mois</span></div>
                 <div class="text-green-600 font-semibold" data-translate="annual_savings">Économie de 24€ par an</div>
             </div>
             
-                        <ul class="space-y-3 mb-8">
+            <ul class="space-y-3 mb-8">
                 <li class="flex items-center">
                     <i class="fas fa-check text-green-500 mr-3"></i>
                     <span>Accès à tous les services</span>
@@ -940,13 +932,14 @@
                 </li>
             </ul>
             
-                        <button onclick="souscrireAbonnement('annuel')" 
+            <button onclick="souscrireAbonnement('annuel')" 
                     class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-4 rounded-lg font-semibold hover:from-yellow-600 hover:to-yellow-700 transition-all">
                 <span data-translate="subscribe">Souscrire</span> - 96€/an
             </button>
-        </div>
-    </div>
-</div>
+        </div> <!-- Fermeture de la div Annuel -->
+    </div> <!-- Fermeture de la grid -->
+</div> <!-- Fermeture de la section -->
+            
             <!-- Navigation par onglets -->
             <div class="client-section">
                 <div class="border-b border-gray-200 mb-6">
@@ -1701,141 +1694,141 @@ const translations = {
         annual_savings: "Savings of €24 per year",
         annual_commitment: "12-month commitment"
     },
-    de: {
-        // Navigation
-        nav_home: "Startseite",
-        nav_services: "Dienstleistungen",
-        nav_formules: "Abonnement",
-        nav_prestataires: "Entdecken Sie unsere Anbieter",
-        nav_client: "Kundenbereich",
-        nav_prestataires_space: "Anbieterbereich",
-        
-        // Login
-        login_title: "Viiveo Kundenbereich",
-        login_subtitle: "Melden Sie sich an, um Ihre Anfragen zu verwalten und Ihre Einsätze zu verfolgen",
-        email_label: "E-Mail-Adresse",
-        password_label: "Passwort",
-        login_button: "Anmelden",
-        
-        // Interface client
-        welcome: "Willkommen",
-        credits_available: "Verfügbare Credits",
-        edit_profile: "Profil bearbeiten",
-        closed_missions: "Abgeschlossene Einsätze",
-        logout: "Abmelden",
-        statistics: "Meine Statistiken",
-        quick_actions: "Schnellaktionen",
-        requests_pending: "Ausstehende Anfragen",
-        requests_confirmed: "Bestätigte Anfragen",
-        requests_progress: "In Bearbeitung",
-        requests_completed: "Abgeschlossen",
-        recharge_credits: "Meine Credits aufladen",
-        view_reports: "Meine Berichte anzeigen",
-        
-        // Onglets
-        tab_pending: "Ausstehend",
-        tab_confirmed: "Bestätigt",
-        tab_progress: "In Bearbeitung",
-        tab_completed: "Abgeschlossen",
-        
-        // Titres des onglets
-        pending_requests: "Anfragen zur Validierung ausstehend",
-        confirmed_requests: "Geplante Anfragen",
-        progress_requests: "Laufende Anfragen",
-        completed_requests: "Abgeschlossene Anfragen",
-        
-        // Éléments de demande
-        request_date: "Anfragedatum",
-        service: "Dienstleistung",
-        intervention: "Einsatz",
-        time: "Uhrzeit",
-        task: "Aufgabe",
-        status: "Status",
-        actions: "Aktionen",
-        request_validate: "Validieren",
-        request_details: "Details",
-        no_requests: "Keine Anfragen verfügbar",
+    // REMPLACEZ toute la section des traductions allemandes (à partir de la ligne ~1800) par :
 
-        // Subscription
-        subscription_active: "Actif",
-        subscription_expired: "Inactif",
-        payment_pending: "Paiement en attente",
-        valid_until: "Valide jusqu'au",
-        days_remaining: "jours restants",
-        payment_pending_message: "Paiement en attente - Régularisez votre situation",
-        subscribe_to_benefit: "Souscrivez à un abonnement pour bénéficier de nos services",
-        manage: "Gérer",
-        regularize: "Régulariser",
-        support: "Support",
-        contact_us: "Contactez-nous"
-    },
-        
-        // Footer
-        footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
-        footer_navigation: "Navigation",
-        footer_spaces: "Bereiche",
-        footer_contact: "Kontakt",
-        footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten.",
-        
-        // Loader
-        loading: "Laden...",
-        
-        // Modales
-        closed_missions_title: "Abgeschlossene Einsätze",
-        edit_profile_title: "Meine persönlichen Daten bearbeiten",
-        personal_info: "Persönliche Informationen",
-        contact_info: "Kontaktdaten",
-        client_name: "Name",
-        client_firstname: "Vorname",
-        client_email: "E-Mail",
-        client_password: "Neues Passwort",
-        client_address: "Adresse",
-        client_city: "Stadt",
-        client_postal: "Postleitzahl",
-        client_phone: "Telefon",
-        tutor_info: "Daten des Betreuers",
-        tutor_name: "Name des Betreuers",
-        tutor_firstname: "Vorname des Betreuers",
-        tutor_address: "Adresse des Betreuers",
-        tutor_city: "Stadt des Betreuers",
-        tutor_postal: "Postleitzahl des Betreuers",
-        tutor_phone: "Telefon des Betreuers",
-        save_changes: "Speichern",
-        cancel: "Abbrechen",
-        
-        // Messages
-        login_success: "Anmeldung erfolgreich!",
-        login_error: "E-Mail oder Passwort falsch",
-        request_validated: "Anfrage erfolgreich validiert!",
-        profile_updated: "Profil erfolgreich aktualisiert!",
-        fill_fields: "Bitte füllen Sie alle Pflichtfelder aus",
-        payment_redirect: "Weiterleitung zur Zahlungsseite...",
-        reports_coming: "Berichtsfunktion in Kürze verfügbar.",
-        confirm_validation: "Bestätigen Sie, dass diese Dienstleistung ordnungsgemäß erbracht wurde?",
-        validation_success: "Vielen Dank! Ihre Validierung wurde gespeichert.",
-        server_error: "Kommunikationsfehler mit dem Server.",
+de: {
+    // Navigation
+    nav_home: "Startseite",
+    nav_services: "Dienstleistungen",
+    nav_formules: "Abonnement",
+    nav_prestataires: "Entdecken Sie unsere Anbieter",
+    nav_client: "Kundenbereich",
+    nav_prestataires_space: "Anbieterbereich",
+    
+    // Login
+    login_title: "Viiveo Kundenbereich",
+    login_subtitle: "Melden Sie sich an, um Ihre Anfragen zu verwalten und Ihre Einsätze zu verfolgen",
+    email_label: "E-Mail-Adresse",
+    password_label: "Passwort",
+    login_button: "Anmelden",
+    
+    // Interface client
+    welcome: "Willkommen",
+    credits_available: "Verfügbare Credits",
+    edit_profile: "Profil bearbeiten",
+    closed_missions: "Abgeschlossene Einsätze",
+    logout: "Abmelden",
+    statistics: "Meine Statistiken",
+    quick_actions: "Schnellaktionen",
+    requests_pending: "Ausstehende Anfragen",
+    requests_confirmed: "Bestätigte Anfragen",
+    requests_progress: "In Bearbeitung",
+    requests_completed: "Abgeschlossen",
+    recharge_credits: "Meine Credits aufladen",
+    view_reports: "Meine Berichte anzeigen",
+    
+    // Onglets
+    tab_pending: "Ausstehend",
+    tab_confirmed: "Bestätigt",
+    tab_progress: "In Bearbeitung",
+    tab_completed: "Abgeschlossen",
+    
+    // Titres des onglets
+    pending_requests: "Anfragen zur Validierung ausstehend",
+    confirmed_requests: "Geplante Anfragen",
+    progress_requests: "Laufende Anfragen",
+    completed_requests: "Abgeschlossene Anfragen",
+    
+    // Éléments de demande
+    request_date: "Anfragedatum",
+    service: "Dienstleistung",
+    intervention: "Einsatz",
+    time: "Uhrzeit",
+    task: "Aufgabe",
+    status: "Status",
+    actions: "Aktionen",
+    request_validate: "Validieren",
+    request_details: "Details",
+    no_requests: "Keine Anfragen verfügbar",
 
-        // Nouvelles traductions
-        delete_account: "Mein Konto löschen",
-        delete_account_title: "Mein Konto löschen",
-        delete_account_confirm: "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?",
-        delete_account_warning: "Diese Aktion ist unwiderruflich. Alle Ihre Daten und Verläufe werden endgültig gelöscht.",
-        confirm_delete: "Löschung bestätigen",
-        subscription_management: "Mein Abonnement verwalten",
-        monthly_subscription: "Monatsabonnement",
-        yearly_subscription: "Jahresabonnement",
-        subscribe: "Abonnieren",
-        current_subscription: "Ihr aktuelles Abonnement",
-        no_subscription: "Kein aktives Abonnement",
-        flexible_subscription: "Flexibel - Jederzeit kündbar",
-        economical_subscription: "Wirtschaftlich - 20% Ersparnis",
-        subscription_features: "Zugang zu allen Dienstleistungen",
-        priority_support: "Prioritärer Support",
-        cancel_anytime: "Jederzeit kündbar",
-        annual_savings: "Ersparnis von 24€ pro Jahr",
-        annual_commitment: "12-monatige Bindung"
-    }
-};
+    // Subscription
+    subscription_active: "Actif",
+    subscription_expired: "Inactif",
+    payment_pending: "Paiement en attente",
+    valid_until: "Valide jusqu'au",
+    days_remaining: "jours restants",
+    payment_pending_message: "Paiement en attente - Régularisez votre situation",
+    subscribe_to_benefit: "Souscrivez à un abonnement pour bénéficier de nos services",
+    manage: "Gérer",
+    regularize: "Régulariser",
+    support: "Support",
+    contact_us: "Contactez-nus",
+        
+    // Footer
+    footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
+    footer_navigation: "Navigation",
+    footer_spaces: "Bereiche",
+    footer_contact: "Kontakt",
+    footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten.",
+    
+    // Loader
+    loading: "Laden...",
+    
+    // Modales
+    closed_missions_title: "Abgeschlossene Einsätze",
+    edit_profile_title: "Meine persönlichen Daten bearbeiten",
+    personal_info: "Persönliche Informationen",
+    contact_info: "Kontaktdaten",
+    client_name: "Name",
+    client_firstname: "Vorname",
+    client_email: "E-Mail",
+    client_password: "Neues Passwort",
+    client_address: "Adresse",
+    client_city: "Stadt",
+    client_postal: "Postleitzahl",
+    client_phone: "Telefon",
+    tutor_info: "Daten des Betreuers",
+    tutor_name: "Name des Betreuers",
+    tutor_firstname: "Vorname des Betreuers",
+    tutor_address: "Adresse des Betreuers",
+    tutor_city: "Stadt des Betreuers",
+    tutor_postal: "Postleitzahl des Betreuers",
+    tutor_phone: "Telefon des Betreuers",
+    save_changes: "Speichern",
+    cancel: "Abbrechen",
+    
+    // Messages
+    login_success: "Anmeldung erfolgreich!",
+    login_error: "E-Mail oder Passwort falsch",
+    request_validated: "Anfrage erfolgreich validiert!",
+    profile_updated: "Profil erfolgreich aktualisiert!",
+    fill_fields: "Bitte füllen Sie alle Pflichtfelder aus",
+    payment_redirect: "Weiterleitung zur Zahlungsseite...",
+    reports_coming: "Berichtsfunktion in Kürze verfügbar.",
+    confirm_validation: "Bestätigen Sie, dass diese Dienstleistung ordnungsgemäß erbracht wurde?",
+    validation_success: "Vielen Dank! Ihre Validierung wurde gespeichert.",
+    server_error: "Kommunikationsfehler mit dem Server.",
+
+    // Nouvelles traductions
+    delete_account: "Mein Konto löschen",
+    delete_account_title: "Mein Konto löschen",
+    delete_account_confirm: "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?",
+    delete_account_warning: "Diese Aktion ist unwiderruflich. Alle Ihre Daten und Verläufe werden endgültig gelöscht.",
+    confirm_delete: "Löschung bestätigen",
+    subscription_management: "Mein Abonnement verwalten",
+    monthly_subscription: "Monatsabonnement",
+    yearly_subscription: "Jahresabonnement",
+    subscribe: "Abonnieren",
+    current_subscription: "Ihr aktuelles Abonnement",
+    no_subscription: "Kein aktives Abonnement",
+    flexible_subscription: "Flexibel - Jederzeit kündbar",
+    economical_subscription: "Wirtschaftlich - 20% Ersparnis",
+    subscription_features: "Zugang zu allen Dienstleistungen",
+    priority_support: "Prioritärer Support",
+    cancel_anytime: "Jederzeit kündbar",
+    annual_savings: "Ersparnis von 24€ pro Jahr",
+    annual_commitment: "12-monatige Bindung"
+}
 
 let currentLanguage = 'fr';
 let currentClient = null;
@@ -1865,7 +1858,7 @@ let currentClient = null;
             localStorage.setItem('viiveo-language', lang);
         }
 
-        // Fonction de connexion CORRIGÉE
+        /// Fonction de connexion CORRIGÉE
 async function login() {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
@@ -1899,7 +1892,7 @@ async function login() {
             // Mise à jour immédiate de l'interface
             updateClientInterface();
             
-            // ⚠️ AJOUTEZ CETTE LIGNE - Charger les données des missions
+            // Charger les données des missions
             loadClientData();
             await chargerStatutAbonnement(); // Charger le statut d'abonnement
             showNotification(translations[currentLanguage].login_success, 'success');
@@ -1916,7 +1909,6 @@ async function login() {
         document.getElementById('loader').style.display = 'none';
     }
 }
-
         // Fonction séparée pour mettre à jour l'interface
         function updateClientInterface() {
     if (!currentClient) return;
