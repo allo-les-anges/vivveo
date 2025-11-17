@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* VOTRE CSS EXISTANT - inchangé */
         :root {
             --primary-color: #2563A0;
             --primary-dark: #1e5285;
@@ -748,7 +749,6 @@
                 <div class="form-group">
                     <label for="email" data-translate="email_label">Adresse email</label>
                     <div class="relative">
-                        <!-- Champ email corrigé avec autocomplete -->
                         <input type="email" id="email" class="form-input" placeholder="votre@email.com" required autocomplete="username">
                         <i class="fas fa-envelope form-input-icon"></i>
                     </div>
@@ -781,7 +781,7 @@
                         </div>
                         <button onclick="showDeleteAccountModal()" class="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors" data-translate="delete_account">
                             <i class="fas fa-trash-alt mr-2"></i>
-                                Supprimer mon compte
+                            Supprimer mon compte
                         </button>
                         <div class="text-left">
                             <h2 class="text-2xl font-bold text-gray-800">
@@ -837,108 +837,85 @@
                 </div>
             </div>
 
-<!-- Section Abonnements Complète -->
-<div class="client-section">
-    <h2 class="text-3xl font-bold text-center text-gray-800 mb-4" data-translate="subscription_management">
-        Nos Formules d'Abonnement
-    </h2>
-    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
-        Choisissez la formule qui correspond le mieux à vos besoins et bénéficiez de nos services en illimité
-    </p>
+            <!-- Actions rapides - Abonnements -->
+            <div class="client-section">
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fas fa-crown text-yellow-500 mr-3"></i>
+                    Mes Abonnements
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Abonnement Mensuel -->
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl p-6 shadow-lg">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-xl font-bold">Abonnement Mensuel</h4>
+                                <p class="text-blue-100">Flexible - Résiliable à tout moment</p>
+                            </div>
+                            <span class="bg-white text-blue-600 px-3 py-1 rounded-full text-sm font-bold">10€/mois</span>
+                        </div>
+                        <ul class="text-blue-100 mb-6 space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-check mr-2"></i>
+                                Accès à tous les services
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check mr-2"></i>
+                                Support prioritaire
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check mr-2"></i>
+                                Résiliation à tout moment
+                            </li>
+                        </ul>
+                        <button onclick="souscrireAbonnement('mensuel')" class="w-full bg-white text-blue-600 py-3 rounded-lg font-bold hover:bg-blue-50 transition-colors">
+                            Souscrire - 10€/mois
+                        </button>
+                    </div>
 
-    <!-- Statut d'abonnement actuel -->
-    <div id="statut-abonnement" class="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-6 mb-8">
-        <h3 class="text-xl font-bold text-blue-800 mb-2" data-translate="current_subscription">Votre abonnement actuel</h3>
-        <div id="info-abonnement" class="flex flex-col md:flex-row justify-between items-center">
-            <!-- Contenu dynamique -->
-        </div>
-    </div>
-    
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        <!-- Abonnement Mensuel -->
-        <div class="bg-white border-2 border-gray-200 rounded-xl p-8 hover:shadow-lg transition-all">
-            <div class="text-center mb-6">
-                <h3 class="text-2xl font-bold text-gray-800 mb-2" data-translate="monthly_subscription">Abonnement Mensuel</h3>
-                <p class="text-gray-600 text-sm" data-translate="flexible_subscription">Flexible - Résiliable à tout moment</p>
-            </div>
-            
-            <div class="text-center mb-6">
-                <div class="text-4xl font-bold text-gray-800">10€ <span class="text-lg text-gray-600">/mois</span></div>
-            </div>
-            
-            <ul class="space-y-3 mb-8">
-                <li class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-3"></i>
-                    <span data-translate="subscription_features">Accès à tous les services</span>
-                </li>
-                <li class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-3"></i>
-                    <span data-translate="priority_support">Support prioritaire</span>
-                </li>
-                <li class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-3"></i>
-                    <span data-translate="cancel_anytime">Résiliation à tout moment</span>
-                </li>
-                <li class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-3"></i>
-                    <span>Réservations illimitées</span>
-                </li>
-            </ul>
-            
-            <button onclick="souscrireAbonnement('mensuel')" 
-                    class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-4 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all">
-                <span data-translate="subscribe">Souscrire</span> - 10€/mois
-            </button>
-        </div>
+                    <!-- Abonnement Annuel -->
+                    <div class="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl p-6 shadow-lg">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-xl font-bold">Abonnement Annuel</h4>
+                                <p class="text-green-100">Économique - 20% d'économie</p>
+                            </div>
+                            <span class="bg-white text-green-600 px-3 py-1 rounded-full text-sm font-bold">8€/mois</span>
+                        </div>
+                        <ul class="text-green-100 mb-6 space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-check mr-2"></i>
+                                Tous les avantages du mensuel
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check mr-2"></i>
+                                Économie de 24€ par an
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check mr-2"></i>
+                                Engagement 12 mois
+                            </li>
+                        </ul>
+                        <button onclick="souscrireAbonnement('annuel')" class="w-full bg-white text-green-600 py-3 rounded-lg font-bold hover:bg-green-50 transition-colors">
+                            Souscrire - 96€/an
+                        </button>
+                    </div>
+                </div>
 
-        <!-- Abonnement Annuel -->
-        <div class="bg-white border-2 border-yellow-400 rounded-xl p-8 hover:shadow-lg transition-all relative">
-            <div class="absolute top-4 right-4">
-                <span class="bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                    Populaire
-                </span>
+                <!-- Statut actuel de l'abonnement -->
+                <div class="mt-8 p-4 bg-gray-50 rounded-lg">
+                    <h4 class="font-semibold text-gray-800 mb-2">Votre abonnement actuel</h4>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600" id="abonnement-status">Aucun abonnement actif</p>
+                            <p class="text-sm text-gray-500" id="abonnement-details">Souscrivez à un abonnement pour bénéficier de nos services</p>
+                        </div>
+                        <button onclick="gererAbonnement()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                            Gérer
+                        </button>
+                    </div>
+                </div>
             </div>
-            
-            <div class="text-center mb-6">
-                <h3 class="text-2xl font-bold text-gray-800 mb-2" data-translate="yearly_subscription">Abonnement Annuel</h3>
-                <p class="text-gray-600 text-sm" data-translate="economical_subscription">Économique - 20% d'économie</p>
-            </div>
-            
-            <div class="text-center mb-4">
-                <div class="text-4xl font-bold text-gray-800">8€ <span class="text-lg text-gray-600">/mois</span></div>
-                <div class="text-green-600 font-semibold" data-translate="annual_savings">Économie de 24€ par an</div>
-            </div>
-            
-            <ul class="space-y-3 mb-8">
-                <li class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-3"></i>
-                    <span>Accès à tous les services</span>
-                </li>
-                <li class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-3"></i>
-                    <span>Support prioritaire</span>
-                </li>
-                <li class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-3"></i>
-                    <span>Engagement 12 mois</span>
-                </li>
-                <li class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-3"></i>
-                    <span>Réservations illimitées</span>
-                </li>
-                <li class="flex items-center">
-                    <i class="fas fa-check text-green-500 mr-3"></i>
-                    <span>Support premium inclus</span>
-                </li>
-            </ul>
-            
-            <button onclick="souscrireAbonnement('annuel')" 
-                    class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-4 rounded-lg font-semibold hover:from-yellow-600 hover:to-yellow-700 transition-all">
-                <span data-translate="subscribe">Souscrire</span> - 96€/an
-            </button>
-        </div>
-    </div>
-</div>            
+
             <!-- Navigation par onglets -->
             <div class="client-section">
                 <div class="border-b border-gray-200 mb-6">
@@ -1175,142 +1152,142 @@
             <div class="modal-body">
                 <form id="profile-form" onsubmit="event.preventDefault(); saveProfile();">
                     <!-- Section 1 : Données du tuteur -->
-<div class="form-section">
-    <h3 class="form-section-title">
-        <i class="fas fa-user-shield"></i>
-        <span data-translate="tutor_info">Données du tuteur</span>
-    </h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="form-group">
-            <label data-translate="tutor_firstname">Prénom du tuteur</label>
-            <div class="relative">
-                <input type="text" id="profile-tutor-firstname" class="form-input">
-                <i class="fas fa-user form-input-icon"></i>
-            </div>
-        </div>
-        <div class="form-group">
-            <label data-translate="tutor_name">Nom du tuteur</label>
-            <div class="relative">
-                <input type="text" id="profile-tutor-lastname" class="form-input">
-                <i class="fas fa-user form-input-icon"></i>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <label data-translate="tutor_email">Email du tuteur</label>
-        <div class="relative">
-            <input type="email" id="profile-tutor-email" class="form-input" required autocomplete="email">
-            <i class="fas fa-envelope form-input-icon"></i>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <label data-translate="tutor_address">Adresse du tuteur</label>
-        <div class="relative">
-            <input type="text" id="profile-tutor-address" class="form-input">
-            <i class="fas fa-home form-input-icon"></i>
-        </div>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="form-group">
-            <label data-translate="tutor_city">Ville du tuteur</label>
-            <div class="relative">
-                <input type="text" id="profile-tutor-city" class="form-input">
-                <i class="fas fa-city form-input-icon"></i>
-            </div>
-        </div>
-        <div class="form-group">
-            <label data-translate="tutor_postal">Code postal du tuteur</label>
-            <div class="relative">
-                <input type="text" id="profile-tutor-postal" class="form-input">
-                <i class="fas fa-mail-bulk form-input-icon"></i>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <label data-translate="tutor_phone">Téléphone du tuteur</label>
-        <div class="relative">
-            <input type="tel" id="profile-tutor-phone" class="form-input">
-            <i class="fas fa-phone form-input-icon"></i>
-        </div>
-    </div>
-</div>
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-user-shield"></i>
+                            <span data-translate="tutor_info">Données du tuteur</span>
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label data-translate="tutor_firstname">Prénom du tuteur</label>
+                                <div class="relative">
+                                    <input type="text" id="profile-tutor-firstname" class="form-input">
+                                    <i class="fas fa-user form-input-icon"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="tutor_name">Nom du tuteur</label>
+                                <div class="relative">
+                                    <input type="text" id="profile-tutor-lastname" class="form-input">
+                                    <i class="fas fa-user form-input-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="tutor_email">Email du tuteur</label>
+                            <div class="relative">
+                                <input type="email" id="profile-tutor-email" class="form-input" required autocomplete="email">
+                                <i class="fas fa-envelope form-input-icon"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="tutor_address">Adresse du tuteur</label>
+                            <div class="relative">
+                                <input type="text" id="profile-tutor-address" class="form-input">
+                                <i class="fas fa-home form-input-icon"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label data-translate="tutor_city">Ville du tuteur</label>
+                                <div class="relative">
+                                    <input type="text" id="profile-tutor-city" class="form-input">
+                                    <i class="fas fa-city form-input-icon"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="tutor_postal">Code postal du tuteur</label>
+                                <div class="relative">
+                                    <input type="text" id="profile-tutor-postal" class="form-input">
+                                    <i class="fas fa-mail-bulk form-input-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="tutor_phone">Téléphone du tuteur</label>
+                            <div class="relative">
+                                <input type="tel" id="profile-tutor-phone" class="form-input">
+                                <i class="fas fa-phone form-input-icon"></i>
+                            </div>
+                        </div>
+                    </div>
 
-<!-- Section 2 : Données de la personne sous tutelle -->
-<div class="form-section">
-    <h3 class="form-section-title">
-        <i class="fas fa-user-circle"></i>
-        <span data-translate="personal_info">Données de la personne sous tutelle</span>
-    </h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="form-group">
-            <label data-translate="client_firstname">Prénom</label>
-            <div class="relative">
-                <input type="text" id="profile-firstname" class="form-input" required>
-                <i class="fas fa-user form-input-icon"></i>
-            </div>
-        </div>
-        <div class="form-group">
-            <label data-translate="client_name">Nom</label>
-            <div class="relative">
-                <input type="text" id="profile-lastname" class="form-input" required>
-                <i class="fas fa-user form-input-icon"></i>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <label data-translate="client_email">Email</label>
-        <div class="relative">
-            <input type="email" id="profile-email" class="form-input" required autocomplete="email">
-            <i class="fas fa-envelope form-input-icon"></i>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <label data-translate="client_password">Nouveau mot de passe</label>
-        <div class="relative">
-            <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer" autocomplete="new-password">
-            <i class="fas fa-lock form-input-icon"></i>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <label data-translate="client_address">Adresse</label>
-        <div class="relative">
-            <input type="text" id="profile-address" class="form-input">
-            <i class="fas fa-home form-input-icon"></i>
-        </div>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="form-group">
-            <label data-translate="client_city">Ville</label>
-            <div class="relative">
-                <input type="text" id="profile-city" class="form-input">
-                <i class="fas fa-city form-input-icon"></i>
-            </div>
-        </div>
-        <div class="form-group">
-            <label data-translate="client_postal">Code postal</label>
-            <div class="relative">
-                <input type="text" id="profile-postal" class="form-input">
-                <i class="fas fa-mail-bulk form-input-icon"></i>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <label data-translate="client_phone">Téléphone</label>
-        <div class="relative">
-            <input type="tel" id="profile-phone" class="form-input">
-            <i class="fas fa-phone form-input-icon"></i>
-        </div>
-    </div>
-</div>
+                    <!-- Section 2 : Données de la personne sous tutelle -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <i class="fas fa-user-circle"></i>
+                            <span data-translate="personal_info">Données de la personne sous tutelle</span>
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label data-translate="client_firstname">Prénom</label>
+                                <div class="relative">
+                                    <input type="text" id="profile-firstname" class="form-input" required>
+                                    <i class="fas fa-user form-input-icon"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="client_name">Nom</label>
+                                <div class="relative">
+                                    <input type="text" id="profile-lastname" class="form-input" required>
+                                    <i class="fas fa-user form-input-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="client_email">Email</label>
+                            <div class="relative">
+                                <input type="email" id="profile-email" class="form-input" required autocomplete="email">
+                                <i class="fas fa-envelope form-input-icon"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="client_password">Nouveau mot de passe</label>
+                            <div class="relative">
+                                <input type="password" id="profile-password" class="form-input" placeholder="Laisser vide pour ne pas changer" autocomplete="new-password">
+                                <i class="fas fa-lock form-input-icon"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="client_address">Adresse</label>
+                            <div class="relative">
+                                <input type="text" id="profile-address" class="form-input">
+                                <i class="fas fa-home form-input-icon"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label data-translate="client_city">Ville</label>
+                                <div class="relative">
+                                    <input type="text" id="profile-city" class="form-input">
+                                    <i class="fas fa-city form-input-icon"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label data-translate="client_postal">Code postal</label>
+                                <div class="relative">
+                                    <input type="text" id="profile-postal" class="form-input">
+                                    <i class="fas fa-mail-bulk form-input-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label data-translate="client_phone">Téléphone</label>
+                            <div class="relative">
+                                <input type="tel" id="profile-phone" class="form-input">
+                                <i class="fas fa-phone form-input-icon"></i>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="flex justify-end space-x-4 mt-8 pt-6 border-t border-gray-200">
                         <button type="button" onclick="closeModal('profile-modal')" class="btn-secondary" data-translate="cancel">
@@ -1327,586 +1304,601 @@
         </div>
     </div>
 
+    <!-- Modal suppression de compte -->
+    <div id="delete-account-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header bg-red-600">
+                <h2 class="text-2xl font-bold" data-translate="delete_account_title">Supprimer mon compte</h2>
+                <span class="close" onclick="closeModal('delete-account-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="text-center py-6">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-5xl mb-4"></i>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4" data-translate="delete_account_confirm">Êtes-vous sûr de vouloir supprimer votre compte ?</h3>
+                    <p class="text-gray-600 mb-6" data-translate="delete_account_warning">
+                        Cette action est irréversible. Toutes vos données et historiques seront définitivement supprimés.
+                    </p>
+                    <div class="flex justify-center space-x-4">
+                        <button onclick="closeModal('delete-account-modal')" class="btn-secondary" data-translate="cancel">
+                            <i class="fas fa-times mr-2"></i>
+                            Annuler
+                        </button>
+                        <button onclick="deleteAccount()" class="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors" data-translate="confirm_delete">
+                            <i class="fas fa-trash-alt mr-2"></i>
+                            Confirmer la suppression
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-    <script>
-    // URL de l'application Google Apps Script
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
+        // URL de l'application Google Apps Script
+        const webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
 
-    // Traductions multilingues complètes
-    const translations = {
-        fr: {
-            // Navigation
-            nav_home: "Accueil",
-            nav_services: "Services",
-            nav_formules: "Abonnement",
-            nav_prestataires: "Découvrir nos Prestataires",
-            nav_client: "Espace Client",
-            nav_prestataires_space: "Espace Prestataire",
-            
-            // Login
-            login_title: "Espace Client Viiveo",
-            login_subtitle: "Connectez-vous pour gérer vos demandes et suivre vos interventions",
-            email_label: "Adresse email",
-            password_label: "Mot de passe",
-            login_button: "Se connecter",
-            
-            // Interface client
-            welcome: "Bienvenue",
-            credits_available: "Crédits disponibles",
-            edit_profile: "Modifier profil",
-            closed_missions: "Missions clôturées",
-            logout: "Déconnexion",
-            statistics: "Mes Statistiques",
-            quick_actions: "Actions rapides",
-            requests_pending: "Demandes en attente",
-            requests_confirmed: "Demandes confirmées",
-            requests_progress: "En cours",
-            requests_completed: "Terminées",
-            recharge_credits: "Recharger mes crédits",
-            view_reports: "Voir mes rapports",
-            
-            // Onglets
-            tab_pending: "En Attente",
-            tab_confirmed: "Confirmées",
-            tab_progress: "En Cours",
-            tab_completed: "Terminées",
-            
-            // Titres des onglets
-            pending_requests: "Demandes en attente de validation",
-            confirmed_requests: "Demandes planifiées",
-            progress_requests: "Demandes en cours",
-            completed_requests: "Demandes terminées",
-            
-            // Éléments de demande
-            request_date: "Date demande",
-            service: "Service",
-            intervention: "Intervention",
-            time: "Heure",
-            task: "Tâche",
-            status: "Statut",
-            actions: "Actions",
-            request_validate: "Valider",
-            request_details: "Détails",
-            no_requests: "Aucune demande disponible",
-            
-            // Footer
-            footer_desc: "Votre bien-être à domicile, notre priorité.",
-            footer_navigation: "Navigation",
-            footer_spaces: "Espaces",
-            footer_contact: "Contact",
-            footer_copyright: "© 2024 Viiveo. Tous droits réservés.",
-            
-            // Loader
-            loading: "Chargement...",
-            
-            // Modales
-            closed_missions_title: "Missions clôturées",
-            edit_profile_title: "Modifier mes données personnelles",
-            personal_info: "Informations personnelles",
-            contact_info: "Coordonnées",
-            client_name: "Nom",
-            client_firstname: "Prénom",
-            client_email: "Email",
-            client_password: "Nouveau mot de passe",
-            client_address: "Adresse",
-            client_city: "Ville",
-            client_postal: "Code postal",
-            client_phone: "Téléphone",
-            tutor_info: "Données du tuteur",
-            tutor_name: "Nom du tuteur",
-            tutor_firstname: "Prénom du tuteur",
-            tutor_address: "Adresse du tuteur",
-            tutor_city: "Ville du tuteur",
-            tutor_postal: "Code postal du tuteur",
-            tutor_phone: "Téléphone du tuteur",
-            save_changes: "Enregistrer",
-            cancel: "Annuler",
-            
-            // Messages
-            login_success: "Connexion réussie !",
-            login_error: "Email ou mot de passe incorrect",
-            request_validated: "Demande validée avec succès !",
-            profile_updated: "Profil mis à jour avec succès !",
-            fill_fields: "Veuillez remplir tous les champs obligatoires",
-            payment_redirect: "Redirection vers la page de paiement...",
-            reports_coming: "Fonction de consultation des rapports à venir.",
-            confirm_validation: "Confirmez-vous que cette prestation a bien été réalisée ?",
-            validation_success: "Merci ! Votre validation a bien été enregistrée.",
-            server_error: "Erreur de communication avec le serveur.",
-
-            // Nouvelles traductions
-            delete_account: "Supprimer mon compte",
-            delete_account_title: "Supprimer mon compte",
-            delete_account_confirm: "Êtes-vous sûr de vouloir supprimer votre compte ?",
-            delete_account_warning: "Cette action est irréversible. Toutes vos données et historiques seront définitivement supprimés.",
-            confirm_delete: "Confirmer la suppression",
-            subscription_management: "Gérer mon abonnement",
-            monthly_subscription: "Abonnement Mensuel",
-            yearly_subscription: "Abonnement Annuel",
-            subscribe: "Souscrire",
-            current_subscription: "Votre abonnement actuel",
-            no_subscription: "Aucun abonnement actif",
-            flexible_subscription: "Flexible - Résiliable à tout moment",
-            economical_subscription: "Économique - 20% d'économie",
-            subscription_features: "Accès à tous les services",
-            priority_support: "Support prioritaire",
-            cancel_anytime: "Résiliation à tout moment",
-            annual_savings: "Économie de 24€ par an",
-            annual_commitment: "Engagement 12 mois"
-        },
-        nl: {
-            // Navigation
-            nav_home: "Home",
-            nav_services: "Diensten",
-            nav_formules: "Abonnement",
-            nav_prestataires: "Ontdek onze Aanbieders",
-            nav_client: "Klantenruimte",
-            nav_prestataires_space: "Aanbieder Ruimte",
-            
-            // Login
-            login_title: "Viiveo Klantenruimte",
-            login_subtitle: "Log in om uw verzoeken te beheren en uw interventies op te volgen",
-            email_label: "E-mailadres",
-            password_label: "Wachtwoord",
-            login_button: "Inloggen",
-            
-            // Interface client
-            welcome: "Welkom",
-            credits_available: "Beschikbare credits",
-            edit_profile: "Profiel wijzigen",
-            closed_missions: "Afgesloten missies",
-            logout: "Uitloggen",
-            statistics: "Mijn Statistieken",
-            quick_actions: "Snelle acties",
-            requests_pending: "Verzoeken in afwachting",
-            requests_confirmed: "Bevestigde verzoeken",
-            requests_progress: "Bezig",
-            requests_completed: "Voltooid",
-            recharge_credits: "Mijn credits opladen",
-            view_reports: "Mijn rapporten bekijken",
-            
-            // Onglets
-            tab_pending: "In Afwachting",
-            tab_confirmed: "Bevestigd",
-            tab_progress: "Bezig",
-            tab_completed: "Voltooid",
-            
-            // Titres des onglets
-            pending_requests: "Verzoeken in afwachting van validatie",
-            confirmed_requests: "Geplande verzoeken",
-            progress_requests: "Lopende verzoeken",
-            completed_requests: "Voltooide verzoeken",
-            
-            // Éléments de demande
-            request_date: "Aanvraagdatum",
-            service: "Dienst",
-            intervention: "Interventie",
-            time: "Tijd",
-            task: "Taak",
-            status: "Status",
-            actions: "Acties",
-            request_validate: "Valideren",
-            request_details: "Details",
-            no_requests: "Geen verzoeken beschikbaar",
-            
-            // Footer
-            footer_desc: "Uw welzijn thuis, onze prioriteit.",
-            footer_navigation: "Navigatie",
-            footer_spaces: "Ruimtes",
-            footer_contact: "Contact",
-            footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden.",
-            
-            // Loader
-            loading: "Laden...",
-            
-            // Modales
-            closed_missions_title: "Afgesloten missies",
-            edit_profile_title: "Mijn persoonlijke gegevens wijzigen",
-            personal_info: "Persoonlijke informatie",
-            contact_info: "Contactgegevens",
-            client_name: "Naam",
-            client_firstname: "Voornaam",
-            client_email: "E-mail",
-            client_password: "Nieuw wachtwoord",
-            client_address: "Adres",
-            client_city: "Stad",
-            client_postal: "Postcode",
-            client_phone: "Telefoon",
-            tutor_info: "Gegevens voogd",
-            tutor_name: "Naam voogd",
-            tutor_firstname: "Voornaam voogd",
-            tutor_address: "Adres voogd",
-            tutor_city: "Stad voogd",
-            tutor_postal: "Postcode voogd",
-            tutor_phone: "Telefoon voogd",
-            save_changes: "Opslaan",
-            cancel: "Annuleren",
-            
-            // Messages
-            login_success: "Succesvol ingelogd!",
-            login_error: "E-mail of wachtwoord onjuist",
-            request_validated: "Verzoek succesvol gevalideerd!",
-            profile_updated: "Profiel succesvol bijgewerkt!",
-            fill_fields: "Vul alle verplichte velden in",
-            payment_redirect: "Doorverwijzing naar betalingspagina...",
-            reports_coming: "Rapportfunctie komt binnenkort.",
-            confirm_validation: "Bevestigt u dat deze dienst goed is uitgevoerd?",
-            validation_success: "Bedankt! Uw validatie is goed geregistreerd.",
-            server_error: "Communicatiefout met de server.",
-
-            // Nouvelles traductions
-            delete_account: "Mijn account verwijderen",
-            delete_account_title: "Mijn account verwijderen",
-            delete_account_confirm: "Weet u zeker dat u uw account wilt verwijderen?",
-            delete_account_warning: "Deze actie is onomkeerbaar. Al uw gegevens en geschiedenis worden permanent verwijderd.",
-            confirm_delete: "Verwijdering bevestigen",
-            subscription_management: "Mijn abonnement beheren",
-            monthly_subscription: "Maandabonnement",
-            yearly_subscription: "Jaarabonnement",
-            subscribe: "Abonneren",
-            current_subscription: "Uw huidig abonnement",
-            no_subscription: "Geen actief abonnement",
-            flexible_subscription: "Flexibel - Opzegbaar op elk moment",
-            economical_subscription: "Voordelig - 20% besparing",
-            subscription_features: "Toegang tot alle diensten",
-            priority_support: "Prioritaire ondersteuning",
-            cancel_anytime: "Opzegbaar op elk moment",
-            annual_savings: "Besparing van €24 per jaar",
-            annual_commitment: "Verbinding 12 maanden"
-        },
-        en: {
-            // Navigation
-            nav_home: "Home",
-            nav_services: "Services",
-            nav_formules: "Subscription",
-            nav_prestataires: "Discover our Providers",
-            nav_client: "Client Space",
-            nav_prestataires_space: "Provider Space",
-            
-            // Login
-            login_title: "Viiveo Client Space",
-            login_subtitle: "Log in to manage your requests and track your interventions",
-            email_label: "Email address",
-            password_label: "Password",
-            login_button: "Log in",
-            
-            // Interface client
-            welcome: "Welcome",
-            credits_available: "Available credits",
-            edit_profile: "Edit profile",
-            closed_missions: "Closed missions",
-            logout: "Logout",
-            statistics: "My Statistics",
-            quick_actions: "Quick Actions",
-            requests_pending: "Pending requests",
-            requests_confirmed: "Confirmed requests",
-            requests_progress: "In progress",
-            requests_completed: "Completed",
-            recharge_credits: "Recharge my credits",
-            view_reports: "View my reports",
-            
-            // Onglets
-            tab_pending: "Pending",
-            tab_confirmed: "Confirmed",
-            tab_progress: "In Progress",
-            tab_completed: "Completed",
-            
-            // Titres des onglets
-            pending_requests: "Requests pending validation",
-            confirmed_requests: "Scheduled requests",
-            progress_requests: "Requests in progress",
-            completed_requests: "Completed requests",
-            
-            // Éléments de demande
-            request_date: "Request date",
-            service: "Service",
-            intervention: "Intervention",
-            time: "Time",
-            task: "Task",
-            status: "Status",
-            actions: "Actions",
-            request_validate: "Validate",
-            request_details: "Details",
-            no_requests: "No requests available",
-            
-            // Footer
-            footer_desc: "Your well-being at home, our priority.",
-            footer_navigation: "Navigation",
-            footer_spaces: "Spaces",
-            footer_contact: "Contact",
-            footer_copyright: "© 2024 Viiveo. All rights reserved.",
-            
-            // Loader
-            loading: "Loading...",
-            
-            // Modales
-            closed_missions_title: "Closed missions",
-            edit_profile_title: "Edit my personal data",
-            personal_info: "Personal information",
-            contact_info: "Contact details",
-            client_name: "Name",
-            client_firstname: "First name",
-            client_email: "Email",
-            client_password: "New password",
-            client_address: "Address",
-            client_city: "City",
-            client_postal: "Postal code",
-            client_phone: "Phone",
-            tutor_info: "Tutor data",
-            tutor_name: "Tutor name",
-            tutor_firstname: "Tutor first name",
-            tutor_address: "Tutor address",
-            tutor_city: "Tutor city",
-            tutor_postal: "Tutor postal code",
-            tutor_phone: "Tutor phone",
-            save_changes: "Save",
-            cancel: "Cancel",
-            
-            // Messages
-            login_success: "Login successful!",
-            login_error: "Email or password incorrect",
-            request_validated: "Request validated successfully!",
-            profile_updated: "Profile updated successfully!",
-            fill_fields: "Please fill all required fields",
-            payment_redirect: "Redirecting to payment page...",
-            reports_coming: "Report consultation feature coming soon.",
-            confirm_validation: "Do you confirm that this service has been properly performed?",
-            validation_success: "Thank you! Your validation has been recorded.",
-            server_error: "Server communication error.",
-
-            // Nouvelles traductions
-            delete_account: "Delete my account",
-            delete_account_title: "Delete my account",
-            delete_account_confirm: "Are you sure you want to delete your account?",
-            delete_account_warning: "This action is irreversible. All your data and history will be permanently deleted.",
-            confirm_delete: "Confirm deletion",
-            subscription_management: "Manage my subscription",
-            monthly_subscription: "Monthly Subscription",
-            yearly_subscription: "Annual Subscription",
-            subscribe: "Subscribe",
-            current_subscription: "Your current subscription",
-            no_subscription: "No active subscription",
-            flexible_subscription: "Flexible - Cancel anytime",
-            economical_subscription: "Economical - 20% savings",
-            subscription_features: "Access to all services",
-            priority_support: "Priority support",
-            cancel_anytime: "Cancel anytime",
-            annual_savings: "Savings of €24 per year",
-            annual_commitment: "12-month commitment"
-        },
-        de: {
-            // Navigation
-            nav_home: "Startseite",
-            nav_services: "Dienstleistungen",
-            nav_formules: "Abonnement",
-            nav_prestataires: "Entdecken Sie unsere Anbieter",
-            nav_client: "Kundenbereich",
-            nav_prestataires_space: "Anbieterbereich",
-            
-            // Login
-            login_title: "Viiveo Kundenbereich",
-            login_subtitle: "Melden Sie sich an, um Ihre Anfragen zu verwalten und Ihre Einsätze zu verfolgen",
-            email_label: "E-Mail-Adresse",
-            password_label: "Passwort",
-            login_button: "Anmelden",
-            
-            // Interface client
-            welcome: "Willkommen",
-            credits_available: "Verfügbare Credits",
-            edit_profile: "Profil bearbeiten",
-            closed_missions: "Abgeschlossene Einsätze",
-            logout: "Abmelden",
-            statistics: "Meine Statistiken",
-            quick_actions: "Schnellaktionen",
-            requests_pending: "Ausstehende Anfragen",
-            requests_confirmed: "Bestätigte Anfragen",
-            requests_progress: "In Bearbeitung",
-            requests_completed: "Abgeschlossen",
-            recharge_credits: "Meine Credits aufladen",
-            view_reports: "Meine Berichte anzeigen",
-            
-            // Onglets
-            tab_pending: "Ausstehend",
-            tab_confirmed: "Bestätigt",
-            tab_progress: "In Bearbeitung",
-            tab_completed: "Abgeschlossen",
-            
-            // Titres des onglets
-            pending_requests: "Anfragen zur Validierung ausstehend",
-            confirmed_requests: "Geplante Anfragen",
-            progress_requests: "Laufende Anfragen",
-            completed_requests: "Abgeschlossene Anfragen",
-            
-            // Éléments de demande
-            request_date: "Anfragedatum",
-            service: "Dienstleistung",
-            intervention: "Einsatz",
-            time: "Uhrzeit",
-            task: "Aufgabe",
-            status: "Status",
-            actions: "Aktionen",
-            request_validate: "Validieren",
-            request_details: "Details",
-            no_requests: "Keine Anfragen verfügbar",
-
-            // Subscription
-            subscription_active: "Actif",
-            subscription_expired: "Inactif",
-            payment_pending: "Paiement en attente",
-            valid_until: "Valide jusqu'au",
-            days_remaining: "jours restants",
-            payment_pending_message: "Paiement en attente - Régularisez votre situation",
-            subscribe_to_benefit: "Souscrivez à un abonnement pour bénéficier de nos services",
-            manage: "Gérer",
-            regularize: "Régulariser",
-            support: "Support",
-            contact_us: "Contactez-nous",
+        // Traductions multilingues complètes
+        const translations = {
+            fr: {
+                // Navigation
+                nav_home: "Accueil",
+                nav_services: "Services",
+                nav_formules: "Abonnement",
+                nav_prestataires: "Découvrir nos Prestataires",
+                nav_client: "Espace Client",
+                nav_prestataires_space: "Espace Prestataire",
                 
-            // Footer
-            footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
-            footer_navigation: "Navigation",
-            footer_spaces: "Bereiche",
-            footer_contact: "Kontakt",
-            footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten.",
-            
-            // Loader
-            loading: "Laden...",
-            
-            // Modales
-            closed_missions_title: "Abgeschlossene Einsätze",
-            edit_profile_title: "Meine persönlichen Daten bearbeiten",
-            personal_info: "Persönliche Informationen",
-            contact_info: "Kontaktdaten",
-            client_name: "Name",
-            client_firstname: "Vorname",
-            client_email: "E-Mail",
-            client_password: "Neues Passwort",
-            client_address: "Adresse",
-            client_city: "Stadt",
-            client_postal: "Postleitzahl",
-            client_phone: "Telefon",
-            tutor_info: "Daten des Betreuers",
-            tutor_name: "Name des Betreuers",
-            tutor_firstname: "Vorname des Betreuers",
-            tutor_address: "Adresse des Betreuers",
-            tutor_city: "Stadt des Betreuers",
-            tutor_postal: "Postleitzahl des Betreuers",
-            tutor_phone: "Telefon des Betreuers",
-            save_changes: "Speichern",
-            cancel: "Abbrechen",
-            
-            // Messages
-            login_success: "Anmeldung erfolgreich!",
-            login_error: "E-Mail oder Passwort falsch",
-            request_validated: "Anfrage erfolgreich validiert!",
-            profile_updated: "Profil erfolgreich aktualisiert!",
-            fill_fields: "Bitte füllen Sie alle Pflichtfelder aus",
-            payment_redirect: "Weiterleitung zur Zahlungsseite...",
-            reports_coming: "Berichtsfunktion in Kürze verfügbar.",
-            confirm_validation: "Bestätigen Sie, dass diese Dienstleistung ordnungsgemäß erbracht wurde?",
-            validation_success: "Vielen Dank! Ihre Validierung wurde gespeichert.",
-            server_error: "Kommunikationsfehler mit dem Server.",
-
-            // Nouvelles traductions
-            delete_account: "Mein Konto löschen",
-            delete_account_title: "Mein Konto löschen",
-            delete_account_confirm: "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?",
-            delete_account_warning: "Diese Aktion ist unwiderruflich. Alle Ihre Daten und Verläufe werden endgültig gelöscht.",
-            confirm_delete: "Löschung bestätigen",
-            subscription_management: "Mein Abonnement verwalten",
-            monthly_subscription: "Monatsabonnement",
-            yearly_subscription: "Jahresabonnement",
-            subscribe: "Abonnieren",
-            current_subscription: "Ihr aktuelles Abonnement",
-            no_subscription: "Kein aktives Abonnement",
-            flexible_subscription: "Flexibel - Jederzeit kündbar",
-            economical_subscription: "Wirtschaftlich - 20% Ersparnis",
-            subscription_features: "Zugang zu allen Dienstleistungen",
-            priority_support: "Prioritärer Support",
-            cancel_anytime: "Jederzeit kündbar",
-            annual_savings: "Ersparnis von 24€ pro Jahr",
-            annual_commitment: "12-monatige Bindung"
-        }
-    };
-
-    let currentLanguage = 'fr';
-    let currentClient = null;
-
-    // Fonction de connexion CORRIGÉE
-    async function login() {
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const message = document.getElementById('login-message');
-
-        if (!email || !password) {
-            message.textContent = translations[currentLanguage].fill_fields;
-            message.classList.remove('hidden');
-            message.className = 'message message-error';
-            return;
-        }
-
-        document.getElementById('loader').style.display = 'flex';
-
-        try {
-            const url = `${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-            
-            console.log('🔍 ENVOI REQUÊTE GET:', url);
-            
-            const response = await fetch(url);
-            const data = await response.json();
-            
-            console.log('🔍 RÉPONSE SERVEUR:', data);
-
-            if (data.success) {
-                currentClient = data;
-
-                document.getElementById('login-section').classList.add('hidden');
-                document.getElementById('client-interface').classList.remove('hidden');
-
-                // Mise à jour immédiate de l'interface
-                updateClientInterface();
+                // Login
+                login_title: "Espace Client Viiveo",
+                login_subtitle: "Connectez-vous pour gérer vos demandes et suivre vos interventions",
+                email_label: "Adresse email",
+                password_label: "Mot de passe",
+                login_button: "Se connecter",
                 
-                // Charger les données des missions
-                loadClientData();
-                await chargerStatutAbonnement(); // Charger le statut d'abonnement
-                showNotification(translations[currentLanguage].login_success, 'success');
+                // Interface client
+                welcome: "Bienvenue",
+                credits_available: "Crédits disponibles",
+                edit_profile: "Modifier profil",
+                closed_missions: "Missions clôturées",
+                logout: "Déconnexion",
+                statistics: "Mes Statistiques",
+                quick_actions: "Actions rapides",
+                requests_pending: "Demandes en attente",
+                requests_confirmed: "Demandes confirmées",
+                requests_progress: "En cours",
+                requests_completed: "Terminées",
+                recharge_credits: "Recharger mes crédits",
+                view_reports: "Voir mes rapports",
                 
-            } else {
-                throw new Error(data.message || translations[currentLanguage].login_error);
+                // Onglets
+                tab_pending: "En Attente",
+                tab_confirmed: "Confirmées",
+                tab_progress: "En Cours",
+                tab_completed: "Terminées",
+                
+                // Titres des onglets
+                pending_requests: "Demandes en attente de validation",
+                confirmed_requests: "Demandes planifiées",
+                progress_requests: "Demandes en cours",
+                completed_requests: "Demandes terminées",
+                
+                // Éléments de demande
+                request_date: "Date demande",
+                service: "Service",
+                intervention: "Intervention",
+                time: "Heure",
+                task: "Tâche",
+                status: "Statut",
+                actions: "Actions",
+                request_validate: "Valider",
+                request_details: "Détails",
+                no_requests: "Aucune demande disponible",
+                
+                // Footer
+                footer_desc: "Votre bien-être à domicile, notre priorité.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Espaces",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. Tous droits réservés.",
+                
+                // Loader
+                loading: "Chargement...",
+                
+                // Modales
+                closed_missions_title: "Missions clôturées",
+                edit_profile_title: "Modifier mes données personnelles",
+                personal_info: "Informations personnelles",
+                contact_info: "Coordonnées",
+                client_name: "Nom",
+                client_firstname: "Prénom",
+                client_email: "Email",
+                client_password: "Nouveau mot de passe",
+                client_address: "Adresse",
+                client_city: "Ville",
+                client_postal: "Code postal",
+                client_phone: "Téléphone",
+                tutor_info: "Données du tuteur",
+                tutor_name: "Nom du tuteur",
+                tutor_firstname: "Prénom du tuteur",
+                tutor_address: "Adresse du tuteur",
+                tutor_city: "Ville du tuteur",
+                tutor_postal: "Code postal du tuteur",
+                tutor_phone: "Téléphone du tuteur",
+                save_changes: "Enregistrer",
+                cancel: "Annuler",
+                
+                // Messages
+                login_success: "Connexion réussie !",
+                login_error: "Email ou mot de passe incorrect",
+                request_validated: "Demande validée avec succès !",
+                profile_updated: "Profil mis à jour avec succès !",
+                fill_fields: "Veuillez remplir tous les champs obligatoires",
+                payment_redirect: "Redirection vers la page de paiement...",
+                reports_coming: "Fonction de consultation des rapports à venir.",
+                confirm_validation: "Confirmez-vous que cette prestation a bien été réalisée ?",
+                validation_success: "Merci ! Votre validation a bien été enregistrée.",
+                server_error: "Erreur de communication avec le serveur.",
+
+                // Nouvelles traductions
+                delete_account: "Supprimer mon compte",
+                delete_account_title: "Supprimer mon compte",
+                delete_account_confirm: "Êtes-vous sûr de vouloir supprimer votre compte ?",
+                delete_account_warning: "Cette action est irréversible. Toutes vos données et historiques seront définitivement supprimés.",
+                confirm_delete: "Confirmer la suppression",
+                subscription_management: "Gérer mon abonnement",
+                monthly_subscription: "Abonnement Mensuel",
+                yearly_subscription: "Abonnement Annuel",
+                subscribe: "Souscrire",
+                current_subscription: "Votre abonnement actuel",
+                no_subscription: "Aucun abonnement actif",
+                flexible_subscription: "Flexible - Résiliable à tout moment",
+                economical_subscription: "Économique - 20% d'économie",
+                subscription_features: "Accès à tous les services",
+                priority_support: "Support prioritaire",
+                cancel_anytime: "Résiliation à tout moment",
+                annual_savings: "Économie de 24€ par an",
+                annual_commitment: "Engagement 12 mois"
+            },
+            nl: {
+                // Navigation
+                nav_home: "Home",
+                nav_services: "Diensten",
+                nav_formules: "Abonnement",
+                nav_prestataires: "Ontdek onze Aanbieders",
+                nav_client: "Klantenruimte",
+                nav_prestataires_space: "Aanbieder Ruimte",
+                
+                // Login
+                login_title: "Viiveo Klantenruimte",
+                login_subtitle: "Log in om uw verzoeken te beheren en uw interventies op te volgen",
+                email_label: "E-mailadres",
+                password_label: "Wachtwoord",
+                login_button: "Inloggen",
+                
+                // Interface client
+                welcome: "Welkom",
+                credits_available: "Beschikbare credits",
+                edit_profile: "Profiel wijzigen",
+                closed_missions: "Afgesloten missies",
+                logout: "Uitloggen",
+                statistics: "Mijn Statistieken",
+                quick_actions: "Snelle acties",
+                requests_pending: "Verzoeken in afwachting",
+                requests_confirmed: "Bevestigde verzoeken",
+                requests_progress: "Bezig",
+                requests_completed: "Voltooid",
+                recharge_credits: "Mijn credits opladen",
+                view_reports: "Mijn rapporten bekijken",
+                
+                // Onglets
+                tab_pending: "In Afwachting",
+                tab_confirmed: "Bevestigd",
+                tab_progress: "Bezig",
+                tab_completed: "Voltooid",
+                
+                // Titres des onglets
+                pending_requests: "Verzoeken in afwachting van validatie",
+                confirmed_requests: "Geplande verzoeken",
+                progress_requests: "Lopende verzoeken",
+                completed_requests: "Voltooide verzoeken",
+                
+                // Éléments de demande
+                request_date: "Aanvraagdatum",
+                service: "Dienst",
+                intervention: "Interventie",
+                time: "Tijd",
+                task: "Taak",
+                status: "Status",
+                actions: "Acties",
+                request_validate: "Valideren",
+                request_details: "Details",
+                no_requests: "Geen verzoeken beschikbaar",
+                
+                // Footer
+                footer_desc: "Uw welzijn thuis, onze prioriteit.",
+                footer_navigation: "Navigatie",
+                footer_spaces: "Ruimtes",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden.",
+                
+                // Loader
+                loading: "Laden...",
+                
+                // Modales
+                closed_missions_title: "Afgesloten missies",
+                edit_profile_title: "Mijn persoonlijke gegevens wijzigen",
+                personal_info: "Persoonlijke informatie",
+                contact_info: "Contactgegevens",
+                client_name: "Naam",
+                client_firstname: "Voornaam",
+                client_email: "E-mail",
+                client_password: "Nieuw wachtwoord",
+                client_address: "Adres",
+                client_city: "Stad",
+                client_postal: "Postcode",
+                client_phone: "Telefoon",
+                tutor_info: "Gegevens voogd",
+                tutor_name: "Naam voogd",
+                tutor_firstname: "Voornaam voogd",
+                tutor_address: "Adres voogd",
+                tutor_city: "Stad voogd",
+                tutor_postal: "Postcode voogd",
+                tutor_phone: "Telefoon voogd",
+                save_changes: "Opslaan",
+                cancel: "Annuleren",
+                
+                // Messages
+                login_success: "Succesvol ingelogd!",
+                login_error: "E-mail of wachtwoord onjuist",
+                request_validated: "Verzoek succesvol gevalideerd!",
+                profile_updated: "Profiel succesvol bijgewerkt!",
+                fill_fields: "Vul alle verplichte velden in",
+                payment_redirect: "Doorverwijzing naar betalingspagina...",
+                reports_coming: "Rapportfunctie komt binnenkort.",
+                confirm_validation: "Bevestigt u dat deze dienst goed is uitgevoerd?",
+                validation_success: "Bedankt! Uw validatie is goed geregistreerd.",
+                server_error: "Communicatiefout met de server.",
+
+                // Nouvelles traductions
+                delete_account: "Mijn account verwijderen",
+                delete_account_title: "Mijn account verwijderen",
+                delete_account_confirm: "Weet u zeker dat u uw account wilt verwijderen?",
+                delete_account_warning: "Deze actie is onomkeerbaar. Al uw gegevens en geschiedenis worden permanent verwijderd.",
+                confirm_delete: "Verwijdering bevestigen",
+                subscription_management: "Mijn abonnement beheren",
+                monthly_subscription: "Maandabonnement",
+                yearly_subscription: "Jaarabonnement",
+                subscribe: "Abonneren",
+                current_subscription: "Uw huidig abonnement",
+                no_subscription: "Geen actief abonnement",
+                flexible_subscription: "Flexibel - Opzegbaar op elk moment",
+                economical_subscription: "Voordelig - 20% besparing",
+                subscription_features: "Toegang tot alle diensten",
+                priority_support: "Prioritaire ondersteuning",
+                cancel_anytime: "Opzegbaar op elk moment",
+                annual_savings: "Besparing van €24 per jaar",
+                annual_commitment: "Verbinding 12 maanden"
+            },
+            en: {
+                // Navigation
+                nav_home: "Home",
+                nav_services: "Services",
+                nav_formules: "Subscription",
+                nav_prestataires: "Discover our Providers",
+                nav_client: "Client Space",
+                nav_prestataires_space: "Provider Space",
+                
+                // Login
+                login_title: "Viiveo Client Space",
+                login_subtitle: "Log in to manage your requests and track your interventions",
+                email_label: "Email address",
+                password_label: "Password",
+                login_button: "Log in",
+                
+                // Interface client
+                welcome: "Welcome",
+                credits_available: "Available credits",
+                edit_profile: "Edit profile",
+                closed_missions: "Closed missions",
+                logout: "Logout",
+                statistics: "My Statistics",
+                quick_actions: "Quick Actions",
+                requests_pending: "Pending requests",
+                requests_confirmed: "Confirmed requests",
+                requests_progress: "In progress",
+                requests_completed: "Completed",
+                recharge_credits: "Recharge my credits",
+                view_reports: "View my reports",
+                
+                // Onglets
+                tab_pending: "Pending",
+                tab_confirmed: "Confirmed",
+                tab_progress: "In Progress",
+                tab_completed: "Completed",
+                
+                // Titres des onglets
+                pending_requests: "Requests pending validation",
+                confirmed_requests: "Scheduled requests",
+                progress_requests: "Requests in progress",
+                completed_requests: "Completed requests",
+                
+                // Éléments de demande
+                request_date: "Request date",
+                service: "Service",
+                intervention: "Intervention",
+                time: "Time",
+                task: "Task",
+                status: "Status",
+                actions: "Actions",
+                request_validate: "Validate",
+                request_details: "Details",
+                no_requests: "No requests available",
+                
+                // Footer
+                footer_desc: "Your well-being at home, our priority.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Spaces",
+                footer_contact: "Contact",
+                footer_copyright: "© 2024 Viiveo. All rights reserved.",
+                
+                // Loader
+                loading: "Loading...",
+                
+                // Modales
+                closed_missions_title: "Closed missions",
+                edit_profile_title: "Edit my personal data",
+                personal_info: "Personal information",
+                contact_info: "Contact details",
+                client_name: "Name",
+                client_firstname: "First name",
+                client_email: "Email",
+                client_password: "New password",
+                client_address: "Address",
+                client_city: "City",
+                client_postal: "Postal code",
+                client_phone: "Phone",
+                tutor_info: "Tutor data",
+                tutor_name: "Tutor name",
+                tutor_firstname: "Tutor first name",
+                tutor_address: "Tutor address",
+                tutor_city: "Tutor city",
+                tutor_postal: "Tutor postal code",
+                tutor_phone: "Tutor phone",
+                save_changes: "Save",
+                cancel: "Cancel",
+                
+                // Messages
+                login_success: "Login successful!",
+                login_error: "Email or password incorrect",
+                request_validated: "Request validated successfully!",
+                profile_updated: "Profile updated successfully!",
+                fill_fields: "Please fill all required fields",
+                payment_redirect: "Redirecting to payment page...",
+                reports_coming: "Report consultation feature coming soon.",
+                confirm_validation: "Do you confirm that this service has been properly performed?",
+                validation_success: "Thank you! Your validation has been recorded.",
+                server_error: "Server communication error.",
+
+                // Nouvelles traductions
+                delete_account: "Delete my account",
+                delete_account_title: "Delete my account",
+                delete_account_confirm: "Are you sure you want to delete your account?",
+                delete_account_warning: "This action is irreversible. All your data and history will be permanently deleted.",
+                confirm_delete: "Confirm deletion",
+                subscription_management: "Manage my subscription",
+                monthly_subscription: "Monthly Subscription",
+                yearly_subscription: "Annual Subscription",
+                subscribe: "Subscribe",
+                current_subscription: "Your current subscription",
+                no_subscription: "No active subscription",
+                flexible_subscription: "Flexible - Cancel anytime",
+                economical_subscription: "Economical - 20% savings",
+                subscription_features: "Access to all services",
+                priority_support: "Priority support",
+                cancel_anytime: "Cancel anytime",
+                annual_savings: "Savings of €24 per year",
+                annual_commitment: "12-month commitment"
+            },
+            de: {
+                // Navigation
+                nav_home: "Startseite",
+                nav_services: "Dienstleistungen",
+                nav_formules: "Abonnement",
+                nav_prestataires: "Entdecken Sie unsere Anbieter",
+                nav_client: "Kundenbereich",
+                nav_prestataires_space: "Anbieterbereich",
+                
+                // Login
+                login_title: "Viiveo Kundenbereich",
+                login_subtitle: "Melden Sie sich an, um Ihre Anfragen zu verwalten und Ihre Einsätze zu verfolgen",
+                email_label: "E-Mail-Adresse",
+                password_label: "Passwort",
+                login_button: "Anmelden",
+                
+                // Interface client
+                welcome: "Willkommen",
+                credits_available: "Verfügbare Credits",
+                edit_profile: "Profil bearbeiten",
+                closed_missions: "Abgeschlossene Einsätze",
+                logout: "Abmelden",
+                statistics: "Meine Statistiken",
+                quick_actions: "Schnellaktionen",
+                requests_pending: "Ausstehende Anfragen",
+                requests_confirmed: "Bestätigte Anfragen",
+                requests_progress: "In Bearbeitung",
+                requests_completed: "Abgeschlossen",
+                recharge_credits: "Meine Credits aufladen",
+                view_reports: "Meine Berichte anzeigen",
+                
+                // Onglets
+                tab_pending: "Ausstehend",
+                tab_confirmed: "Bestätigt",
+                tab_progress: "In Bearbeitung",
+                tab_completed: "Abgeschlossen",
+                
+                // Titres des onglets
+                pending_requests: "Anfragen zur Validierung ausstehend",
+                confirmed_requests: "Geplante Anfragen",
+                progress_requests: "Laufende Anfragen",
+                completed_requests: "Abgeschlossene Anfragen",
+                
+                // Éléments de demande
+                request_date: "Anfragedatum",
+                service: "Dienstleistung",
+                intervention: "Einsatz",
+                time: "Uhrzeit",
+                task: "Aufgabe",
+                status: "Status",
+                actions: "Aktionen",
+                request_validate: "Validieren",
+                request_details: "Details",
+                no_requests: "Keine Anfragen verfügbar",
+                
+                // Footer
+                footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
+                footer_navigation: "Navigation",
+                footer_spaces: "Bereiche",
+                footer_contact: "Kontakt",
+                footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten.",
+                
+                // Loader
+                loading: "Laden...",
+                
+                // Modales
+                closed_missions_title: "Abgeschlossene Einsätze",
+                edit_profile_title: "Meine persönlichen Daten bearbeiten",
+                personal_info: "Persönliche Informationen",
+                contact_info: "Kontaktdaten",
+                client_name: "Name",
+                client_firstname: "Vorname",
+                client_email: "E-Mail",
+                client_password: "Neues Passwort",
+                client_address: "Adresse",
+                client_city: "Stadt",
+                client_postal: "Postleitzahl",
+                client_phone: "Telefon",
+                tutor_info: "Daten des Betreuers",
+                tutor_name: "Name des Betreuers",
+                tutor_firstname: "Vorname des Betreuers",
+                tutor_address: "Adresse des Betreuers",
+                tutor_city: "Stadt des Betreuers",
+                tutor_postal: "Postleitzahl des Betreuers",
+                tutor_phone: "Telefon des Betreuers",
+                save_changes: "Speichern",
+                cancel: "Abbrechen",
+                
+                // Messages
+                login_success: "Anmeldung erfolgreich!",
+                login_error: "E-Mail oder Passwort falsch",
+                request_validated: "Anfrage erfolgreich validiert!",
+                profile_updated: "Profil erfolgreich aktualisiert!",
+                fill_fields: "Bitte füllen Sie alle Pflichtfelder aus",
+                payment_redirect: "Weiterleitung zur Zahlungsseite...",
+                reports_coming: "Berichtsfunktion in Kürze verfügbar.",
+                confirm_validation: "Bestätigen Sie, dass diese Dienstleistung ordnungsgemäß erbracht wurde?",
+                validation_success: "Vielen Dank! Ihre Validierung wurde gespeichert.",
+                server_error: "Kommunikationsfehler mit dem Server.",
+
+                // Nouvelles traductions
+                delete_account: "Mein Konto löschen",
+                delete_account_title: "Mein Konto löschen",
+                delete_account_confirm: "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?",
+                delete_account_warning: "Diese Aktion ist unwiderruflich. Alle Ihre Daten und Verläufe werden endgültig gelöscht.",
+                confirm_delete: "Löschung bestätigen",
+                subscription_management: "Mein Abonnement verwalten",
+                monthly_subscription: "Monatsabonnement",
+                yearly_subscription: "Jahresabonnement",
+                subscribe: "Abonnieren",
+                current_subscription: "Ihr aktuelles Abonnement",
+                no_subscription: "Kein aktives Abonnement",
+                flexible_subscription: "Flexibel - Jederzeit kündbar",
+                economical_subscription: "Wirtschaftlich - 20% Ersparnis",
+                subscription_features: "Zugang zu allen Dienstleistungen",
+                priority_support: "Prioritärer Support",
+                cancel_anytime: "Jederzeit kündbar",
+                annual_savings: "Ersparnis von 24€ pro Jahr",
+                annual_commitment: "12-monatige Bindung"
             }
-        } catch (error) {
-            console.error('Erreur de connexion:', error);
-            message.textContent = error.message || translations[currentLanguage].login_error;
-            message.classList.remove('hidden');
-            message.className = 'message message-error';
-        } finally {
-            document.getElementById('loader').style.display = 'none';
+        };
+
+        let currentLanguage = 'fr';
+        let currentClient = null;
+
+        // Fonction de connexion CORRIGÉE
+        async function login() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const message = document.getElementById('login-message');
+
+            if (!email || !password) {
+                message.textContent = translations[currentLanguage].fill_fields;
+                message.classList.remove('hidden');
+                message.className = 'message message-error';
+                return;
+            }
+
+            document.getElementById('loader').style.display = 'flex';
+
+            try {
+                const url = `${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+                
+                console.log('🔍 ENVOI REQUÊTE GET:', url);
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                console.log('🔍 RÉPONSE SERVEUR:', data);
+
+                if (data.success) {
+                    currentClient = data;
+
+                    document.getElementById('login-section').classList.add('hidden');
+                    document.getElementById('client-interface').classList.remove('hidden');
+
+                    // Mise à jour immédiate de l'interface
+                    updateClientInterface();
+                    
+                    // Charger les données des missions
+                    loadClientData();
+                    
+                    showNotification(translations[currentLanguage].login_success, 'success');
+                    
+                } else {
+                    throw new Error(data.message || translations[currentLanguage].login_error);
+                }
+            } catch (error) {
+                console.error('Erreur de connexion:', error);
+                message.textContent = error.message || translations[currentLanguage].login_error;
+                message.classList.remove('hidden');
+                message.className = 'message message-error';
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
         }
-    }
 
         // Fonction séparée pour mettre à jour l'interface
         function updateClientInterface() {
-    if (!currentClient) return;
-    
-    console.log('🔍 Mise à jour interface pour:', currentClient.client.prenom);
-    
-    // Mise à jour du NOM COMPLET
-    const clientFullnameElement = document.getElementById('client-fullname');
-    if (clientFullnameElement) {
-        const prenom = currentClient.client.prenomTuteur || currentClient.client.prenom || "";
-        const nom = currentClient.client.nomTuteur || currentClient.client.nom || "";
-        const fullName = `${prenom} ${nom}`.trim();
-        clientFullnameElement.textContent = fullName || "Client";
-        console.log('✅ Nom complet mis à jour:', fullName);
-    }
-    
-    // Mise à jour des crédits
-    const creditsElement = document.getElementById('client-credits');
-    if (creditsElement) {
-        creditsElement.textContent = currentClient.client.credits || 0;
-        console.log('✅ Crédits mis à jour:', currentClient.client.credits);
-    }
-}
+            if (!currentClient) return;
+            
+            console.log('🔍 Mise à jour interface pour:', currentClient.client.prenom);
+            
+            // Mise à jour du NOM COMPLET
+            const clientFullnameElement = document.getElementById('client-fullname');
+            if (clientFullnameElement) {
+                const prenom = currentClient.client.prenomTuteur || currentClient.client.prenom || "";
+                const nom = currentClient.client.nomTuteur || currentClient.client.nom || "";
+                const fullName = `${prenom} ${nom}`.trim();
+                clientFullnameElement.textContent = fullName || "Client";
+                console.log('✅ Nom complet mis à jour:', fullName);
+            }
+            
+            // Mise à jour des crédits
+            const creditsElement = document.getElementById('client-credits');
+            if (creditsElement) {
+                creditsElement.textContent = currentClient.client.credits || 0;
+                console.log('✅ Crédits mis à jour:', currentClient.client.credits);
+            }
+        }
 
         // Fonction de déconnexion
         function logout() {
@@ -1919,130 +1911,107 @@
 
         // Charger les données du client
         function loadClientData() {
-    console.log('🔍 loadClientData CALLED');
-    console.log('🔍 currentClient:', currentClient);
-    console.log('🔍 demandes count:', currentClient?.demandes?.length);
-    
-    if (!currentClient) {
-        console.log('❌ currentClient is null');
-        return;
-    }
+            console.log('🔍 loadClientData CALLED');
+            console.log('🔍 currentClient:', currentClient);
+            console.log('🔍 demandes count:', currentClient?.demandes?.length);
+            
+            if (!currentClient) {
+                console.log('❌ currentClient is null');
+                return;
+            }
 
-    // Debug détaillé des demandes
-    if (currentClient.demandes && currentClient.demandes.length > 0) {
-        console.log('📋 DÉTAIL DES 3 PREMIÈRES DEMANDES:');
-        currentClient.demandes.slice(0, 3).forEach((demande, index) => {
-            console.log(`   ${index + 1}.`, {
-                id: demande.idMission,
-                service: demande.service,
-                intervention: demande.intervention,
-                statut: demande.statut,
-                validation: demande.validationClient
+            // FILTRER les demandes vides
+            if (currentClient.demandes) {
+                console.log('🔍 DEMANDES BEFORE FILTER:', currentClient.demandes.length);
+                
+                const avantFiltre = currentClient.demandes.length;
+                
+                currentClient.demandes = currentClient.demandes.filter(d => {
+                    const serviceStr = String(d.service || '');
+                    const interventionStr = String(d.intervention || '');
+                    
+                    const hasService = serviceStr.trim() !== "";
+                    const hasIntervention = interventionStr.trim() !== "";
+                    
+                    return hasService && hasIntervention;
+                });
+                
+                console.log(`🔍 FILTRE: ${avantFiltre} → ${currentClient.demandes.length} missions`);
+            }
+
+            // Vérifier si les sections existent
+            const statsSection = document.querySelector('.client-section:nth-child(3)');
+            const tabsSection = document.querySelector('.client-section:nth-child(5)');
+
+            console.log('🔍 Sections trouvées:', {
+                statsSection: !!statsSection,
+                tabsSection: !!tabsSection
             });
-        });
-    }
 
-    // FILTRER les demandes vides
-    if (currentClient.demandes) {
-        console.log('🔍 DEMANDES BEFORE FILTER:', currentClient.demandes.length);
-        
-        const avantFiltre = currentClient.demandes.length;
-        
-        currentClient.demandes = currentClient.demandes.filter(d => {
-            const serviceStr = String(d.service || '');
-            const interventionStr = String(d.intervention || '');
+            if (!currentClient.demandes || currentClient.demandes.length === 0) {
+                console.log('🔍 NO MISSIONS - hiding sections');
+                if (statsSection) statsSection.style.display = 'none';
+                if (tabsSection) tabsSection.style.display = 'none';
+                return;
+            } else {
+                console.log('🔍 MISSIONS FOUND - showing sections');
+                if (statsSection) statsSection.style.display = 'block';
+                if (tabsSection) tabsSection.style.display = 'block';
+            }
+
+            // Calculer les statistiques
+            const pendingCount = currentClient.demandes.filter(d => 
+                d.statut === "en attente" || d.statut === "En attente" || !d.statut
+            ).length;
             
-            const hasService = serviceStr.trim() !== "";
-            const hasIntervention = interventionStr.trim() !== "";
+            const confirmedCount = currentClient.demandes.filter(d => 
+                d.statut === "confirmée" || d.statut === "Confirmée"
+            ).length;
             
-            return hasService && hasIntervention;
-        });
-        
-        console.log(`🔍 FILTRE: ${avantFiltre} → ${currentClient.demandes.length} missions`);
-    }
+            const progressCount = currentClient.demandes.filter(d => 
+                d.statut === "En cours"
+            ).length;
+            
+            const completedCount = currentClient.demandes.filter(d => 
+                d.statut === "Terminée" || d.statut === "Clôturée" || d.validationClient === "validée"
+            ).length;
 
-    // Vérifier si les sections existent
-    const statsSection = document.querySelector('.client-section:nth-child(3)');
-    const tabsSection = document.querySelector('.client-section:nth-child(5)');
+            console.log('🔍 Statistiques calculées:', {
+                pending: pendingCount,
+                confirmed: confirmedCount,
+                progress: progressCount,
+                completed: completedCount
+            });
 
-    console.log('🔍 Sections trouvées:', {
-        statsSection: !!statsSection,
-        tabsSection: !!tabsSection
-    });
+            // Mettre à jour les statistiques
+            const statsPending = document.getElementById('stats-pending');
+            const statsConfirmed = document.getElementById('stats-confirmed');
+            const statsProgress = document.getElementById('stats-progress');
+            const statsCompleted = document.getElementById('stats-completed');
 
-    if (!currentClient.demandes || currentClient.demandes.length === 0) {
-        console.log('🔍 NO MISSIONS - hiding sections');
-        if (statsSection) statsSection.style.display = 'none';
-        if (tabsSection) tabsSection.style.display = 'none';
-        return;
-    } else {
-        console.log('🔍 MISSIONS FOUND - showing sections');
-        if (statsSection) statsSection.style.display = 'block';
-        if (tabsSection) tabsSection.style.display = 'block';
-    }
+            console.log('🔍 Éléments stats trouvés:', {
+                pending: !!statsPending,
+                confirmed: !!statsConfirmed,
+                progress: !!statsProgress,
+                completed: !!statsCompleted
+            });
 
-    // Calculer les statistiques
-    const pendingCount = currentClient.demandes.filter(d => 
-        d.statut === "en attente" || d.statut === "En attente" || !d.statut
-    ).length;
-    
-    const confirmedCount = currentClient.demandes.filter(d => 
-        d.statut === "confirmée" || d.statut === "Confirmée"
-    ).length;
-    
-    const progressCount = currentClient.demandes.filter(d => 
-        d.statut === "En cours"
-    ).length;
-    
-    const completedCount = currentClient.demandes.filter(d => 
-        d.statut === "Terminée" || d.statut === "Clôturée" || d.validationClient === "validée"
-    ).length;
+            if (statsPending) statsPending.textContent = pendingCount;
+            if (statsConfirmed) statsConfirmed.textContent = confirmedCount;
+            if (statsProgress) statsProgress.textContent = progressCount;
+            if (statsCompleted) statsCompleted.textContent = completedCount;
 
-    console.log('🔍 Statistiques calculées:', {
-        pending: pendingCount,
-        confirmed: confirmedCount,
-        progress: progressCount,
-        completed: completedCount
-    });
+            console.log('🔍 Chargement des onglets...');
+            
+            // Charger les demandes pour chaque onglet
+            loadRequests('pending');
+            loadRequests('confirmed');
+            loadRequests('progress');
+            loadRequests('completed');
 
-    // Mettre à jour les statistiques
-    const statsPending = document.getElementById('stats-pending');
-    const statsConfirmed = document.getElementById('stats-confirmed');
-    const statsProgress = document.getElementById('stats-progress');
-    const statsCompleted = document.getElementById('stats-completed');
+            console.log('✅ loadClientData terminé');
+        }
 
-    console.log('🔍 Éléments stats trouvés:', {
-        pending: !!statsPending,
-        confirmed: !!statsConfirmed,
-        progress: !!statsProgress,
-        completed: !!statsCompleted
-    });
-
-    if (statsPending) statsPending.textContent = pendingCount;
-    if (statsConfirmed) statsConfirmed.textContent = confirmedCount;
-    if (statsProgress) statsProgress.textContent = progressCount;
-    if (statsCompleted) statsCompleted.textContent = completedCount;
-
-    console.log('🔍 Chargement des onglets...');
-    
-    // Vérifier si les conteneurs d'onglets existent
-    ['pending', 'confirmed', 'progress', 'completed'].forEach(status => {
-        const tableBody = document.getElementById(`${status}-requests-table`);
-        const cardsContainer = document.getElementById(`${status}-requests-cards`);
-        console.log(`🔍 Conteneurs ${status}:`, {
-            table: !!tableBody,
-            cards: !!cardsContainer
-        });
-    });
-
-    // Charger les demandes pour chaque onglet
-    loadRequests('pending');
-    loadRequests('confirmed');
-    loadRequests('progress');
-    loadRequests('completed');
-
-    console.log('✅ loadClientData terminé');
-}
         // Formatage des dates
         function formatDateOrTime(dateString) {
             if (!dateString) return "";
@@ -2063,104 +2032,105 @@
 
         // Charger les demandes par statut
         function loadRequests(status) {
-    console.log(`🔍 loadRequests(${status}) appelé`);
-    
-    if (!currentClient || !currentClient.demandes || currentClient.demandes.length === 0) {
-        console.log(`❌ Aucune donnée pour ${status}`);
-        return;
-    }
+            console.log(`🔍 loadRequests(${status}) appelé`);
+            
+            if (!currentClient || !currentClient.demandes || currentClient.demandes.length === 0) {
+                console.log(`❌ Aucune donnée pour ${status}`);
+                return;
+            }
 
-    const tableBody = document.getElementById(`${status}-requests-table`);
-    const cardsContainer = document.getElementById(`${status}-requests-cards`);
-    
-    console.log(`🔍 Conteneurs ${status}:`, {
-        tableBody: !!tableBody,
-        cardsContainer: !!cardsContainer
-    });
+            const tableBody = document.getElementById(`${status}-requests-table`);
+            const cardsContainer = document.getElementById(`${status}-requests-cards`);
+            
+            console.log(`🔍 Conteneurs ${status}:`, {
+                tableBody: !!tableBody,
+                cardsContainer: !!cardsContainer
+            });
 
-    // Filtrer les demandes selon le statut
-    let filteredRequests = [];
-    
-    switch(status) {
-        case 'pending':
-            filteredRequests = currentClient.demandes.filter(d => 
-                d.statut === "en attente" || !d.statut
-            );
-            break;
-        case 'confirmed':
-            filteredRequests = currentClient.demandes.filter(d => 
-                d.statut === "confirmée"
-            );
-            break;
-        case 'progress':
-            filteredRequests = currentClient.demandes.filter(d => 
-                d.statut === "En cours"
-            );
-            break;
-        case 'completed':
-            filteredRequests = currentClient.demandes.filter(d => 
-                d.statut === "Terminée" || d.statut === "Clôturée" || d.validationClient === "validée"
-            );
-            break;
-    }
-    
-    console.log(`📊 ${status}: ${filteredRequests.length} demandes filtrées`);
+            // Filtrer les demandes selon le statut
+            let filteredRequests = [];
+            
+            switch(status) {
+                case 'pending':
+                    filteredRequests = currentClient.demandes.filter(d => 
+                        d.statut === "en attente" || !d.statut
+                    );
+                    break;
+                case 'confirmed':
+                    filteredRequests = currentClient.demandes.filter(d => 
+                        d.statut === "confirmée"
+                    );
+                    break;
+                case 'progress':
+                    filteredRequests = currentClient.demandes.filter(d => 
+                        d.statut === "En cours"
+                    );
+                    break;
+                case 'completed':
+                    filteredRequests = currentClient.demandes.filter(d => 
+                        d.statut === "Terminée" || d.statut === "Clôturée" || d.validationClient === "validée"
+                    );
+                    break;
+            }
+            
+            console.log(`📊 ${status}: ${filteredRequests.length} demandes filtrées`);
 
-    if (filteredRequests.length === 0) {
-        const message = translations[currentLanguage].no_requests;
-        if (tableBody) tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">${message}</td></tr>`;
-        if (cardsContainer) cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${message}</div>`;
-    } else {
-        // Afficher les demandes dans le tableau
-        if (tableBody) {
-            tableBody.innerHTML = filteredRequests.map(request => `
-                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td class="p-4">${formatDateOrTime(request.dateDemande)}</td>
-                    <td class="p-4">${request.service || ""}</td>
-                    <td class="p-4">${formatDateOrTime(request.intervention)}</td>
-                    <td class="p-4">${formatDateOrTime(request.heure)}</td>
-                    <td class="p-4">${request.tache || ""}</td>
-                    <td class="p-4">${getStatusBadge(request)}</td>
-                    ${status === 'completed' ? `<td class="p-4">${getRequestActions(status, request)}</td>` : '<td></td>'}
-                </tr>
-            `).join('');
+            if (filteredRequests.length === 0) {
+                const message = translations[currentLanguage].no_requests;
+                if (tableBody) tableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">${message}</td></tr>`;
+                if (cardsContainer) cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">${message}</div>`;
+            } else {
+                // Afficher les demandes dans le tableau
+                if (tableBody) {
+                    tableBody.innerHTML = filteredRequests.map(request => `
+                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                            <td class="p-4">${formatDateOrTime(request.dateDemande)}</td>
+                            <td class="p-4">${request.service || ""}</td>
+                            <td class="p-4">${formatDateOrTime(request.intervention)}</td>
+                            <td class="p-4">${formatDateOrTime(request.heure)}</td>
+                            <td class="p-4">${request.tache || ""}</td>
+                            <td class="p-4">${getStatusBadge(request)}</td>
+                            ${status === 'completed' ? `<td class="p-4">${getRequestActions(status, request)}</td>` : '<td></td>'}
+                        </tr>
+                    `).join('');
+                }
+                
+                // Mettre à jour les cartes mobiles
+                if (cardsContainer) {
+                    cardsContainer.innerHTML = filteredRequests.map(request => `
+                        <div class="request-card">
+                            <div class="card-row">
+                                <span class="card-label">${translations[currentLanguage].request_date}</span>
+                                <span class="card-value">${formatDateOrTime(request.dateDemande)}</span>
+                            </div>
+                            <div class="card-row">
+                                <span class="card-label">${translations[currentLanguage].service}</span>
+                                <span class="card-value">${request.service || ""}</span>
+                            </div>
+                            <div class="card-row">
+                                <span class="card-label">${translations[currentLanguage].intervention}</span>
+                                <span class="card-value">${formatDateOrTime(request.intervention)}</span>
+                            </div>
+                            <div class="card-row">
+                                <span class="card-label">${translations[currentLanguage].time}</span>
+                                <span class="card-value">${formatDateOrTime(request.heure)}</span>
+                            </div>
+                            <div class="card-row">
+                                <span class="card-label">${translations[currentLanguage].task}</span>
+                                <span class="card-value">${request.tache || ""}</span>
+                            </div>
+                            <div class="card-status">
+                                ${getStatusBadge(request)}
+                                ${status === 'completed' ? getRequestActions(status, request) : ''}
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+            
+            console.log(`✅ loadRequests(${status}) terminé`);
         }
-        
-        // Mettre à jour les cartes mobiles
-        if (cardsContainer) {
-            cardsContainer.innerHTML = filteredRequests.map(request => `
-                <div class="request-card">
-                    <div class="card-row">
-                        <span class="card-label">${translations[currentLanguage].request_date}</span>
-                        <span class="card-value">${formatDateOrTime(request.dateDemande)}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">${translations[currentLanguage].service}</span>
-                        <span class="card-value">${request.service || ""}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">${translations[currentLanguage].intervention}</span>
-                        <span class="card-value">${formatDateOrTime(request.intervention)}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">${translations[currentLanguage].time}</span>
-                        <span class="card-value">${formatDateOrTime(request.heure)}</span>
-                    </div>
-                    <div class="card-row">
-                        <span class="card-label">${translations[currentLanguage].task}</span>
-                        <span class="card-value">${request.tache || ""}</span>
-                    </div>
-                    <div class="card-status">
-                        ${getStatusBadge(request)}
-                        ${status === 'completed' ? getRequestActions(status, request) : ''}
-                    </div>
-                </div>
-            `).join('');
-        }
-    }
-    
-    console.log(`✅ loadRequests(${status}) terminé`);
-}
+
         function getStatusBadge(request) {
             const status = request.statut || "En attente";
             const validation = request.validationClient;
@@ -2232,221 +2202,223 @@
         }
 
         function showClosedMissions() {
-    if (!currentClient) return;
-    
-    // Inclure toutes les missions clôturées ou validées
-    const closedMissions = currentClient.demandes ? currentClient.demandes.filter(d => 
-        d.validationClient === "validée" || 
-        d.statut === "Clôturée" ||
-        (d.statut === "Terminée" && d.validationClient !== "validée")
-    ) : [];
-    
-    const tableBody = document.getElementById("closed-missions-table");
-    const cardsContainer = document.getElementById("closed-missions-cards");
-    
-    if (closedMissions.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">Aucune mission clôturée</td></tr>`;
-        cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission clôturée</div>`;
-    } else {
-        tableBody.innerHTML = closedMissions.map(request => `
-            <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                <td class="p-4">${formatDateOrTime(request.dateDemande)}</td>
-                <td class="p-4">${request.service || ""}</td>
-                <td class="p-4">${formatDateOrTime(request.intervention)}</td>
-                <td class="p-4">${formatDateOrTime(request.heure)}</td>
-                <td class="p-4">${request.tache || ""}</td>
-                <td class="p-4">${getStatusBadge(request)}</td>
-            </tr>
-        `).join('');
-        
-        cardsContainer.innerHTML = closedMissions.map(request => `
-            <div class="request-card">
-                <div class="card-row">
-                    <span class="card-label">Date demande</span>
-                    <span class="card-value">${formatDateOrTime(request.dateDemande)}</span>
-                </div>
-                <div class="card-row">
-                    <span class="card-label">Service</span>
-                    <span class="card-value">${request.service || ""}</span>
-                </div>
-                <div class="card-row">
-                    <span class="card-label">Intervention</span>
-                    <span class="card-value">${formatDateOrTime(request.intervention)}</span>
-                </div>
-                <div class="card-row">
-                    <span class="card-label">Heure</span>
-                    <span class="card-value">${formatDateOrTime(request.heure)}</span>
-                </div>
-                <div class="card-row">
-                    <span class="card-label">Tâche</span>
-                    <span class="card-value">${request.tache || ""}</span>
-                </div>
-                <div class="card-status">
-                    ${getStatusBadge(request)}
-                    ${request.validationClient === "validée" ? 
-                        '<span class="status-badge status-validated">Validée</span>' : 
-                        getStatusBadge(request)
-                    }
-                </div>
-            </div>
-        `).join('');
-    }
-    
-    document.getElementById('closed-missions-modal').style.display = 'block';
-}
-        
-function showProfileModal() {
-    console.log('🔍 showProfileModal CALLED');
-    
-    if (!currentClient) {
-        console.error('❌ currentClient is null or undefined');
-        return;
-    }
-    
-    console.log('🔍 currentClient:', currentClient);
-    console.log('🔍 Données client:', currentClient.client);
-    
-    // CORRECTION : MAPPING CORRECT DES DONNÉES
-    
-    // === SECTION 1 : DONNÉES DU TUTEUR (colonnes A-E) ===
-    document.getElementById('profile-tutor-firstname').value = currentClient.client.prenom || ''; // Colonne A
-    document.getElementById('profile-tutor-lastname').value = currentClient.client.nom || ''; // Colonne B
-    document.getElementById('profile-tutor-address').value = currentClient.client.adresse || ''; // Colonne C
-    document.getElementById('profile-tutor-phone').value = currentClient.client.telephone || ''; // Colonne D
-    document.getElementById('profile-tutor-email').value = currentClient.client.email || ''; // Colonne E
-    document.getElementById('profile-tutor-city').value = currentClient.client.villeTuteur || ''; // Colonne T
-    document.getElementById('profile-tutor-postal').value = currentClient.client.codePostalTuteur || ''; // Colonne U
-    
-    // === SECTION 2 : DONNÉES PERSONNE SOUS TUTELLE (colonnes F-J) ===
-    document.getElementById('profile-firstname').value = currentClient.client.prenomPersonne || ''; // Colonne F
-    document.getElementById('profile-lastname').value = currentClient.client.nomPersonne || ''; // Colonne G
-    document.getElementById('profile-address').value = currentClient.client.adressePersonne || ''; // Colonne H
-    document.getElementById('profile-phone').value = currentClient.client.telephonePersonne || ''; // Colonne I
-    document.getElementById('profile-email').value = currentClient.client.emailPersonne || ''; // Colonne J
-    document.getElementById('profile-city').value = currentClient.client.villePersonne || ''; // Colonne V
-    document.getElementById('profile-postal').value = currentClient.client.codePostalPersonne || ''; // Colonne W
-    
-    console.log('🔍 Données chargées:');
-    console.log('   Tuteur:', {
-        prenom: currentClient.client.prenom,
-        nom: currentClient.client.nom,
-        email: currentClient.client.email
-    });
-    console.log('   Personne sous tutelle:', {
-        prenom: currentClient.client.prenomPersonne,
-        nom: currentClient.client.nomPersonne,
-        email: currentClient.client.emailPersonne
-    });
-    
-    // Afficher la modale
-    const modal = document.getElementById('profile-modal');
-    if (modal) {
-        modal.style.display = 'block';
-        console.log('✅ Modal displayed successfully');
-    } else {
-        console.error('❌ Modal element not found');
-    }
-}
-async function saveProfile() {
-    console.log('🔍 saveProfile CALLED');
-    
-    // Récupérer les valeurs du formulaire - CORRECTION COMPLÈTE
-    const formData = {
-        type: 'updateClientProfile',
-        originalEmail: currentClient.client.email, // Email original pour la recherche
-        prenomTuteurRecherche: currentClient.client.prenom, // ⚠️ NOUVEAU : "Bob" pour identifier la bonne ligne
-        prenom: document.getElementById('profile-firstname').value,
-        nom: document.getElementById('profile-lastname').value,
-        email: document.getElementById('profile-email').value, // Nouvel email personne sous tutelle
-        adresse: document.getElementById('profile-address').value,
-        ville: document.getElementById('profile-city').value,
-        codePostal: document.getElementById('profile-postal').value,
-        telephone: document.getElementById('profile-phone').value,
-        prenomTuteur: document.getElementById('profile-tutor-firstname').value,
-        nomTuteur: document.getElementById('profile-tutor-lastname').value,
-        adresseTuteur: document.getElementById('profile-tutor-address').value,
-        villeTuteur: document.getElementById('profile-tutor-city').value,
-        codePostalTuteur: document.getElementById('profile-tutor-postal').value,
-        telephoneTuteur: document.getElementById('profile-tutor-phone').value,
-        password: document.getElementById('profile-password').value || ''
-    };
-    
-    console.log('🔍 Données à envoyer:', formData);
-    
-    // Validation basique
-    if (!formData.prenom || !formData.nom || !formData.email) {
-        showNotification(translations[currentLanguage].fill_fields, 'error');
-        return;
-    }
-    
-    document.getElementById('loader').style.display = 'flex';
-    
-    try {
-        console.log('🔍 Envoi des données au serveur via GET...');
-        
-        // CONVERSION EN PARAMÈTRES GET
-        const params = new URLSearchParams();
-        Object.keys(formData).forEach(key => {
-            if (formData[key] !== undefined && formData[key] !== null && formData[key] !== '') {
-                params.append(key, formData[key]);
-            }
-        });
-        
-        const url = `${webAppUrl}?${params.toString()}`;
-        console.log('🔍 URL GET:', url);
-        
-        const response = await fetch(url);
-        const responseText = await response.text();
-        console.log('🔍 Réponse brute:', responseText);
-        
-        let data;
-        try {
-            data = JSON.parse(responseText);
-            console.log('🔍 Réponse parsée:', data);
-        } catch (parseError) {
-            console.error('❌ Erreur parsing JSON:', parseError);
-            throw new Error('Réponse serveur invalide: ' + responseText);
-        }
-        
-        if (data.success) {
-            showNotification(data.message || translations[currentLanguage].profile_updated, 'success');
+            if (!currentClient) return;
             
-            // Mettre à jour les données locales
-            if (currentClient && currentClient.client) {
-                // Mettre à jour les données personne sous tutelle
-                currentClient.client.prenomPersonne = formData.prenom;
-                currentClient.client.nomPersonne = formData.nom;
-                currentClient.client.emailPersonne = formData.email;
-                currentClient.client.adressePersonne = formData.adresse;
-                currentClient.client.villePersonne = formData.ville;
-                currentClient.client.codePostalPersonne = formData.codePostal;
-                currentClient.client.telephonePersonne = formData.telephone;
+            // Inclure toutes les missions clôturées ou validées
+            const closedMissions = currentClient.demandes ? currentClient.demandes.filter(d => 
+                d.validationClient === "validée" || 
+                d.statut === "Clôturée" ||
+                (d.statut === "Terminée" && d.validationClient !== "validée")
+            ) : [];
+            
+            const tableBody = document.getElementById("closed-missions-table");
+            const cardsContainer = document.getElementById("closed-missions-cards");
+            
+            if (closedMissions.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">Aucune mission clôturée</td></tr>`;
+                cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission clôturée</div>`;
+            } else {
+                tableBody.innerHTML = closedMissions.map(request => `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td class="p-4">${formatDateOrTime(request.dateDemande)}</td>
+                        <td class="p-4">${request.service || ""}</td>
+                        <td class="p-4">${formatDateOrTime(request.intervention)}</td>
+                        <td class="p-4">${formatDateOrTime(request.heure)}</td>
+                        <td class="p-4">${request.tache || ""}</td>
+                        <td class="p-4">${getStatusBadge(request)}</td>
+                    </tr>
+                `).join('');
                 
-                // Mettre à jour les données tuteur
-                currentClient.client.prenomTuteur = formData.prenomTuteur;
-                currentClient.client.nomTuteur = formData.nomTuteur;
-                currentClient.client.adresseTuteur = formData.adresseTuteur;
-                currentClient.client.villeTuteur = formData.villeTuteur;
-                currentClient.client.codePostalTuteur = formData.codePostalTuteur;
-                currentClient.client.telephoneTuteur = formData.telephoneTuteur;
+                cardsContainer.innerHTML = closedMissions.map(request => `
+                    <div class="request-card">
+                        <div class="card-row">
+                            <span class="card-label">Date demande</span>
+                            <span class="card-value">${formatDateOrTime(request.dateDemande)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Service</span>
+                            <span class="card-value">${request.service || ""}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Intervention</span>
+                            <span class="card-value">${formatDateOrTime(request.intervention)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Heure</span>
+                            <span class="card-value">${formatDateOrTime(request.heure)}</span>
+                        </div>
+                        <div class="card-row">
+                            <span class="card-label">Tâche</span>
+                            <span class="card-value">${request.tache || ""}</span>
+                        </div>
+                        <div class="card-status">
+                            ${getStatusBadge(request)}
+                            ${request.validationClient === "validée" ? 
+                                '<span class="status-badge status-validated">Validée</span>' : 
+                                getStatusBadge(request)
+                            }
+                        </div>
+                    </div>
+                `).join('');
             }
             
-            closeModal('profile-modal');
-            
-            // Vider le champ mot de passe
-            document.getElementById('profile-password').value = '';
-            
-        } else {
-            throw new Error(data.message || 'Erreur lors de la mise à jour');
+            document.getElementById('closed-missions-modal').style.display = 'block';
         }
         
-    } catch (error) {
-        console.error('❌ Erreur sauvegarde profil:', error);
-        showNotification(error.message || translations[currentLanguage].server_error, 'error');
-    } finally {
-        document.getElementById('loader').style.display = 'none';
-    }
-}
+        function showProfileModal() {
+            console.log('🔍 showProfileModal CALLED');
+            
+            if (!currentClient) {
+                console.error('❌ currentClient is null or undefined');
+                return;
+            }
+            
+            console.log('🔍 currentClient:', currentClient);
+            console.log('🔍 Données client:', currentClient.client);
+            
+            // CORRECTION : MAPPING CORRECT DES DONNÉES
+            
+            // === SECTION 1 : DONNÉES DU TUTEUR (colonnes A-E) ===
+            document.getElementById('profile-tutor-firstname').value = currentClient.client.prenom || ''; // Colonne A
+            document.getElementById('profile-tutor-lastname').value = currentClient.client.nom || ''; // Colonne B
+            document.getElementById('profile-tutor-address').value = currentClient.client.adresse || ''; // Colonne C
+            document.getElementById('profile-tutor-phone').value = currentClient.client.telephone || ''; // Colonne D
+            document.getElementById('profile-tutor-email').value = currentClient.client.email || ''; // Colonne E
+            document.getElementById('profile-tutor-city').value = currentClient.client.villeTuteur || ''; // Colonne T
+            document.getElementById('profile-tutor-postal').value = currentClient.client.codePostalTuteur || ''; // Colonne U
+            
+            // === SECTION 2 : DONNÉES PERSONNE SOUS TUTELLE (colonnes F-J) ===
+            document.getElementById('profile-firstname').value = currentClient.client.prenomPersonne || ''; // Colonne F
+            document.getElementById('profile-lastname').value = currentClient.client.nomPersonne || ''; // Colonne G
+            document.getElementById('profile-address').value = currentClient.client.adressePersonne || ''; // Colonne H
+            document.getElementById('profile-phone').value = currentClient.client.telephonePersonne || ''; // Colonne I
+            document.getElementById('profile-email').value = currentClient.client.emailPersonne || ''; // Colonne J
+            document.getElementById('profile-city').value = currentClient.client.villePersonne || ''; // Colonne V
+            document.getElementById('profile-postal').value = currentClient.client.codePostalPersonne || ''; // Colonne W
+            
+            console.log('🔍 Données chargées:');
+            console.log('   Tuteur:', {
+                prenom: currentClient.client.prenom,
+                nom: currentClient.client.nom,
+                email: currentClient.client.email
+            });
+            console.log('   Personne sous tutelle:', {
+                prenom: currentClient.client.prenomPersonne,
+                nom: currentClient.client.nomPersonne,
+                email: currentClient.client.emailPersonne
+            });
+            
+            // Afficher la modale
+            const modal = document.getElementById('profile-modal');
+            if (modal) {
+                modal.style.display = 'block';
+                console.log('✅ Modal displayed successfully');
+            } else {
+                console.error('❌ Modal element not found');
+            }
+        }
+
+        async function saveProfile() {
+            console.log('🔍 saveProfile CALLED');
+            
+            // Récupérer les valeurs du formulaire - CORRECTION COMPLÈTE
+            const formData = {
+                type: 'updateClientProfile',
+                originalEmail: currentClient.client.email, // Email original pour la recherche
+                prenomTuteurRecherche: currentClient.client.prenom, // ⚠️ NOUVEAU : "Bob" pour identifier la bonne ligne
+                prenom: document.getElementById('profile-firstname').value,
+                nom: document.getElementById('profile-lastname').value,
+                email: document.getElementById('profile-email').value, // Nouvel email personne sous tutelle
+                adresse: document.getElementById('profile-address').value,
+                ville: document.getElementById('profile-city').value,
+                codePostal: document.getElementById('profile-postal').value,
+                telephone: document.getElementById('profile-phone').value,
+                prenomTuteur: document.getElementById('profile-tutor-firstname').value,
+                nomTuteur: document.getElementById('profile-tutor-lastname').value,
+                adresseTuteur: document.getElementById('profile-tutor-address').value,
+                villeTuteur: document.getElementById('profile-tutor-city').value,
+                codePostalTuteur: document.getElementById('profile-tutor-postal').value,
+                telephoneTuteur: document.getElementById('profile-tutor-phone').value,
+                password: document.getElementById('profile-password').value || ''
+            };
+            
+            console.log('🔍 Données à envoyer:', formData);
+            
+            // Validation basique
+            if (!formData.prenom || !formData.nom || !formData.email) {
+                showNotification(translations[currentLanguage].fill_fields, 'error');
+                return;
+            }
+            
+            document.getElementById('loader').style.display = 'flex';
+            
+            try {
+                console.log('🔍 Envoi des données au serveur via GET...');
+                
+                // CONVERSION EN PARAMÈTRES GET
+                const params = new URLSearchParams();
+                Object.keys(formData).forEach(key => {
+                    if (formData[key] !== undefined && formData[key] !== null && formData[key] !== '') {
+                        params.append(key, formData[key]);
+                    }
+                });
+                
+                const url = `${webAppUrl}?${params.toString()}`;
+                console.log('🔍 URL GET:', url);
+                
+                const response = await fetch(url);
+                const responseText = await response.text();
+                console.log('🔍 Réponse brute:', responseText);
+                
+                let data;
+                try {
+                    data = JSON.parse(responseText);
+                    console.log('🔍 Réponse parsée:', data);
+                } catch (parseError) {
+                    console.error('❌ Erreur parsing JSON:', parseError);
+                    throw new Error('Réponse serveur invalide: ' + responseText);
+                }
+                
+                if (data.success) {
+                    showNotification(data.message || translations[currentLanguage].profile_updated, 'success');
+                    
+                    // Mettre à jour les données locales
+                    if (currentClient && currentClient.client) {
+                        // Mettre à jour les données personne sous tutelle
+                        currentClient.client.prenomPersonne = formData.prenom;
+                        currentClient.client.nomPersonne = formData.nom;
+                        currentClient.client.emailPersonne = formData.email;
+                        currentClient.client.adressePersonne = formData.adresse;
+                        currentClient.client.villePersonne = formData.ville;
+                        currentClient.client.codePostalPersonne = formData.codePostal;
+                        currentClient.client.telephonePersonne = formData.telephone;
+                        
+                        // Mettre à jour les données tuteur
+                        currentClient.client.prenomTuteur = formData.prenomTuteur;
+                        currentClient.client.nomTuteur = formData.nomTuteur;
+                        currentClient.client.adresseTuteur = formData.adresseTuteur;
+                        currentClient.client.villeTuteur = formData.villeTuteur;
+                        currentClient.client.codePostalTuteur = formData.codePostalTuteur;
+                        currentClient.client.telephoneTuteur = formData.telephoneTuteur;
+                    }
+                    
+                    closeModal('profile-modal');
+                    
+                    // Vider le champ mot de passe
+                    document.getElementById('profile-password').value = '';
+                    
+                } else {
+                    throw new Error(data.message || 'Erreur lors de la mise à jour');
+                }
+                
+            } catch (error) {
+                console.error('❌ Erreur sauvegarde profil:', error);
+                showNotification(error.message || translations[currentLanguage].server_error, 'error');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
@@ -2518,6 +2490,59 @@ async function saveProfile() {
             showNotification(translations[currentLanguage].reports_coming, 'info');
         }
 
+        // Fonctions d'abonnement
+        function souscrireAbonnement(type) {
+            const plans = {
+                'mensuel': { prix: 10, nom: 'Mensuel', url: 'https://viiveo.com/abonnement-mensuel' },
+                'annuel': { prix: 96, nom: 'Annuel', url: 'https://viiveo.com/abonnement-annuel' }
+            };
+            
+            const plan = plans[type];
+            if (confirm(`Souscrire à l'abonnement ${plan.nom} pour ${plan.prix}€ ?`)) {
+                showNotification(`Redirection vers la page de paiement pour l'abonnement ${plan.nom}...`, 'info');
+                setTimeout(() => {
+                    window.open(plan.url, '_blank');
+                }, 1000);
+            }
+        }
+
+        function gererAbonnement() {
+            showNotification("Page de gestion d'abonnement à venir...", 'info');
+            // Redirection vers la page de gestion des abonnements
+            // window.open('https://viiveo.com/gestion-abonnement', '_blank');
+        }
+
+        async function deleteAccount() {
+            if (!currentClient) return;
+            
+            document.getElementById('loader').style.display = 'flex';
+            
+            try {
+                const url = `${webAppUrl}?type=deleteClientAccount&email=${encodeURIComponent(currentClient.client.email)}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification("Votre compte a été supprimé avec succès", 'success');
+                    setTimeout(() => {
+                        logout();
+                        window.location.href = 'index.html';
+                    }, 2000);
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                showNotification("Erreur lors de la suppression: " + error.message, 'error');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+                closeModal('delete-account-modal');
+            }
+        }
+
+        function showDeleteAccountModal() {
+            document.getElementById('delete-account-modal').style.display = 'block';
+        }
+
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             // Charger la langue sauvegardée
@@ -2571,483 +2596,32 @@ async function saveProfile() {
                 });
             });
         });
-        
-            function showDeleteAccountModal() {
-                document.getElementById('delete-account-modal').style.display = 'block';
-        }
 
-            async function deleteAccount() {
-    if (!currentClient) return;
-    
-    document.getElementById('loader').style.display = 'flex';
-    
-    try {
-        const url = `${webAppUrl}?type=deleteClientAccount&email=${encodeURIComponent(currentClient.client.email)}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        if (data.success) {
-            showNotification("Votre compte a été supprimé avec succès", 'success');
-            setTimeout(() => {
-                logout();
-                window.location.href = 'index.html';
-            }, 2000);
-        } else {
-            throw new Error(data.message);
-        }
-    } catch (error) {
-        showNotification("Erreur lors de la suppression: " + error.message, 'error');
-    } finally {
-        document.getElementById('loader').style.display = 'none';
-        closeModal('delete-account-modal');
-    }
-}
-     function souscrireAbonnement(type) {
-    const plans = {
-        'mensuel': { prix: 10, nom: 'Mensuel', url: 'https://viiveo.com/abonnement-mensuel' },
-        'annuel': { prix: 96, nom: 'Annuel', url: 'https://viiveo.com/abonnement-annuel' }
-    };
-    
-    const plan = plans[type];
-    if (confirm(`Souscrire à l'abonnement ${plan.nom} pour ${plan.prix}€ ?`)) {
-        showNotification(`Redirection vers la page de paiement pour l'abonnement ${plan.nom}...`, 'info');
-        setTimeout(() => {
-            window.open(plan.url, '_blank');
-        }, 1000);
-    }
-}
-
-    function gererAbonnement() {
-    showNotification("Page de gestion d'abonnement à venir...", 'info');
-    // Redirection vers la page de gestion des abonnements
-    // window.open('https://viiveo.com/gestion-abonnement', '_blank');
-}   
-
-// ==================== GESTION DES ABONNEMENTS ====================
-
-let abonnementActuel = null;
-const prixAbonnements = {
-    mensuel: { montant: 10, periode: 'month', nom: 'Mensuel' },
-    annuel: { montant: 96, periode: 'year', nom: 'Annuel' }
-};
-
-// Charger le statut d'abonnement
-async function chargerStatutAbonnement() {
-    if (!currentClient) return;
-
-    try {
-        const url = `${webAppUrl}?type=getStatutAbonnement&email=${encodeURIComponent(currentClient.client.email)}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        if (data.success && data.abonnement) {
-            abonnementActuel = data.abonnement;
-            afficherStatutAbonnement(data.abonnement);
-        } else {
-            afficherAucunAbonnement();
-        }
-    } catch (error) {
-        console.log('Mode simulation - Aucun abonnement actif');
-        afficherAucunAbonnement();
-    }
-}
-
-// Afficher le statut d'abonnement
-function afficherStatutAbonnement(abonnement) {
-    const statutDiv = document.getElementById('statut-abonnement');
-    const infoDiv = document.getElementById('info-abonnement');
-    
-    const estActif = abonnement.statut === 'actif';
-    const estEnRetard = abonnement.statut === 'en_retard';
-    
-    // Mettre à jour les couleurs selon le statut
-    if (estEnRetard) {
-        statutDiv.className = 'bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200 rounded-xl p-6 mb-8';
-    } else if (estActif) {
-        statutDiv.className = 'bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-xl p-6 mb-8';
-    }
-    
-    const dateFin = new Date(abonnement.date_fin);
-    const maintenant = new Date();
-    const joursRestants = Math.ceil((dateFin - maintenant) / (1000 * 60 * 60 * 24));
-    
-    infoDiv.innerHTML = `
-        <div class="flex-1">
-            <div class="flex items-center mb-2">
-                <span class="text-2xl font-bold text-gray-800 mr-4">${abonnement.type}</span>
-                <span class="status-badge ${estActif ? 'status-validated' : estEnRetard ? 'status-pending' : 'status-completed'}">
-                    ${estActif ? 'Actif' : estEnRetard ? 'Paiement en attente' : 'Inactif'}
-                </span>
-            </div>
-            <div class="text-gray-600">
-                ${estActif ? 
-                    `Valide jusqu'au ${formatDateOrTime(abonnement.date_fin)} (${joursRestants} jours restants)` :
-                    estEnRetard ?
-                    `Paiement en attente - Régularisez votre situation` :
-                    'Abonnement expiré'
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
                 }
-            </div>
-        </div>
-        <div class="flex space-x-3 mt-4 md:mt-0">
-            ${estActif ? `
-                <button onclick="gererAbonnementModal()" class="btn-secondary">
-                    <i class="fas fa-cog mr-2"></i>Gérer
-                </button>
-            ` : ''}
-            ${estEnRetard ? `
-                <button onclick="regulariserPaiement()" class="btn-elegant">
-                    <i class="fas fa-credit-card mr-2"></i>Régulariser
-                </button>
-            ` : ''}
-            <button onclick="contacterSupport()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                <i class="fas fa-headset mr-2"></i>Support
-            </button>
-        </div>
-    `;
-}
+            });
 
-// Afficher aucun abonnement
-function afficherAucunAbonnement() {
-    const infoDiv = document.getElementById('info-abonnement');
-    infoDiv.innerHTML = `
-        <div class="flex-1">
-            <div class="text-2xl font-bold text-gray-800 mb-2">Aucun abonnement actif</div>
-            <p class="text-gray-600">Souscrivez à un abonnement pour bénéficier de nos services</p>
-        </div>
-        <div class="flex space-x-3 mt-4 md:mt-0">
-            <button onclick="contacterSupport()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                <i class="fas fa-headset mr-2"></i>Contactez-nous
-            </button>
-        </div>
-    `;
-}
-
-// Processus de souscription COMPLET
-async function souscrireAbonnement(type) {
-    if (!currentClient) {
-        showNotification("Veuillez vous connecter pour souscrire à un abonnement", 'error');
-        return;
-    }
-
-    const abonnement = prixAbonnements[type];
-    
-    // Vérifier si un abonnement est déjà actif
-    if (abonnementActuel && abonnementActuel.statut === 'actif') {
-        const confirmation = confirm(
-            `Vous avez déjà un abonnement ${abonnementActuel.type} actif.\n\n` +
-            `Souhaitez-vous le remplacer par l'abonnement ${abonnement.nom} ?`
-        );
-        if (!confirmation) return;
-    }
-
-    // Afficher le modal de confirmation
-    afficherModalConfirmation(type, abonnement);
-}
-
-// Modal de confirmation de souscription
-function afficherModalConfirmation(type, abonnement) {
-    const modalHTML = `
-        <div class="modal" id="modal-confirmation-abonnement">
-            <div class="modal-content" style="max-width: 500px;">
-                <div class="modal-header">
-                    <h2 class="text-2xl font-bold">Confirmation d'abonnement</h2>
-                    <span class="close" onclick="closeModal('modal-confirmation-abonnement')">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center mb-6">
-                        <div class="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
-                            <i class="fas fa-gem text-green-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Abonnement ${abonnement.nom}</h3>
-                        <div class="text-3xl font-bold text-gray-800">
-                            ${type === 'mensuel' ? '10€' : '96€'} 
-                            <span class="text-lg text-gray-600">/ ${type === 'mensuel' ? 'mois' : 'an'}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-gray-50 rounded-lg p-4 mb-6">
-                        <h4 class="font-semibold text-gray-800 mb-3">Récapitulatif :</h4>
-                        <ul class="text-sm text-gray-600 space-y-2">
-                            <li class="flex justify-between">
-                                <span>Abonnement ${abonnement.nom}</span>
-                                <span class="font-semibold">${type === 'mensuel' ? '10€' : '96€'}</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Période</span>
-                                <span class="font-semibold">${type === 'mensuel' ? '1 mois' : '12 mois'}</span>
-                            </li>
-                            <li class="flex justify-between border-t border-gray-200 pt-2">
-                                <span class="font-semibold">Total</span>
-                                <span class="font-bold text-lg">${type === 'mensuel' ? '10€' : '96€'}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                        <div class="flex items-start">
-                            <i class="fas fa-info-circle text-blue-500 mr-3 mt-1"></i>
-                            <div class="text-sm text-blue-700">
-                                <strong>Mode simulation :</strong> Aucun paiement réel ne sera effectué. 
-                                En production, vous seriez redirigé vers une page de paiement sécurisée.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex space-x-3">
-                        <button onclick="closeModal('modal-confirmation-abonnement')" class="btn-secondary flex-1">
-                            Annuler
-                        </button>
-                        <button onclick="confirmerSouscription('${type}')" class="btn-elegant flex-1">
-                            <i class="fas fa-credit-card mr-2"></i>
-                            Confirmer la souscription
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    document.getElementById('modal-confirmation-abonnement').style.display = 'block';
-}
-
-// Confirmation finale de souscription
-async function confirmerSouscription(type) {
-    closeModal('modal-confirmation-abonnement');
-    document.getElementById('loader').style.display = 'flex';
-    
-    try {
-        // Simulation du processus de paiement
-        await simulerProcessusPaiement(type);
-        
-        // Enregistrement de l'abonnement
-        const url = `${webAppUrl}?type=souscrireAbonnement` +
-            `&email=${encodeURIComponent(currentClient.client.email)}` +
-            `&type_abonnement=${type}` +
-            `&montant=${prixAbonnements[type].montant}`;
-        
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        if (data.success) {
-            showNotification(
-                `✅ Abonnement ${prixAbonnements[type].nom} activé avec succès !`, 
-                'success'
-            );
+            const flags = { fr: '🇫🇷', nl: '🇳🇱', en: '🇬🇧', de: '🇩🇪' };
+            const codes = { fr: 'FR', nl: 'NL', en: 'EN', de: 'DE' };
             
-            // Recharger le statut
-            await chargerStatutAbonnement();
-            
-        } else {
-            throw new Error(data.message || "Erreur lors de la souscription");
+            document.getElementById('current-flag').textContent = flags[lang];
+            document.getElementById('current-language').textContent = codes[lang];
+
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+                if (option.getAttribute('data-lang') === lang) {
+                    option.classList.add('active');
+                }
+            });
+
+            localStorage.setItem('viiveo-language', lang);
         }
-        
-    } catch (error) {
-        showNotification("Erreur lors de la souscription: " + error.message, 'error');
-    } finally {
-        document.getElementById('loader').style.display = 'none';
-    }
-}
-
-// Simulation réaliste du processus de paiement
-async function simulerProcessusPaiement(type) {
-    return new Promise((resolve) => {
-        const etapes = [
-            "🔄 Création de la souscription...",
-            "🔐 Connexion au système de paiement...",
-            "💳 Traitement du paiement...",
-            "✅ Paiement accepté...",
-            "📦 Activation de l'abonnement..."
-        ];
-        
-        let etapeActuelle = 0;
-        
-        const modalPaiement = document.createElement('div');
-        modalPaiement.className = 'modal';
-        modalPaiement.innerHTML = `
-            <div class="modal-content" style="max-width: 500px;">
-                <div class="modal-header">
-                    <h2 class="text-2xl font-bold">Traitement du paiement</h2>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center mb-6">
-                        <div class="text-2xl font-bold text-gray-800 mb-2">${type === 'mensuel' ? '10€' : '96€'}</div>
-                        <div class="text-gray-600">Abonnement ${prixAbonnements[type].nom}</div>
-                    </div>
-                    
-                    <div id="etapes-paiement" class="space-y-3 mb-6">
-                        ${etapes.map((etape, index) => `
-                            <div class="flex items-center text-gray-500" id="etape-paiement-${index}">
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 mr-3 flex items-center justify-center text-xs">
-                                    ${index + 1}
-                                </div>
-                                <span>${etape}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                    
-                    <div class="progress-bar bg-gray-200 rounded-full h-2">
-                        <div id="progress-paiement" class="bg-green-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        document.body.appendChild(modalPaiement);
-        modalPaiement.style.display = 'block';
-        
-        const interval = setInterval(() => {
-            if (etapeActuelle > 0) {
-                const etapePrecedente = document.getElementById(`etape-paiement-${etapeActuelle-1}`);
-                etapePrecedente.classList.remove('text-gray-500');
-                etapePrecedente.classList.add('text-green-600', 'font-semibold');
-                etapePrecedente.querySelector('div').innerHTML = '✅';
-                etapePrecedente.querySelector('div').classList.remove('border-gray-300');
-                etapePrecedente.querySelector('div').classList.add('border-green-500', 'bg-green-50');
-            }
-            
-            if (etapeActuelle < etapes.length) {
-                const etapeCourante = document.getElementById(`etape-paiement-${etapeActuelle}`);
-                etapeCourante.classList.remove('text-gray-500');
-                etapeCourante.classList.add('text-blue-600', 'font-semibold');
-                
-                const progress = ((etapeActuelle + 1) / etapes.length) * 100;
-                document.getElementById('progress-paiement').style.width = progress + '%';
-                
-                etapeActuelle++;
-            } else {
-                clearInterval(interval);
-                setTimeout(() => {
-                    modalPaiement.remove();
-                    resolve();
-                }, 1000);
-            }
-        }, 800);
-    });
-}
-
-// Gestion de l'abonnement (version complète)
-function gererAbonnementModal() {
-    const modalHTML = `
-        <div class="modal" id="modal-gerer-abonnement">
-            <div class="modal-content" style="max-width: 500px;">
-                <div class="modal-header">
-                    <h2 class="text-2xl font-bold">Gérer mon abonnement</h2>
-                    <span class="close" onclick="closeModal('modal-gerer-abonnement')">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <div class="bg-gray-50 rounded-lg p-4 mb-6">
-                        <h4 class="font-semibold text-gray-800 mb-2">Abonnement actuel</h4>
-                        <div class="text-lg font-bold text-gray-800">${abonnementActuel.type}</div>
-                        <div class="text-sm text-gray-600">
-                            Valide jusqu'au ${formatDateOrTime(abonnementActuel.date_fin)}
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-3">
-                        <button onclick="changerAbonnement()" class="w-full btn-elegant text-left p-4">
-                            <i class="fas fa-sync-alt mr-3"></i>
-                            Changer de formule d'abonnement
-                        </button>
-                        
-                        <button onclick="telechargerFacture()" class="w-full btn-secondary text-left p-4">
-                            <i class="fas fa-receipt mr-3"></i>
-                            Télécharger ma facture
-                        </button>
-                        
-                        ${abonnementActuel.type === 'Mensuel' ? `
-                            <button onclick="resilierAbonnement()" class="w-full bg-red-50 text-red-600 border border-red-200 rounded-lg text-left p-4 hover:bg-red-100 transition-colors">
-                                <i class="fas fa-times-circle mr-3"></i>
-                                Résilier l'abonnement
-                            </button>
-                        ` : ''}
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    document.getElementById('modal-gerer-abonnement').style.display = 'block';
-}
-
-// Fonctions supplémentaires
-function regulariserPaiement() {
-    showNotification("Redirection vers la page de régularisation...", 'info');
-    // En production : redirection vers Stripe/Mollie
-}
-
-function contacterSupport() {
-    window.open('https://wa.me/+32475325127', '_blank');
-}
-
-function changerAbonnement() {
-    closeModal('modal-gerer-abonnement');
-    // Faire défiler jusqu'aux formules
-    document.querySelector('.client-section').scrollIntoView({ behavior: 'smooth' });
-}
-
-function telechargerFacture() {
-    showNotification("Génération de la facture...", 'info');
-    // En production : appel API pour générer la facture
-}
-
-function resilierAbonnement() {
-    if (confirm("Êtes-vous sûr de vouloir résilier votre abonnement ? Cette action est irréversible.")) {
-        showNotification("Demande de résiliation envoyée...", 'info');
-        closeModal('modal-gerer-abonnement');
-    }
-}
-
-// REMPLACER les fonctions existantes simples
-function souscrireAbonnement(type) {
-    // Cette fonction est maintenant remplacée par la version complète ci-dessus
-    const plans = {
-        'mensuel': { prix: 10, nom: 'Mensuel' },
-        'annuel': { prix: 96, nom: 'Annuel' }
-    };
-    
-    const plan = plans[type];
-    afficherModalConfirmation(type, plan);
-}
-
-function gererAbonnement() {
-    // Cette fonction est maintenant remplacée par gererAbonnementModal()
-    if (abonnementActuel) {
-        gererAbonnementModal();
-    } else {
-        showNotification("Aucun abonnement actif à gérer", 'info');
-    }
-}
-        
     </script>
-<!-- Modal suppression de compte -->
-<div id="delete-account-modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header bg-red-600">
-            <h2 class="text-2xl font-bold" data-translate="delete_account_title">Supprimer mon compte</h2>
-            <span class="close" onclick="closeModal('delete-account-modal')">&times;</span>
-        </div>
-        <div class="modal-body">
-            <div class="text-center py-6">
-                <i class="fas fa-exclamation-triangle text-red-500 text-5xl mb-4"></i>
-                <h3 class="text-xl font-bold text-gray-800 mb-4" data-translate="delete_account_confirm">Êtes-vous sûr de vouloir supprimer votre compte ?</h3>
-                <p class="text-gray-600 mb-6" data-translate="delete_account_warning">
-                    Cette action est irréversible. Toutes vos données et historiques seront définitivement supprimés.
-                </p>
-                <div class="flex justify-center space-x-4">
-                    <button onclick="closeModal('delete-account-modal')" class="btn-secondary" data-translate="cancel">
-                        <i class="fas fa-times mr-2"></i>
-                        Annuler
-                    </button>
-                    <button onclick="deleteAccount()" class="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors" data-translate="confirm_delete">
-                        <i class="fas fa-trash-alt mr-2"></i>
-                        Confirmer la suppression
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>  
 </body>
 </html>
