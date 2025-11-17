@@ -2079,7 +2079,7 @@ function loadClientData() {
         console.log(`🔍 FILTRE: ${avantFiltre} → ${currentClient.demandes.length} missions`);
     }
 
-    // CORRECTION : Toujours afficher la section abonnements
+    // RÉCUPÉRER LES SECTIONS
     const statsSection = document.querySelector('.client-section:nth-child(3)'); // Statistiques
     const abonnementsSection = document.querySelector('.client-section:nth-child(4)'); // Abonnements
     const tabsSection = document.querySelector('.client-section:nth-child(5)'); // Onglets
@@ -2090,72 +2090,71 @@ function loadClientData() {
         tabsSection: !!tabsSection
     });
 
-    // ⭐ CORRECTION : TOUJOURS AFFICHER LA SECTION ABONNEMENTS
+    // ⭐ STRATÉGIE D'AFFICHAGE AMÉLIORÉE
+    const hasMissions = currentClient.demandes && currentClient.demandes.length > 0;
+    
+    // Section ABONNEMENTS : TOUJOURS VISIBLE
     if (abonnementsSection) {
         abonnementsSection.style.display = 'block';
-        console.log('✅ Section abonnements affichée');
+        console.log('✅ Section abonnements AFFICHÉE (toujours visible)');
+    }
+    
+    // Sections STATS et ONGLETS : visibles seulement si missions
+    if (statsSection) {
+        statsSection.style.display = hasMissions ? 'block' : 'none';
+        console.log(`📊 Section statistiques: ${hasMissions ? 'AFFICHÉE' : 'MASQUÉE'}`);
+    }
+    
+    if (tabsSection) {
+        tabsSection.style.display = hasMissions ? 'block' : 'none';
+        console.log(`📑 Section onglets: ${hasMissions ? 'AFFICHÉE' : 'MASQUÉE'}`);
     }
 
-    // Afficher/masquer stats et onglets selon les missions
-    if (!currentClient.demandes || currentClient.demandes.length === 0) {
-        console.log('🔍 NO MISSIONS - hiding stats and tabs');
-        if (statsSection) statsSection.style.display = 'none';
-        if (tabsSection) tabsSection.style.display = 'none';
+    // Calculer les statistiques (seulement si missions)
+    if (hasMissions) {
+        const pendingCount = currentClient.demandes.filter(d => 
+            d.statut === "en attente" || d.statut === "En attente" || !d.statut
+        ).length;
+        
+        const confirmedCount = currentClient.demandes.filter(d => 
+            d.statut === "confirmée" || d.statut === "Confirmée"
+        ).length;
+        
+        const progressCount = currentClient.demandes.filter(d => 
+            d.statut === "En cours"
+        ).length;
+        
+        const completedCount = currentClient.demandes.filter(d => 
+            d.statut === "Terminée" || d.statut === "Clôturée" || d.validationClient === "validée"
+        ).length;
+
+        console.log('🔍 Statistiques calculées:', {
+            pending: pendingCount,
+            confirmed: confirmedCount,
+            progress: progressCount,
+            completed: completedCount
+        });
+
+        // Mettre à jour les statistiques
+        const statsPending = document.getElementById('stats-pending');
+        const statsConfirmed = document.getElementById('stats-confirmed');
+        const statsProgress = document.getElementById('stats-progress');
+        const statsCompleted = document.getElementById('stats-completed');
+
+        if (statsPending) statsPending.textContent = pendingCount;
+        if (statsConfirmed) statsConfirmed.textContent = confirmedCount;
+        if (statsProgress) statsProgress.textContent = progressCount;
+        if (statsCompleted) statsCompleted.textContent = completedCount;
+
+        // Charger les onglets
+        console.log('🔍 Chargement des onglets...');
+        loadRequests('pending');
+        loadRequests('confirmed');
+        loadRequests('progress');
+        loadRequests('completed');
     } else {
-        console.log('🔍 MISSIONS FOUND - showing stats and tabs');
-        if (statsSection) statsSection.style.display = 'block';
-        if (tabsSection) tabsSection.style.display = 'block';
+        console.log('🔍 Aucune mission - pas de chargement des onglets');
     }
-
-    // Calculer les statistiques
-    const pendingCount = currentClient.demandes.filter(d => 
-        d.statut === "en attente" || d.statut === "En attente" || !d.statut
-    ).length;
-    
-    const confirmedCount = currentClient.demandes.filter(d => 
-        d.statut === "confirmée" || d.statut === "Confirmée"
-    ).length;
-    
-    const progressCount = currentClient.demandes.filter(d => 
-        d.statut === "En cours"
-    ).length;
-    
-    const completedCount = currentClient.demandes.filter(d => 
-        d.statut === "Terminée" || d.statut === "Clôturée" || d.validationClient === "validée"
-    ).length;
-
-    console.log('🔍 Statistiques calculées:', {
-        pending: pendingCount,
-        confirmed: confirmedCount,
-        progress: progressCount,
-        completed: completedCount
-    });
-
-    // Mettre à jour les statistiques
-    const statsPending = document.getElementById('stats-pending');
-    const statsConfirmed = document.getElementById('stats-confirmed');
-    const statsProgress = document.getElementById('stats-progress');
-    const statsCompleted = document.getElementById('stats-completed');
-
-    console.log('🔍 Éléments stats trouvés:', {
-        pending: !!statsPending,
-        confirmed: !!statsConfirmed,
-        progress: !!statsProgress,
-        completed: !!statsCompleted
-    });
-
-    if (statsPending) statsPending.textContent = pendingCount;
-    if (statsConfirmed) statsConfirmed.textContent = confirmedCount;
-    if (statsProgress) statsProgress.textContent = progressCount;
-    if (statsCompleted) statsCompleted.textContent = completedCount;
-
-    console.log('🔍 Chargement des onglets...');
-    
-    // Charger les demandes pour chaque onglet
-    loadRequests('pending');
-    loadRequests('confirmed');
-    loadRequests('progress');
-    loadRequests('completed');
 
     console.log('✅ loadClientData terminé');
 }
