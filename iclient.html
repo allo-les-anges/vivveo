@@ -2050,108 +2050,115 @@
         }
 
         // Charger les données du client
-        function loadClientData() {
-            console.log('🔍 loadClientData CALLED');
-            console.log('🔍 currentClient:', currentClient);
-            console.log('🔍 demandes count:', currentClient?.demandes?.length);
+function loadClientData() {
+    console.log('🔍 loadClientData CALLED');
+    console.log('🔍 currentClient:', currentClient);
+    console.log('🔍 demandes count:', currentClient?.demandes?.length);
+    
+    if (!currentClient) {
+        console.log('❌ currentClient is null');
+        return;
+    }
+
+    // FILTRER les demandes vides
+    if (currentClient.demandes) {
+        console.log('🔍 DEMANDES BEFORE FILTER:', currentClient.demandes.length);
+        
+        const avantFiltre = currentClient.demandes.length;
+        
+        currentClient.demandes = currentClient.demandes.filter(d => {
+            const serviceStr = String(d.service || '');
+            const interventionStr = String(d.intervention || '');
             
-            if (!currentClient) {
-                console.log('❌ currentClient is null');
-                return;
-            }
-
-            // FILTRER les demandes vides
-            if (currentClient.demandes) {
-                console.log('🔍 DEMANDES BEFORE FILTER:', currentClient.demandes.length);
-                
-                const avantFiltre = currentClient.demandes.length;
-                
-                currentClient.demandes = currentClient.demandes.filter(d => {
-                    const serviceStr = String(d.service || '');
-                    const interventionStr = String(d.intervention || '');
-                    
-                    const hasService = serviceStr.trim() !== "";
-                    const hasIntervention = interventionStr.trim() !== "";
-                    
-                    return hasService && hasIntervention;
-                });
-                
-                console.log(`🔍 FILTRE: ${avantFiltre} → ${currentClient.demandes.length} missions`);
-            }
-
-            // Vérifier si les sections existent
-            const statsSection = document.querySelector('.client-section:nth-child(3)');
-            const tabsSection = document.querySelector('.client-section:nth-child(5)');
-
-            console.log('🔍 Sections trouvées:', {
-                statsSection: !!statsSection,
-                tabsSection: !!tabsSection
-            });
-
-            if (!currentClient.demandes || currentClient.demandes.length === 0) {
-                console.log('🔍 NO MISSIONS - hiding sections');
-                if (statsSection) statsSection.style.display = 'none';
-                if (tabsSection) tabsSection.style.display = 'none';
-                return;
-            } else {
-                console.log('🔍 MISSIONS FOUND - showing sections');
-                if (statsSection) statsSection.style.display = 'block';
-                if (tabsSection) tabsSection.style.display = 'block';
-            }
-
-            // Calculer les statistiques
-            const pendingCount = currentClient.demandes.filter(d => 
-                d.statut === "en attente" || d.statut === "En attente" || !d.statut
-            ).length;
+            const hasService = serviceStr.trim() !== "";
+            const hasIntervention = interventionStr.trim() !== "";
             
-            const confirmedCount = currentClient.demandes.filter(d => 
-                d.statut === "confirmée" || d.statut === "Confirmée"
-            ).length;
-            
-            const progressCount = currentClient.demandes.filter(d => 
-                d.statut === "En cours"
-            ).length;
-            
-            const completedCount = currentClient.demandes.filter(d => 
-                d.statut === "Terminée" || d.statut === "Clôturée" || d.validationClient === "validée"
-            ).length;
+            return hasService && hasIntervention;
+        });
+        
+        console.log(`🔍 FILTRE: ${avantFiltre} → ${currentClient.demandes.length} missions`);
+    }
 
-            console.log('🔍 Statistiques calculées:', {
-                pending: pendingCount,
-                confirmed: confirmedCount,
-                progress: progressCount,
-                completed: completedCount
-            });
+    // CORRECTION : Toujours afficher la section abonnements
+    const statsSection = document.querySelector('.client-section:nth-child(3)'); // Statistiques
+    const abonnementsSection = document.querySelector('.client-section:nth-child(4)'); // Abonnements
+    const tabsSection = document.querySelector('.client-section:nth-child(5)'); // Onglets
 
-            // Mettre à jour les statistiques
-            const statsPending = document.getElementById('stats-pending');
-            const statsConfirmed = document.getElementById('stats-confirmed');
-            const statsProgress = document.getElementById('stats-progress');
-            const statsCompleted = document.getElementById('stats-completed');
+    console.log('🔍 Sections trouvées:', {
+        statsSection: !!statsSection,
+        abonnementsSection: !!abonnementsSection,
+        tabsSection: !!tabsSection
+    });
 
-            console.log('🔍 Éléments stats trouvés:', {
-                pending: !!statsPending,
-                confirmed: !!statsConfirmed,
-                progress: !!statsProgress,
-                completed: !!statsCompleted
-            });
+    // ⭐ CORRECTION : TOUJOURS AFFICHER LA SECTION ABONNEMENTS
+    if (abonnementsSection) {
+        abonnementsSection.style.display = 'block';
+        console.log('✅ Section abonnements affichée');
+    }
 
-            if (statsPending) statsPending.textContent = pendingCount;
-            if (statsConfirmed) statsConfirmed.textContent = confirmedCount;
-            if (statsProgress) statsProgress.textContent = progressCount;
-            if (statsCompleted) statsCompleted.textContent = completedCount;
+    // Afficher/masquer stats et onglets selon les missions
+    if (!currentClient.demandes || currentClient.demandes.length === 0) {
+        console.log('🔍 NO MISSIONS - hiding stats and tabs');
+        if (statsSection) statsSection.style.display = 'none';
+        if (tabsSection) tabsSection.style.display = 'none';
+    } else {
+        console.log('🔍 MISSIONS FOUND - showing stats and tabs');
+        if (statsSection) statsSection.style.display = 'block';
+        if (tabsSection) tabsSection.style.display = 'block';
+    }
 
-            console.log('🔍 Chargement des onglets...');
-            
-            // Charger les demandes pour chaque onglet
-            loadRequests('pending');
-            loadRequests('confirmed');
-            loadRequests('progress');
-            loadRequests('completed');
+    // Calculer les statistiques
+    const pendingCount = currentClient.demandes.filter(d => 
+        d.statut === "en attente" || d.statut === "En attente" || !d.statut
+    ).length;
+    
+    const confirmedCount = currentClient.demandes.filter(d => 
+        d.statut === "confirmée" || d.statut === "Confirmée"
+    ).length;
+    
+    const progressCount = currentClient.demandes.filter(d => 
+        d.statut === "En cours"
+    ).length;
+    
+    const completedCount = currentClient.demandes.filter(d => 
+        d.statut === "Terminée" || d.statut === "Clôturée" || d.validationClient === "validée"
+    ).length;
 
-            console.log('✅ loadClientData terminé');
-        }
+    console.log('🔍 Statistiques calculées:', {
+        pending: pendingCount,
+        confirmed: confirmedCount,
+        progress: progressCount,
+        completed: completedCount
+    });
 
+    // Mettre à jour les statistiques
+    const statsPending = document.getElementById('stats-pending');
+    const statsConfirmed = document.getElementById('stats-confirmed');
+    const statsProgress = document.getElementById('stats-progress');
+    const statsCompleted = document.getElementById('stats-completed');
+
+    console.log('🔍 Éléments stats trouvés:', {
+        pending: !!statsPending,
+        confirmed: !!statsConfirmed,
+        progress: !!statsProgress,
+        completed: !!statsCompleted
+    });
+
+    if (statsPending) statsPending.textContent = pendingCount;
+    if (statsConfirmed) statsConfirmed.textContent = confirmedCount;
+    if (statsProgress) statsProgress.textContent = progressCount;
+    if (statsCompleted) statsCompleted.textContent = completedCount;
+
+    console.log('🔍 Chargement des onglets...');
+    
+    // Charger les demandes pour chaque onglet
+    loadRequests('pending');
+    loadRequests('confirmed');
+    loadRequests('progress');
+    loadRequests('completed');
+
+    console.log('✅ loadClientData terminé');
+}
         // Formatage des dates
         function formatDateOrTime(dateString) {
             if (!dateString) return "";
