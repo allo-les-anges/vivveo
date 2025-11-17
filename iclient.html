@@ -1936,6 +1936,59 @@
     
     showNotification(translations[currentLanguage].login_success, 'success');
     
+    // ⭐⭐ CODE URGENCE AJOUTÉ ICI ⭐⭐
+    console.log('🚨 VÉRIFICATION URGENTE INTERFACE');
+
+    // Forcer l'affichage COMPLET de l'interface
+    setTimeout(() => {
+        const clientInterface = document.getElementById('client-interface');
+        const loginSection = document.getElementById('login-section');
+        
+        console.log('🔍 État après connexion:', {
+            clientInterface: clientInterface ? {
+                exists: true,
+                display: clientInterface.style.display,
+                classList: clientInterface.className,
+                hidden: clientInterface.classList.contains('hidden')
+            } : {exists: false},
+            loginSection: loginSection ? {
+                exists: true, 
+                display: loginSection.style.display,
+                classList: loginSection.className
+            } : {exists: false}
+        });
+        
+        // FORÇAGE ULTIME
+        if (loginSection) {
+            loginSection.style.display = 'none';
+            loginSection.style.visibility = 'hidden';
+            loginSection.style.opacity = '0';
+            loginSection.style.position = 'absolute';
+            loginSection.style.zIndex = '-1000';
+            console.log('✅ Login section FORCÉE à disparaître');
+        }
+        
+        if (clientInterface) {
+            clientInterface.style.display = 'block';
+            clientInterface.style.visibility = 'visible';
+            clientInterface.style.opacity = '1';
+            clientInterface.style.position = 'relative';
+            clientInterface.style.zIndex = '10';
+            clientInterface.classList.remove('hidden');
+            console.log('✅ Interface client FORCÉE à apparaître');
+            
+            // Forcer l'affichage de TOUTES les sections
+            const sections = clientInterface.querySelectorAll('.client-section');
+            sections.forEach((section, index) => {
+                section.style.display = 'block';
+                section.style.visibility = 'visible';
+                section.style.opacity = '1';
+                console.log(`✅ Section ${index + 1} forcée:`, section.querySelector('h3')?.textContent);
+            });
+        }
+    }, 500);
+    // ⭐⭐ FIN DU CODE URGENCE ⭐⭐
+    
 } else {
     throw new Error(data.message || translations[currentLanguage].login_error);
 }
