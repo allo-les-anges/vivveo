@@ -1889,25 +1889,56 @@
                 console.log('🔍 RÉPONSE SERVEUR:', data);
 
                 if (data.success) {
-                    currentClient = data;
+    currentClient = data;
 
-                    document.getElementById('login-section').classList.add('hidden');
-                    document.getElementById('client-interface').classList.remove('hidden');
+    // ⭐ CORRECTION FORCÉE DE L'AFFICHAGE
+    console.log('🔍 Vérification affichage interface...');
+    
+    const clientInterface = document.getElementById('client-interface');
+    const loginSection = document.getElementById('login-section');
 
-                    // Mise à jour immédiate de l'interface
-                    updateClientInterface();
-                    
-                    // Charger les données des missions
-                    loadClientData();
-                    
-                    // ⭐ AJOUT: Charger le statut d'abonnement
-                    await chargerStatutAbonnement();
-                    
-                    showNotification(translations[currentLanguage].login_success, 'success');
-                    
-                } else {
-                    throw new Error(data.message || translations[currentLanguage].login_error);
-                }
+    console.log('🔍 Éléments avant modification:', {
+        clientInterface: !!clientInterface,
+        loginSection: !!loginSection,
+        clientInterfaceDisplay: clientInterface?.style.display,
+        loginSectionDisplay: loginSection?.style.display
+    });
+
+    // FORCER l'affichage avec plusieurs méthodes
+    if (loginSection) {
+        loginSection.classList.add('hidden');
+        loginSection.style.display = 'none';
+        console.log('✅ Section login masquée');
+    }
+
+    if (clientInterface) {
+        clientInterface.classList.remove('hidden');
+        clientInterface.style.display = 'block';
+        clientInterface.style.visibility = 'visible';
+        clientInterface.style.opacity = '1';
+        console.log('✅ Interface client affichée');
+    }
+
+    // Vérification après modification
+    console.log('🔍 Éléments après modification:', {
+        clientInterfaceDisplay: clientInterface?.style.display,
+        loginSectionDisplay: loginSection?.style.display
+    });
+
+    // Mise à jour immédiate de l'interface
+    updateClientInterface();
+    
+    // Charger les données des missions
+    loadClientData();
+    
+    // Charger le statut d'abonnement
+    await chargerStatutAbonnement();
+    
+    showNotification(translations[currentLanguage].login_success, 'success');
+    
+} else {
+    throw new Error(data.message || translations[currentLanguage].login_error);
+}
             } catch (error) {
                 console.error('Erreur de connexion:', error);
                 message.textContent = error.message || translations[currentLanguage].login_error;
