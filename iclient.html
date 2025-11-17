@@ -2010,6 +2010,36 @@
             subscriptionDetails.textContent = "Souscrivez à un abonnement pour bénéficier de nos services";
         }
 
+        // ⭐ FONCTION MANQUANTE AJOUTÉE : Souscrire à un abonnement
+        function souscrireAbonnement(type) {
+            const plans = {
+                'mensuel': { 
+                    prix: 10, 
+                    nom: translations[currentLanguage].monthly_subscription, 
+                    url: 'https://viiveo.com/abonnement-mensuel' 
+                },
+                'annuel': { 
+                    prix: 96, 
+                    nom: translations[currentLanguage].yearly_subscription, 
+                    url: 'https://viiveo.com/abonnement-annuel' 
+                }
+            };
+            
+            const plan = plans[type];
+            const message = `Souscrire à l'abonnement ${plan.nom} pour ${plan.prix}€ ?`;
+            
+            if (confirm(message)) {
+                showNotification(`Redirection vers la page de paiement pour l'abonnement ${plan.nom}...`, 'info');
+                setTimeout(() => {
+                    window.open(plan.url, '_blank');
+                }, 1000);
+            }
+        }
+
+        function gererAbonnement() {
+            showNotification("Page de gestion d'abonnement à venir...", 'info');
+        }
+
         // Fonction de déconnexion
         function logout() {
             currentClient = null;
@@ -2309,26 +2339,6 @@
             if (request) {
                 alert(`Détails de la demande:\nService: ${request.service}\nDate: ${formatDateOrTime(request.intervention)}\nHeure: ${formatDateOrTime(request.heure)}\nStatut: ${request.statut || "En attente"}`);
             }
-        }
-
-        // Fonctions d'abonnement
-        function souscrireAbonnement(type) {
-            const plans = {
-                'mensuel': { prix: 10, nom: 'Mensuel', url: 'https://viiveo.com/abonnement-mensuel' },
-                'annuel': { prix: 96, nom: 'Annuel', url: 'https://viiveo.com/abonnement-annuel' }
-            };
-            
-            const plan = plans[type];
-            if (confirm(`Souscrire à l'abonnement ${plan.nom} pour ${plan.prix}€ ?`)) {
-                showNotification(`Redirection vers la page de paiement pour l'abonnement ${plan.nom}...`, 'info');
-                setTimeout(() => {
-                    window.open(plan.url, '_blank');
-                }, 1000);
-            }
-        }
-
-        function gererAbonnement() {
-            showNotification("Page de gestion d'abonnement à venir...", 'info');
         }
 
         function showClosedMissions() {
