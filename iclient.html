@@ -889,7 +889,7 @@
                     class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-4 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all">
                 <span data-translate="subscribe">Souscrire</span> - 10€/mois
             </button>
-        </div> <!-- Fermeture de la div Mensuel -->
+        </div>
 
         <!-- Abonnement Annuel -->
         <div class="bg-white border-2 border-yellow-400 rounded-xl p-8 hover:shadow-lg transition-all relative">
@@ -936,10 +936,9 @@
                     class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-4 rounded-lg font-semibold hover:from-yellow-600 hover:to-yellow-700 transition-all">
                 <span data-translate="subscribe">Souscrire</span> - 96€/an
             </button>
-        </div> <!-- Fermeture de la div Annuel -->
-    </div> <!-- Fermeture de la grid -->
-</div> <!-- Fermeture de la section -->
-            
+        </div>
+    </div>
+</div>            
             <!-- Navigation par onglets -->
             <div class="client-section">
                 <div class="border-b border-gray-200 mb-6">
@@ -1329,586 +1328,562 @@
     </div>
 
     <script>
-        // URL de l'application Google Apps Script
-        const webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
+    <script>
+    // URL de l'application Google Apps Script
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
 
-        // Traductions multilingues complètes
-const translations = {
-    fr: {
-        // Navigation
-        nav_home: "Accueil",
-        nav_services: "Services",
-        nav_formules: "Abonnement",
-        nav_prestataires: "Découvrir nos Prestataires",
-        nav_client: "Espace Client",
-        nav_prestataires_space: "Espace Prestataire",
-        
-        // Login
-        login_title: "Espace Client Viiveo",
-        login_subtitle: "Connectez-vous pour gérer vos demandes et suivre vos interventions",
-        email_label: "Adresse email",
-        password_label: "Mot de passe",
-        login_button: "Se connecter",
-        
-        // Interface client
-        welcome: "Bienvenue",
-        credits_available: "Crédits disponibles",
-        edit_profile: "Modifier profil",
-        closed_missions: "Missions clôturées",
-        logout: "Déconnexion",
-        statistics: "Mes Statistiques",
-        quick_actions: "Actions rapides",
-        requests_pending: "Demandes en attente",
-        requests_confirmed: "Demandes confirmées",
-        requests_progress: "En cours",
-        requests_completed: "Terminées",
-        recharge_credits: "Recharger mes crédits",
-        view_reports: "Voir mes rapports",
-        
-        // Onglets
-        tab_pending: "En Attente",
-        tab_confirmed: "Confirmées",
-        tab_progress: "En Cours",
-        tab_completed: "Terminées",
-        
-        // Titres des onglets
-        pending_requests: "Demandes en attente de validation",
-        confirmed_requests: "Demandes planifiées",
-        progress_requests: "Demandes en cours",
-        completed_requests: "Demandes terminées",
-        
-        // Éléments de demande
-        request_date: "Date demande",
-        service: "Service",
-        intervention: "Intervention",
-        time: "Heure",
-        task: "Tâche",
-        status: "Statut",
-        actions: "Actions",
-        request_validate: "Valider",
-        request_details: "Détails",
-        no_requests: "Aucune demande disponible",
-        
-        // Footer
-        footer_desc: "Votre bien-être à domicile, notre priorité.",
-        footer_navigation: "Navigation",
-        footer_spaces: "Espaces",
-        footer_contact: "Contact",
-        footer_copyright: "© 2024 Viiveo. Tous droits réservés.",
-        
-        // Loader
-        loading: "Chargement...",
-        
-        // Modales
-        closed_missions_title: "Missions clôturées",
-        edit_profile_title: "Modifier mes données personnelles",
-        personal_info: "Informations personnelles",
-        contact_info: "Coordonnées",
-        client_name: "Nom",
-        client_firstname: "Prénom",
-        client_email: "Email",
-        client_password: "Nouveau mot de passe",
-        client_address: "Adresse",
-        client_city: "Ville",
-        client_postal: "Code postal",
-        client_phone: "Téléphone",
-        tutor_info: "Données du tuteur",
-        tutor_name: "Nom du tuteur",
-        tutor_firstname: "Prénom du tuteur",
-        tutor_address: "Adresse du tuteur",
-        tutor_city: "Ville du tuteur",
-        tutor_postal: "Code postal du tuteur",
-        tutor_phone: "Téléphone du tuteur",
-        save_changes: "Enregistrer",
-        cancel: "Annuler",
-        
-        // Messages
-        login_success: "Connexion réussie !",
-        login_error: "Email ou mot de passe incorrect",
-        request_validated: "Demande validée avec succès !",
-        profile_updated: "Profil mis à jour avec succès !",
-        fill_fields: "Veuillez remplir tous les champs obligatoires",
-        payment_redirect: "Redirection vers la page de paiement...",
-        reports_coming: "Fonction de consultation des rapports à venir.",
-        confirm_validation: "Confirmez-vous que cette prestation a bien été réalisée ?",
-        validation_success: "Merci ! Votre validation a bien été enregistrée.",
-        server_error: "Erreur de communication avec le serveur.",
-
-        // Nouvelles traductions
-        delete_account: "Supprimer mon compte",
-        delete_account_title: "Supprimer mon compte",
-        delete_account_confirm: "Êtes-vous sûr de vouloir supprimer votre compte ?",
-        delete_account_warning: "Cette action est irréversible. Toutes vos données et historiques seront définitivement supprimés.",
-        confirm_delete: "Confirmer la suppression",
-        subscription_management: "Gérer mon abonnement",
-        monthly_subscription: "Abonnement Mensuel",
-        yearly_subscription: "Abonnement Annuel",
-        subscribe: "Souscrire",
-        current_subscription: "Votre abonnement actuel",
-        no_subscription: "Aucun abonnement actif",
-        flexible_subscription: "Flexible - Résiliable à tout moment",
-        economical_subscription: "Économique - 20% d'économie",
-        subscription_features: "Accès à tous les services",
-        priority_support: "Support prioritaire",
-        cancel_anytime: "Résiliation à tout moment",
-        annual_savings: "Économie de 24€ par an",
-        annual_commitment: "Engagement 12 mois"
-    },
-    nl: {
-        // Navigation
-        nav_home: "Home",
-        nav_services: "Diensten",
-        nav_formules: "Abonnement",
-        nav_prestataires: "Ontdek onze Aanbieders",
-        nav_client: "Klantenruimte",
-        nav_prestataires_space: "Aanbieder Ruimte",
-        
-        // Login
-        login_title: "Viiveo Klantenruimte",
-        login_subtitle: "Log in om uw verzoeken te beheren en uw interventies op te volgen",
-        email_label: "E-mailadres",
-        password_label: "Wachtwoord",
-        login_button: "Inloggen",
-        
-        // Interface client
-        welcome: "Welkom",
-        credits_available: "Beschikbare credits",
-        edit_profile: "Profiel wijzigen",
-        closed_missions: "Afgesloten missies",
-        logout: "Uitloggen",
-        statistics: "Mijn Statistieken",
-        quick_actions: "Snelle acties",
-        requests_pending: "Verzoeken in afwachting",
-        requests_confirmed: "Bevestigde verzoeken",
-        requests_progress: "Bezig",
-        requests_completed: "Voltooid",
-        recharge_credits: "Mijn credits opladen",
-        view_reports: "Mijn rapporten bekijken",
-        
-        // Onglets
-        tab_pending: "In Afwachting",
-        tab_confirmed: "Bevestigd",
-        tab_progress: "Bezig",
-        tab_completed: "Voltooid",
-        
-        // Titres des onglets
-        pending_requests: "Verzoeken in afwachting van validatie",
-        confirmed_requests: "Geplande verzoeken",
-        progress_requests: "Lopende verzoeken",
-        completed_requests: "Voltooide verzoeken",
-        
-        // Éléments de demande
-        request_date: "Aanvraagdatum",
-        service: "Dienst",
-        intervention: "Interventie",
-        time: "Tijd",
-        task: "Taak",
-        status: "Status",
-        actions: "Acties",
-        request_validate: "Valideren",
-        request_details: "Details",
-        no_requests: "Geen verzoeken beschikbaar",
-        
-        // Footer
-        footer_desc: "Uw welzijn thuis, onze prioriteit.",
-        footer_navigation: "Navigatie",
-        footer_spaces: "Ruimtes",
-        footer_contact: "Contact",
-        footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden.",
-        
-        // Loader
-        loading: "Laden...",
-        
-        // Modales
-        closed_missions_title: "Afgesloten missies",
-        edit_profile_title: "Mijn persoonlijke gegevens wijzigen",
-        personal_info: "Persoonlijke informatie",
-        contact_info: "Contactgegevens",
-        client_name: "Naam",
-        client_firstname: "Voornaam",
-        client_email: "E-mail",
-        client_password: "Nieuw wachtwoord",
-        client_address: "Adres",
-        client_city: "Stad",
-        client_postal: "Postcode",
-        client_phone: "Telefoon",
-        tutor_info: "Gegevens voogd",
-        tutor_name: "Naam voogd",
-        tutor_firstname: "Voornaam voogd",
-        tutor_address: "Adres voogd",
-        tutor_city: "Stad voogd",
-        tutor_postal: "Postcode voogd",
-        tutor_phone: "Telefoon voogd",
-        save_changes: "Opslaan",
-        cancel: "Annuleren",
-        
-        // Messages
-        login_success: "Succesvol ingelogd!",
-        login_error: "E-mail of wachtwoord onjuist",
-        request_validated: "Verzoek succesvol gevalideerd!",
-        profile_updated: "Profiel succesvol bijgewerkt!",
-        fill_fields: "Vul alle verplichte velden in",
-        payment_redirect: "Doorverwijzing naar betalingspagina...",
-        reports_coming: "Rapportfunctie komt binnenkort.",
-        confirm_validation: "Bevestigt u dat deze dienst goed is uitgevoerd?",
-        validation_success: "Bedankt! Uw validatie is goed geregistreerd.",
-        server_error: "Communicatiefout met de server.",
-
-        // Nouvelles traductions
-        delete_account: "Mijn account verwijderen",
-        delete_account_title: "Mijn account verwijderen",
-        delete_account_confirm: "Weet u zeker dat u uw account wilt verwijderen?",
-        delete_account_warning: "Deze actie is onomkeerbaar. Al uw gegevens en geschiedenis worden permanent verwijderd.",
-        confirm_delete: "Verwijdering bevestigen",
-        subscription_management: "Mijn abonnement beheren",
-        monthly_subscription: "Maandabonnement",
-        yearly_subscription: "Jaarabonnement",
-        subscribe: "Abonneren",
-        current_subscription: "Uw huidig abonnement",
-        no_subscription: "Geen actief abonnement",
-        flexible_subscription: "Flexibel - Opzegbaar op elk moment",
-        economical_subscription: "Voordelig - 20% besparing",
-        subscription_features: "Toegang tot alle diensten",
-        priority_support: "Prioritaire ondersteuning",
-        cancel_anytime: "Opzegbaar op elk moment",
-        annual_savings: "Besparing van €24 per jaar",
-        annual_commitment: "Verbinding 12 maanden"
-    },
-    en: {
-        // Navigation
-        nav_home: "Home",
-        nav_services: "Services",
-        nav_formules: "Subscription",
-        nav_prestataires: "Discover our Providers",
-        nav_client: "Client Space",
-        nav_prestataires_space: "Provider Space",
-        
-        // Login
-        login_title: "Viiveo Client Space",
-        login_subtitle: "Log in to manage your requests and track your interventions",
-        email_label: "Email address",
-        password_label: "Password",
-        login_button: "Log in",
-        
-        // Interface client
-        welcome: "Welcome",
-        credits_available: "Available credits",
-        edit_profile: "Edit profile",
-        closed_missions: "Closed missions",
-        logout: "Logout",
-        statistics: "My Statistics",
-        quick_actions: "Quick Actions",
-        requests_pending: "Pending requests",
-        requests_confirmed: "Confirmed requests",
-        requests_progress: "In progress",
-        requests_completed: "Completed",
-        recharge_credits: "Recharge my credits",
-        view_reports: "View my reports",
-        
-        // Onglets
-        tab_pending: "Pending",
-        tab_confirmed: "Confirmed",
-        tab_progress: "In Progress",
-        tab_completed: "Completed",
-        
-        // Titres des onglets
-        pending_requests: "Requests pending validation",
-        confirmed_requests: "Scheduled requests",
-        progress_requests: "Requests in progress",
-        completed_requests: "Completed requests",
-        
-        // Éléments de demande
-        request_date: "Request date",
-        service: "Service",
-        intervention: "Intervention",
-        time: "Time",
-        task: "Task",
-        status: "Status",
-        actions: "Actions",
-        request_validate: "Validate",
-        request_details: "Details",
-        no_requests: "No requests available",
-        
-        // Footer
-        footer_desc: "Your well-being at home, our priority.",
-        footer_navigation: "Navigation",
-        footer_spaces: "Spaces",
-        footer_contact: "Contact",
-        footer_copyright: "© 2024 Viiveo. All rights reserved.",
-        
-        // Loader
-        loading: "Loading...",
-        
-        // Modales
-        closed_missions_title: "Closed missions",
-        edit_profile_title: "Edit my personal data",
-        personal_info: "Personal information",
-        contact_info: "Contact details",
-        client_name: "Name",
-        client_firstname: "First name",
-        client_email: "Email",
-        client_password: "New password",
-        client_address: "Address",
-        client_city: "City",
-        client_postal: "Postal code",
-        client_phone: "Phone",
-        tutor_info: "Tutor data",
-        tutor_name: "Tutor name",
-        tutor_firstname: "Tutor first name",
-        tutor_address: "Tutor address",
-        tutor_city: "Tutor city",
-        tutor_postal: "Tutor postal code",
-        tutor_phone: "Tutor phone",
-        save_changes: "Save",
-        cancel: "Cancel",
-        
-        // Messages
-        login_success: "Login successful!",
-        login_error: "Email or password incorrect",
-        request_validated: "Request validated successfully!",
-        profile_updated: "Profile updated successfully!",
-        fill_fields: "Please fill all required fields",
-        payment_redirect: "Redirecting to payment page...",
-        reports_coming: "Report consultation feature coming soon.",
-        confirm_validation: "Do you confirm that this service has been properly performed?",
-        validation_success: "Thank you! Your validation has been recorded.",
-        server_error: "Server communication error.",
-
-        // Nouvelles traductions
-        delete_account: "Delete my account",
-        delete_account_title: "Delete my account",
-        delete_account_confirm: "Are you sure you want to delete your account?",
-        delete_account_warning: "This action is irreversible. All your data and history will be permanently deleted.",
-        confirm_delete: "Confirm deletion",
-        subscription_management: "Manage my subscription",
-        monthly_subscription: "Monthly Subscription",
-        yearly_subscription: "Annual Subscription",
-        subscribe: "Subscribe",
-        current_subscription: "Your current subscription",
-        no_subscription: "No active subscription",
-        flexible_subscription: "Flexible - Cancel anytime",
-        economical_subscription: "Economical - 20% savings",
-        subscription_features: "Access to all services",
-        priority_support: "Priority support",
-        cancel_anytime: "Cancel anytime",
-        annual_savings: "Savings of €24 per year",
-        annual_commitment: "12-month commitment"
-    },
-    // REMPLACEZ toute la section des traductions allemandes (à partir de la ligne ~1800) par :
-
-de: {
-    // Navigation
-    nav_home: "Startseite",
-    nav_services: "Dienstleistungen",
-    nav_formules: "Abonnement",
-    nav_prestataires: "Entdecken Sie unsere Anbieter",
-    nav_client: "Kundenbereich",
-    nav_prestataires_space: "Anbieterbereich",
-    
-    // Login
-    login_title: "Viiveo Kundenbereich",
-    login_subtitle: "Melden Sie sich an, um Ihre Anfragen zu verwalten und Ihre Einsätze zu verfolgen",
-    email_label: "E-Mail-Adresse",
-    password_label: "Passwort",
-    login_button: "Anmelden",
-    
-    // Interface client
-    welcome: "Willkommen",
-    credits_available: "Verfügbare Credits",
-    edit_profile: "Profil bearbeiten",
-    closed_missions: "Abgeschlossene Einsätze",
-    logout: "Abmelden",
-    statistics: "Meine Statistiken",
-    quick_actions: "Schnellaktionen",
-    requests_pending: "Ausstehende Anfragen",
-    requests_confirmed: "Bestätigte Anfragen",
-    requests_progress: "In Bearbeitung",
-    requests_completed: "Abgeschlossen",
-    recharge_credits: "Meine Credits aufladen",
-    view_reports: "Meine Berichte anzeigen",
-    
-    // Onglets
-    tab_pending: "Ausstehend",
-    tab_confirmed: "Bestätigt",
-    tab_progress: "In Bearbeitung",
-    tab_completed: "Abgeschlossen",
-    
-    // Titres des onglets
-    pending_requests: "Anfragen zur Validierung ausstehend",
-    confirmed_requests: "Geplante Anfragen",
-    progress_requests: "Laufende Anfragen",
-    completed_requests: "Abgeschlossene Anfragen",
-    
-    // Éléments de demande
-    request_date: "Anfragedatum",
-    service: "Dienstleistung",
-    intervention: "Einsatz",
-    time: "Uhrzeit",
-    task: "Aufgabe",
-    status: "Status",
-    actions: "Aktionen",
-    request_validate: "Validieren",
-    request_details: "Details",
-    no_requests: "Keine Anfragen verfügbar",
-
-    // Subscription
-    subscription_active: "Actif",
-    subscription_expired: "Inactif",
-    payment_pending: "Paiement en attente",
-    valid_until: "Valide jusqu'au",
-    days_remaining: "jours restants",
-    payment_pending_message: "Paiement en attente - Régularisez votre situation",
-    subscribe_to_benefit: "Souscrivez à un abonnement pour bénéficier de nos services",
-    manage: "Gérer",
-    regularize: "Régulariser",
-    support: "Support",
-    contact_us: "Contactez-nus",
-        
-    // Footer
-    footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
-    footer_navigation: "Navigation",
-    footer_spaces: "Bereiche",
-    footer_contact: "Kontakt",
-    footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten.",
-    
-    // Loader
-    loading: "Laden...",
-    
-    // Modales
-    closed_missions_title: "Abgeschlossene Einsätze",
-    edit_profile_title: "Meine persönlichen Daten bearbeiten",
-    personal_info: "Persönliche Informationen",
-    contact_info: "Kontaktdaten",
-    client_name: "Name",
-    client_firstname: "Vorname",
-    client_email: "E-Mail",
-    client_password: "Neues Passwort",
-    client_address: "Adresse",
-    client_city: "Stadt",
-    client_postal: "Postleitzahl",
-    client_phone: "Telefon",
-    tutor_info: "Daten des Betreuers",
-    tutor_name: "Name des Betreuers",
-    tutor_firstname: "Vorname des Betreuers",
-    tutor_address: "Adresse des Betreuers",
-    tutor_city: "Stadt des Betreuers",
-    tutor_postal: "Postleitzahl des Betreuers",
-    tutor_phone: "Telefon des Betreuers",
-    save_changes: "Speichern",
-    cancel: "Abbrechen",
-    
-    // Messages
-    login_success: "Anmeldung erfolgreich!",
-    login_error: "E-Mail oder Passwort falsch",
-    request_validated: "Anfrage erfolgreich validiert!",
-    profile_updated: "Profil erfolgreich aktualisiert!",
-    fill_fields: "Bitte füllen Sie alle Pflichtfelder aus",
-    payment_redirect: "Weiterleitung zur Zahlungsseite...",
-    reports_coming: "Berichtsfunktion in Kürze verfügbar.",
-    confirm_validation: "Bestätigen Sie, dass diese Dienstleistung ordnungsgemäß erbracht wurde?",
-    validation_success: "Vielen Dank! Ihre Validierung wurde gespeichert.",
-    server_error: "Kommunikationsfehler mit dem Server.",
-
-    // Nouvelles traductions
-    delete_account: "Mein Konto löschen",
-    delete_account_title: "Mein Konto löschen",
-    delete_account_confirm: "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?",
-    delete_account_warning: "Diese Aktion ist unwiderruflich. Alle Ihre Daten und Verläufe werden endgültig gelöscht.",
-    confirm_delete: "Löschung bestätigen",
-    subscription_management: "Mein Abonnement verwalten",
-    monthly_subscription: "Monatsabonnement",
-    yearly_subscription: "Jahresabonnement",
-    subscribe: "Abonnieren",
-    current_subscription: "Ihr aktuelles Abonnement",
-    no_subscription: "Kein aktives Abonnement",
-    flexible_subscription: "Flexibel - Jederzeit kündbar",
-    economical_subscription: "Wirtschaftlich - 20% Ersparnis",
-    subscription_features: "Zugang zu allen Dienstleistungen",
-    priority_support: "Prioritärer Support",
-    cancel_anytime: "Jederzeit kündbar",
-    annual_savings: "Ersparnis von 24€ pro Jahr",
-    annual_commitment: "12-monatige Bindung"
-}
-
-let currentLanguage = 'fr';
-let currentClient = null;
-        function changeLanguage(lang) {
-            currentLanguage = lang;
+    // Traductions multilingues complètes
+    const translations = {
+        fr: {
+            // Navigation
+            nav_home: "Accueil",
+            nav_services: "Services",
+            nav_formules: "Abonnement",
+            nav_prestataires: "Découvrir nos Prestataires",
+            nav_client: "Espace Client",
+            nav_prestataires_space: "Espace Prestataire",
             
-            document.querySelectorAll('[data-translate]').forEach(element => {
-                const key = element.getAttribute('data-translate');
-                if (translations[lang] && translations[lang][key]) {
-                    element.textContent = translations[lang][key];
-                }
-            });
-
-            const flags = { fr: '🇫🇷', nl: '🇳🇱', en: '🇬🇧', de: '🇩🇪' };
-            const codes = { fr: 'FR', nl: 'NL', en: 'EN', de: 'DE' };
+            // Login
+            login_title: "Espace Client Viiveo",
+            login_subtitle: "Connectez-vous pour gérer vos demandes et suivre vos interventions",
+            email_label: "Adresse email",
+            password_label: "Mot de passe",
+            login_button: "Se connecter",
             
-            document.getElementById('current-flag').textContent = flags[lang];
-            document.getElementById('current-language').textContent = codes[lang];
+            // Interface client
+            welcome: "Bienvenue",
+            credits_available: "Crédits disponibles",
+            edit_profile: "Modifier profil",
+            closed_missions: "Missions clôturées",
+            logout: "Déconnexion",
+            statistics: "Mes Statistiques",
+            quick_actions: "Actions rapides",
+            requests_pending: "Demandes en attente",
+            requests_confirmed: "Demandes confirmées",
+            requests_progress: "En cours",
+            requests_completed: "Terminées",
+            recharge_credits: "Recharger mes crédits",
+            view_reports: "Voir mes rapports",
+            
+            // Onglets
+            tab_pending: "En Attente",
+            tab_confirmed: "Confirmées",
+            tab_progress: "En Cours",
+            tab_completed: "Terminées",
+            
+            // Titres des onglets
+            pending_requests: "Demandes en attente de validation",
+            confirmed_requests: "Demandes planifiées",
+            progress_requests: "Demandes en cours",
+            completed_requests: "Demandes terminées",
+            
+            // Éléments de demande
+            request_date: "Date demande",
+            service: "Service",
+            intervention: "Intervention",
+            time: "Heure",
+            task: "Tâche",
+            status: "Statut",
+            actions: "Actions",
+            request_validate: "Valider",
+            request_details: "Détails",
+            no_requests: "Aucune demande disponible",
+            
+            // Footer
+            footer_desc: "Votre bien-être à domicile, notre priorité.",
+            footer_navigation: "Navigation",
+            footer_spaces: "Espaces",
+            footer_contact: "Contact",
+            footer_copyright: "© 2024 Viiveo. Tous droits réservés.",
+            
+            // Loader
+            loading: "Chargement...",
+            
+            // Modales
+            closed_missions_title: "Missions clôturées",
+            edit_profile_title: "Modifier mes données personnelles",
+            personal_info: "Informations personnelles",
+            contact_info: "Coordonnées",
+            client_name: "Nom",
+            client_firstname: "Prénom",
+            client_email: "Email",
+            client_password: "Nouveau mot de passe",
+            client_address: "Adresse",
+            client_city: "Ville",
+            client_postal: "Code postal",
+            client_phone: "Téléphone",
+            tutor_info: "Données du tuteur",
+            tutor_name: "Nom du tuteur",
+            tutor_firstname: "Prénom du tuteur",
+            tutor_address: "Adresse du tuteur",
+            tutor_city: "Ville du tuteur",
+            tutor_postal: "Code postal du tuteur",
+            tutor_phone: "Téléphone du tuteur",
+            save_changes: "Enregistrer",
+            cancel: "Annuler",
+            
+            // Messages
+            login_success: "Connexion réussie !",
+            login_error: "Email ou mot de passe incorrect",
+            request_validated: "Demande validée avec succès !",
+            profile_updated: "Profil mis à jour avec succès !",
+            fill_fields: "Veuillez remplir tous les champs obligatoires",
+            payment_redirect: "Redirection vers la page de paiement...",
+            reports_coming: "Fonction de consultation des rapports à venir.",
+            confirm_validation: "Confirmez-vous que cette prestation a bien été réalisée ?",
+            validation_success: "Merci ! Votre validation a bien été enregistrée.",
+            server_error: "Erreur de communication avec le serveur.",
 
-            document.querySelectorAll('.language-option').forEach(option => {
-                option.classList.remove('active');
-                if (option.getAttribute('data-lang') === lang) {
-                    option.classList.add('active');
-                }
-            });
+            // Nouvelles traductions
+            delete_account: "Supprimer mon compte",
+            delete_account_title: "Supprimer mon compte",
+            delete_account_confirm: "Êtes-vous sûr de vouloir supprimer votre compte ?",
+            delete_account_warning: "Cette action est irréversible. Toutes vos données et historiques seront définitivement supprimés.",
+            confirm_delete: "Confirmer la suppression",
+            subscription_management: "Gérer mon abonnement",
+            monthly_subscription: "Abonnement Mensuel",
+            yearly_subscription: "Abonnement Annuel",
+            subscribe: "Souscrire",
+            current_subscription: "Votre abonnement actuel",
+            no_subscription: "Aucun abonnement actif",
+            flexible_subscription: "Flexible - Résiliable à tout moment",
+            economical_subscription: "Économique - 20% d'économie",
+            subscription_features: "Accès à tous les services",
+            priority_support: "Support prioritaire",
+            cancel_anytime: "Résiliation à tout moment",
+            annual_savings: "Économie de 24€ par an",
+            annual_commitment: "Engagement 12 mois"
+        },
+        nl: {
+            // Navigation
+            nav_home: "Home",
+            nav_services: "Diensten",
+            nav_formules: "Abonnement",
+            nav_prestataires: "Ontdek onze Aanbieders",
+            nav_client: "Klantenruimte",
+            nav_prestataires_space: "Aanbieder Ruimte",
+            
+            // Login
+            login_title: "Viiveo Klantenruimte",
+            login_subtitle: "Log in om uw verzoeken te beheren en uw interventies op te volgen",
+            email_label: "E-mailadres",
+            password_label: "Wachtwoord",
+            login_button: "Inloggen",
+            
+            // Interface client
+            welcome: "Welkom",
+            credits_available: "Beschikbare credits",
+            edit_profile: "Profiel wijzigen",
+            closed_missions: "Afgesloten missies",
+            logout: "Uitloggen",
+            statistics: "Mijn Statistieken",
+            quick_actions: "Snelle acties",
+            requests_pending: "Verzoeken in afwachting",
+            requests_confirmed: "Bevestigde verzoeken",
+            requests_progress: "Bezig",
+            requests_completed: "Voltooid",
+            recharge_credits: "Mijn credits opladen",
+            view_reports: "Mijn rapporten bekijken",
+            
+            // Onglets
+            tab_pending: "In Afwachting",
+            tab_confirmed: "Bevestigd",
+            tab_progress: "Bezig",
+            tab_completed: "Voltooid",
+            
+            // Titres des onglets
+            pending_requests: "Verzoeken in afwachting van validatie",
+            confirmed_requests: "Geplande verzoeken",
+            progress_requests: "Lopende verzoeken",
+            completed_requests: "Voltooide verzoeken",
+            
+            // Éléments de demande
+            request_date: "Aanvraagdatum",
+            service: "Dienst",
+            intervention: "Interventie",
+            time: "Tijd",
+            task: "Taak",
+            status: "Status",
+            actions: "Acties",
+            request_validate: "Valideren",
+            request_details: "Details",
+            no_requests: "Geen verzoeken beschikbaar",
+            
+            // Footer
+            footer_desc: "Uw welzijn thuis, onze prioriteit.",
+            footer_navigation: "Navigatie",
+            footer_spaces: "Ruimtes",
+            footer_contact: "Contact",
+            footer_copyright: "© 2024 Viiveo. Alle rechten voorbehouden.",
+            
+            // Loader
+            loading: "Laden...",
+            
+            // Modales
+            closed_missions_title: "Afgesloten missies",
+            edit_profile_title: "Mijn persoonlijke gegevens wijzigen",
+            personal_info: "Persoonlijke informatie",
+            contact_info: "Contactgegevens",
+            client_name: "Naam",
+            client_firstname: "Voornaam",
+            client_email: "E-mail",
+            client_password: "Nieuw wachtwoord",
+            client_address: "Adres",
+            client_city: "Stad",
+            client_postal: "Postcode",
+            client_phone: "Telefoon",
+            tutor_info: "Gegevens voogd",
+            tutor_name: "Naam voogd",
+            tutor_firstname: "Voornaam voogd",
+            tutor_address: "Adres voogd",
+            tutor_city: "Stad voogd",
+            tutor_postal: "Postcode voogd",
+            tutor_phone: "Telefoon voogd",
+            save_changes: "Opslaan",
+            cancel: "Annuleren",
+            
+            // Messages
+            login_success: "Succesvol ingelogd!",
+            login_error: "E-mail of wachtwoord onjuist",
+            request_validated: "Verzoek succesvol gevalideerd!",
+            profile_updated: "Profiel succesvol bijgewerkt!",
+            fill_fields: "Vul alle verplichte velden in",
+            payment_redirect: "Doorverwijzing naar betalingspagina...",
+            reports_coming: "Rapportfunctie komt binnenkort.",
+            confirm_validation: "Bevestigt u dat deze dienst goed is uitgevoerd?",
+            validation_success: "Bedankt! Uw validatie is goed geregistreerd.",
+            server_error: "Communicatiefout met de server.",
 
-            localStorage.setItem('viiveo-language', lang);
+            // Nouvelles traductions
+            delete_account: "Mijn account verwijderen",
+            delete_account_title: "Mijn account verwijderen",
+            delete_account_confirm: "Weet u zeker dat u uw account wilt verwijderen?",
+            delete_account_warning: "Deze actie is onomkeerbaar. Al uw gegevens en geschiedenis worden permanent verwijderd.",
+            confirm_delete: "Verwijdering bevestigen",
+            subscription_management: "Mijn abonnement beheren",
+            monthly_subscription: "Maandabonnement",
+            yearly_subscription: "Jaarabonnement",
+            subscribe: "Abonneren",
+            current_subscription: "Uw huidig abonnement",
+            no_subscription: "Geen actief abonnement",
+            flexible_subscription: "Flexibel - Opzegbaar op elk moment",
+            economical_subscription: "Voordelig - 20% besparing",
+            subscription_features: "Toegang tot alle diensten",
+            priority_support: "Prioritaire ondersteuning",
+            cancel_anytime: "Opzegbaar op elk moment",
+            annual_savings: "Besparing van €24 per jaar",
+            annual_commitment: "Verbinding 12 maanden"
+        },
+        en: {
+            // Navigation
+            nav_home: "Home",
+            nav_services: "Services",
+            nav_formules: "Subscription",
+            nav_prestataires: "Discover our Providers",
+            nav_client: "Client Space",
+            nav_prestataires_space: "Provider Space",
+            
+            // Login
+            login_title: "Viiveo Client Space",
+            login_subtitle: "Log in to manage your requests and track your interventions",
+            email_label: "Email address",
+            password_label: "Password",
+            login_button: "Log in",
+            
+            // Interface client
+            welcome: "Welcome",
+            credits_available: "Available credits",
+            edit_profile: "Edit profile",
+            closed_missions: "Closed missions",
+            logout: "Logout",
+            statistics: "My Statistics",
+            quick_actions: "Quick Actions",
+            requests_pending: "Pending requests",
+            requests_confirmed: "Confirmed requests",
+            requests_progress: "In progress",
+            requests_completed: "Completed",
+            recharge_credits: "Recharge my credits",
+            view_reports: "View my reports",
+            
+            // Onglets
+            tab_pending: "Pending",
+            tab_confirmed: "Confirmed",
+            tab_progress: "In Progress",
+            tab_completed: "Completed",
+            
+            // Titres des onglets
+            pending_requests: "Requests pending validation",
+            confirmed_requests: "Scheduled requests",
+            progress_requests: "Requests in progress",
+            completed_requests: "Completed requests",
+            
+            // Éléments de demande
+            request_date: "Request date",
+            service: "Service",
+            intervention: "Intervention",
+            time: "Time",
+            task: "Task",
+            status: "Status",
+            actions: "Actions",
+            request_validate: "Validate",
+            request_details: "Details",
+            no_requests: "No requests available",
+            
+            // Footer
+            footer_desc: "Your well-being at home, our priority.",
+            footer_navigation: "Navigation",
+            footer_spaces: "Spaces",
+            footer_contact: "Contact",
+            footer_copyright: "© 2024 Viiveo. All rights reserved.",
+            
+            // Loader
+            loading: "Loading...",
+            
+            // Modales
+            closed_missions_title: "Closed missions",
+            edit_profile_title: "Edit my personal data",
+            personal_info: "Personal information",
+            contact_info: "Contact details",
+            client_name: "Name",
+            client_firstname: "First name",
+            client_email: "Email",
+            client_password: "New password",
+            client_address: "Address",
+            client_city: "City",
+            client_postal: "Postal code",
+            client_phone: "Phone",
+            tutor_info: "Tutor data",
+            tutor_name: "Tutor name",
+            tutor_firstname: "Tutor first name",
+            tutor_address: "Tutor address",
+            tutor_city: "Tutor city",
+            tutor_postal: "Tutor postal code",
+            tutor_phone: "Tutor phone",
+            save_changes: "Save",
+            cancel: "Cancel",
+            
+            // Messages
+            login_success: "Login successful!",
+            login_error: "Email or password incorrect",
+            request_validated: "Request validated successfully!",
+            profile_updated: "Profile updated successfully!",
+            fill_fields: "Please fill all required fields",
+            payment_redirect: "Redirecting to payment page...",
+            reports_coming: "Report consultation feature coming soon.",
+            confirm_validation: "Do you confirm that this service has been properly performed?",
+            validation_success: "Thank you! Your validation has been recorded.",
+            server_error: "Server communication error.",
+
+            // Nouvelles traductions
+            delete_account: "Delete my account",
+            delete_account_title: "Delete my account",
+            delete_account_confirm: "Are you sure you want to delete your account?",
+            delete_account_warning: "This action is irreversible. All your data and history will be permanently deleted.",
+            confirm_delete: "Confirm deletion",
+            subscription_management: "Manage my subscription",
+            monthly_subscription: "Monthly Subscription",
+            yearly_subscription: "Annual Subscription",
+            subscribe: "Subscribe",
+            current_subscription: "Your current subscription",
+            no_subscription: "No active subscription",
+            flexible_subscription: "Flexible - Cancel anytime",
+            economical_subscription: "Economical - 20% savings",
+            subscription_features: "Access to all services",
+            priority_support: "Priority support",
+            cancel_anytime: "Cancel anytime",
+            annual_savings: "Savings of €24 per year",
+            annual_commitment: "12-month commitment"
+        },
+        de: {
+            // Navigation
+            nav_home: "Startseite",
+            nav_services: "Dienstleistungen",
+            nav_formules: "Abonnement",
+            nav_prestataires: "Entdecken Sie unsere Anbieter",
+            nav_client: "Kundenbereich",
+            nav_prestataires_space: "Anbieterbereich",
+            
+            // Login
+            login_title: "Viiveo Kundenbereich",
+            login_subtitle: "Melden Sie sich an, um Ihre Anfragen zu verwalten und Ihre Einsätze zu verfolgen",
+            email_label: "E-Mail-Adresse",
+            password_label: "Passwort",
+            login_button: "Anmelden",
+            
+            // Interface client
+            welcome: "Willkommen",
+            credits_available: "Verfügbare Credits",
+            edit_profile: "Profil bearbeiten",
+            closed_missions: "Abgeschlossene Einsätze",
+            logout: "Abmelden",
+            statistics: "Meine Statistiken",
+            quick_actions: "Schnellaktionen",
+            requests_pending: "Ausstehende Anfragen",
+            requests_confirmed: "Bestätigte Anfragen",
+            requests_progress: "In Bearbeitung",
+            requests_completed: "Abgeschlossen",
+            recharge_credits: "Meine Credits aufladen",
+            view_reports: "Meine Berichte anzeigen",
+            
+            // Onglets
+            tab_pending: "Ausstehend",
+            tab_confirmed: "Bestätigt",
+            tab_progress: "In Bearbeitung",
+            tab_completed: "Abgeschlossen",
+            
+            // Titres des onglets
+            pending_requests: "Anfragen zur Validierung ausstehend",
+            confirmed_requests: "Geplante Anfragen",
+            progress_requests: "Laufende Anfragen",
+            completed_requests: "Abgeschlossene Anfragen",
+            
+            // Éléments de demande
+            request_date: "Anfragedatum",
+            service: "Dienstleistung",
+            intervention: "Einsatz",
+            time: "Uhrzeit",
+            task: "Aufgabe",
+            status: "Status",
+            actions: "Aktionen",
+            request_validate: "Validieren",
+            request_details: "Details",
+            no_requests: "Keine Anfragen verfügbar",
+
+            // Subscription
+            subscription_active: "Actif",
+            subscription_expired: "Inactif",
+            payment_pending: "Paiement en attente",
+            valid_until: "Valide jusqu'au",
+            days_remaining: "jours restants",
+            payment_pending_message: "Paiement en attente - Régularisez votre situation",
+            subscribe_to_benefit: "Souscrivez à un abonnement pour bénéficier de nos services",
+            manage: "Gérer",
+            regularize: "Régulariser",
+            support: "Support",
+            contact_us: "Contactez-nous",
+                
+            // Footer
+            footer_desc: "Ihr Wohlbefinden zu Hause, unsere Priorität.",
+            footer_navigation: "Navigation",
+            footer_spaces: "Bereiche",
+            footer_contact: "Kontakt",
+            footer_copyright: "© 2024 Viiveo. Alle Rechte vorbehalten.",
+            
+            // Loader
+            loading: "Laden...",
+            
+            // Modales
+            closed_missions_title: "Abgeschlossene Einsätze",
+            edit_profile_title: "Meine persönlichen Daten bearbeiten",
+            personal_info: "Persönliche Informationen",
+            contact_info: "Kontaktdaten",
+            client_name: "Name",
+            client_firstname: "Vorname",
+            client_email: "E-Mail",
+            client_password: "Neues Passwort",
+            client_address: "Adresse",
+            client_city: "Stadt",
+            client_postal: "Postleitzahl",
+            client_phone: "Telefon",
+            tutor_info: "Daten des Betreuers",
+            tutor_name: "Name des Betreuers",
+            tutor_firstname: "Vorname des Betreuers",
+            tutor_address: "Adresse des Betreuers",
+            tutor_city: "Stadt des Betreuers",
+            tutor_postal: "Postleitzahl des Betreuers",
+            tutor_phone: "Telefon des Betreuers",
+            save_changes: "Speichern",
+            cancel: "Abbrechen",
+            
+            // Messages
+            login_success: "Anmeldung erfolgreich!",
+            login_error: "E-Mail oder Passwort falsch",
+            request_validated: "Anfrage erfolgreich validiert!",
+            profile_updated: "Profil erfolgreich aktualisiert!",
+            fill_fields: "Bitte füllen Sie alle Pflichtfelder aus",
+            payment_redirect: "Weiterleitung zur Zahlungsseite...",
+            reports_coming: "Berichtsfunktion in Kürze verfügbar.",
+            confirm_validation: "Bestätigen Sie, dass diese Dienstleistung ordnungsgemäß erbracht wurde?",
+            validation_success: "Vielen Dank! Ihre Validierung wurde gespeichert.",
+            server_error: "Kommunikationsfehler mit dem Server.",
+
+            // Nouvelles traductions
+            delete_account: "Mein Konto löschen",
+            delete_account_title: "Mein Konto löschen",
+            delete_account_confirm: "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?",
+            delete_account_warning: "Diese Aktion ist unwiderruflich. Alle Ihre Daten und Verläufe werden endgültig gelöscht.",
+            confirm_delete: "Löschung bestätigen",
+            subscription_management: "Mein Abonnement verwalten",
+            monthly_subscription: "Monatsabonnement",
+            yearly_subscription: "Jahresabonnement",
+            subscribe: "Abonnieren",
+            current_subscription: "Ihr aktuelles Abonnement",
+            no_subscription: "Kein aktives Abonnement",
+            flexible_subscription: "Flexibel - Jederzeit kündbar",
+            economical_subscription: "Wirtschaftlich - 20% Ersparnis",
+            subscription_features: "Zugang zu allen Dienstleistungen",
+            priority_support: "Prioritärer Support",
+            cancel_anytime: "Jederzeit kündbar",
+            annual_savings: "Ersparnis von 24€ pro Jahr",
+            annual_commitment: "12-monatige Bindung"
+        }
+    };
+
+    let currentLanguage = 'fr';
+    let currentClient = null;
+
+    // Fonction de connexion CORRIGÉE
+    async function login() {
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const message = document.getElementById('login-message');
+
+        if (!email || !password) {
+            message.textContent = translations[currentLanguage].fill_fields;
+            message.classList.remove('hidden');
+            message.className = 'message message-error';
+            return;
         }
 
-        /// Fonction de connexion CORRIGÉE
-async function login() {
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const message = document.getElementById('login-message');
+        document.getElementById('loader').style.display = 'flex';
 
-    if (!email || !password) {
-        message.textContent = translations[currentLanguage].fill_fields;
-        message.classList.remove('hidden');
-        message.className = 'message message-error';
-        return;
-    }
-
-    document.getElementById('loader').style.display = 'flex';
-
-    try {
-        const url = `${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-        
-        console.log('🔍 ENVOI REQUÊTE GET:', url);
-        
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        console.log('🔍 RÉPONSE SERVEUR:', data);
-
-        if (data.success) {
-            currentClient = data;
-
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('client-interface').classList.remove('hidden');
-
-            // Mise à jour immédiate de l'interface
-            updateClientInterface();
+        try {
+            const url = `${webAppUrl}?type=getClientData&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
             
-            // Charger les données des missions
-            loadClientData();
-            await chargerStatutAbonnement(); // Charger le statut d'abonnement
-            showNotification(translations[currentLanguage].login_success, 'success');
+            console.log('🔍 ENVOI REQUÊTE GET:', url);
             
-        } else {
-            throw new Error(data.message || translations[currentLanguage].login_error);
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            console.log('🔍 RÉPONSE SERVEUR:', data);
+
+            if (data.success) {
+                currentClient = data;
+
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('client-interface').classList.remove('hidden');
+
+                // Mise à jour immédiate de l'interface
+                updateClientInterface();
+                
+                // Charger les données des missions
+                loadClientData();
+                await chargerStatutAbonnement(); // Charger le statut d'abonnement
+                showNotification(translations[currentLanguage].login_success, 'success');
+                
+            } else {
+                throw new Error(data.message || translations[currentLanguage].login_error);
+            }
+        } catch (error) {
+            console.error('Erreur de connexion:', error);
+            message.textContent = error.message || translations[currentLanguage].login_error;
+            message.classList.remove('hidden');
+            message.className = 'message message-error';
+        } finally {
+            document.getElementById('loader').style.display = 'none';
         }
-    } catch (error) {
-        console.error('Erreur de connexion:', error);
-        message.textContent = error.message || translations[currentLanguage].login_error;
-        message.classList.remove('hidden');
-        message.className = 'message message-error';
-    } finally {
-        document.getElementById('loader').style.display = 'none';
     }
-}
+
         // Fonction séparée pour mettre à jour l'interface
         function updateClientInterface() {
     if (!currentClient) return;
