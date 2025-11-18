@@ -276,7 +276,7 @@
                         <li><i class="fas fa-check-circle"></i> <span data-translate="feature_unlimited_bookings">Réservations illimitées</span></li>
                     </ul>
 
-                    <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors" data-translate="subscription_subscribe_monthly">
+                    <button onclick="redirectToSubscription('mensuel')" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors" data-translate="subscription_subscribe_monthly">
                         Souscrire - 10€/mois
                     </button>
                 </div>
@@ -307,33 +307,38 @@
                         <li><i class="fas fa-check-circle"></i> <span data-translate="feature_premium_support">Support premium inclus</span></li>
                     </ul>
 
-                    <button class="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors" data-translate="subscription_subscribe_yearly">
+                    <button onclick="redirectToSubscription('annuel')" class="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors" data-translate="subscription_subscribe_yearly">
                         Souscrire - 96€/an
                     </button>
                 </div>
 
-                <!-- Statut actuel -->
+                <!-- Information Inscription -->
                 <div class="subscription-card">
                     <div class="text-center mb-6">
-                        <h3 class="text-2xl font-bold text-gray-800 mb-2" data-translate="subscription_current">Votre abonnement actuel</h3>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2" data-translate="subscription_required">Inscription requise</h3>
                     </div>
                     
                     <div class="text-center mb-6">
-                        <div class="bg-gray-100 rounded-lg p-6 mb-4">
-                            <i class="fas fa-info-circle text-4xl text-gray-400 mb-3"></i>
-                            <p class="text-lg font-semibold text-gray-600" data-translate="subscription_none">Aucun abonnement actif</p>
+                        <div class="bg-blue-50 rounded-lg p-6 mb-4">
+                            <i class="fas fa-user-plus text-4xl text-blue-500 mb-3"></i>
+                            <p class="text-lg font-semibold text-blue-700 mb-2" data-translate="subscription_create_account">Créez votre compte</p>
+                            <p class="text-blue-600 text-sm" data-translate="subscription_quick_process">
+                                Processus rapide - 2 minutes seulement
+                            </p>
                         </div>
-                        <p class="text-gray-600 text-sm" data-translate="subscription_encourage">
-                            Souscrivez à un abonnement pour bénéficier de nos services
+                        <p class="text-gray-600 text-sm" data-translate="subscription_benefits">
+                            Après inscription, vous pourrez activer votre abonnement et accéder à tous nos services
                         </p>
                     </div>
 
                     <div class="space-y-3">
-                        <button class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors" data-translate="subscription_manage">
-                            Gérer mon compte
+                        <button onclick="redirectToSignup()" class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+                            <i class="fas fa-user-plus"></i>
+                            <span data-translate="subscription_signup_now">S'inscrire maintenant</span>
                         </button>
-                        <button class="w-full border border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors" data-translate="subscription_contact">
-                            Contactez-nous
+                        <button onclick="redirectToLogin()" class="w-full border border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span data-translate="subscription_already_account">Déjà un compte ?</span>
                         </button>
                     </div>
                 </div>
@@ -456,6 +461,12 @@
                 subscription_none: "Aucun abonnement actif",
                 subscription_encourage: "Souscrivez à un abonnement pour bénéficier de nos services",
                 subscription_month: "/mois",
+                subscription_required: "Inscription requise",
+                subscription_create_account: "Créez votre compte",
+                subscription_quick_process: "Processus rapide - 2 minutes seulement",
+                subscription_benefits: "Après inscription, vous pourrez activer votre abonnement et accéder à tous nos services",
+                subscription_signup_now: "S'inscrire maintenant",
+                subscription_already_account: "Déjà un compte ?",
                 
                 // Features
                 feature_all_services: "Accès à tous les services",
@@ -510,6 +521,12 @@
                 subscription_none: "Geen actief abonnement",
                 subscription_encourage: "Sluit een abonnement af om van onze diensten te genieten",
                 subscription_month: "/maand",
+                subscription_required: "Registratie vereist",
+                subscription_create_account: "Maak uw account aan",
+                subscription_quick_process: "Snel proces - slechts 2 minuten",
+                subscription_benefits: "Na registratie kunt u uw abonnement activeren en toegang krijgen tot al onze diensten",
+                subscription_signup_now: "Nu registreren",
+                subscription_already_account: "Al een account?",
                 feature_all_services: "Toegang tot alle diensten",
                 feature_priority_support: "Prioritaire ondersteuning",
                 feature_cancel_anytime: "Opzegging op elk moment",
@@ -556,6 +573,12 @@
                 subscription_none: "No active subscription",
                 subscription_encourage: "Subscribe to a plan to enjoy our services",
                 subscription_month: "/month",
+                subscription_required: "Registration required",
+                subscription_create_account: "Create your account",
+                subscription_quick_process: "Quick process - only 2 minutes",
+                subscription_benefits: "After registration, you can activate your subscription and access all our services",
+                subscription_signup_now: "Sign up now",
+                subscription_already_account: "Already have an account?",
                 feature_all_services: "Access to all services",
                 feature_priority_support: "Priority support",
                 feature_cancel_anytime: "Cancel anytime",
@@ -602,6 +625,12 @@
                 subscription_none: "Kein aktives Abonnement",
                 subscription_encourage: "Schließen Sie ein Abonnement ab, um unsere Dienstleistungen zu nutzen",
                 subscription_month: "/Monat",
+                subscription_required: "Registrierung erforderlich",
+                subscription_create_account: "Erstellen Sie Ihr Konto",
+                subscription_quick_process: "Schneller Prozess - nur 2 Minuten",
+                subscription_benefits: "Nach der Registrierung können Sie Ihr Abonnement aktivieren und auf alle unsere Dienstleistungen zugreifen",
+                subscription_signup_now: "Jetzt registrieren",
+                subscription_already_account: "Bereits ein Konto?",
                 feature_all_services: "Zugang zu allen Dienstleistungen",
                 feature_priority_support: "Prioritärer Support",
                 feature_cancel_anytime: "Jederzeit kündbar",
@@ -631,6 +660,71 @@
         };
 
         let currentLanguage = 'fr';
+
+        // Fonctions de redirection
+        function redirectToSubscription(type) {
+            const planName = type === 'mensuel' ? 'Mensuel' : 'Annuel';
+            const price = type === 'mensuel' ? '10€/mois' : '96€/an';
+            
+            const message = `Pour souscrire à l'abonnement ${planName} (${price}), vous devez d'abord créer un compte. Souhaitez-vous être redirigé vers le formulaire d'inscription ?`;
+            
+            if (confirm(message)) {
+                redirectToSignup();
+            }
+        }
+
+        function redirectToSignup() {
+            // Redirection vers le formulaire Tally d'inscription
+            window.open('https://tally.so/r/n0zM26', '_blank');
+            
+            // Message d'information
+            showNotification('📝 Redirection vers le formulaire d\'inscription...', 'info');
+        }
+
+        function redirectToLogin() {
+            // Redirection vers la page de connexion
+            window.location.href = 'iclient.html';
+        }
+
+        // Fonction d'affichage des notifications
+        function showNotification(message, type = 'info') {
+            // Créer une notification élégante
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 transform translate-x-full transition-transform duration-300`;
+            
+            const bgColor = type === 'info' ? 'bg-blue-500' : 
+                           type === 'success' ? 'bg-green-500' : 
+                           type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+            
+            notification.innerHTML = `
+                <div class="${bgColor} text-white p-4 rounded-lg shadow-lg max-w-sm flex items-center">
+                    <i class="fas fa-${type === 'info' ? 'info-circle' : type === 'success' ? 'check-circle' : 'exclamation-circle'} mr-3"></i>
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animation d'entrée
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Suppression automatique après 5 secondes
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.classList.add('translate-x-full');
+                    setTimeout(() => {
+                        if (notification.parentElement) {
+                            notification.remove();
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
 
         function changeLanguage(lang) {
             currentLanguage = lang;
