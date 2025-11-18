@@ -332,14 +332,14 @@
                     </div>
 
                     <div class="space-y-3">
-                        <button onclick="redirectToSignup()" class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+                        <a href="https://tally.so/r/n0zM26" target="_blank" class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2 no-underline">
                             <i class="fas fa-user-plus"></i>
                             <span data-translate="subscription_signup_now">S'inscrire maintenant</span>
-                        </button>
-                        <button onclick="redirectToLogin()" class="w-full border border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
+                        </a>
+                        <a href="iclient.html" class="w-full border border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 no-underline">
                             <i class="fas fa-sign-in-alt"></i>
                             <span data-translate="subscription_already_account">Déjà un compte ?</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -669,61 +669,9 @@
             const message = `Pour souscrire à l'abonnement ${planName} (${price}), vous devez d'abord créer un compte. Souhaitez-vous être redirigé vers le formulaire d'inscription ?`;
             
             if (confirm(message)) {
-                redirectToSignup();
+                // Redirection directe vers Tally
+                window.location.href = 'https://tally.so/r/n0zM26';
             }
-        }
-
-        function redirectToSignup() {
-            // Redirection vers le formulaire Tally d'inscription
-            window.open('https://tally.so/r/n0zM26', '_blank');
-            
-            // Message d'information
-            showNotification('📝 Redirection vers le formulaire d\'inscription...', 'info');
-        }
-
-        function redirectToLogin() {
-            // Redirection vers la page de connexion
-            window.location.href = 'iclient.html';
-        }
-
-        // Fonction d'affichage des notifications
-        function showNotification(message, type = 'info') {
-            // Créer une notification élégante
-            const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 z-50 transform translate-x-full transition-transform duration-300`;
-            
-            const bgColor = type === 'info' ? 'bg-blue-500' : 
-                           type === 'success' ? 'bg-green-500' : 
-                           type === 'error' ? 'bg-red-500' : 'bg-blue-500';
-            
-            notification.innerHTML = `
-                <div class="${bgColor} text-white p-4 rounded-lg shadow-lg max-w-sm flex items-center">
-                    <i class="fas fa-${type === 'info' ? 'info-circle' : type === 'success' ? 'check-circle' : 'exclamation-circle'} mr-3"></i>
-                    <span>${message}</span>
-                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Animation d'entrée
-            setTimeout(() => {
-                notification.classList.remove('translate-x-full');
-            }, 100);
-            
-            // Suppression automatique après 5 secondes
-            setTimeout(() => {
-                if (notification.parentElement) {
-                    notification.classList.add('translate-x-full');
-                    setTimeout(() => {
-                        if (notification.parentElement) {
-                            notification.remove();
-                        }
-                    }, 300);
-                }
-            }, 5000);
         }
 
         function changeLanguage(lang) {
