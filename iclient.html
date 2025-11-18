@@ -2095,31 +2095,139 @@
         }
 
         // ⭐ FONCTION MANQUANTE AJOUTÉE : Souscrire à un abonnement
-        function souscrireAbonnement(type) {
-            const plans = {
-                'mensuel': { 
-                    prix: 10, 
-                    nom: translations[currentLanguage].monthly_subscription, 
-                    url: 'https://viiveo.com/abonnement-mensuel' 
-                },
-                'annuel': { 
-                    prix: 96, 
-                    nom: translations[currentLanguage].yearly_subscription, 
-                    url: 'https://viiveo.com/abonnement-annuel' 
+async function souscrireAbonnement(type) {
+    if (!currentClient) {
+        showNotification("Veuillez vous reconnecter", 'error');
+        return;
+    }
+
+    const plans = {
+        'mensuel': { 
+            prix: 10, 
+            nom: "Abonnement Mensuel",
+            duree_jours: 30
+        },
+        'annuel': { 
+            prix: 96, 
+            nom: "Abonnement Annuel", 
+            duree_jours: 365
+        }
+    };
+    
+    const plan = plans[type];
+    const message = `Confirmez-vous la souscription à l'abonnement ${plan.nom} pour ${plan.prix}€ ?`;
+    
+    if (confirm(message)) {
+        document.getElementById('loader').style.display = 'flex';
+        
+        try {
+            // Appel à l'API pour activer l'abonnement
+            const url = `${webAppUrl}?type=activerAbonnement&email=${encodeURIComponent(currentClient.client.email)}&abonnementType=${type}&prix=${plan.prix}`;
+            
+            console.log('🔍 Activation abonnement:', url);
+            
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (data.success) {
+                showNotification(`🎉 Félicitations ! Votre abonnement ${plan.nom} est maintenant actif.`, 'success');
+                
+                // Mettre à jour l'interface immédiatement
+                await chargerStatutAbonnement();
+                
+                // Recharger les données client pour refléter le changement
+                await rechargerDonneesClient();
+                
+            } else {
+                throw new Error(data.message || "Erreur lors de l'activation de l'abonnement");
+            }
+            
+        } catch (error) {
+            console.error('Erreur activation abonnement:', error);
+            showNotification(error.message, 'error');
+        } finally {
+            document.getElementById('loader').style.display = 'none';
+        }
+    }
+}
+
+        // FONCTION POUR RECHARGER LES DONNÉES CLIENT
+async function rechargerDonneesClient() {
+    if (!currentClient) return;
+    
+    try {
+        const url = `${webAppUrl}?type=getClientData&email=${encodeURIComponent(currentClient.client.email)}&password=${encodeURIComponent(currentClient.client.password)}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.success) {
+            currentClient = data;
+            updateClientInterface();
+            loadClientData();
+            console.log('✅ Données client rechargées après activation abonnement');
+        }
+    } catch (error) {
+        console.error('Erreur rechargement données:', error);
+    }
+}
+
+        function gererAbonnement() {
+    if (!currentClient) return;
+    
+    // Vérifier si l'utilisateur a un abonnement actif
+    const statusBadge = document.getElementById('subscription-badge');
+    const hasActiveSubscription = statusBadge && statusBadge.textContent === "Actif";
+    
+    if (hasActiveSubscription) {
+        const options = [
+            "📊 Voir les détails de mon abonnement",
+            "🔄 Renouveler mon abonnement", 
+            "❌ Résilier mon abonnement"
+        ].join('\n');
+        
+        const choix = prompt(`Que souhaitez-vous faire ?\n\n${options}`);
+        
+        if (choix) {
+            if (choix.includes("détails")) {
+                showNotification("Affichage des détails de votre abonnement...", 'info');
+            } else if (choix.includes("Renouveler")) {
+                souscrireAbonnement('annuel'); // Ou proposer un choix
+            } else if (choix.includes("Résilier")) {
+                if (confirm("Êtes-vous sûr de vouloir résilier votre abonnement ?")) {
+                    resiliereAbonnement();
                 }
-            };
-            
-            const plan = plans[type];
-            const message = `Souscrire à l'abonnement ${plan.nom} pour ${plan.prix}€ ?`;
-            
-            if (confirm(message)) {
-                showNotification(`Redirection vers la page de paiement pour l'abonnement ${plan.nom}...`, 'info');
-                setTimeout(() => {
-                    window.open(plan.url, '_blank');
-                }, 1000);
             }
         }
+    } else {
+        // Pas d'abonnement actif, proposer de souscrire
+        showNotification("Vous n'avez pas d'abonnement actif. Souhaitez-vous en souscrire un ?", 'info');
+        // Optionnel : ouvrir directement le choix d'abonnement
+        // setTimeout(() => { /* logique pour afficher les options */ }, 1000);
+    }
+}
 
+// FONCTION DE RÉSILIATION
+async function resiliereAbonnement() {
+    document.getElementById('loader').style.display = 'flex';
+    
+    try {
+        const url = `${webAppUrl}?type=resilierAbonnement&email=${encodeURIComponent(currentClient.client.email)}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification("Votre abonnement a été résilié avec succès.", 'success');
+            await chargerStatutAbonnement();
+        } else {
+            throw new Error(data.message);
+        }
+    } catch (error) {
+        showNotification("Erreur lors de la résiliation: " + error.message, 'error');
+    } finally {
+        document.getElementById('loader').style.display = 'none';
+    }
+}
+        
         function gererAbonnement() {
             showNotification("Page de gestion d'abonnement à venir...", 'info');
         }
