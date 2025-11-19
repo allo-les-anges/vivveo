@@ -8,26 +8,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
+        /* CORRECTION ULTRA-SIMPLE - CACHER LE SCANNER QR */
+        #presta-modalOverlay {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+            position: absolute !important;
+            left: -9999px !important;
+            pointer-events: none !important;
+        }
 
-/* CORRECTION URGENTE - CACHER LE SCANNER QR */
-#modalOverlay,
-#stepQR, 
-#qr-reader {
-    display: none !important;
-}
+        #presta-stepQR,
+        #presta-qr-reader {
+            display: none !important;
+        }
 
-/* Cacher tout élément contenant le texte du scanner */
-* {
-    position: relative;
-}
-
-body *:contains("Scanner le QR code client") {
-    display: none !important;
-}
-
-body *:contains("Fiche d'observation") {
-    display: none !important;
-}
+        /* Cacher les éléments par leur contenu texte */
+        .qr-hidden {
+            display: none !important;
+            visibility: hidden !important;
+        }
         
         :root {
             --primary-color: #facc15;
@@ -1407,10 +1409,10 @@ body *:contains("Fiche d'observation") {
         </div>
     </div>
 
-    <!-- Modal QR Code et fiche d'observation -->
-    <div id="presta-modalOverlay">
+    <!-- Modal QR Code et fiche d'observation - CACHÉ PAR DÉFAUT -->
+    <div id="presta-modalOverlay" style="display: none !important;">
         <div id="presta-modalContent">
-            <div id="presta-stepQR" style="display:flex; flex-direction:column; align-items:center;">
+            <div id="presta-stepQR" style="display:none;">
                 <h2 class="text-xl font-bold mb-4">📸 Scanner le QR code client</h2>
                 <div id="presta-qr-reader"></div>
                 <button id="presta-btnCancelQR" class="btn-secondary mt-4" style="background:#d32f2f;">Annuler</button>
@@ -1470,6 +1472,40 @@ body *:contains("Fiche d'observation") {
     </div>
 
     <script>
+        // CORRECTION URGENTE - CACHER LE SCANNER QR
+        function hideQRElements() {
+            console.log("🔧 Application de la correction QR...");
+            
+            // Cacher la modale principale
+            const modal = document.getElementById('presta-modalOverlay');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.style.visibility = 'hidden';
+                console.log("🚫 Modale QR cachée");
+            }
+            
+            // Cacher les éléments par texte
+            const elements = document.querySelectorAll('h2, button, div');
+            elements.forEach(el => {
+                const text = el.textContent || '';
+                if (text.includes('Scanner le QR code client') || 
+                    text.includes('Fiche d\'observation') || 
+                    text.includes('Annuler')) {
+                    el.style.display = 'none';
+                    el.style.visibility = 'hidden';
+                    el.classList.add('qr-hidden');
+                    console.log(`🗑️ Élément caché: ${text.substring(0, 30)}...`);
+                }
+            });
+            
+            console.log("✅ Correction QR appliquée");
+        }
+
+        // Exécuter immédiatement et au chargement
+        hideQRElements();
+        document.addEventListener('DOMContentLoaded', hideQRElements);
+        setTimeout(hideQRElements, 100);
+        setTimeout(hideQRElements, 500);
         
         // URL de l'application Google Apps Script
         const presta_webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
@@ -1500,55 +1536,55 @@ body *:contains("Fiche d'observation") {
         const presta_photosPreview = document.getElementById("presta-photosPreview");
 
         // Fonction JSONP - VERSION AMÉLIORÉE
-function presta_callApiJsonp(url, callbackName) {
-    return new Promise((resolve, reject) => {
-        console.log(`📞 Appel JSONP: ${url}`);
-        console.log(`📞 Callback: ${callbackName}`);
-        
-        window[callbackName] = function(data) {
-            console.log(`📨 Réponse JSONP reçue:`, data);
-            resolve(data);
-            delete window[callbackName];
-            if (script.parentNode) {
-                script.parentNode.removeChild(script);
-            }
-        };
-        
-        const script = document.createElement('script');
-        script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
-        
-        script.onerror = () => {
-            console.error('❌ Erreur script JSONP - Impossible de charger le script');
-            reject(new Error('Erreur JSONP'));
-            delete window[callbackName];
-            if (script.parentNode) {
-                script.parentNode.removeChild(script);
-            }
-        };
-        
-        // Timeout de sécurité
-        const timeoutId = setTimeout(() => {
-            if (window[callbackName]) {
-                console.error('⏰ Timeout JSONP après 10 secondes');
-                reject(new Error('Timeout JSONP'));
-                delete window[callbackName];
-                if (script.parentNode) {
-                    script.parentNode.removeChild(script);
-                }
-            }
-        }, 10000);
-        
-        // Nettoyer le timeout si la réponse arrive
-        const originalCallback = window[callbackName];
-        window[callbackName] = function(data) {
-            clearTimeout(timeoutId);
-            originalCallback(data);
-        };
-        
-        console.log("🔄 Ajout du script au DOM");
-        document.body.appendChild(script);
-    });
-}
+        function presta_callApiJsonp(url, callbackName) {
+            return new Promise((resolve, reject) => {
+                console.log(`📞 Appel JSONP: ${url}`);
+                console.log(`📞 Callback: ${callbackName}`);
+                
+                window[callbackName] = function(data) {
+                    console.log(`📨 Réponse JSONP reçue:`, data);
+                    resolve(data);
+                    delete window[callbackName];
+                    if (script.parentNode) {
+                        script.parentNode.removeChild(script);
+                    }
+                };
+                
+                const script = document.createElement('script');
+                script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
+                
+                script.onerror = () => {
+                    console.error('❌ Erreur script JSONP - Impossible de charger le script');
+                    reject(new Error('Erreur JSONP'));
+                    delete window[callbackName];
+                    if (script.parentNode) {
+                        script.parentNode.removeChild(script);
+                    }
+                };
+                
+                // Timeout de sécurité
+                const timeoutId = setTimeout(() => {
+                    if (window[callbackName]) {
+                        console.error('⏰ Timeout JSONP après 10 secondes');
+                        reject(new Error('Timeout JSONP'));
+                        delete window[callbackName];
+                        if (script.parentNode) {
+                            script.parentNode.removeChild(script);
+                        }
+                    }
+                }, 10000);
+                
+                // Nettoyer le timeout si la réponse arrive
+                const originalCallback = window[callbackName];
+                window[callbackName] = function(data) {
+                    clearTimeout(timeoutId);
+                    originalCallback(data);
+                };
+                
+                console.log("🔄 Ajout du script au DOM");
+                document.body.appendChild(script);
+            });
+        }
 
         // Fonction de connexion avec JSONP
         async function presta_login() {
@@ -1843,6 +1879,13 @@ function presta_callApiJsonp(url, callbackName) {
         }
 
         function presta_openModalStartPrestation(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom) {
+            // CORRECTION : EMPÊCHER L'OUVERTURE DE LA MODALE QR
+            console.log("🚫 Tentative d'ouverture modale QR bloquée");
+            presta_showNotification("La fonctionnalité QR code est temporairement désactivée", 'info');
+            return;
+            
+            // Code original commenté pour référence
+            /*
             presta_currentMissionId = missionId;
             presta_currentClientPrenom = clientPrenom;
             presta_currentClientNom = clientNom;
@@ -1855,23 +1898,32 @@ function presta_callApiJsonp(url, callbackName) {
             presta_modalOverlay.style.display = "flex";
 
             presta_startQrScanner();
+            */
         }
 
         function presta_closeModalQR() {
-            presta_modalOverlay.style.display = "none";
+            if (presta_modalOverlay) {
+                presta_modalOverlay.style.display = "none";
+            }
             presta_clearForm();
         }
 
         function presta_clearForm() {
-            presta_obsDateInput.value = "";
-            presta_etatSanteInput.value = "";
-            presta_etatFormeInput.value = "";
-            presta_environnementInput.value = "";
-            presta_photosInput.value = "";
-            presta_photosPreview.innerHTML = "";
+            if (presta_obsDateInput) presta_obsDateInput.value = "";
+            if (presta_etatSanteInput) presta_etatSanteInput.value = "";
+            if (presta_etatFormeInput) presta_etatFormeInput.value = "";
+            if (presta_environnementInput) presta_environnementInput.value = "";
+            if (presta_photosInput) presta_photosInput.value = "";
+            if (presta_photosPreview) presta_photosPreview.innerHTML = "";
         }
 
         async function presta_startQrScanner() {
+            // CORRECTION : EMPÊCHER LE DÉMARRAGE DU SCANNER
+            console.log("🚫 Démarrage scanner QR bloqué");
+            return;
+            
+            // Code original commenté pour référence
+            /*
             document.getElementById("presta-qr-reader").innerHTML = "";
             const qrReader = new Html5Qrcode("presta-qr-reader");
             qrReader.start(
@@ -1907,9 +1959,16 @@ function presta_callApiJsonp(url, callbackName) {
                 console.error(err);
                 presta_closeModalQR();
             });
+            */
         }
 
         function presta_getGeolocationAndShowForm() {
+            // CORRECTION : EMPÊCHER LA GÉOLOCALISATION
+            console.log("🚫 Géolocalisation bloquée");
+            return;
+            
+            // Code original commenté pour référence
+            /*
             if (!navigator.geolocation) {
                 alert("❌ Votre appareil ne supporte pas la géolocalisation.");
                 presta_closeModalQR();
@@ -1942,13 +2001,21 @@ function presta_callApiJsonp(url, callbackName) {
                 },
                 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
             );
+            */
         }
 
         function presta_showForm() {
+            // CORRECTION : EMPÊCHER L'AFFICHAGE DU FORMULAIRE
+            console.log("🚫 Affichage formulaire bloqué");
+            return;
+            
+            // Code original commenté pour référence
+            /*
             presta_stepQR.style.display = "none";
             presta_stepForm.style.display = "block";
             presta_clientNameInput.value = `${presta_currentClientPrenom} ${presta_currentClientNom}`;
             presta_setTodayDate();
+            */
         }
 
         // Attacher les écouteurs d'événements pour les boutons de démarrage de prestation
@@ -2063,73 +2130,75 @@ function presta_callApiJsonp(url, callbackName) {
         // FONCTIONS POUR LA GESTION DU PROFIL - CORRIGÉES
 
         async function presta_showProfileModal() {
-    console.log("🎯 Ouverture modal profil");
-    
-    try {
-        // Afficher le loader immédiatement
-        document.getElementById('loader').style.display = 'flex';
-        
-        await presta_loadProfileData(); // Attendre que le profil soit chargé
-        
-        // Cacher le loader une fois les données chargées
-        document.getElementById('loader').style.display = 'none';
-        
-        // Afficher le modal
-        document.getElementById('presta-profile-modal').style.display = 'block';
-        console.log("✅ Modal affiché avec succès");
-        
-    } catch (error) {
-        // Cacher le loader en cas d'erreur
-        document.getElementById('loader').style.display = 'none';
-        console.error("❌ Erreur lors de l'ouverture du modal:", error);
-        // Ne pas relancer l'erreur ici - elle est déjà gérée par presta_loadProfileData
-    }
-}
+            console.log("🎯 Ouverture modal profil");
+            
+            try {
+                // Afficher le loader immédiatement
+                document.getElementById('loader').style.display = 'flex';
+                
+                await presta_loadProfileData(); // Attendre que le profil soit chargé
+                
+                // Cacher le loader une fois les données chargées
+                document.getElementById('loader').style.display = 'none';
+                
+                // Afficher le modal
+                document.getElementById('presta-profile-modal').style.display = 'block';
+                console.log("✅ Modal affiché avec succès");
+                
+            } catch (error) {
+                // Cacher le loader en cas d'erreur
+                document.getElementById('loader').style.display = 'none';
+                console.error("❌ Erreur lors de l'ouverture du modal:", error);
+                // Ne pas relancer l'erreur ici - elle est déjà gérée par presta_loadProfileData
+            }
+        }
+
         async function presta_loadProfileData() {
-    console.log("🚀 Début du chargement du profil pour:", presta_currentEmail);
-    
-    try {
-        if (!presta_currentEmail) {
-            throw new Error("Aucun email défini pour charger le profil");
-        }
+            console.log("🚀 Début du chargement du profil pour:", presta_currentEmail);
+            
+            try {
+                if (!presta_currentEmail) {
+                    throw new Error("Aucun email défini pour charger le profil");
+                }
 
-        const callbackName = 'cbProfile' + Date.now();
-        const url = `${presta_webAppUrl}?type=getPrestataireProfile&email=${encodeURIComponent(presta_currentEmail)}`;
-        console.log("📡 Appel API:", url);
-        
-        const data = await presta_callApiJsonp(url, callbackName);
-        console.log("📦 Réponse API:", data);
+                const callbackName = 'cbProfile' + Date.now();
+                const url = `${presta_webAppUrl}?type=getPrestataireProfile&email=${encodeURIComponent(presta_currentEmail)}`;
+                console.log("📡 Appel API:", url);
+                
+                const data = await presta_callApiJsonp(url, callbackName);
+                console.log("📦 Réponse API:", data);
 
-        // CORRECTION CRITIQUE : Utiliser data.profile
-        if (data.success && data.profile) {
-            console.log("✅ Profil chargé avec succès");
-            presta_currentPrestataireData = data.profile;
-            presta_populateProfileForm(data.profile);
-            return data;
-        } else {
-            console.error("❌ Erreur API:", data.message);
-            throw new Error(data.message || "Erreur lors du chargement du profil");
+                // CORRECTION CRITIQUE : Utiliser data.profile
+                if (data.success && data.profile) {
+                    console.log("✅ Profil chargé avec succès");
+                    presta_currentPrestataireData = data.profile;
+                    presta_populateProfileForm(data.profile);
+                    return data;
+                } else {
+                    console.error("❌ Erreur API:", data.message);
+                    throw new Error(data.message || "Erreur lors du chargement du profil");
+                }
+            } catch (error) {
+                console.error("💥 Erreur complète:", error);
+                presta_showNotification("Erreur lors du chargement du profil: " + error.message, 'error');
+                throw error;
+            }
         }
-    } catch (error) {
-        console.error("💥 Erreur complète:", error);
-        presta_showNotification("Erreur lors du chargement du profil: " + error.message, 'error');
-        throw error;
-    }
-}
 
         function presta_populateProfileForm(prestataire) {
-    console.log("📝 Remplissage du formulaire avec:", prestataire);
-    
-    // CORRECTION : Utiliser les noms exacts des champs de la réponse
-    document.getElementById('presta-profile-firstname').value = prestataire.prénom || '';
-    document.getElementById('presta-profile-email').value = prestataire.email || '';
-    document.getElementById('presta-profile-phone').value = prestataire.téléphone || '';
-    document.getElementById('presta-profile-specialites').value = prestataire.spécialité || '';
-    document.getElementById('presta-profile-disponibilite').value = prestataire.disponibilité || '';
-    document.getElementById('presta-profile-commentaire').value = prestataire.commentaire || '';
-    
-    console.log("✅ Formulaire rempli avec succès");
-}
+            console.log("📝 Remplissage du formulaire avec:", prestataire);
+            
+            // CORRECTION : Utiliser les noms exacts des champs de la réponse
+            document.getElementById('presta-profile-firstname').value = prestataire.prénom || '';
+            document.getElementById('presta-profile-email').value = prestataire.email || '';
+            document.getElementById('presta-profile-phone').value = prestataire.téléphone || '';
+            document.getElementById('presta-profile-specialites').value = prestataire.spécialité || '';
+            document.getElementById('presta-profile-disponibilite').value = prestataire.disponibilité || '';
+            document.getElementById('presta-profile-commentaire').value = prestataire.commentaire || '';
+            
+            console.log("✅ Formulaire rempli avec succès");
+        }
+
         async function presta_saveProfile() {
             const password = document.getElementById('presta-profile-password').value;
             const passwordConfirm = document.getElementById('presta-profile-password-confirm').value;
@@ -2365,6 +2434,9 @@ function presta_callApiJsonp(url, callbackName) {
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
+            // Appliquer la correction QR immédiatement
+            hideQRElements();
+            
             // Gestion du sélecteur de langue
             const languageButton = document.getElementById('language-button');
             const languageDropdown = document.getElementById('language-dropdown');
@@ -2414,78 +2486,52 @@ function presta_callApiJsonp(url, callbackName) {
                 });
             });
 
-            // Gestion des photos dans la modale QR
-            presta_photosInput.addEventListener("change", e => {
-                presta_photosPreview.innerHTML = "";
-                const files = e.target.files;
-                if (files.length > 3) {
-                    alert("Vous ne pouvez sélectionner que 3 photos max.");
-                    presta_photosInput.value = "";
-                    return;
-                }
-                [...files].forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = ev => {
-                        const img = document.createElement("img");
-                        img.src = ev.target.result;
-                        presta_photosPreview.appendChild(img);
-                    };
-                    reader.readAsDataURL(file);
-                });
-            });
-
-            // Soumission du formulaire d'observation
-            document.getElementById("presta-obsForm").addEventListener("submit", async e => {
-                e.preventDefault();
-
-                if (presta_photosInput.files.length > 3) {
-                    alert("Maximum 3 photos autorisées.");
-                    return;
-                }
-
-                const heureFin = new Date().toISOString();
-                const formData = new FormData();
-                formData.append("type", "envoyerFiche");
-                formData.append("missionId", presta_currentMissionId);
-                formData.append("prenomClient", presta_currentClientPrenom);
-                formData.append("nomClient", presta_currentClientNom);
-                formData.append("obsDate", presta_obsDateInput.value);
-                formData.append("etatSante", presta_etatSanteInput.value);
-                formData.append("etatForme", presta_etatFormeInput.value);
-                formData.append("environnement", presta_environnementInput.value);
-                formData.append("latitude", presta_currentLatitude);
-                formData.append("longitude", presta_currentLongitude);
-                formData.append("heureDebut", presta_heureDebut);
-                formData.append("heureFin", heureFin);
-                formData.append("prestatairePrenom", presta_currentPrestatairePrenom);
-                formData.append("prestataireNom", presta_currentPrestataireNom);
-                formData.append("prestataireEmail", presta_currentEmail);
-                for (let file of presta_photosInput.files) {
-                    formData.append("photos", file);
-                }
-
-                try {
-                    const res = await fetch(presta_webAppUrl, {
-                        method: "POST",
-                        body: formData,
-                    });
-                    const json = await res.json();
-                    if (json.success) {
-                        presta_stepForm.style.display = "none";
-                        presta_stepSuccess.style.display = "block";
-                    } else {
-                        alert("Erreur : " + (json.message || "Envoi échoué"));
+            // Gestion des photos dans la modale QR (désactivée)
+            if (presta_photosInput) {
+                presta_photosInput.addEventListener("change", e => {
+                    presta_photosPreview.innerHTML = "";
+                    const files = e.target.files;
+                    if (files.length > 3) {
+                        alert("Vous ne pouvez sélectionner que 3 photos max.");
+                        presta_photosInput.value = "";
+                        return;
                     }
-                } catch (err) {
-                    alert("Erreur réseau.");
-                    console.error(err);
-                }
-            });
+                    [...files].forEach(file => {
+                        const reader = new FileReader();
+                        reader.onload = ev => {
+                            const img = document.createElement("img");
+                            img.src = ev.target.result;
+                            presta_photosPreview.appendChild(img);
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                });
+            }
 
-            // Boutons d'annulation et fermeture
-            document.getElementById("presta-btnCancelQR").onclick = presta_closeModalQR;
-            document.getElementById("presta-btnCancelForm").onclick = presta_closeModalQR;
-            document.getElementById("presta-btnCloseSuccess").onclick = presta_closeModalQR;
+            // Soumission du formulaire d'observation (désactivée)
+            if (document.getElementById("presta-obsForm")) {
+                document.getElementById("presta-obsForm").addEventListener("submit", async e => {
+                    e.preventDefault();
+                    presta_showNotification("La fonctionnalité fiche d'observation est temporairement désactivée", 'info');
+                });
+            }
+
+            // Boutons d'annulation et fermeture (désactivés)
+            if (document.getElementById("presta-btnCancelQR")) {
+                document.getElementById("presta-btnCancelQR").onclick = function() {
+                    presta_showNotification("Fonctionnalité désactivée", 'info');
+                };
+            }
+            if (document.getElementById("presta-btnCancelForm")) {
+                document.getElementById("presta-btnCancelForm").onclick = function() {
+                    presta_showNotification("Fonctionnalité désactivée", 'info');
+                };
+            }
+            if (document.getElementById("presta-btnCloseSuccess")) {
+                document.getElementById("presta-btnCloseSuccess").onclick = function() {
+                    presta_showNotification("Fonctionnalité désactivée", 'info');
+                };
+            }
 
             // Validation du formulaire de suppression
             const confirmEmail = document.getElementById('presta-confirm-email');
