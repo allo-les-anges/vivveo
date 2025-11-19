@@ -8,6 +8,45 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
+
+/* CORRECTION RADICALE - CACHER TOUT SCANNER QR */
+#modalOverlay,
+#stepQR, 
+#qr-reader,
+#geolocationMessage,
+#qrScannerLoader,
+[class*="qr"],
+[class*="QR"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    pointer-events: none !important;
+}
+
+/* Cacher spécifiquement le texte */
+h2:contains("Scanner le QR code client"),
+h2:contains("Fiche d'observation"),
+button:contains("Annuler") {
+    display: none !important;
+}
+
+/* Solution alternative plus simple */
+#modalOverlay {
+    display: none !important;
+}
+
+#stepQR {
+    display: none !important;
+}
+
+#qr-reader {
+    display: none !important;
+}
+        
         :root {
             --primary-color: #facc15;
             --primary-dark: #eab308;
@@ -1449,33 +1488,6 @@
     </div>
 
     <script>
-
-/* CORRECTION RADICALE - CACHER TOUT SCANNER QR */
-#modalOverlay,
-#stepQR, 
-#qr-reader,
-#geolocationMessage,
-#qrScannerLoader,
-[class*="qr"],
-[class*="QR"],
-div:has(> h2:contains("Scanner le QR code client")),
-div:has(> h2:contains("Fiche d'observation")) {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    width: 0 !important;
-    position: absolute !important;
-    left: -9999px !important;
-    pointer-events: none !important;
-}
-
-/* Cacher spécifiquement le texte */
-h2:contains("Scanner le QR code client"),
-h2:contains("Fiche d'observation"),
-button:contains("Annuler") {
-    display: none !important;
-}
         
         // URL de l'application Google Apps Script
         const presta_webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
