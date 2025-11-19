@@ -1483,41 +1483,57 @@ function initCalendar() {
             document.querySelector('input[name="nom_prestataire"]').value = nomPrestataire;
         }
 
-        // 2. Créer un formulaire dynamique pour la soumission
-        const form = event.target;
-        const dynamicForm = document.createElement('form');
-        dynamicForm.method = 'POST';
-        dynamicForm.action = 'https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec';
-        dynamicForm.style.display = 'none';
+        // 2. Préparer les données pour POST
+        const formData = new FormData(event.target);
         
-        // Ajouter tous les champs du formulaire original
-        const formData = new FormData(form);
+        // S'assurer que le type est bien formClient
+        formData.set('type', 'formClient');
+        
+        const params = new URLSearchParams();
         for (let [key, value] of formData.entries()) {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = key;
-            input.value = value;
-            dynamicForm.appendChild(input);
+            params.append(key, value);
         }
         
-        // Ajouter le formulaire à la page et le soumettre
-        document.body.appendChild(dynamicForm);
+        console.log('Données envoyées:', params.toString());
         
-        // Afficher un message de confirmation avant la soumission
-        let message = `✅ Demande envoyée ! Notre équipe vous contacte sous 24h.`;
-        if (currentService === 'Visite bénévole' || currentService === 'Commande de repas') {
-            message = `✅ Demande envoyée ! Ce service est entièrement gratuit.`;
+        // 3. Envoyer en POST
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec';
+        
+        const response = await fetch(scriptUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+            },
+            body: params.toString()
+        });
+
+        // 4. Lire la réponse
+        const result = await response.json();
+        
+        console.log('Réponse du serveur:', result);
+        
+        // 5. Gérer la réponse
+        if (result.success) {
+            let message = `✅ ${result.message}`;
+            
+            if (currentService === 'Visite bénévole' || currentService === 'Commande de repas') {
+                message += ' Ce service est entièrement gratuit.';
+            } else {
+                message += ' Notre équipe vous contacte sous 24h.';
+            }
+            
+            alert(message);
+            closeModal();
+            event.target.reset();
+            selectHours(2);
+        } else {
+            alert(`⚠️ ${result.message || "Erreur lors de l'envoi de la demande."}`);
         }
-        
-        alert(message);
-        
-        // Soumettre le formulaire (cela rechargera la page)
-        dynamicForm.submit();
         
     } catch (error) {
         console.error('Erreur complète:', error);
-        alert("❌ Erreur lors de la soumission : " + error.message);
-        
+        alert("❌ Erreur de connexion : " + error.message);
+    } finally {
         loader.style.display = 'none';
         submitButton.disabled = false;
     }
