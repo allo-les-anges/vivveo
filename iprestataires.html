@@ -9,41 +9,23 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
 
-/* CORRECTION RADICALE - CACHER TOUT SCANNER QR */
+/* CORRECTION URGENTE - CACHER LE SCANNER QR */
 #modalOverlay,
 #stepQR, 
-#qr-reader,
-#geolocationMessage,
-#qrScannerLoader,
-[class*="qr"],
-[class*="QR"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    width: 0 !important;
-    position: absolute !important;
-    left: -9999px !important;
-    pointer-events: none !important;
-}
-
-/* Cacher spécifiquement le texte */
-h2:contains("Scanner le QR code client"),
-h2:contains("Fiche d'observation"),
-button:contains("Annuler") {
-    display: none !important;
-}
-
-/* Solution alternative plus simple */
-#modalOverlay {
-    display: none !important;
-}
-
-#stepQR {
-    display: none !important;
-}
-
 #qr-reader {
+    display: none !important;
+}
+
+/* Cacher tout élément contenant le texte du scanner */
+* {
+    position: relative;
+}
+
+body *:contains("Scanner le QR code client") {
+    display: none !important;
+}
+
+body *:contains("Fiche d'observation") {
     display: none !important;
 }
         
