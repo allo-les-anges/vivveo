@@ -10,6 +10,34 @@
     <!-- Flatpickr version corrigée -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
     <style>
+
+/* CORRECTION RADICALE - CACHER TOUT SCANNER QR */
+#modalOverlay,
+#stepQR, 
+#qr-reader,
+#geolocationMessage,
+#qrScannerLoader,
+[class*="qr"],
+[class*="QR"],
+div:has(> h2:contains("Scanner le QR code client")),
+div:has(> h2:contains("Fiche d'observation")) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    pointer-events: none !important;
+}
+
+/* Cacher spécifiquement le texte */
+h2:contains("Scanner le QR code client"),
+h2:contains("Fiche d'observation"),
+button:contains("Annuler") {
+    display: none !important;
+}
+        
         :root {
             --primary-color: #facc15;
             --primary-dark: #eab308;
