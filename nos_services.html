@@ -1611,5 +1611,69 @@ function initCalendar() {
             selectHours(2);
         });
     </script>
+    <script>
+// CORRECTION URGENTE - Supprimer le scanner QR injecté par viiveo-app.js
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚨 SUPPRESSION DU SCANNER QR...');
+    
+    // Supprimer tous les éléments liés au scanner QR
+    const elementsToRemove = [
+        'modalOverlay', 'modalContent', 'stepQR', 'stepForm', 'stepSuccess',
+        'qr-reader', 'fullScreenLoader', 'qrScannerLoader', 'geolocationMessage'
+    ];
+    
+    elementsToRemove.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.remove();
+            console.log('🗑️ Élément supprimé:', id);
+        }
+    });
+    
+    // Supprimer aussi par contenu texte (au cas où)
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(el => {
+        if (el.textContent && (
+            el.textContent.includes('Scanner le QR code client') ||
+            el.textContent.includes('Fiche d\'observation') ||
+            el.textContent.includes('Envoyer la fiche')
+        )) {
+            console.log('🗑️ Élément avec texte scanner supprimé:', el);
+            el.remove();
+        }
+    });
+    
+    // Empêcher la réinjection
+    const originalCreateAndInjectModalHtml = window.createAndInjectModalHtml;
+    window.createAndInjectModalHtml = function() {
+        console.log('🚨 Injection de modale bloquée');
+        return false;
+    };
+    
+    // Désactiver les fonctions de scanner
+    window.openModalStartPrestation = function() {
+        console.log('🚨 Scanner désactivé sur cette page');
+        alert('Cette fonctionnalité est disponible uniquement dans l\'espace prestataire');
+        return false;
+    };
+    
+    window.openModalCloturerPrestation = function() {
+        console.log('🚨 Scanner désactivé sur cette page');
+        alert('Cette fonctionnalité est disponible uniquement dans l\'espace prestataire');
+        return false;
+    };
+    
+    console.log('✅ Scanner QR supprimé avec succès');
+});
+
+// Exécuter aussi immédiatement au cas où le DOM est déjà chargé
+(function() {
+    const elements = ['modalOverlay', 'stepQR', 'qr-reader'];
+    elements.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+    });
+})();
+</script>
 </body>
 </html>
