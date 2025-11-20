@@ -1456,40 +1456,56 @@
     </div>
 
     <script>
-        // URL de l'application Google Apps Script
-        const presta_webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
+        try {
+    console.log("🚀 Démarrage du script prestataire...");
 
-        // Variables globales PRESTATAIRE (préfixées)
-        let presta_currentEmail = "";
-        let presta_currentMissions = [];
-        let presta_currentPrestataireData = null;
-        let presta_qrScannerInstance = null;
+    // URL de l'application Google Apps Script
+    const presta_webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
+    console.log("✅ URL définie:", presta_webAppUrl);
 
-        // Variables pour la modale QR (préfixées)
-        let presta_currentMissionId = null;
-        let presta_currentClientPrenom = "", presta_currentClientNom = "";
-        let presta_currentPrestatairePrenom = "", presta_currentPrestataireNom = "";
-        let presta_currentLatitude = null, presta_currentLongitude = null;
-        let presta_heureDebut = null;
+    // Variables globales PRESTATAIRE (préfixées)
+    let presta_currentEmail = "";
+    let presta_currentMissions = [];
+    let presta_currentPrestataireData = null;
+    let presta_qrScannerInstance = null;
 
-        // Variables pour la fin d'intervention
-        let presta_latitudeFin = null;
-        let presta_longitudeFin = null;
-        let presta_heureFin = null;
+    // Variables pour la modale QR (préfixées)
+    let presta_currentMissionId = null;
+    let presta_currentClientPrenom = "", presta_currentClientNom = "";
+    let presta_currentPrestatairePrenom = "", presta_currentPrestataireNom = "";
+    let presta_currentLatitude = null, presta_currentLongitude = null;
+    let presta_heureDebut = null;
 
-        // Éléments DOM préfixés
-        const presta_modalOverlay = document.getElementById("presta-modalOverlay");
-        const presta_stepQR = document.getElementById("presta-stepQR");
-        const presta_stepForm = document.getElementById("presta-stepForm");
-        const presta_stepSuccess = document.getElementById("presta-stepSuccess");
-        const presta_clientNameInput = document.getElementById("presta-clientName");
-        const presta_obsDateInput = document.getElementById("presta-obsDate");
-        const presta_etatSanteInput = document.getElementById("presta-etatSante");
-        const presta_etatFormeInput = document.getElementById("presta-etatForme");
-        const presta_environnementInput = document.getElementById("presta-environnement");
-        const presta_photosInput = document.getElementById("presta-photos");
-        const presta_photosPreview = document.getElementById("presta-photosPreview");
+    // Variables pour la fin d'intervention
+    let presta_latitudeFin = null;
+    let presta_longitudeFin = null;
+    let presta_heureFin = null;
 
+    // Éléments DOM préfixés - initialisation différée
+    let presta_modalOverlay, presta_stepQR, presta_stepForm, presta_stepSuccess;
+    let presta_clientNameInput, presta_obsDateInput, presta_etatSanteInput;
+    let presta_etatFormeInput, presta_environnementInput, presta_photosInput, presta_photosPreview;
+
+    // Fonction pour initialiser les éléments DOM
+    function presta_initDOMElements() {
+        presta_modalOverlay = document.getElementById("presta-modalOverlay");
+        presta_stepQR = document.getElementById("presta-stepQR");
+        presta_stepForm = document.getElementById("presta-stepForm");
+        presta_stepSuccess = document.getElementById("presta-stepSuccess");
+        presta_clientNameInput = document.getElementById("presta-clientName");
+        presta_obsDateInput = document.getElementById("presta-obsDate");
+        presta_etatSanteInput = document.getElementById("presta-etatSante");
+        presta_etatFormeInput = document.getElementById("presta-etatForme");
+        presta_environnementInput = document.getElementById("presta-environnement");
+        presta_photosInput = document.getElementById("presta-photos");
+        presta_photosPreview = document.getElementById("presta-photosPreview");
+        
+        console.log("✅ Éléments DOM initialisés");
+        return true;
+    }
+
+    console.log("✅ Variables globales définies");
+            
         // Fonction JSONP - VERSION AMÉLIORÉE
         function presta_callApiJsonp(url, callbackName) {
             return new Promise((resolve, reject) => {
@@ -2637,6 +2653,15 @@ async function presta_finirPremierScan() {
         
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
+    console.log("📄 DOM complètement chargé - initialisation...");
+    
+    // Initialiser les éléments DOM
+    presta_initDOMElements();
+    
+    // Vérifier que les éléments critiques existent
+    if (!presta_modalOverlay) {
+        console.warn("⚠️ presta_modalOverlay non trouvé");
+    }
             // Gestion du sélecteur de langue
             const languageButton = document.getElementById('language-button');
             const languageDropdown = document.getElementById('language-dropdown');
