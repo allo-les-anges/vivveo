@@ -9,47 +9,48 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
         /* MODALE QR - CORRIGÉE */
-        #presta-modalOverlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+        /* MODALE QR - CORRIGÉE */
+#presta-modalOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
 
-        #presta-modalContent {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            width: 100%;
-            max-width: 480px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-sizing: border-box;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-        }
+#presta-modalContent {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+}
 
-        #presta-stepQR,
-        #presta-stepForm,
-        #presta-stepSuccess {
-            display: none;
-        }
+#presta-stepQR,
+#presta-stepForm,
+#presta-stepSuccess {
+    display: none;
+}
 
-        #presta-qr-reader {
-            width: 100% !important;
-            height: auto !important;
-            aspect-ratio: 1 / 1;
-            max-height: 350px;
-            margin: 0 auto;
-        }
+#presta-qr-reader {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1;
+    max-height: 350px;
+    margin: 0 auto;
+}
         
         :root {
             --primary-color: #facc15;
@@ -1471,6 +1472,18 @@
         let presta_currentLatitude = null, presta_currentLongitude = null;
         let presta_heureDebut = null;
 
+        // Variables pour la modale QR (préfixées)
+        let presta_currentMissionId = null;
+        let presta_currentClientPrenom = "", presta_currentClientNom = "";
+        let presta_currentPrestatairePrenom = "", presta_currentPrestataireNom = "";
+        let presta_currentLatitude = null, presta_currentLongitude = null;
+        let presta_heureDebut = null;
+
+        // AJOUTER CES VARIABLES POUR LA FIN D'INTERVENTION
+        let presta_latitudeFin = null;
+        let presta_longitudeFin = null;
+        let presta_heureFin = null;
+
         // Éléments DOM préfixés
         const presta_modalOverlay = document.getElementById("presta-modalOverlay");
         const presta_stepQR = document.getElementById("presta-stepQR");
@@ -1827,11 +1840,16 @@
         function presta_openModalStartPrestation(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom) {
     console.log("🎯 Ouverture modale QR pour mission:", missionId);
     
+    // RÉINITIALISER LES VARIABLES DE SESSION
     presta_currentMissionId = missionId;
     presta_currentClientPrenom = clientPrenom;
     presta_currentClientNom = clientNom;
     presta_currentPrestatairePrenom = prestatairePrenom;
     presta_currentPrestataireNom = prestataireNom;
+    presta_heureDebut = null; // Réinitialiser pour nouvelle mission
+    presta_latitudeFin = null;
+    presta_longitudeFin = null;
+    presta_heureFin = null;
 
     // AFFICHER LA MODALE
     const modal = document.getElementById("presta-modalOverlay");
@@ -1843,7 +1861,7 @@
         return;
     }
 
-    // Configurer les étapes - COMME DANS L'EMBED ORIGINAL
+    // Configurer les étapes
     const stepQR = document.getElementById("presta-stepQR");
     const stepForm = document.getElementById("presta-stepForm");
     const stepSuccess = document.getElementById("presta-stepSuccess");
@@ -1861,7 +1879,7 @@
         presta_startQrScanner();
     }, 100);
 }
-
+    
         function presta_closeModalQR() {
             console.log("🔒 Fermeture de la modale QR");
             
@@ -1932,7 +1950,7 @@
 
                     console.log("📧 Email extrait:", email);
                     
-                    // Vérifier le client via l'API - LOGIQUE ORIGINALE
+                    // Vérifier le client via l'API
                     const callbackName = 'cbVerifyClient' + Date.now();
                     const verifyUrl = `${presta_webAppUrl}?type=verifyClientEmail&email=${encodeURIComponent(email)}`;
                     console.log("🔗 URL de vérification:", verifyUrl);
@@ -1940,49 +1958,119 @@
                     const data = await presta_callApiJsonp(verifyUrl, callbackName);
                     console.log("📦 Réponse vérification:", data);
 
-                    // LOGIQUE ORIGINALE DE VÉRIFICATION
+                    // Vérification du client
                     if (!data.success || !presta_currentClientNom.toUpperCase().trim().includes((data.nom || "").toUpperCase().trim())) {
                         alert("❌ Ce QR ne correspond pas au client de cette mission.");
                         presta_closeModalQR();
                         return;
                     }
                     
-                    // SUCCÈS - Mission démarrée
-                    presta_heureDebut = new Date().toISOString();
-                    
-                    // Obtenir la géolocalisation comme dans l'embed original
-                    if (!navigator.geolocation) {
-                        alert("❌ Votre appareil ne supporte pas la géolocalisation.");
-                        presta_closeModalQR();
-                        return;
-                    }
-
-                    navigator.geolocation.getCurrentPosition(
-                        position => {
-                            presta_currentLatitude = position.coords.latitude;
-                            presta_currentLongitude = position.coords.longitude;
-                            presta_showForm();
-                        },
-                        error => {
-                            let message = "⚠️ Erreur de géolocalisation.";
-                            switch (error.code) {
-                                case error.PERMISSION_DENIED:
-                                    message = "❌ Vous devez autoriser la géolocalisation pour continuer.";
-                                    break;
-                                case error.POSITION_UNAVAILABLE:
-                                    message = "📍 Position non disponible.";
-                                    break;
-                                case error.TIMEOUT:
-                                    message = "⏱️ Le délai de localisation est dépassé.";
-                                    break;
-                                default:
-                                    message = "❌ Erreur inconnue.";
-                            }
-                            alert(message);
+                    // VÉRIFIER SI C'EST LE PREMIER OU DEUXIÈME SCAN
+                    if (!presta_heureDebut) {
+                        // PREMIER SCAN - DÉBUT D'INTERVENTION
+                        console.log("🟢 PREMIER SCAN - Début d'intervention");
+                        
+                        // Obtenir la géolocalisation pour le début
+                        if (!navigator.geolocation) {
+                            alert("❌ Votre appareil ne supporte pas la géolocalisation.");
                             presta_closeModalQR();
-                        },
-                        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-                    );
+                            return;
+                        }
+
+                        navigator.geolocation.getCurrentPosition(
+                            position => {
+                                presta_currentLatitude = position.coords.latitude;
+                                presta_currentLongitude = position.coords.longitude;
+                                presta_heureDebut = new Date().toISOString();
+                                
+                                console.log("📍 Géolocalisation début:", {
+                                    latitude: presta_currentLatitude,
+                                    longitude: presta_currentLongitude,
+                                    heureDebut: presta_heureDebut
+                                });
+                                
+                                presta_showNotification("✅ Début d'intervention enregistré ! Scannez à nouveau pour terminer.", 'success');
+                                
+                                // Redémarrer le scanner pour le deuxième scan
+                                setTimeout(() => {
+                                    presta_startQrScanner();
+                                }, 2000);
+                                
+                            },
+                            error => {
+                                let message = "⚠️ Erreur de géolocalisation.";
+                                switch (error.code) {
+                                    case error.PERMISSION_DENIED:
+                                        message = "❌ Vous devez autoriser la géolocalisation pour continuer.";
+                                        break;
+                                    case error.POSITION_UNAVAILABLE:
+                                        message = "📍 Position non disponible.";
+                                        break;
+                                    case error.TIMEOUT:
+                                        message = "⏱️ Le délai de localisation est dépassé.";
+                                        break;
+                                    default:
+                                        message = "❌ Erreur inconnue.";
+                                }
+                                alert(message);
+                                presta_closeModalQR();
+                            },
+                            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                        );
+                        
+                    } else {
+                        // DEUXIÈME SCAN - FIN D'INTERVENTION
+                        console.log("🔴 DEUXIÈME SCAN - Fin d'intervention");
+                        
+                        // Obtenir la géolocalisation pour la fin
+                        if (!navigator.geolocation) {
+                            alert("❌ Votre appareil ne supporte pas la géolocalisation.");
+                            presta_closeModalQR();
+                            return;
+                        }
+
+                        navigator.geolocation.getCurrentPosition(
+                            position => {
+                                const latitudeFin = position.coords.latitude;
+                                const longitudeFin = position.coords.longitude;
+                                const heureFin = new Date().toISOString();
+                                
+                                console.log("📍 Géolocalisation fin:", {
+                                    latitudeFin: latitudeFin,
+                                    longitudeFin: longitudeFin,
+                                    heureFin: heureFin
+                                });
+                                
+                                // Stocker les données de fin
+                                presta_latitudeFin = latitudeFin;
+                                presta_longitudeFin = longitudeFin;
+                                presta_heureFin = heureFin;
+                                
+                                // Afficher le formulaire
+                                presta_showForm();
+                                
+                            },
+                            error => {
+                                let message = "⚠️ Erreur de géolocalisation pour la fin.";
+                                switch (error.code) {
+                                    case error.PERMISSION_DENIED:
+                                        message = "❌ Vous devez autoriser la géolocalisation pour terminer.";
+                                        break;
+                                    case error.POSITION_UNAVAILABLE:
+                                        message = "📍 Position non disponible.";
+                                        break;
+                                    case error.TIMEOUT:
+                                        message = "⏱️ Le délai de localisation est dépassé.";
+                                        break;
+                                    default:
+                                        message = "❌ Erreur inconnue.";
+                                }
+                                alert(message);
+                                presta_closeModalQR();
+                            },
+                            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                        );
+                    }
 
                 } catch (err) {
                     console.error("❌ Erreur traitement QR:", err);
@@ -2013,7 +2101,7 @@ function presta_showForm() {
     if (stepForm) stepForm.style.display = "block";
     if (stepSuccess) stepSuccess.style.display = "none";
     
-    // Remplir les champs comme dans l'embed original
+    // Remplir les champs automatiquement
     if (presta_clientNameInput) {
         presta_clientNameInput.value = `${presta_currentClientPrenom} ${presta_currentClientNom}`.trim();
         if (presta_clientNameInput.value === "") {
@@ -2021,14 +2109,19 @@ function presta_showForm() {
         }
     }
     
-    // Date du jour
+    // Date du jour par défaut
     if (presta_obsDateInput) {
         presta_obsDateInput.value = new Date().toISOString().split("T")[0];
     }
     
     console.log("✅ Formulaire affiché avec succès");
+    console.log("📊 Données enregistrées:", {
+        heureDebut: presta_heureDebut,
+        heureFin: presta_heureFin,
+        geolocDebut: { lat: presta_currentLatitude, lng: presta_currentLongitude },
+        geolocFin: { lat: presta_latitudeFin, lng: presta_longitudeFin }
+    });
 }
-
         // Attacher les écouteurs d'événements pour les boutons de démarrage de prestation
         function presta_attacherListenersStartPrestation() {
             document.querySelectorAll(".btn-start-prestation").forEach(btn => {
@@ -2466,6 +2559,69 @@ function presta_showForm() {
                     mobileMenu.classList.toggle('open');
                 });
             }
+
+            // === AJOUTEZ ICI LE CODE POUR LE FORMULAIRE D'OBSERVATION ===
+    // Gestion de la soumission du formulaire d'observation
+    if (document.getElementById("presta-obsForm")) {
+        document.getElementById("presta-obsForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            
+            if (presta_photosInput.files.length > 3) {
+                alert("Maximum 3 photos autorisées.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("type", "envoyerFiche");
+            formData.append("missionId", presta_currentMissionId);
+            formData.append("prenomClient", presta_currentClientPrenom);
+            formData.append("nomClient", presta_currentClientNom);
+            formData.append("obsDate", presta_obsDateInput.value);
+            formData.append("etatSante", presta_etatSanteInput.value);
+            formData.append("etatForme", presta_etatFormeInput.value);
+            formData.append("environnement", presta_environnementInput.value);
+            formData.append("latitudeDebut", presta_currentLatitude);
+            formData.append("longitudeDebut", presta_currentLongitude);
+            formData.append("latitudeFin", presta_latitudeFin);
+            formData.append("longitudeFin", presta_longitudeFin);
+            formData.append("heureDebut", presta_heureDebut);
+            formData.append("heureFin", presta_heureFin);
+            formData.append("prestatairePrenom", presta_currentPrestatairePrenom);
+            formData.append("prestataireNom", presta_currentPrestataireNom);
+            formData.append("prestataireEmail", presta_currentEmail);
+            
+            for (let file of presta_photosInput.files) {
+                formData.append("photos", file);
+            }
+
+            try {
+                document.getElementById('loader').style.display = 'flex';
+                
+                const res = await fetch(presta_webAppUrl, {
+                    method: "POST",
+                    body: formData,
+                });
+                
+                const json = await res.json();
+                
+                if (json.success) {
+                    presta_stepForm.style.display = "none";
+                    presta_stepSuccess.style.display = "block";
+                    presta_showNotification("Fiche d'observation envoyée avec succès !", 'success');
+                    
+                    // Recharger les missions
+                    await presta_loadMissions(presta_currentEmail);
+                } else {
+                    throw new Error(json.message || "Envoi échoué");
+                }
+            } catch (err) {
+                console.error("❌ Erreur envoi fiche:", err);
+                presta_showNotification("Erreur lors de l'envoi de la fiche: " + err.message, 'error');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        });
+    }
 
             // Fermer les modales en cliquant à l'extérieur
             document.addEventListener('click', function(event) {
