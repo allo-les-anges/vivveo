@@ -2065,27 +2065,7 @@ async function presta_login() {
     },
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
 );
-                            error => {
-                                let message = "⚠️ Erreur de géolocalisation.";
-                                switch (error.code) {
-                                    case error.PERMISSION_DENIED:
-                                        message = "❌ Vous devez autoriser la géolocalisation pour continuer.";
-                                        break;
-                                    case error.POSITION_UNAVAILABLE:
-                                        message = "📍 Position non disponible.";
-                                        break;
-                                    case error.TIMEOUT:
-                                        message = "⏱️ Le délai de localisation est dépassé.";
-                                        break;
-                                    default:
-                                        message = "❌ Erreur inconnue.";
-                                }
-                                alert(message);
-                                presta_closeModalQR();
-                            },
-                            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-                        );
-                        
+                            
                     } else {
                         // DEUXIÈME SCAN - FIN D'INTERVENTION
                         console.log("🔴 DEUXIÈME SCAN - Fin d'intervention");
