@@ -1900,6 +1900,39 @@ async function presta_login() {
             }
         }
 
+            async function presta_finirPremierScan() {
+    console.log("🔄 Finalisation du premier scan");
+    
+    try {
+        // Utiliser la fonction existante verifierQRClient du backend
+        const callbackName = 'cbFinirPremierScan' + Date.now();
+        const url = `${presta_webAppUrl}?type=verifyClientEmail&idclient=${encodeURIComponent(presta_currentMissionId)}&email=${encodeURIComponent(presta_currentEmail)}&latitude=${encodeURIComponent(presta_currentLatitude || '')}&longitude=${encodeURIComponent(presta_currentLongitude || '')}`;
+        
+        console.log("📡 Appel API pour finaliser le premier scan:", url);
+        const data = await presta_callApiJsonp(url, callbackName);
+        
+        if (data.success) {
+            console.log("✅ Mission mise à jour:", data.message);
+            presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
+            
+            // Fermer la modale
+            presta_closeModalQR();
+            
+            // Recharger les missions pour mettre à jour l'interface
+            setTimeout(() => {
+                presta_loadMissions(presta_currentEmail);
+            }, 1000);
+            
+        } else {
+            throw new Error(data.message || "Erreur lors de la mise à jour du statut");
+        }
+    } catch (error) {
+        console.error("❌ Erreur finalisation premier scan:", error);
+        presta_showNotification("Erreur lors du démarrage: " + error.message, 'error');
+        presta_closeModalQR();
+    }
+}
+        
         function presta_clearForm() {
             if (presta_obsDateInput) presta_obsDateInput.value = "";
             if (presta_etatSanteInput) presta_etatSanteInput.value = "";
@@ -1982,24 +2015,40 @@ async function presta_login() {
                         }
 
                         navigator.geolocation.getCurrentPosition(
-                            position => {
-                                presta_currentLatitude = position.coords.latitude;
-                                presta_currentLongitude = position.coords.longitude;
-                                
-                                console.log("📍 Géolocalisation début:", {
-                                    latitude: presta_currentLatitude,
-                                    longitude: presta_currentLongitude,
-                                    heureDebut: presta_heureDebut
-                                });
-                                
-                                presta_showNotification("✅ Début d'intervention enregistré ! Scannez à nouveau pour terminer.", 'success');
-                                
-                                // Redémarrer le scanner pour le deuxième scan
-                                setTimeout(() => {
-                                    presta_startQrScanner();
-                                }, 2000);
-                                
-                            },
+    async (position) => {
+        presta_currentLatitude = position.coords.latitude;
+        presta_currentLongitude = position.coords.longitude;
+        
+        console.log("📍 Géolocalisation début:", {
+            latitude: presta_currentLatitude,
+            longitude: presta_currentLongitude,
+            heureDebut: presta_heureDebut
+        });
+        
+        // APPELER LA FONCTION DE FINALISATION
+        await presta_finirPremierScan();
+    },
+    async (error) => {
+        let message = "⚠️ Erreur de géolocalisation.";
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                message = "❌ Vous devez autoriser la géolocalisation pour continuer.";
+                break;
+            case error.POSITION_UNAVAILABLE:
+                message = "📍 Position non disponible.";
+                break;
+            case error.TIMEOUT:
+                message = "⏱️ Le délai de localisation est dépassé.";
+                break;
+            default:
+                message = "❌ Erreur inconnue.";
+        }
+        alert(message);
+        // Même avec erreur de géoloc, on continue avec l'heure enregistrée
+        await presta_finirPremierScan();
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+);
                             error => {
                                 let message = "⚠️ Erreur de géolocalisation.";
                                 switch (error.code) {
@@ -2551,6 +2600,41 @@ function presta_showForm() {
             }, 5000);
         }
 
+// FONCTION MANQUANTE - À AJOUTER
+async function presta_finirPremierScan() {
+    console.log("🔄 Finalisation du premier scan");
+    
+    try {
+        // Utiliser la fonction existante verifierQRClient du backend
+        const callbackName = 'cbFinirPremierScan' + Date.now();
+        const url = `${presta_webAppUrl}?type=verifyClientEmail&idclient=${encodeURIComponent(presta_currentMissionId)}&email=${encodeURIComponent(presta_currentEmail)}&latitude=${encodeURIComponent(presta_currentLatitude || '')}&longitude=${encodeURIComponent(presta_currentLongitude || '')}`;
+        
+        console.log("📡 Appel API pour finaliser le premier scan:", url);
+        const data = await presta_callApiJsonp(url, callbackName);
+        
+        if (data.success) {
+            console.log("✅ Mission mise à jour:", data.message);
+            presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
+            
+            // Fermer la modale
+            presta_closeModalQR();
+            
+            // Recharger les missions pour mettre à jour l'interface
+            setTimeout(() => {
+                presta_loadMissions(presta_currentEmail);
+            }, 1000);
+            
+        } else {
+            throw new Error(data.message || "Erreur lors de la mise à jour du statut");
+        }
+    } catch (error) {
+        console.error("❌ Erreur finalisation premier scan:", error);
+        presta_showNotification("Erreur lors du démarrage: " + error.message, 'error');
+        presta_closeModalQR();
+    }
+}
+
+        
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             // Gestion du sélecteur de langue
