@@ -1970,6 +1970,10 @@ async function presta_login() {
                         // PREMIER SCAN - DÉBUT D'INTERVENTION
                         console.log("🟢 PREMIER SCAN - Début d'intervention");
                         
+                        // ENREGISTRER L'HEURE DE DÉBUT IMMÉDIATEMENT
+                        presta_heureDebut = new Date().toISOString();
+                        console.log("⏰ Heure début enregistrée:", presta_heureDebut);
+                        
                         // Obtenir la géolocalisation pour le début
                         if (!navigator.geolocation) {
                             alert("❌ Votre appareil ne supporte pas la géolocalisation.");
@@ -1981,7 +1985,6 @@ async function presta_login() {
                             position => {
                                 presta_currentLatitude = position.coords.latitude;
                                 presta_currentLongitude = position.coords.longitude;
-                                presta_heureDebut = new Date().toISOString();
                                 
                                 console.log("📍 Géolocalisation début:", {
                                     latitude: presta_currentLatitude,
@@ -2022,6 +2025,10 @@ async function presta_login() {
                         // DEUXIÈME SCAN - FIN D'INTERVENTION
                         console.log("🔴 DEUXIÈME SCAN - Fin d'intervention");
                         
+                        // ENREGISTRER L'HEURE DE FIN IMMÉDIATEMENT
+                        presta_heureFin = new Date().toISOString();
+                        console.log("⏰ Heure fin enregistrée:", presta_heureFin);
+                        
                         // Obtenir la géolocalisation pour la fin
                         if (!navigator.geolocation) {
                             alert("❌ Votre appareil ne supporte pas la géolocalisation.");
@@ -2031,20 +2038,25 @@ async function presta_login() {
 
                         navigator.geolocation.getCurrentPosition(
                             position => {
-                                const latitudeFin = position.coords.latitude;
-                                const longitudeFin = position.coords.longitude;
-                                const heureFin = new Date().toISOString();
+                                presta_latitudeFin = position.coords.latitude;
+                                presta_longitudeFin = position.coords.longitude;
                                 
                                 console.log("📍 Géolocalisation fin:", {
-                                    latitudeFin: latitudeFin,
-                                    longitudeFin: longitudeFin,
-                                    heureFin: heureFin
+                                    latitudeFin: presta_latitudeFin,
+                                    longitudeFin: presta_longitudeFin,
+                                    heureFin: presta_heureFin
                                 });
                                 
-                                // Stocker les données de fin
-                                presta_latitudeFin = latitudeFin;
-                                presta_longitudeFin = longitudeFin;
-                                presta_heureFin = heureFin;
+                                // AFFICHER TOUTES LES DONNées ENREGISTRÉES
+                                console.log("📊 DONNÉES COMPLÈTES POUR LE PDF:", {
+                                    missionId: presta_currentMissionId,
+                                    heureDebut: presta_heureDebut,
+                                    heureFin: presta_heureFin,
+                                    latitudeDebut: presta_currentLatitude,
+                                    longitudeDebut: presta_currentLongitude,
+                                    latitudeFin: presta_latitudeFin,
+                                    longitudeFin: presta_longitudeFin
+                                });
                                 
                                 // Afficher le formulaire
                                 presta_showForm();
@@ -2114,13 +2126,26 @@ function presta_showForm() {
         presta_obsDateInput.value = new Date().toISOString().split("T")[0];
     }
     
+    // AFFICHER LES DONNÉES DE DÉBUT POUR CONFIRMATION (optionnel)
     console.log("✅ Formulaire affiché avec succès");
-    console.log("📊 Données enregistrées:", {
+    console.log("📊 DONNÉES ENREGISTRÉES POUR LE PDF:", {
+        missionId: presta_currentMissionId,
         heureDebut: presta_heureDebut,
         heureFin: presta_heureFin,
-        geolocDebut: { lat: presta_currentLatitude, lng: presta_currentLongitude },
-        geolocFin: { lat: presta_latitudeFin, lng: presta_longitudeFin }
+        latitudeDebut: presta_currentLatitude,
+        longitudeDebut: presta_currentLongitude,
+        latitudeFin: presta_latitudeFin,
+        longitudeFin: presta_longitudeFin
     });
+    
+    // Optionnel : Afficher un résumé des données dans la console
+    if (presta_heureDebut && presta_currentLatitude) {
+        console.log("✅ Données de début bien enregistrées");
+        console.log(`   Heure début: ${new Date(presta_heureDebut).toLocaleString()}`);
+        console.log(`   Position début: ${presta_currentLatitude}, ${presta_currentLongitude}`);
+    } else {
+        console.error("❌ Données de début manquantes!");
+    }
 }
         // Attacher les écouteurs d'événements pour les boutons de démarrage de prestation
         function presta_attacherListenersStartPrestation() {
