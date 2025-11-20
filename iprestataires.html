@@ -8,27 +8,47 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
-        /* CORRECTION ULTRA-SIMPLE - CACHER LE SCANNER QR */
+        /* MODALE QR - CORRIGÉE */
         #presta-modalOverlay {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-            height: 0 !important;
-            width: 0 !important;
-            position: absolute !important;
-            left: -9999px !important;
-            pointer-events: none !important;
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #presta-modalContent {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
         }
 
         #presta-stepQR,
-        #presta-qr-reader {
-            display: none !important;
+        #presta-stepForm,
+        #presta-stepSuccess {
+            display: none;
         }
 
-        /* Cacher les éléments par leur contenu texte */
-        .qr-hidden {
-            display: none !important;
-            visibility: hidden !important;
+        #presta-qr-reader {
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 1 / 1;
+            max-height: 350px;
+            margin: 0 auto;
         }
         
         :root {
@@ -743,14 +763,6 @@
             border: 1px solid #bfdbfe;
         }
 
-        #qr-reader {
-            width: 100% !important;
-            height: auto !important;
-            aspect-ratio: 1 / 1;
-            max-height: 350px;
-            margin: 0 auto;
-        }
-
         .actions {
             display: flex;
             justify-content: center;
@@ -771,35 +783,6 @@
 
         .actions button:hover {
             background-color: #ccc;
-        }
-
-        #modalOverlay {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            right: 0; 
-            bottom: 0;
-            background: rgba(0,0,0,0.6);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            padding: 10px;
-            overflow-y: auto;
-        }
-
-        #modalContent {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            width: 100%;
-            max-width: 480px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-sizing: border-box;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
         }
 
         #photosPreview img {
@@ -1410,15 +1393,15 @@
     </div>
 
     <!-- Modal QR Code et fiche d'observation - CACHÉ PAR DÉFAUT -->
-    <div id="presta-modalOverlay" style="display: none !important;">
+    <div id="presta-modalOverlay">
         <div id="presta-modalContent">
-            <div id="presta-stepQR" style="display:none;">
+            <div id="presta-stepQR">
                 <h2 class="text-xl font-bold mb-4">📸 Scanner le QR code client</h2>
                 <div id="presta-qr-reader"></div>
-                <button id="presta-btnCancelQR" class="btn-secondary mt-4" style="background:#d32f2f;">Annuler</button>
+                <button id="presta-btnCancelQR" class="btn-secondary mt-4">Annuler</button>
             </div>
 
-            <div id="presta-stepForm" style="display:none;">
+            <div id="presta-stepForm">
                 <h2 class="text-xl font-bold mb-4">📝 Fiche d'observation</h2>
                 <form id="presta-obsForm">
                     <div class="form-group">
@@ -1460,11 +1443,11 @@
                     </div>
 
                     <button type="submit" class="btn-elegant w-full">Envoyer la fiche</button>
-                    <button type="button" id="presta-btnCancelForm" class="btn-secondary w-full mt-2" style="background:#d32f2f;">Annuler</button>
+                    <button type="button" id="presta-btnCancelForm" class="btn-secondary w-full mt-2">Annuler</button>
                 </form>
             </div>
 
-            <div id="presta-stepSuccess" style="display:none; text-align:center;">
+            <div id="presta-stepSuccess">
                 <h2 class="text-xl font-bold mb-4">✅ Fiche envoyée avec succès !</h2>
                 <button id="presta-btnCloseSuccess" class="btn-elegant">Fermer</button>
             </div>
@@ -1472,41 +1455,6 @@
     </div>
 
     <script>
-        // CORRECTION URGENTE - CACHER LE SCANNER QR
-        function hideQRElements() {
-            console.log("🔧 Application de la correction QR...");
-            
-            // Cacher la modale principale
-            const modal = document.getElementById('presta-modalOverlay');
-            if (modal) {
-                modal.style.display = 'none';
-                modal.style.visibility = 'hidden';
-                console.log("🚫 Modale QR cachée");
-            }
-            
-            // Cacher les éléments par texte
-            const elements = document.querySelectorAll('h2, button, div');
-            elements.forEach(el => {
-                const text = el.textContent || '';
-                if (text.includes('Scanner le QR code client') || 
-                    text.includes('Fiche d\'observation') || 
-                    text.includes('Annuler')) {
-                    el.style.display = 'none';
-                    el.style.visibility = 'hidden';
-                    el.classList.add('qr-hidden');
-                    console.log(`🗑️ Élément caché: ${text.substring(0, 30)}...`);
-                }
-            });
-            
-            console.log("✅ Correction QR appliquée");
-        }
-
-        // Exécuter immédiatement et au chargement
-        hideQRElements();
-        document.addEventListener('DOMContentLoaded', hideQRElements);
-        setTimeout(hideQRElements, 100);
-        setTimeout(hideQRElements, 500);
-        
         // URL de l'application Google Apps Script
         const presta_webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
 
@@ -1514,6 +1462,7 @@
         let presta_currentEmail = "";
         let presta_currentMissions = [];
         let presta_currentPrestataireData = null;
+        let presta_qrScannerInstance = null;
 
         // Variables pour la modale QR (préfixées)
         let presta_currentMissionId = null;
@@ -1873,39 +1822,60 @@
             }
         }
 
-        // Fonctions pour la modale QR et fiche d'observation
-        function presta_setTodayDate() {
-            presta_obsDateInput.value = new Date().toISOString().split("T")[0];
-        }
+        // FONCTIONS POUR LA MODALE QR - CORRIGÉES
 
         function presta_openModalStartPrestation(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom) {
-            // CORRECTION : EMPÊCHER L'OUVERTURE DE LA MODALE QR
-            console.log("🚫 Tentative d'ouverture modale QR bloquée");
-            presta_showNotification("La fonctionnalité QR code est temporairement désactivée", 'info');
-            return;
+            console.log("🎯 Ouverture modale QR pour mission:", missionId);
             
-            // Code original commenté pour référence
-            /*
             presta_currentMissionId = missionId;
             presta_currentClientPrenom = clientPrenom;
             presta_currentClientNom = clientNom;
             presta_currentPrestatairePrenom = prestatairePrenom;
             presta_currentPrestataireNom = prestataireNom;
 
-            presta_stepQR.style.display = "flex";
-            presta_stepForm.style.display = "none";
-            presta_stepSuccess.style.display = "none";
-            presta_modalOverlay.style.display = "flex";
+            // AFFICHER LA MODALE
+            const modal = document.getElementById("presta-modalOverlay");
+            if (modal) {
+                modal.style.display = "flex";
+                console.log("✅ Modale affichée");
+            } else {
+                console.error("❌ Modale non trouvée");
+                return;
+            }
 
-            presta_startQrScanner();
-            */
+            // Configurer les étapes
+            const stepQR = document.getElementById("presta-stepQR");
+            const stepForm = document.getElementById("presta-stepForm");
+            const stepSuccess = document.getElementById("presta-stepSuccess");
+            
+            if (stepQR) stepQR.style.display = "block";
+            if (stepForm) stepForm.style.display = "none";
+            if (stepSuccess) stepSuccess.style.display = "none";
+
+            // Démarrer le scanner QR
+            setTimeout(() => {
+                presta_startQrScanner();
+            }, 100);
         }
 
         function presta_closeModalQR() {
-            if (presta_modalOverlay) {
-                presta_modalOverlay.style.display = "none";
+            console.log("🔒 Fermeture de la modale QR");
+            
+            const modal = document.getElementById("presta-modalOverlay");
+            if (modal) {
+                modal.style.display = "none";
             }
+            
+            // Réinitialiser le formulaire
             presta_clearForm();
+            
+            // Arrêter le scanner s'il est en cours
+            if (presta_qrScannerInstance) {
+                presta_qrScannerInstance.stop().catch(err => {
+                    console.warn("Erreur à l'arrêt du scanner:", err);
+                });
+                presta_qrScannerInstance = null;
+            }
         }
 
         function presta_clearForm() {
@@ -1918,104 +1888,72 @@
         }
 
         async function presta_startQrScanner() {
-            // CORRECTION : EMPÊCHER LE DÉMARRAGE DU SCANNER
-            console.log("🚫 Démarrage scanner QR bloqué");
-            return;
+            console.log("📱 Démarrage du scanner QR");
             
-            // Code original commenté pour référence
-            /*
-            document.getElementById("presta-qr-reader").innerHTML = "";
-            const qrReader = new Html5Qrcode("presta-qr-reader");
-            qrReader.start(
-                { facingMode: "environment" },
-                { fps: 10, qrbox: 250 },
-                async (decodedText) => {
-                    qrReader.stop();
-                    try {
-                        const url = new URL(decodedText);
-                        const email = url.searchParams.get("email");
-                        if (!email) throw new Error("QR invalide");
-
-                        const callbackName = 'cbVerifyClient' + Date.now();
-                        const data = await presta_callApiJsonp(`${presta_webAppUrl}?type=verifyClientEmail&email=${encodeURIComponent(email)}`, callbackName);
-
-                        if (!data.success || !presta_currentClientNom.toUpperCase().trim().includes((data.nom || "").toUpperCase().trim())) {
-                            alert("❌ Ce QR ne correspond pas au client de cette mission.");
-                            presta_closeModalQR();
-                            return;
-                        }
-                        presta_heureDebut = new Date().toISOString();
-                        presta_getGeolocationAndShowForm();
-
-                    } catch (err) {
-                        alert("Erreur lors du scan QR.");
-                        console.error(err);
-                        presta_closeModalQR();
-                    }
-                },
-                () => {}
-            ).catch(err => {
-                alert("Impossible d'activer la caméra.");
-                console.error(err);
-                presta_closeModalQR();
-            });
-            */
-        }
-
-        function presta_getGeolocationAndShowForm() {
-            // CORRECTION : EMPÊCHER LA GÉOLOCALISATION
-            console.log("🚫 Géolocalisation bloquée");
-            return;
-            
-            // Code original commenté pour référence
-            /*
-            if (!navigator.geolocation) {
-                alert("❌ Votre appareil ne supporte pas la géolocalisation.");
-                presta_closeModalQR();
+            const qrReader = document.getElementById("presta-qr-reader");
+            if (!qrReader) {
+                console.error("❌ Élément QR reader non trouvé");
                 return;
             }
-
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    presta_currentLatitude = position.coords.latitude;
-                    presta_currentLongitude = position.coords.longitude;
-                    presta_showForm();
-                },
-                error => {
-                    let message = "⚠️ Erreur de géolocalisation.";
-                    switch (error.code) {
-                        case error.PERMISSION_DENIED:
-                            message = "❌ Vous devez autoriser la géolocalisation pour continuer.";
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            message = "📍 Position non disponible.";
-                            break;
-                        case error.TIMEOUT:
-                            message = "⏱️ Le délai de localisation est dépassé.";
-                            break;
-                        default:
-                            message = "❌ Erreur inconnue.";
-                    }
-                    alert(message);
-                    presta_closeModalQR();
-                },
-                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-            );
-            */
-        }
-
-        function presta_showForm() {
-            // CORRECTION : EMPÊCHER L'AFFICHAGE DU FORMULAIRE
-            console.log("🚫 Affichage formulaire bloqué");
-            return;
             
-            // Code original commenté pour référence
-            /*
-            presta_stepQR.style.display = "none";
-            presta_stepForm.style.display = "block";
-            presta_clientNameInput.value = `${presta_currentClientPrenom} ${presta_currentClientNom}`;
-            presta_setTodayDate();
-            */
+            qrReader.innerHTML = "";
+            
+            try {
+                presta_qrScannerInstance = new Html5Qrcode("presta-qr-reader");
+                
+                await presta_qrScannerInstance.start(
+                    { facingMode: "environment" },
+                    { 
+                        fps: 10, 
+                        qrbox: { width: 250, height: 250 } 
+                    },
+                    async (decodedText) => {
+                        console.log("✅ QR Code scanné:", decodedText);
+                        
+                        await presta_qrScannerInstance.stop();
+                        
+                        try {
+                            const url = new URL(decodedText);
+                            const email = url.searchParams.get("email");
+                            
+                            if (!email) {
+                                throw new Error("QR code invalide");
+                            }
+
+                            // Vérifier le client
+                            const callbackName = 'cbVerifyClient' + Date.now();
+                            const verifyUrl = `${presta_webAppUrl}?type=verifyClientEmail&email=${encodeURIComponent(email)}`;
+                            const data = await presta_callApiJsonp(verifyUrl, callbackName);
+
+                            if (data.success) {
+                                presta_heureDebut = new Date().toISOString();
+                                presta_showNotification("✅ Mission démarrée avec succès !", 'success');
+                                presta_closeModalQR();
+                                
+                                if (presta_currentEmail) {
+                                    await presta_loadMissions(presta_currentEmail);
+                                }
+                            } else {
+                                alert("❌ Ce QR code ne correspond pas au client de cette mission");
+                                presta_closeModalQR();
+                            }
+
+                        } catch (err) {
+                            console.error("Erreur traitement QR:", err);
+                            alert("❌ Erreur lors du scan du QR code");
+                            presta_closeModalQR();
+                        }
+                    },
+                    (errorMessage) => {
+                        // Ignorer les erreurs de scan normales
+                    }
+                );
+                
+            } catch (err) {
+                console.error("❌ Erreur démarrage caméra:", err);
+                alert("❌ Impossible d'accéder à la caméra. Vérifiez les permissions.");
+                presta_closeModalQR();
+            }
         }
 
         // Attacher les écouteurs d'événements pour les boutons de démarrage de prestation
@@ -2127,29 +2065,21 @@
             document.getElementById('completed-missions-modal').style.display = 'block';
         }
 
-        // FONCTIONS POUR LA GESTION DU PROFIL - CORRIGÉES
+        // FONCTIONS POUR LA GESTION DU PROFIL
 
         async function presta_showProfileModal() {
             console.log("🎯 Ouverture modal profil");
             
             try {
-                // Afficher le loader immédiatement
                 document.getElementById('loader').style.display = 'flex';
-                
-                await presta_loadProfileData(); // Attendre que le profil soit chargé
-                
-                // Cacher le loader une fois les données chargées
+                await presta_loadProfileData();
                 document.getElementById('loader').style.display = 'none';
-                
-                // Afficher le modal
                 document.getElementById('presta-profile-modal').style.display = 'block';
                 console.log("✅ Modal affiché avec succès");
                 
             } catch (error) {
-                // Cacher le loader en cas d'erreur
                 document.getElementById('loader').style.display = 'none';
                 console.error("❌ Erreur lors de l'ouverture du modal:", error);
-                // Ne pas relancer l'erreur ici - elle est déjà gérée par presta_loadProfileData
             }
         }
 
@@ -2168,7 +2098,6 @@
                 const data = await presta_callApiJsonp(url, callbackName);
                 console.log("📦 Réponse API:", data);
 
-                // CORRECTION CRITIQUE : Utiliser data.profile
                 if (data.success && data.profile) {
                     console.log("✅ Profil chargé avec succès");
                     presta_currentPrestataireData = data.profile;
@@ -2188,7 +2117,6 @@
         function presta_populateProfileForm(prestataire) {
             console.log("📝 Remplissage du formulaire avec:", prestataire);
             
-            // CORRECTION : Utiliser les noms exacts des champs de la réponse
             document.getElementById('presta-profile-firstname').value = prestataire.prénom || '';
             document.getElementById('presta-profile-email').value = prestataire.email || '';
             document.getElementById('presta-profile-phone').value = prestataire.téléphone || '';
@@ -2235,7 +2163,7 @@
             });
 
             // Vérifier qu'au moins un champ est rempli
-            if (Object.keys(formData).length <= 1) { // Seulement l'email est présent
+            if (Object.keys(formData).length <= 1) {
                 presta_showNotification("Veuillez remplir au moins un champ à modifier", 'error');
                 return;
             }
@@ -2434,9 +2362,6 @@
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
-            // Appliquer la correction QR immédiatement
-            hideQRElements();
-            
             // Gestion du sélecteur de langue
             const languageButton = document.getElementById('language-button');
             const languageDropdown = document.getElementById('language-dropdown');
@@ -2486,7 +2411,7 @@
                 });
             });
 
-            // Gestion des photos dans la modale QR (désactivée)
+            // Gestion des photos dans la modale QR
             if (presta_photosInput) {
                 presta_photosInput.addEventListener("change", e => {
                     presta_photosPreview.innerHTML = "";
@@ -2508,28 +2433,20 @@
                 });
             }
 
-            // Soumission du formulaire d'observation (désactivée)
-            if (document.getElementById("presta-obsForm")) {
-                document.getElementById("presta-obsForm").addEventListener("submit", async e => {
-                    e.preventDefault();
-                    presta_showNotification("La fonctionnalité fiche d'observation est temporairement désactivée", 'info');
-                });
-            }
-
-            // Boutons d'annulation et fermeture (désactivés)
+            // Boutons d'annulation et fermeture
             if (document.getElementById("presta-btnCancelQR")) {
                 document.getElementById("presta-btnCancelQR").onclick = function() {
-                    presta_showNotification("Fonctionnalité désactivée", 'info');
+                    presta_closeModalQR();
                 };
             }
             if (document.getElementById("presta-btnCancelForm")) {
                 document.getElementById("presta-btnCancelForm").onclick = function() {
-                    presta_showNotification("Fonctionnalité désactivée", 'info');
+                    presta_closeModalQR();
                 };
             }
             if (document.getElementById("presta-btnCloseSuccess")) {
                 document.getElementById("presta-btnCloseSuccess").onclick = function() {
-                    presta_showNotification("Fonctionnalité désactivée", 'info');
+                    presta_closeModalQR();
                 };
             }
 
