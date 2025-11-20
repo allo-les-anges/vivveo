@@ -1472,14 +1472,7 @@
         let presta_currentLatitude = null, presta_currentLongitude = null;
         let presta_heureDebut = null;
 
-        // Variables pour la modale QR (préfixées)
-        let presta_currentMissionId = null;
-        let presta_currentClientPrenom = "", presta_currentClientNom = "";
-        let presta_currentPrestatairePrenom = "", presta_currentPrestataireNom = "";
-        let presta_currentLatitude = null, presta_currentLongitude = null;
-        let presta_heureDebut = null;
-
-        // AJOUTER CES VARIABLES POUR LA FIN D'INTERVENTION
+        // Variables pour la fin d'intervention
         let presta_latitudeFin = null;
         let presta_longitudeFin = null;
         let presta_heureFin = null;
@@ -1548,40 +1541,47 @@
             });
         }
 
-        // Fonction de connexion avec JSONP
-        async function presta_login() {
-            const email = document.getElementById('presta-email').value;
-            const password = document.getElementById('presta-password').value;
-            const message = document.getElementById('login-message');
+        // Fonction de connexion avec JSONP - VERSION AVEC DÉBOGAGE
+async function presta_login() {
+    const email = document.getElementById('presta-email').value;
+    const password = document.getElementById('presta-password').value;
+    const message = document.getElementById('login-message');
 
-            document.getElementById('loader').style.display = 'flex';
+    console.log("🔐 Tentative de connexion avec:", email);
+    
+    document.getElementById('loader').style.display = 'flex';
 
-            try {
-                const callbackName = 'cbLogin' + Date.now();
-                const url = `${presta_webAppUrl}?type=loginPresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-                const data = await presta_callApiJsonp(url, callbackName);
+    try {
+        const callbackName = 'cbLogin' + Date.now();
+        const url = `${presta_webAppUrl}?type=loginPresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+        
+        console.log("📡 URL de connexion:", url);
+        
+        const data = await presta_callApiJsonp(url, callbackName);
+        console.log("📦 Réponse de connexion:", data);
 
-                if (data.success) {
-                    presta_currentEmail = email;
-                    document.getElementById('login-section').classList.add('hidden');
-                    document.getElementById('prestataire-interface').classList.remove('hidden');
-                    
-                    document.getElementById('prestataire-name').textContent = data.prenom || "Prestataire";
-                    document.getElementById('prestataire-rating').textContent = data.note || "4.8";
+        if (data.success) {
+            presta_currentEmail = email;
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('prestataire-interface').classList.remove('hidden');
+            
+            document.getElementById('prestataire-name').textContent = data.prenom || "Prestataire";
+            document.getElementById('prestataire-rating').textContent = data.note || "4.8";
 
-                    await presta_loadMissions(email);
-                    presta_showNotification("Connexion réussie !", 'success');
-                } else {
-                    throw new Error(data.message || "Email ou mot de passe incorrect");
-                }
-            } catch (error) {
-                message.textContent = error.message;
-                message.classList.remove('hidden');
-                message.className = 'message message-error';
-            } finally {
-                document.getElementById('loader').style.display = 'none';
-            }
+            await presta_loadMissions(email);
+            presta_showNotification("Connexion réussie !", 'success');
+        } else {
+            throw new Error(data.message || "Email ou mot de passe incorrect");
         }
+    } catch (error) {
+        console.error("❌ Erreur de connexion:", error);
+        message.textContent = error.message;
+        message.classList.remove('hidden');
+        message.className = 'message message-error';
+    } finally {
+        document.getElementById('loader').style.display = 'none';
+    }
+}
 
         // Charger les missions avec JSONP
         async function presta_loadMissions(email) {
