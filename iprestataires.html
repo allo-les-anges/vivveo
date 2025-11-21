@@ -1456,9 +1456,6 @@
     </div>
 
     <script>
-        try {
-    console.log("🚀 Démarrage du script prestataire...");
-
     // URL de l'application Google Apps Script
     const presta_webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
     console.log("✅ URL définie:", presta_webAppUrl);
@@ -1506,343 +1503,343 @@
 
     console.log("✅ Variables globales définies");
             
-        // Fonction JSONP - VERSION AMÉLIORÉE
-        function presta_callApiJsonp(url, callbackName) {
-            return new Promise((resolve, reject) => {
-                console.log(`📞 Appel JSONP: ${url}`);
-                console.log(`📞 Callback: ${callbackName}`);
-                
-                window[callbackName] = function(data) {
-                    console.log(`📨 Réponse JSONP reçue:`, data);
-                    resolve(data);
-                    delete window[callbackName];
-                    if (script.parentNode) {
-                        script.parentNode.removeChild(script);
-                    }
-                };
-                
-                const script = document.createElement('script');
-                script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
-                
-                script.onerror = () => {
-                    console.error('❌ Erreur script JSONP - Impossible de charger le script');
-                    reject(new Error('Erreur JSONP'));
-                    delete window[callbackName];
-                    if (script.parentNode) {
-                        script.parentNode.removeChild(script);
-                    }
-                };
-                
-                // Timeout de sécurité
-                const timeoutId = setTimeout(() => {
-                    if (window[callbackName]) {
-                        console.error('⏰ Timeout JSONP après 10 secondes');
-                        reject(new Error('Timeout JSONP'));
-                        delete window[callbackName];
-                        if (script.parentNode) {
-                            script.parentNode.removeChild(script);
-                        }
-                    }
-                }, 10000);
-                
-                // Nettoyer le timeout si la réponse arrive
-                const originalCallback = window[callbackName];
-                window[callbackName] = function(data) {
-                    clearTimeout(timeoutId);
-                    originalCallback(data);
-                };
-                
-                console.log("🔄 Ajout du script au DOM");
-                document.body.appendChild(script);
-            });
-        }
-
-        // Fonction de connexion avec JSONP - VERSION AVEC DÉBOGAGE
-async function presta_login() {
-    const email = document.getElementById('presta-email').value;
-    const password = document.getElementById('presta-password').value;
-    const message = document.getElementById('login-message');
-
-    console.log("🔐 Tentative de connexion avec:", email);
-    
-    document.getElementById('loader').style.display = 'flex';
-
-    try {
-        const callbackName = 'cbLogin' + Date.now();
-        const url = `${presta_webAppUrl}?type=loginPresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-        
-        console.log("📡 URL de connexion:", url);
-        
-        const data = await presta_callApiJsonp(url, callbackName);
-        console.log("📦 Réponse de connexion:", data);
-
-        if (data.success) {
-            presta_currentEmail = email;
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('prestataire-interface').classList.remove('hidden');
+    // Fonction JSONP - VERSION AMÉLIORÉE
+    function presta_callApiJsonp(url, callbackName) {
+        return new Promise((resolve, reject) => {
+            console.log(`📞 Appel JSONP: ${url}`);
+            console.log(`📞 Callback: ${callbackName}`);
             
-            document.getElementById('prestataire-name').textContent = data.prenom || "Prestataire";
-            document.getElementById('prestataire-rating').textContent = data.note || "4.8";
-
-            await presta_loadMissions(email);
-            presta_showNotification("Connexion réussie !", 'success');
-        } else {
-            throw new Error(data.message || "Email ou mot de passe incorrect");
-        }
-    } catch (error) {
-        console.error("❌ Erreur de connexion:", error);
-        message.textContent = error.message;
-        message.classList.remove('hidden');
-        message.className = 'message message-error';
-    } finally {
-        document.getElementById('loader').style.display = 'none';
+            window[callbackName] = function(data) {
+                console.log(`📨 Réponse JSONP reçue:`, data);
+                resolve(data);
+                delete window[callbackName];
+                if (script.parentNode) {
+                    script.parentNode.removeChild(script);
+                }
+            };
+            
+            const script = document.createElement('script');
+            script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
+            
+            script.onerror = () => {
+                console.error('❌ Erreur script JSONP - Impossible de charger le script');
+                reject(new Error('Erreur JSONP'));
+                delete window[callbackName];
+                if (script.parentNode) {
+                    script.parentNode.removeChild(script);
+                }
+            };
+            
+            // Timeout de sécurité
+            const timeoutId = setTimeout(() => {
+                if (window[callbackName]) {
+                    console.error('⏰ Timeout JSONP après 10 secondes');
+                    reject(new Error('Timeout JSONP'));
+                    delete window[callbackName];
+                    if (script.parentNode) {
+                        script.parentNode.removeChild(script);
+                    }
+                }
+            }, 10000);
+            
+            // Nettoyer le timeout si la réponse arrive
+            const originalCallback = window[callbackName];
+            window[callbackName] = function(data) {
+                clearTimeout(timeoutId);
+                originalCallback(data);
+            };
+            
+            console.log("🔄 Ajout du script au DOM");
+            document.body.appendChild(script);
+        });
     }
-}
 
-        // Charger les missions avec JSONP
-        async function presta_loadMissions(email) {
-            try {
-                const callbackName = 'cbMissions' + Date.now();
-                const url = `${presta_webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
-                const data = await presta_callApiJsonp(url, callbackName);
+    // Fonction de connexion avec JSONP - VERSION AVEC DÉBOGAGE
+    async function presta_login() {
+        const email = document.getElementById('presta-email').value;
+        const password = document.getElementById('presta-password').value;
+        const message = document.getElementById('login-message');
 
-                const missions = data.missions || data;
+        console.log("🔐 Tentative de connexion avec:", email);
+        
+        document.getElementById('loader').style.display = 'flex';
+
+        try {
+            const callbackName = 'cbLogin' + Date.now();
+            const url = `${presta_webAppUrl}?type=loginPresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+            
+            console.log("📡 URL de connexion:", url);
+            
+            const data = await presta_callApiJsonp(url, callbackName);
+            console.log("📦 Réponse de connexion:", data);
+
+            if (data.success) {
+                presta_currentEmail = email;
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('prestataire-interface').classList.remove('hidden');
                 
-                if (!Array.isArray(missions)) {
-                    throw new Error("Format de données invalide");
-                }
+                document.getElementById('prestataire-name').textContent = data.prenom || "Prestataire";
+                document.getElementById('prestataire-rating').textContent = data.note || "4.8";
 
-                presta_currentMissions = missions;
-                presta_updateStats(missions);
-                presta_loadMissionsByStatus('pending', missions);
-                presta_loadMissionsByStatus('today', missions);
-                presta_loadMissionsByStatus('planned', missions);
-                presta_loadMissionsByStatus('completed', missions);
-                presta_attacherListenersStartPrestation();
-
-            } catch (error) {
-                console.error("Erreur lors du chargement des missions:", error);
-                presta_showNotification("Erreur lors du chargement des missions: " + error.message, 'error');
-            }
-        }
-
-        // Mettre à jour les statistiques
-        function presta_updateStats(missions) {
-            if (!Array.isArray(missions)) {
-                console.error("Missions n'est pas un tableau:", missions);
-                return;
-            }
-
-            const pendingCount = missions.filter(m => m.statut === "en attente").length;
-            const todayCount = missions.filter(m => {
-                if (m.statut !== "confirmée") return false;
-                try {
-                    const missionDate = new Date(m.date);
-                    const today = new Date();
-                    return missionDate.getDate() === today.getDate() && 
-                           missionDate.getMonth() === today.getMonth() && 
-                           missionDate.getFullYear() === today.getFullYear();
-                } catch (e) {
-                    return false;
-                }
-            }).length;
-            const plannedCount = missions.filter(m => {
-                if (m.statut !== "confirmée") return false;
-                try {
-                    const missionDate = new Date(m.date);
-                    return missionDate > new Date();
-                } catch (e) {
-                    return false;
-                }
-            }).length;
-            const completedCount = missions.filter(m => m.statut === "terminée" || m.statut === "validée").length;
-
-            document.getElementById('stats-pending').textContent = pendingCount;
-            document.getElementById('stats-today').textContent = todayCount;
-            document.getElementById('stats-planned').textContent = plannedCount;
-            document.getElementById('stats-completed').textContent = completedCount;
-        }
-
-        // Charger les missions par statut
-        function presta_loadMissionsByStatus(status, missions) {
-            const tableBody = document.getElementById(`${status}-missions-table`);
-            const cardsContainer = document.getElementById(`${status}-missions-cards`);
-            
-            if (!tableBody || !cardsContainer) return;
-
-            let filteredMissions = [];
-            
-            switch(status) {
-                case 'pending':
-                    filteredMissions = missions.filter(m => m.statut === "en attente");
-                    break;
-                case 'today':
-                    filteredMissions = missions.filter(m => {
-                        if (m.statut !== "confirmée") return false;
-                        try {
-                            const missionDate = new Date(m.date);
-                            const today = new Date();
-                            return missionDate.getDate() === today.getDate() && 
-                                   missionDate.getMonth() === today.getMonth() && 
-                                   missionDate.getFullYear() === today.getFullYear();
-                        } catch (e) {
-                            return false;
-                        }
-                    });
-                    break;
-                case 'planned':
-                    filteredMissions = missions.filter(m => {
-                        if (m.statut !== "confirmée") return false;
-                        try {
-                            const missionDate = new Date(m.date);
-                            return missionDate > new Date();
-                        } catch (e) {
-                            return false;
-                        }
-                    });
-                    break;
-                case 'completed':
-                    filteredMissions = missions.filter(m => m.statut === "terminée" || m.statut === "validée");
-                    break;
-            }
-            
-            if (filteredMissions.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="${status === 'completed' ? '6' : '7'}" class="p-4 text-center text-gray-500">Aucune mission disponible</td></tr>`;
-                cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission disponible</div>`;
+                await presta_loadMissions(email);
+                presta_showNotification("Connexion réussie !", 'success');
             } else {
-                tableBody.innerHTML = filteredMissions.map(mission => `
-                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td class="p-4">${mission.id || 'N/A'}</td>
-                        <td class="p-4" data-prenom="${mission.prenom || ''}">${mission.client || 'N/A'}</td>
-                        <td class="p-4">${mission.adresse || 'N/A'}</td>
-                        <td class="p-4">${mission.service || 'N/A'}</td>
-                        <td class="p-4">${presta_formatDate(mission.date)}</td>
-                        <td class="p-4">${presta_formatTime(mission.heure)}</td>
-                        <td class="p-4">${presta_getMissionActions(status, mission)}</td>
-                    </tr>
-                `).join('');
-                
-                cardsContainer.innerHTML = filteredMissions.map(mission => `
-                    <div class="request-card">
-                        <div class="card-row">
-                            <span class="card-label">ID Mission</span>
-                            <span class="card-value">${mission.id || 'N/A'}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">Client</span>
-                            <span class="card-value">${mission.client || 'N/A'}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">Adresse</span>
-                            <span class="card-value">${mission.adresse || 'N/A'}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">Service</span>
-                            <span class="card-value">${mission.service || 'N/A'}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">Date</span>
-                            <span class="card-value">${presta_formatDate(mission.date)}</span>
-                        </div>
-                        <div class="card-row">
-                            <span class="card-label">Heure</span>
-                            <span class="card-value">${presta_formatTime(mission.heure)}</span>
-                        </div>
-                        <div class="card-status">
-                            ${presta_getMissionActions(status, mission)}
-                        </div>
-                    </div>
-                `).join('');
+                throw new Error(data.message || "Email ou mot de passe incorrect");
             }
+        } catch (error) {
+            console.error("❌ Erreur de connexion:", error);
+            message.textContent = error.message;
+            message.classList.remove('hidden');
+            message.className = 'message message-error';
+        } finally {
+            document.getElementById('loader').style.display = 'none';
         }
+    }
 
-        // Formatage des dates
-        function presta_formatDate(dateString) {
-            if (!dateString) return 'N/A';
-            try {
-                const d = new Date(dateString);
-                return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
-            } catch (e) {
-                return dateString;
-            }
-        }
+    // Charger les missions avec JSONP
+    async function presta_loadMissions(email) {
+        try {
+            const callbackName = 'cbMissions' + Date.now();
+            const url = `${presta_webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
+            const data = await presta_callApiJsonp(url, callbackName);
 
-        function presta_formatTime(timeString) {
-            if (!timeString) return 'N/A';
-            try {
-                const d = new Date(timeString);
-                return isNaN(d) ? timeString : `${String(d.getHours()).padStart(2, '0')}h${String(d.getMinutes()).padStart(2, '0')}`;
-            } catch (e) {
-                return timeString;
-            }
-        }
-
-        function presta_getMissionActions(status, mission) {
-            if (status === 'pending') {
-                return `
-                    <div class="actions">
-                        <button onclick="presta_validerMission('${mission.id}')">✅</button>
-                        <button onclick="presta_refuserMission('${mission.id}')">❌</button>
-                    </div>
-                `;
-            } else if (status === 'today' || status === 'planned') {
-                return `
-                    <div class="actions">
-                        <button class="btn-start-prestation" data-id="${mission.id}">▶</button>
-                    </div>
-                `;
-            } else if (status === 'completed') {
-                return `
-                    <span class="status-badge ${mission.statut === 'validée' ? 'status-validated' : 'status-completed'}">
-                        ${mission.statut}
-                    </span>
-                `;
-            }
+            const missions = data.missions || data;
             
-            return "";
+            if (!Array.isArray(missions)) {
+                throw new Error("Format de données invalide");
+            }
+
+            presta_currentMissions = missions;
+            presta_updateStats(missions);
+            presta_loadMissionsByStatus('pending', missions);
+            presta_loadMissionsByStatus('today', missions);
+            presta_loadMissionsByStatus('planned', missions);
+            presta_loadMissionsByStatus('completed', missions);
+            presta_attacherListenersStartPrestation();
+
+        } catch (error) {
+            console.error("Erreur lors du chargement des missions:", error);
+            presta_showNotification("Erreur lors du chargement des missions: " + error.message, 'error');
+        }
+    }
+
+    // Mettre à jour les statistiques
+    function presta_updateStats(missions) {
+        if (!Array.isArray(missions)) {
+            console.error("Missions n'est pas un tableau:", missions);
+            return;
         }
 
-        // Valider une mission avec JSONP
-        async function presta_validerMission(id) {
-            if (confirm("Confirmez-vous que vous acceptez cette mission ?")) {
-                document.getElementById('loader').style.display = 'flex';
-                
-                try {
-                    const callbackName = 'cbValider' + Date.now();
-                    const url = `${presta_webAppUrl}?type=validerMission&id=${encodeURIComponent(id)}`;
-                    const data = await presta_callApiJsonp(url, callbackName);
-                    
-                    if (data.success) {
-                        presta_showNotification("Mission validée avec succès !", 'success');
-                        await presta_loadMissions(presta_currentEmail);
-                    } else {
-                        throw new Error(data.error || "Erreur lors de la validation");
+        const pendingCount = missions.filter(m => m.statut === "en attente").length;
+        const todayCount = missions.filter(m => {
+            if (m.statut !== "confirmée") return false;
+            try {
+                const missionDate = new Date(m.date);
+                const today = new Date();
+                return missionDate.getDate() === today.getDate() && 
+                       missionDate.getMonth() === today.getMonth() && 
+                       missionDate.getFullYear() === today.getFullYear();
+            } catch (e) {
+                return false;
+            }
+        }).length;
+        const plannedCount = missions.filter(m => {
+            if (m.statut !== "confirmée") return false;
+            try {
+                const missionDate = new Date(m.date);
+                return missionDate > new Date();
+            } catch (e) {
+                return false;
+            }
+        }).length;
+        const completedCount = missions.filter(m => m.statut === "terminée" || m.statut === "validée").length;
+
+        document.getElementById('stats-pending').textContent = pendingCount;
+        document.getElementById('stats-today').textContent = todayCount;
+        document.getElementById('stats-planned').textContent = plannedCount;
+        document.getElementById('stats-completed').textContent = completedCount;
+    }
+
+    // Charger les missions par statut
+    function presta_loadMissionsByStatus(status, missions) {
+        const tableBody = document.getElementById(`${status}-missions-table`);
+        const cardsContainer = document.getElementById(`${status}-missions-cards`);
+        
+        if (!tableBody || !cardsContainer) return;
+
+        let filteredMissions = [];
+        
+        switch(status) {
+            case 'pending':
+                filteredMissions = missions.filter(m => m.statut === "en attente");
+                break;
+            case 'today':
+                filteredMissions = missions.filter(m => {
+                    if (m.statut !== "confirmée") return false;
+                    try {
+                        const missionDate = new Date(m.date);
+                        const today = new Date();
+                        return missionDate.getDate() === today.getDate() && 
+                               missionDate.getMonth() === today.getMonth() && 
+                               missionDate.getFullYear() === today.getFullYear();
+                    } catch (e) {
+                        return false;
                     }
-                } catch (error) {
-                    presta_showNotification(error.message, 'error');
-                } finally {
-                    document.getElementById('loader').style.display = 'none';
-                }
-            }
+                });
+                break;
+            case 'planned':
+                filteredMissions = missions.filter(m => {
+                    if (m.statut !== "confirmée") return false;
+                    try {
+                        const missionDate = new Date(m.date);
+                        return missionDate > new Date();
+                    } catch (e) {
+                        return false;
+                    }
+                });
+                break;
+            case 'completed':
+                filteredMissions = missions.filter(m => m.statut === "terminée" || m.statut === "validée");
+                break;
         }
-
-        // Refuser une mission avec JSONP
-        async function presta_refuserMission(id) {
-            const alternatives = prompt("Indiquez une autre date/heure possible :");
-            if (!alternatives) return;
+        
+        if (filteredMissions.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="${status === 'completed' ? '6' : '7'}" class="p-4 text-center text-gray-500">Aucune mission disponible</td></tr>`;
+            cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission disponible</div>`;
+        } else {
+            tableBody.innerHTML = filteredMissions.map(mission => `
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <td class="p-4">${mission.id || 'N/A'}</td>
+                    <td class="p-4" data-prenom="${mission.prenom || ''}">${mission.client || 'N/A'}</td>
+                    <td class="p-4">${mission.adresse || 'N/A'}</td>
+                    <td class="p-4">${mission.service || 'N/A'}</td>
+                    <td class="p-4">${presta_formatDate(mission.date)}</td>
+                    <td class="p-4">${presta_formatTime(mission.heure)}</td>
+                    <td class="p-4">${presta_getMissionActions(status, mission)}</td>
+                </tr>
+            `).join('');
             
+            cardsContainer.innerHTML = filteredMissions.map(mission => `
+                <div class="request-card">
+                    <div class="card-row">
+                        <span class="card-label">ID Mission</span>
+                        <span class="card-value">${mission.id || 'N/A'}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Client</span>
+                        <span class="card-value">${mission.client || 'N/A'}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Adresse</span>
+                        <span class="card-value">${mission.adresse || 'N/A'}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Service</span>
+                        <span class="card-value">${mission.service || 'N/A'}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Date</span>
+                        <span class="card-value">${presta_formatDate(mission.date)}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Heure</span>
+                        <span class="card-value">${presta_formatTime(mission.heure)}</span>
+                    </div>
+                    <div class="card-status">
+                        ${presta_getMissionActions(status, mission)}
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+
+    // Formatage des dates
+    function presta_formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        try {
+            const d = new Date(dateString);
+            return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
+        } catch (e) {
+            return dateString;
+        }
+    }
+
+    function presta_formatTime(timeString) {
+        if (!timeString) return 'N/A';
+        try {
+            const d = new Date(timeString);
+            return isNaN(d) ? timeString : `${String(d.getHours()).padStart(2, '0')}h${String(d.getMinutes()).padStart(2, '0')}`;
+        } catch (e) {
+            return timeString;
+        }
+    }
+
+    function presta_getMissionActions(status, mission) {
+        if (status === 'pending') {
+            return `
+                <div class="actions">
+                    <button onclick="presta_validerMission('${mission.id}')">✅</button>
+                    <button onclick="presta_refuserMission('${mission.id}')">❌</button>
+                </div>
+            `;
+        } else if (status === 'today' || status === 'planned') {
+            return `
+                <div class="actions">
+                    <button class="btn-start-prestation" data-id="${mission.id}">▶</button>
+                </div>
+            `;
+        } else if (status === 'completed') {
+            return `
+                <span class="status-badge ${mission.statut === 'validée' ? 'status-validated' : 'status-completed'}">
+                    ${mission.statut}
+                </span>
+            `;
+        }
+        
+        return "";
+    }
+
+    // Valider une mission avec JSONP
+    async function presta_validerMission(id) {
+        if (confirm("Confirmez-vous que vous acceptez cette mission ?")) {
             document.getElementById('loader').style.display = 'flex';
             
             try {
-                const callbackName = 'cbRefuser' + Date.now();
-                const url = `${presta_webAppUrl}?type=refuserMission&id=${encodeURIComponent(id)}&alternatives=${encodeURIComponent(alternatives)}`;
+                const callbackName = 'cbValider' + Date.now();
+                const url = `${presta_webAppUrl}?type=validerMission&id=${encodeURIComponent(id)}`;
                 const data = await presta_callApiJsonp(url, callbackName);
                 
                 if (data.success) {
-                    presta_showNotification("Votre proposition a bien été envoyée.", 'success');
+                    presta_showNotification("Mission validée avec succès !", 'success');
                     await presta_loadMissions(presta_currentEmail);
                 } else {
-                    throw new Error(data.error || "Erreur lors de l'envoi");
+                    throw new Error(data.error || "Erreur lors de la validation");
+                }
+            } catch (error) {
+                presta_showNotification(error.message, 'error');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+    }
+
+    // Refuser une mission avec JSONP
+    async function presta_refuserMission(id) {
+        const alternatives = prompt("Indiquez une autre date/heure possible :");
+        if (!alternatives) return;
+        
+        document.getElementById('loader').style.display = 'flex';
+        
+        try {
+            const callbackName = 'cbRefuser' + Date.now();
+            const url = `${presta_webAppUrl}?type=refuserMission&id=${encodeURIComponent(id)}&alternatives=${encodeURIComponent(alternatives)}`;
+            const data = await presta_callApiJsonp(url, callbackName);
+            
+            if (data.success) {
+                presta_showNotification("Votre proposition a bien été envoyée.", 'success');
+                await presta_loadMissions(presta_currentEmail);
+                } else {
+                throw new Error(data.error || "Erreur lors de l'envoi");
                 }
             } catch (error) {
                 presta_showNotification(error.message, 'error');
@@ -1854,47 +1851,47 @@ async function presta_login() {
         // FONCTIONS POUR LA MODALE QR - CORRIGÉES
 
         function presta_openModalStartPrestation(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom) {
-    console.log("🎯 Ouverture modale QR pour mission:", missionId);
-    
-    // RÉINITIALISER LES VARIABLES DE SESSION
-    presta_currentMissionId = missionId;
-    presta_currentClientPrenom = clientPrenom;
-    presta_currentClientNom = clientNom;
-    presta_currentPrestatairePrenom = prestatairePrenom;
-    presta_currentPrestataireNom = prestataireNom;
-    presta_heureDebut = null; // Réinitialiser pour nouvelle mission
-    presta_latitudeFin = null;
-    presta_longitudeFin = null;
-    presta_heureFin = null;
+            console.log("🎯 Ouverture modale QR pour mission:", missionId);
+            
+            // RÉINITIALISER LES VARIABLES DE SESSION
+            presta_currentMissionId = missionId;
+            presta_currentClientPrenom = clientPrenom;
+            presta_currentClientNom = clientNom;
+            presta_currentPrestatairePrenom = prestatairePrenom;
+            presta_currentPrestataireNom = prestataireNom;
+            presta_heureDebut = null; // Réinitialiser pour nouvelle mission
+            presta_latitudeFin = null;
+            presta_longitudeFin = null;
+            presta_heureFin = null;
 
-    // AFFICHER LA MODALE
-    const modal = document.getElementById("presta-modalOverlay");
-    if (modal) {
-        modal.style.display = "flex";
-        console.log("✅ Modale affichée");
-    } else {
-        console.error("❌ Modale non trouvée");
-        return;
-    }
+            // AFFICHER LA MODALE
+            const modal = document.getElementById("presta-modalOverlay");
+            if (modal) {
+                modal.style.display = "flex";
+                console.log("✅ Modale affichée");
+            } else {
+                console.error("❌ Modale non trouvée");
+                return;
+            }
 
-    // Configurer les étapes
-    const stepQR = document.getElementById("presta-stepQR");
-    const stepForm = document.getElementById("presta-stepForm");
-    const stepSuccess = document.getElementById("presta-stepSuccess");
-    
-    if (stepQR) {
-        stepQR.style.display = "flex";
-        stepQR.style.flexDirection = "column";
-        stepQR.style.alignItems = "center";
-    }
-    if (stepForm) stepForm.style.display = "none";
-    if (stepSuccess) stepSuccess.style.display = "none";
+            // Configurer les étapes
+            const stepQR = document.getElementById("presta-stepQR");
+            const stepForm = document.getElementById("presta-stepForm");
+            const stepSuccess = document.getElementById("presta-stepSuccess");
+            
+            if (stepQR) {
+                stepQR.style.display = "flex";
+                stepQR.style.flexDirection = "column";
+                stepQR.style.alignItems = "center";
+            }
+            if (stepForm) stepForm.style.display = "none";
+            if (stepSuccess) stepSuccess.style.display = "none";
 
-    // Démarrer le scanner QR
-    setTimeout(() => {
-        presta_startQrScanner();
-    }, 100);
-}
+            // Démarrer le scanner QR
+            setTimeout(() => {
+                presta_startQrScanner();
+            }, 100);
+        }
     
         function presta_closeModalQR() {
             console.log("🔒 Fermeture de la modale QR");
@@ -1916,38 +1913,38 @@ async function presta_login() {
             }
         }
 
-            async function presta_finirPremierScan() {
-    console.log("🔄 Finalisation du premier scan");
-    
-    try {
-        // Utiliser la fonction existante verifierQRClient du backend
-        const callbackName = 'cbFinirPremierScan' + Date.now();
-        const url = `${presta_webAppUrl}?type=verifyClientEmail&idclient=${encodeURIComponent(presta_currentMissionId)}&email=${encodeURIComponent(presta_currentEmail)}&latitude=${encodeURIComponent(presta_currentLatitude || '')}&longitude=${encodeURIComponent(presta_currentLongitude || '')}`;
-        
-        console.log("📡 Appel API pour finaliser le premier scan:", url);
-        const data = await presta_callApiJsonp(url, callbackName);
-        
-        if (data.success) {
-            console.log("✅ Mission mise à jour:", data.message);
-            presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
+        async function presta_finirPremierScan() {
+            console.log("🔄 Finalisation du premier scan");
             
-            // Fermer la modale
-            presta_closeModalQR();
-            
-            // Recharger les missions pour mettre à jour l'interface
-            setTimeout(() => {
-                presta_loadMissions(presta_currentEmail);
-            }, 1000);
-            
-        } else {
-            throw new Error(data.message || "Erreur lors de la mise à jour du statut");
+            try {
+                // Utiliser la fonction existante verifierQRClient du backend
+                const callbackName = 'cbFinirPremierScan' + Date.now();
+                const url = `${presta_webAppUrl}?type=verifyClientEmail&idclient=${encodeURIComponent(presta_currentMissionId)}&email=${encodeURIComponent(presta_currentEmail)}&latitude=${encodeURIComponent(presta_currentLatitude || '')}&longitude=${encodeURIComponent(presta_currentLongitude || '')}`;
+                
+                console.log("📡 Appel API pour finaliser le premier scan:", url);
+                const data = await presta_callApiJsonp(url, callbackName);
+                
+                if (data.success) {
+                    console.log("✅ Mission mise à jour:", data.message);
+                    presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
+                    
+                    // Fermer la modale
+                    presta_closeModalQR();
+                    
+                    // Recharger les missions pour mettre à jour l'interface
+                    setTimeout(() => {
+                        presta_loadMissions(presta_currentEmail);
+                    }, 1000);
+                    
+                } else {
+                    throw new Error(data.message || "Erreur lors de la mise à jour du statut");
+                }
+            } catch (error) {
+                console.error("❌ Erreur finalisation premier scan:", error);
+                presta_showNotification("Erreur lors du démarrage: " + error.message, 'error');
+                presta_closeModalQR();
+            }
         }
-    } catch (error) {
-        console.error("❌ Erreur finalisation premier scan:", error);
-        presta_showNotification("Erreur lors du démarrage: " + error.message, 'error');
-        presta_closeModalQR();
-    }
-}
         
         function presta_clearForm() {
             if (presta_obsDateInput) presta_obsDateInput.value = "";
@@ -1959,239 +1956,240 @@ async function presta_login() {
         }
 
         async function presta_startQrScanner() {
-    console.log("📱 Démarrage du scanner QR");
-    
-    const qrReader = document.getElementById("presta-qr-reader");
-    if (!qrReader) {
-        console.error("❌ Élément QR reader non trouvé");
-        return;
-    }
-    
-    qrReader.innerHTML = "";
-    
-    try {
-        presta_qrScannerInstance = new Html5Qrcode("presta-qr-reader");
-        
-        await presta_qrScannerInstance.start(
-            { facingMode: "environment" },
-            { 
-                fps: 10, 
-                qrbox: 250 
-            },
-            async (decodedText) => {
-                console.log("✅ QR Code scanné:", decodedText);
-                
-                // Arrêter le scanner immédiatement
-                try {
-                    await presta_qrScannerInstance.stop();
-                    console.log("✅ Scanner arrêté avec succès");
-                } catch (stopError) {
-                    console.warn("⚠️ Erreur lors de l'arrêt du scanner:", stopError);
-                }
-                
-                try {
-                    const url = new URL(decodedText);
-                    const email = url.searchParams.get("email");
-                    
-                    if (!email) {
-                        throw new Error("QR invalide");
-                    }
-
-                    console.log("📧 Email extrait:", email);
-                    
-                    // Vérifier le client via l'API
-                    const callbackName = 'cbVerifyClient' + Date.now();
-                    const verifyUrl = `${presta_webAppUrl}?type=verifyClientEmail&email=${encodeURIComponent(email)}`;
-                    console.log("🔗 URL de vérification:", verifyUrl);
-                    
-                    const data = await presta_callApiJsonp(verifyUrl, callbackName);
-                    console.log("📦 Réponse vérification:", data);
-
-                    // Vérification du client
-                    if (!data.success || !presta_currentClientNom.toUpperCase().trim().includes((data.nom || "").toUpperCase().trim())) {
-                        alert("❌ Ce QR ne correspond pas au client de cette mission.");
-                        presta_closeModalQR();
-                        return;
-                    }
-                    
-                    // VÉRIFIER SI C'EST LE PREMIER OU DEUXIÈME SCAN
-                    if (!presta_heureDebut) {
-                        // PREMIER SCAN - DÉBUT D'INTERVENTION
-                        console.log("🟢 PREMIER SCAN - Début d'intervention");
-                        
-                        // ENREGISTRER L'HEURE DE DÉBUT IMMÉDIATEMENT
-                        presta_heureDebut = new Date().toISOString();
-                        console.log("⏰ Heure début enregistrée:", presta_heureDebut);
-                        
-                        // Obtenir la géolocalisation pour le début
-                        if (!navigator.geolocation) {
-                            alert("❌ Votre appareil ne supporte pas la géolocalisation.");
-                            presta_closeModalQR();
-                            return;
-                        }
-
-                        navigator.geolocation.getCurrentPosition(
-    async (position) => {
-        presta_currentLatitude = position.coords.latitude;
-        presta_currentLongitude = position.coords.longitude;
-        
-        console.log("📍 Géolocalisation début:", {
-            latitude: presta_currentLatitude,
-            longitude: presta_currentLongitude,
-            heureDebut: presta_heureDebut
-        });
-        
-        // APPELER LA FONCTION DE FINALISATION
-        await presta_finirPremierScan();
-    },
-    async (error) => {
-        let message = "⚠️ Erreur de géolocalisation.";
-        switch (error.code) {
-            case error.PERMISSION_DENIED:
-                message = "❌ Vous devez autoriser la géolocalisation pour continuer.";
-                break;
-            case error.POSITION_UNAVAILABLE:
-                message = "📍 Position non disponible.";
-                break;
-            case error.TIMEOUT:
-                message = "⏱️ Le délai de localisation est dépassé.";
-                break;
-            default:
-                message = "❌ Erreur inconnue.";
-        }
-        alert(message);
-        // Même avec erreur de géoloc, on continue avec l'heure enregistrée
-        await presta_finirPremierScan();
-    },
-    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-);
-                            
-                    } else {
-                        // DEUXIÈME SCAN - FIN D'INTERVENTION
-                        console.log("🔴 DEUXIÈME SCAN - Fin d'intervention");
-                        
-                        // ENREGISTRER L'HEURE DE FIN IMMÉDIATEMENT
-                        presta_heureFin = new Date().toISOString();
-                        console.log("⏰ Heure fin enregistrée:", presta_heureFin);
-                        
-                        // Obtenir la géolocalisation pour la fin
-                        if (!navigator.geolocation) {
-                            alert("❌ Votre appareil ne supporte pas la géolocalisation.");
-                            presta_closeModalQR();
-                            return;
-                        }
-
-                        navigator.geolocation.getCurrentPosition(
-                            position => {
-                                presta_latitudeFin = position.coords.latitude;
-                                presta_longitudeFin = position.coords.longitude;
-                                
-                                console.log("📍 Géolocalisation fin:", {
-                                    latitudeFin: presta_latitudeFin,
-                                    longitudeFin: presta_longitudeFin,
-                                    heureFin: presta_heureFin
-                                });
-                                
-                                // AFFICHER TOUTES LES DONNées ENREGISTRÉES
-                                console.log("📊 DONNÉES COMPLÈTES POUR LE PDF:", {
-                                    missionId: presta_currentMissionId,
-                                    heureDebut: presta_heureDebut,
-                                    heureFin: presta_heureFin,
-                                    latitudeDebut: presta_currentLatitude,
-                                    longitudeDebut: presta_currentLongitude,
-                                    latitudeFin: presta_latitudeFin,
-                                    longitudeFin: presta_longitudeFin
-                                });
-                                
-                                // Afficher le formulaire
-                                presta_showForm();
-                                
-                            },
-                            error => {
-                                let message = "⚠️ Erreur de géolocalisation pour la fin.";
-                                switch (error.code) {
-                                    case error.PERMISSION_DENIED:
-                                        message = "❌ Vous devez autoriser la géolocalisation pour terminer.";
-                                        break;
-                                    case error.POSITION_UNAVAILABLE:
-                                        message = "📍 Position non disponible.";
-                                        break;
-                                    case error.TIMEOUT:
-                                        message = "⏱️ Le délai de localisation est dépassé.";
-                                        break;
-                                    default:
-                                        message = "❌ Erreur inconnue.";
-                                }
-                                alert(message);
-                                presta_closeModalQR();
-                            },
-                            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-                        );
-                    }
-
-                } catch (err) {
-                    console.error("❌ Erreur traitement QR:", err);
-                    alert("Erreur lors du scan QR.");
-                    presta_closeModalQR();
-                }
-            },
-            (errorMessage) => {
-                // Ignorer les erreurs de scan normales
+            console.log("📱 Démarrage du scanner QR");
+            
+            const qrReader = document.getElementById("presta-qr-reader");
+            if (!qrReader) {
+                console.error("❌ Élément QR reader non trouvé");
+                return;
             }
-        );
-        
-    } catch (err) {
-        console.error("❌ Erreur démarrage caméra:", err);
-        alert("Impossible d'activer la caméra.");
-        presta_closeModalQR();
-    }
-}
+            
+            qrReader.innerHTML = "";
+            
+            try {
+                presta_qrScannerInstance = new Html5Qrcode("presta-qr-reader");
+                
+                await presta_qrScannerInstance.start(
+                    { facingMode: "environment" },
+                    { 
+                        fps: 10, 
+                        qrbox: 250 
+                    },
+                    async (decodedText) => {
+                        console.log("✅ QR Code scanné:", decodedText);
+                        
+                        // Arrêter le scanner immédiatement
+                        try {
+                            await presta_qrScannerInstance.stop();
+                            console.log("✅ Scanner arrêté avec succès");
+                        } catch (stopError) {
+                            console.warn("⚠️ Erreur lors de l'arrêt du scanner:", stopError);
+                        }
+                        
+                        try {
+                            const url = new URL(decodedText);
+                            const email = url.searchParams.get("email");
+                            
+                            if (!email) {
+                                throw new Error("QR invalide");
+                            }
 
-function presta_showForm() {
-    console.log("📝 Affichage du formulaire d'observation");
-    
-    const stepQR = document.getElementById("presta-stepQR");
-    const stepForm = document.getElementById("presta-stepForm");
-    const stepSuccess = document.getElementById("presta-stepSuccess");
-    
-    if (stepQR) stepQR.style.display = "none";
-    if (stepForm) stepForm.style.display = "block";
-    if (stepSuccess) stepSuccess.style.display = "none";
-    
-    // Remplir les champs automatiquement
-    if (presta_clientNameInput) {
-        presta_clientNameInput.value = `${presta_currentClientPrenom} ${presta_currentClientNom}`.trim();
-        if (presta_clientNameInput.value === "") {
-            presta_clientNameInput.value = "Client inconnu";
+                            console.log("📧 Email extrait:", email);
+                            
+                            // Vérifier le client via l'API
+                            const callbackName = 'cbVerifyClient' + Date.now();
+                            const verifyUrl = `${presta_webAppUrl}?type=verifyClientEmail&email=${encodeURIComponent(email)}`;
+                            console.log("🔗 URL de vérification:", verifyUrl);
+                            
+                            const data = await presta_callApiJsonp(verifyUrl, callbackName);
+                            console.log("📦 Réponse vérification:", data);
+
+                            // Vérification du client
+                            if (!data.success || !presta_currentClientNom.toUpperCase().trim().includes((data.nom || "").toUpperCase().trim())) {
+                                alert("❌ Ce QR ne correspond pas au client de cette mission.");
+                                presta_closeModalQR();
+                                return;
+                            }
+                            
+                            // VÉRIFIER SI C'EST LE PREMIER OU DEUXIÈME SCAN
+                            if (!presta_heureDebut) {
+                                // PREMIER SCAN - DÉBUT D'INTERVENTION
+                                console.log("🟢 PREMIER SCAN - Début d'intervention");
+                                
+                                // ENREGISTRER L'HEURE DE DÉBUT IMMÉDIATEMENT
+                                presta_heureDebut = new Date().toISOString();
+                                console.log("⏰ Heure début enregistrée:", presta_heureDebut);
+                                
+                                // Obtenir la géolocalisation pour le début
+                                if (!navigator.geolocation) {
+                                    alert("❌ Votre appareil ne supporte pas la géolocalisation.");
+                                    presta_closeModalQR();
+                                    return;
+                                }
+
+                                navigator.geolocation.getCurrentPosition(
+                                    async (position) => {
+                                        presta_currentLatitude = position.coords.latitude;
+                                        presta_currentLongitude = position.coords.longitude;
+                                        
+                                        console.log("📍 Géolocalisation début:", {
+                                            latitude: presta_currentLatitude,
+                                            longitude: presta_currentLongitude,
+                                            heureDebut: presta_heureDebut
+                                        });
+                                        
+                                        // APPELER LA FONCTION DE FINALISATION
+                                        await presta_finirPremierScan();
+                                    },
+                                    async (error) => {
+                                        let message = "⚠️ Erreur de géolocalisation.";
+                                        switch (error.code) {
+                                            case error.PERMISSION_DENIED:
+                                                message = "❌ Vous devez autoriser la géolocalisation pour continuer.";
+                                                break;
+                                            case error.POSITION_UNAVAILABLE:
+                                                message = "📍 Position non disponible.";
+                                                break;
+                                            case error.TIMEOUT:
+                                                message = "⏱️ Le délai de localisation est dépassé.";
+                                                break;
+                                            default:
+                                                message = "❌ Erreur inconnue.";
+                                        }
+                                        alert(message);
+                                        // Même avec erreur de géoloc, on continue avec l'heure enregistrée
+                                        await presta_finirPremierScan();
+                                    },
+                                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                                );
+                                                
+                            } else {
+                                // DEUXIÈME SCAN - FIN D'INTERVENTION
+                                console.log("🔴 DEUXIÈME SCAN - Fin d'intervention");
+                                
+                                // ENREGISTRER L'HEURE DE FIN IMMÉDIATEMENT
+                                presta_heureFin = new Date().toISOString();
+                                console.log("⏰ Heure fin enregistrée:", presta_heureFin);
+                                
+                                // Obtenir la géolocalisation pour la fin
+                                if (!navigator.geolocation) {
+                                    alert("❌ Votre appareil ne supporte pas la géolocalisation.");
+                                    presta_closeModalQR();
+                                    return;
+                                }
+
+                                navigator.geolocation.getCurrentPosition(
+                                    position => {
+                                        presta_latitudeFin = position.coords.latitude;
+                                        presta_longitudeFin = position.coords.longitude;
+                                        
+                                        console.log("📍 Géolocalisation fin:", {
+                                            latitudeFin: presta_latitudeFin,
+                                            longitudeFin: presta_longitudeFin,
+                                            heureFin: presta_heureFin
+                                        });
+                                        
+                                        // AFFICHER TOUTES LES DONNées ENREGISTRÉES
+                                        console.log("📊 DONNÉES COMPLÈTES POUR LE PDF:", {
+                                            missionId: presta_currentMissionId,
+                                            heureDebut: presta_heureDebut,
+                                            heureFin: presta_heureFin,
+                                            latitudeDebut: presta_currentLatitude,
+                                            longitudeDebut: presta_currentLongitude,
+                                            latitudeFin: presta_latitudeFin,
+                                            longitudeFin: presta_longitudeFin
+                                        });
+                                        
+                                        // Afficher le formulaire
+                                        presta_showForm();
+                                        
+                                    },
+                                    error => {
+                                        let message = "⚠️ Erreur de géolocalisation pour la fin.";
+                                        switch (error.code) {
+                                            case error.PERMISSION_DENIED:
+                                                message = "❌ Vous devez autoriser la géolocalisation pour terminer.";
+                                                break;
+                                            case error.POSITION_UNAVAILABLE:
+                                                message = "📍 Position non disponible.";
+                                                break;
+                                            case error.TIMEOUT:
+                                                message = "⏱️ Le délai de localisation est dépassé.";
+                                                break;
+                                            default:
+                                                message = "❌ Erreur inconnue.";
+                                        }
+                                        alert(message);
+                                        presta_closeModalQR();
+                                    },
+                                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                                );
+                            }
+
+                        } catch (err) {
+                            console.error("❌ Erreur traitement QR:", err);
+                            alert("Erreur lors du scan QR.");
+                            presta_closeModalQR();
+                        }
+                    },
+                    (errorMessage) => {
+                        // Ignorer les erreurs de scan normales
+                    }
+                );
+                
+            } catch (err) {
+                console.error("❌ Erreur démarrage caméra:", err);
+                alert("Impossible d'activer la caméra.");
+                presta_closeModalQR();
+            }
         }
-    }
-    
-    // Date du jour par défaut
-    if (presta_obsDateInput) {
-        presta_obsDateInput.value = new Date().toISOString().split("T")[0];
-    }
-    
-    // AFFICHER LES DONNÉES DE DÉBUT POUR CONFIRMATION (optionnel)
-    console.log("✅ Formulaire affiché avec succès");
-    console.log("📊 DONNÉES ENREGISTRÉES POUR LE PDF:", {
-        missionId: presta_currentMissionId,
-        heureDebut: presta_heureDebut,
-        heureFin: presta_heureFin,
-        latitudeDebut: presta_currentLatitude,
-        longitudeDebut: presta_currentLongitude,
-        latitudeFin: presta_latitudeFin,
-        longitudeFin: presta_longitudeFin
-    });
-    
-    // Optionnel : Afficher un résumé des données dans la console
-    if (presta_heureDebut && presta_currentLatitude) {
-        console.log("✅ Données de début bien enregistrées");
-        console.log(`   Heure début: ${new Date(presta_heureDebut).toLocaleString()}`);
-        console.log(`   Position début: ${presta_currentLatitude}, ${presta_currentLongitude}`);
-    } else {
-        console.error("❌ Données de début manquantes!");
-    }
-}
+
+        function presta_showForm() {
+            console.log("📝 Affichage du formulaire d'observation");
+            
+            const stepQR = document.getElementById("presta-stepQR");
+            const stepForm = document.getElementById("presta-stepForm");
+            const stepSuccess = document.getElementById("presta-stepSuccess");
+            
+            if (stepQR) stepQR.style.display = "none";
+            if (stepForm) stepForm.style.display = "block";
+            if (stepSuccess) stepSuccess.style.display = "none";
+            
+            // Remplir les champs automatiquement
+            if (presta_clientNameInput) {
+                presta_clientNameInput.value = `${presta_currentClientPrenom} ${presta_currentClientNom}`.trim();
+                if (presta_clientNameInput.value === "") {
+                    presta_clientNameInput.value = "Client inconnu";
+                }
+            }
+            
+            // Date du jour par défaut
+            if (presta_obsDateInput) {
+                presta_obsDateInput.value = new Date().toISOString().split("T")[0];
+            }
+            
+            // AFFICHER LES DONNÉES DE DÉBUT POUR CONFIRMATION (optionnel)
+            console.log("✅ Formulaire affiché avec succès");
+            console.log("📊 DONNÉES ENREGISTRÉES POUR LE PDF:", {
+                missionId: presta_currentMissionId,
+                heureDebut: presta_heureDebut,
+                heureFin: presta_heureFin,
+                latitudeDebut: presta_currentLatitude,
+                longitudeDebut: presta_currentLongitude,
+                latitudeFin: presta_latitudeFin,
+                longitudeFin: presta_longitudeFin
+            });
+            
+            // Optionnel : Afficher un résumé des données dans la console
+            if (presta_heureDebut && presta_currentLatitude) {
+                console.log("✅ Données de début bien enregistrées");
+                console.log(`   Heure début: ${new Date(presta_heureDebut).toLocaleString()}`);
+                console.log(`   Position début: ${presta_currentLatitude}, ${presta_currentLongitude}`);
+            } else {
+                console.error("❌ Données de début manquantes!");
+            }
+        }
+
         // Attacher les écouteurs d'événements pour les boutons de démarrage de prestation
         function presta_attacherListenersStartPrestation() {
             document.querySelectorAll(".btn-start-prestation").forEach(btn => {
@@ -2596,52 +2594,18 @@ function presta_showForm() {
             }, 5000);
         }
 
-// FONCTION MANQUANTE - À AJOUTER
-async function presta_finirPremierScan() {
-    console.log("🔄 Finalisation du premier scan");
-    
-    try {
-        // Utiliser la fonction existante verifierQRClient du backend
-        const callbackName = 'cbFinirPremierScan' + Date.now();
-        const url = `${presta_webAppUrl}?type=verifyClientEmail&idclient=${encodeURIComponent(presta_currentMissionId)}&email=${encodeURIComponent(presta_currentEmail)}&latitude=${encodeURIComponent(presta_currentLatitude || '')}&longitude=${encodeURIComponent(presta_currentLongitude || '')}`;
-        
-        console.log("📡 Appel API pour finaliser le premier scan:", url);
-        const data = await presta_callApiJsonp(url, callbackName);
-        
-        if (data.success) {
-            console.log("✅ Mission mise à jour:", data.message);
-            presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
-            
-            // Fermer la modale
-            presta_closeModalQR();
-            
-            // Recharger les missions pour mettre à jour l'interface
-            setTimeout(() => {
-                presta_loadMissions(presta_currentEmail);
-            }, 1000);
-            
-        } else {
-            throw new Error(data.message || "Erreur lors de la mise à jour du statut");
-        }
-    } catch (error) {
-        console.error("❌ Erreur finalisation premier scan:", error);
-        presta_showNotification("Erreur lors du démarrage: " + error.message, 'error');
-        presta_closeModalQR();
-    }
-}
-
-        
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
-    console.log("📄 DOM complètement chargé - initialisation...");
-    
-    // Initialiser les éléments DOM
-    presta_initDOMElements();
-    
-    // Vérifier que les éléments critiques existent
-    if (!presta_modalOverlay) {
-        console.warn("⚠️ presta_modalOverlay non trouvé");
-    }
+            console.log("📄 DOM complètement chargé - initialisation...");
+            
+            // Initialiser les éléments DOM
+            presta_initDOMElements();
+            
+            // Vérifier que les éléments critiques existent
+            if (!presta_modalOverlay) {
+                console.warn("⚠️ presta_modalOverlay non trouvé");
+            }
+            
             // Gestion du sélecteur de langue
             const languageButton = document.getElementById('language-button');
             const languageDropdown = document.getElementById('language-dropdown');
@@ -2674,68 +2638,67 @@ async function presta_finirPremierScan() {
                 });
             }
 
-            // === AJOUTEZ ICI LE CODE POUR LE FORMULAIRE D'OBSERVATION ===
-    // Gestion de la soumission du formulaire d'observation
-    if (document.getElementById("presta-obsForm")) {
-        document.getElementById("presta-obsForm").addEventListener("submit", async function(e) {
-            e.preventDefault();
-            
-            if (presta_photosInput.files.length > 3) {
-                alert("Maximum 3 photos autorisées.");
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append("type", "envoyerFiche");
-            formData.append("missionId", presta_currentMissionId);
-            formData.append("prenomClient", presta_currentClientPrenom);
-            formData.append("nomClient", presta_currentClientNom);
-            formData.append("obsDate", presta_obsDateInput.value);
-            formData.append("etatSante", presta_etatSanteInput.value);
-            formData.append("etatForme", presta_etatFormeInput.value);
-            formData.append("environnement", presta_environnementInput.value);
-            formData.append("latitudeDebut", presta_currentLatitude);
-            formData.append("longitudeDebut", presta_currentLongitude);
-            formData.append("latitudeFin", presta_latitudeFin);
-            formData.append("longitudeFin", presta_longitudeFin);
-            formData.append("heureDebut", presta_heureDebut);
-            formData.append("heureFin", presta_heureFin);
-            formData.append("prestatairePrenom", presta_currentPrestatairePrenom);
-            formData.append("prestataireNom", presta_currentPrestataireNom);
-            formData.append("prestataireEmail", presta_currentEmail);
-            
-            for (let file of presta_photosInput.files) {
-                formData.append("photos", file);
-            }
-
-            try {
-                document.getElementById('loader').style.display = 'flex';
-                
-                const res = await fetch(presta_webAppUrl, {
-                    method: "POST",
-                    body: formData,
-                });
-                
-                const json = await res.json();
-                
-                if (json.success) {
-                    presta_stepForm.style.display = "none";
-                    presta_stepSuccess.style.display = "block";
-                    presta_showNotification("Fiche d'observation envoyée avec succès !", 'success');
+            // Gestion de la soumission du formulaire d'observation
+            if (document.getElementById("presta-obsForm")) {
+                document.getElementById("presta-obsForm").addEventListener("submit", async function(e) {
+                    e.preventDefault();
                     
-                    // Recharger les missions
-                    await presta_loadMissions(presta_currentEmail);
-                } else {
-                    throw new Error(json.message || "Envoi échoué");
-                }
-            } catch (err) {
-                console.error("❌ Erreur envoi fiche:", err);
-                presta_showNotification("Erreur lors de l'envoi de la fiche: " + err.message, 'error');
-            } finally {
-                document.getElementById('loader').style.display = 'none';
+                    if (presta_photosInput.files.length > 3) {
+                        alert("Maximum 3 photos autorisées.");
+                        return;
+                    }
+
+                    const formData = new FormData();
+                    formData.append("type", "envoyerFiche");
+                    formData.append("missionId", presta_currentMissionId);
+                    formData.append("prenomClient", presta_currentClientPrenom);
+                    formData.append("nomClient", presta_currentClientNom);
+                    formData.append("obsDate", presta_obsDateInput.value);
+                    formData.append("etatSante", presta_etatSanteInput.value);
+                    formData.append("etatForme", presta_etatFormeInput.value);
+                    formData.append("environnement", presta_environnementInput.value);
+                    formData.append("latitudeDebut", presta_currentLatitude);
+                    formData.append("longitudeDebut", presta_currentLongitude);
+                    formData.append("latitudeFin", presta_latitudeFin);
+                    formData.append("longitudeFin", presta_longitudeFin);
+                    formData.append("heureDebut", presta_heureDebut);
+                    formData.append("heureFin", presta_heureFin);
+                    formData.append("prestatairePrenom", presta_currentPrestatairePrenom);
+                    formData.append("prestataireNom", presta_currentPrestataireNom);
+                    formData.append("prestataireEmail", presta_currentEmail);
+                    
+                    for (let file of presta_photosInput.files) {
+                        formData.append("photos", file);
+                    }
+
+                    try {
+                        document.getElementById('loader').style.display = 'flex';
+                        
+                        const res = await fetch(presta_webAppUrl, {
+                            method: "POST",
+                            body: formData,
+                        });
+                        
+                        const json = await res.json();
+                        
+                        if (json.success) {
+                            presta_stepForm.style.display = "none";
+                            presta_stepSuccess.style.display = "block";
+                            presta_showNotification("Fiche d'observation envoyée avec succès !", 'success');
+                            
+                            // Recharger les missions
+                            await presta_loadMissions(presta_currentEmail);
+                        } else {
+                            throw new Error(json.message || "Envoi échoué");
+                        }
+                    } catch (err) {
+                        console.error("❌ Erreur envoi fiche:", err);
+                        presta_showNotification("Erreur lors de l'envoi de la fiche: " + err.message, 'error');
+                    } finally {
+                        document.getElementById('loader').style.display = 'none';
+                    }
+                });
             }
-        });
-    }
 
             // Fermer les modales en cliquant à l'extérieur
             document.addEventListener('click', function(event) {
