@@ -1503,56 +1503,73 @@
 
     console.log("✅ Variables globales définies");
             
-    // Fonction JSONP - VERSION AMÉLIORÉE
-    function presta_callApiJsonp(url, callbackName) {
-        return new Promise((resolve, reject) => {
-            console.log(`📞 Appel JSONP: ${url}`);
-            console.log(`📞 Callback: ${callbackName}`);
+    // Fonction JSONP - VERSION AMÉLIORÉE AVEC GESTION D'ERREURS
+function presta_callApiJsonp(url, callbackName) {
+    return new Promise((resolve, reject) => {
+        console.log(`📞 Appel JSONP: ${url}`);
+        console.log(`📞 Callback: ${callbackName}`);
+        
+        // Timeout de sécurité
+        const timeoutId = setTimeout(() => {
+            if (window[callbackName]) {
+                console.error('⏰ Timeout JSONP après 15 secondes');
+                reject(new Error('Timeout - Le serveur ne répond pas'));
+                delete window[callbackName];
+                if (script.parentNode) {
+                    script.parentNode.removeChild(script);
+                }
+            }
+        }, 15000);
+        
+        window[callbackName] = function(data) {
+            clearTimeout(timeoutId);
+            console.log(`📨 Réponse JSONP reçue:`, data);
             
-            window[callbackName] = function(data) {
-                console.log(`📨 Réponse JSONP reçue:`, data);
+            // Vérifier si la réponse contient une erreur
+            if (data && data.success === false) {
+                reject(new Error(data.message || data.error || "Erreur inconnue du serveur"));
+            } else {
                 resolve(data);
-                delete window[callbackName];
-                if (script.parentNode) {
-                    script.parentNode.removeChild(script);
-                }
-            };
+            }
             
-            const script = document.createElement('script');
-            script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
-            
-            script.onerror = () => {
-                console.error('❌ Erreur script JSONP - Impossible de charger le script');
-                reject(new Error('Erreur JSONP'));
-                delete window[callbackName];
-                if (script.parentNode) {
-                    script.parentNode.removeChild(script);
-                }
-            };
-            
-            // Timeout de sécurité
-            const timeoutId = setTimeout(() => {
-                if (window[callbackName]) {
-                    console.error('⏰ Timeout JSONP après 10 secondes');
-                    reject(new Error('Timeout JSONP'));
-                    delete window[callbackName];
-                    if (script.parentNode) {
-                        script.parentNode.removeChild(script);
-                    }
-                }
-            }, 10000);
-            
-            // Nettoyer le timeout si la réponse arrive
-            const originalCallback = window[callbackName];
-            window[callbackName] = function(data) {
-                clearTimeout(timeoutId);
-                originalCallback(data);
-            };
-            
-            console.log("🔄 Ajout du script au DOM");
-            document.body.appendChild(script);
-        });
+            delete window[callbackName];
+            if (script.parentNode) {
+                script.parentNode.removeChild(script);
+            }
+        };
+        
+        const script = document.createElement('script');
+        script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
+        
+        script.onerror = () => {
+            clearTimeout(timeoutId);
+            console.error('❌ Erreur script JSONP - Impossible de charger le script');
+            reject(new Error('Impossible de contacter le serveur. Vérifiez votre connexion.'));
+            delete window[callbackName];
+            if (script.parentNode) {
+                script.parentNode.removeChild(script);
+            }
+        };
+        
+        console.log("🔄 Ajout du script au DOM");
+        document.body.appendChild(script);
+    });
+}
+
+        // Fonction de test pour vérifier la connexion à l'API
+async function testApiConnection() {
+    try {
+        console.log("🔍 Test de connexion à l'API...");
+        const callbackName = 'cbTest' + Date.now();
+        const url = `${presta_webAppUrl}?type=test`;
+        const data = await presta_callApiJsonp(url, callbackName);
+        console.log("✅ Test API réussi:", data);
+        return true;
+    } catch (error) {
+        console.error("❌ Test API échoué:", error);
+        return false;
     }
+}
 
     // Fonction de connexion avec JSONP - VERSION AVEC DÉBOGAGE
     async function presta_login() {
@@ -1914,37 +1931,72 @@
         }
 
         async function presta_finirPremierScan() {
-            console.log("🔄 Finalisation du premier scan");
-            
-            try {
-                // Utiliser la fonction existante verifierQRClient du backend
-                const callbackName = 'cbFinirPremierScan' + Date.now();
-                const url = `${presta_webAppUrl}?type=verifyClientEmail&idclient=${encodeURIComponent(presta_currentMissionId)}&email=${encodeURIComponent(presta_currentEmail)}&latitude=${encodeURIComponent(presta_currentLatitude || '')}&longitude=${encodeURIComponent(presta_currentLongitude || '')}`;
-                
-                console.log("📡 Appel API pour finaliser le premier scan:", url);
-                const data = await presta_callApiJsonp(url, callbackName);
-                
-                if (data.success) {
-                    console.log("✅ Mission mise à jour:", data.message);
-                    presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
-                    
-                    // Fermer la modale
-                    presta_closeModalQR();
-                    
-                    // Recharger les missions pour mettre à jour l'interface
-                    setTimeout(() => {
-                        presta_loadMissions(presta_currentEmail);
-                    }, 1000);
-                    
-                } else {
-                    throw new Error(data.message || "Erreur lors de la mise à jour du statut");
-                }
-            } catch (error) {
-                console.error("❌ Erreur finalisation premier scan:", error);
-                presta_showNotification("Erreur lors du démarrage: " + error.message, 'error');
-                presta_closeModalQR();
-            }
+    console.log("🔄 Finalisation du premier scan");
+    
+    try {
+        // Construire l'URL avec tous les paramètres nécessaires
+        const callbackName = 'cbFinirPremierScan' + Date.now();
+        let url = `${presta_webAppUrl}?type=verifyClientEmail`;
+        url += `&idclient=${encodeURIComponent(presta_currentMissionId)}`;
+        url += `&email=${encodeURIComponent(presta_currentEmail)}`;
+        
+        // Ajouter la géolocalisation seulement si disponible
+        if (presta_currentLatitude && presta_currentLongitude) {
+            url += `&latitude=${encodeURIComponent(presta_currentLatitude)}`;
+            url += `&longitude=${encodeURIComponent(presta_currentLongitude)}`;
         }
+        
+        // Ajouter l'heure de début
+        if (presta_heureDebut) {
+            url += `&heureDebut=${encodeURIComponent(presta_heureDebut)}`;
+        }
+        
+        console.log("📡 Appel API pour finaliser le premier scan:", url);
+        
+        const data = await presta_callApiJsonp(url, callbackName);
+        console.log("📦 Réponse API:", data);
+        
+        if (data.success) {
+            console.log("✅ Mission mise à jour:", data.message);
+            presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
+            
+            // Fermer la modale
+            presta_closeModalQR();
+            
+            // Recharger les missions pour mettre à jour l'interface
+            setTimeout(() => {
+                presta_loadMissions(presta_currentEmail);
+            }, 1000);
+            
+        } else {
+            // Gérer les différents types d'erreurs
+            let errorMessage = "Erreur lors de la mise à jour du statut";
+            
+            if (data.message) {
+                errorMessage = data.message;
+            } else if (data.error) {
+                errorMessage = data.error;
+            } else if (data.result && data.result.error) {
+                errorMessage = data.result.error;
+            }
+            
+            throw new Error(errorMessage);
+        }
+    } catch (error) {
+        console.error("❌ Erreur finalisation premier scan:", error);
+        
+        // Message d'erreur plus explicite
+        let userMessage = "Erreur lors du démarrage: ";
+        if (error.message && error.message !== "undefined") {
+            userMessage += error.message;
+        } else {
+            userMessage += "Impossible de contacter le serveur. Vérifiez votre connexion internet.";
+        }
+        
+        presta_showNotification(userMessage, 'error');
+        presta_closeModalQR();
+    }
+}
         
         function presta_clearForm() {
             if (presta_obsDateInput) presta_obsDateInput.value = "";
