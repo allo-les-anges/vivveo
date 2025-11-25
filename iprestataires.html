@@ -1999,15 +1999,14 @@ function presta_closeModalQR() {
     }
 }
 async function presta_finirPremierScan() {
-    console.log("🔄 Finalisation du premier scan - AVEC updateMissionStatus");
+    console.log("🔄 Finalisation du premier scan - AVEC startMission");
     
     try {
-        // UTILISER updateMissionStatus QUI FONCTIONNE
-        const callbackName = 'cbUpdateStatus' + Date.now();
-        let url = `${presta_webAppUrl}?type=updateMissionStatus`;
-        url += `&id=${encodeURIComponent(presta_currentMissionId)}`;
+        // UTILISER LA NOUVELLE FONCTION startMission
+        const callbackName = 'cbStartMission' + Date.now();
+        let url = `${presta_webAppUrl}?type=startMission`;
+        url += `&missionId=${encodeURIComponent(presta_currentMissionId)}`;
         url += `&email=${encodeURIComponent(presta_currentEmail)}`;
-        url += `&status=en cours`;
         
         // Ajouter la géolocalisation
         if (presta_currentLatitude && presta_currentLongitude) {
@@ -2020,17 +2019,17 @@ async function presta_finirPremierScan() {
             url += `&heureDebut=${encodeURIComponent(presta_heureDebut)}`;
         }
         
-        console.log("📡 Appel API updateMissionStatus:", url);
+        console.log("📡 Appel API startMission:", url);
         
         const data = await presta_callApiJsonp(url, callbackName);
-        console.log("📦 Réponse updateMissionStatus:", data);
+        console.log("📦 Réponse startMission:", data);
         
         if (data.success) {
-            console.log("✅ Statut mis à jour:", data.message);
+            console.log("✅ Mission démarrée:", data.message);
             presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
         } else {
-            console.error("❌ Erreur updateMissionStatus:", data.message || data.error);
-            presta_showNotification("❌ Erreur de mise à jour: " + (data.message || data.error), 'error');
+            console.error("❌ Erreur startMission:", data.message || data.error);
+            presta_showNotification("❌ Erreur: " + (data.message || data.error), 'error');
         }
         
     } catch (error) {
@@ -2044,7 +2043,7 @@ async function presta_finirPremierScan() {
         presta_loadMissions(presta_currentEmail);
     }, 2000);
 }
-// Fonction alternative pour les appels API
+        // Fonction alternative pour les appels API
 async function presta_tryAlternativeApiCall() {
     try {
         const callbackName = 'cbAlternative' + Date.now();
