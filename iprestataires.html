@@ -1507,7 +1507,23 @@
             console.log("✅ Éléments DOM initialisés");
             return true;
         }
+        // =============================================
+        // FONCTIONS UTILITAIRES POUR LA MODALE QR
+        // =============================================
 
+        function presta_clearForm() {
+        console.log("🧹 Nettoyage du formulaire");
+    
+        // Réinitialiser tous les champs du formulaire
+        if (presta_obsDateInput) presta_obsDateInput.value = "";
+        if (presta_etatSanteInput) presta_etatSanteInput.value = "";
+        if (presta_etatFormeInput) presta_etatFormeInput.value = "";
+        if (presta_environnementInput) presta_environnementInput.value = "";
+        if (presta_photosInput) presta_photosInput.value = "";
+        if (presta_photosPreview) presta_photosPreview.innerHTML = "";
+    
+        console.log("✅ Formulaire nettoyé");
+    }
         // =============================================
         // FONCTIONS DE COMMUNICATION AVEC L'API
         // =============================================
@@ -1955,8 +1971,16 @@ function presta_closeModalQR() {
         modal.style.display = "none";
     }
     
-    // Réinitialiser le formulaire
-    presta_clearForm();
+    // Réinitialiser le formulaire - AVEC VÉRIFICATION
+    try {
+        if (typeof presta_clearForm === 'function') {
+            presta_clearForm();
+        } else {
+            console.warn("⚠️ presta_clearForm n'est pas définie");
+        }
+    } catch (error) {
+        console.error("❌ Erreur lors du nettoyage du formulaire:", error);
+    }
     
     // Arrêter le scanner s'il est en cours - AVEC GESTION D'ERREUR AMÉLIORÉE
     if (presta_qrScannerInstance) {
@@ -1974,14 +1998,13 @@ function presta_closeModalQR() {
         });
     }
 }
-
 async function presta_finirPremierScan() {
     console.log("🔄 Finalisation du premier scan");
     
     try {
-        // Construire l'URL avec tous les paramètres nécessaires
+        // UTILISER LE BON TYPE D'API - "updateMission" au lieu de "updateMissionStatus"
         const callbackName = 'cbFinirPremierScan' + Date.now();
-        let url = `${presta_webAppUrl}?type=updateMissionStatus`;
+        let url = `${presta_webAppUrl}?type=updateMission`;
         url += `&id=${encodeURIComponent(presta_currentMissionId)}`;
         url += `&email=${encodeURIComponent(presta_currentEmail)}`;
         url += `&status=en cours`;
@@ -2015,12 +2038,12 @@ async function presta_finirPremierScan() {
             }, 1000);
             
         } else {
-            // Si l'API ne répond pas correctement, on affiche un message d'erreur
-            console.error("❌ Erreur API:", data.message || data.error);
-            presta_showNotification("❌ Erreur lors de la mise à jour: " + (data.message || data.error), 'error');
+            // Si l'API ne répond pas correctement, on essaie avec un autre type
+            console.error("❌ Erreur API avec updateMission:", data.message || data.error);
             
-            // On ferme quand même la modale mais on affiche l'erreur
-            presta_closeModalQR();
+            // ESSAYER AVEC UN AUTRE TYPE D'API
+            console.log("🔄 Tentative avec un autre type d'API...");
+            await presta_tryAlternativeApiCall();
         }
     } catch (error) {
         console.error("❌ Erreur finalisation premier scan:", error);
@@ -2032,6 +2055,66 @@ async function presta_finirPremierScan() {
         setTimeout(() => {
             presta_loadMissions(presta_currentEmail);
         }, 1000);
+    }
+}
+
+// Fonction alternative pour les appels API
+async function presta_tryAlternativeApiCall() {
+    try {
+        const callbackName = 'cbAlternative' + Date.now();
+        
+        // Essayer différents types d'API
+        const apiTypes = ['validerMission', 'updateMissionStatus', 'startMission'];
+        
+        for (const apiType of apiTypes) {
+            try {
+                console.log(`🔄 Essai avec type: ${apiType}`);
+                
+                let url = `${presta_webAppUrl}?type=${apiType}`;
+                url += `&id=${encodeURIComponent(presta_currentMissionId)}`;
+                url += `&email=${encodeURIComponent(presta_currentEmail)}`;
+                
+                if (apiType === 'validerMission' || apiType === 'startMission') {
+                    // Pas besoin de status pour ces types
+                } else {
+                    url += `&status=en cours`;
+                }
+                
+                // Ajouter la géolocalisation
+                if (presta_currentLatitude && presta_currentLongitude) {
+                    url += `&latitude=${encodeURIComponent(presta_currentLatitude)}`;
+                    url += `&longitude=${encodeURIComponent(presta_currentLongitude)}`;
+                }
+                
+                // Ajouter l'heure de début
+                if (presta_heureDebut) {
+                    url += `&heureDebut=${encodeURIComponent(presta_heureDebut)}`;
+                }
+                
+                const data = await presta_callApiJsonp(url, callbackName + apiType);
+                
+                if (data.success) {
+                    console.log(`✅ Succès avec type: ${apiType}`, data.message);
+                    presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
+                    presta_closeModalQR();
+                    setTimeout(() => {
+                        presta_loadMissions(presta_currentEmail);
+                    }, 1000);
+                    return;
+                }
+            } catch (error) {
+                console.warn(`⚠️ Échec avec type: ${apiType}`, error.message);
+                continue;
+            }
+        }
+        
+        // Si aucun type ne fonctionne
+        throw new Error("Aucun type d'API ne fonctionne");
+        
+    } catch (error) {
+        console.error("❌ Tous les appels API alternatifs ont échoué:", error);
+        presta_showNotification("❌ Erreur de mise à jour - Contactez le support", 'error');
+        presta_closeModalQR();
     }
 }
 
@@ -2922,6 +3005,37 @@ function presta_addManualTestButton() {
                 passwordConfirmInput.addEventListener('input', presta_checkPasswordMatch);
             }
         });
+
+            // Fonction pour découvrir les types d'API disponibles
+async function presta_discoverApiTypes() {
+    console.log("🔍 Découverte des types d'API disponibles...");
+    
+    const testTypes = [
+        'updateMission',
+        'updateMissionStatus', 
+        'validerMission',
+        'startMission',
+        'missionStart',
+        'beginMission'
+    ];
+    
+    for (const type of testTypes) {
+        try {
+            const callbackName = 'discover' + Date.now() + type;
+            const url = `${presta_webAppUrl}?type=${type}&id=TEST&email=test@test.com`;
+            
+            console.log(`🧪 Test type: ${type}`);
+            const data = await presta_callApiJsonp(url, callbackName);
+            console.log(`✅ Type ${type} fonctionne:`, data);
+            
+        } catch (error) {
+            console.log(`❌ Type ${type} échoué:`, error.message);
+        }
+    }
+}
+
+// Appeler cette fonction pour debugger
+// presta_discoverApiTypes();
     </script>
 </body>
 </html>
