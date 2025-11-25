@@ -1900,318 +1900,365 @@
         // FONCTIONS POUR LA MODALE QR
         // =============================================
 
-        function presta_openModalStartPrestation(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom) {
-            console.log("🎯 Ouverture modale QR pour mission:", missionId);
-            console.log("👤 Client:", clientPrenom, clientNom);
-            console.log("👷 Prestataire:", prestatairePrenom, prestataireNom);
-            
-            // RÉINITIALISER LES VARIABLES DE SESSION
-            presta_currentMissionId = missionId;
-            presta_currentClientPrenom = clientPrenom;
-            presta_currentClientNom = clientNom;
-            presta_currentPrestatairePrenom = prestatairePrenom;
-            presta_currentPrestataireNom = prestataireNom;
-            presta_heureDebut = null;
-            presta_latitudeFin = null;
-            presta_longitudeFin = null;
-            presta_heureFin = null;
+    // =============================================
+// FONCTIONS POUR LA MODALE QR - CORRIGÉES
+// =============================================
 
-            // AFFICHER LA MODALE
-            const modal = document.getElementById("presta-modalOverlay");
-            if (modal) {
-                modal.style.display = "flex";
-                console.log("✅ Modale affichée");
+function presta_openModalStartPrestation(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom) {
+    console.log("🎯 Ouverture modale QR pour mission:", missionId);
+    
+    // RÉINITIALISER LES VARIABLES DE SESSION
+    presta_currentMissionId = missionId;
+    presta_currentClientPrenom = clientPrenom;
+    presta_currentClientNom = clientNom;
+    presta_currentPrestatairePrenom = prestatairePrenom;
+    presta_currentPrestataireNom = prestataireNom;
+    presta_heureDebut = null;
+    presta_latitudeFin = null;
+    presta_longitudeFin = null;
+    presta_heureFin = null;
+
+    // AFFICHER LA MODALE
+    const modal = document.getElementById("presta-modalOverlay");
+    if (modal) {
+        modal.style.display = "flex";
+        console.log("✅ Modale affichée");
+    } else {
+        console.error("❌ Modale non trouvée");
+        return;
+    }
+
+    // Configurer les étapes
+    const stepQR = document.getElementById("presta-stepQR");
+    const stepForm = document.getElementById("presta-stepForm");
+    const stepSuccess = document.getElementById("presta-stepSuccess");
+    
+    if (stepQR) {
+        stepQR.style.display = "flex";
+        stepQR.style.flexDirection = "column";
+        stepQR.style.alignItems = "center";
+    }
+    if (stepForm) stepForm.style.display = "none";
+    if (stepSuccess) stepSuccess.style.display = "none";
+
+    // Démarrer le scanner QR
+    setTimeout(() => {
+        presta_startQrScanner();
+    }, 100);
+}
+
+function presta_closeModalQR() {
+    console.log("🔒 Fermeture de la modale QR");
+    
+    const modal = document.getElementById("presta-modalOverlay");
+    if (modal) {
+        modal.style.display = "none";
+    }
+    
+    // Réinitialiser le formulaire
+    presta_clearForm();
+    
+    // Arrêter le scanner s'il est en cours - AVEC GESTION D'ERREUR AMÉLIORÉE
+    if (presta_qrScannerInstance) {
+        presta_qrScannerInstance.stop().then(() => {
+            console.log("✅ Scanner arrêté avec succès");
+            presta_qrScannerInstance = null;
+        }).catch(err => {
+            // Ignorer l'erreur si le scanner n'est pas en cours d'exécution
+            if (err.message && err.message.includes("not running")) {
+                console.log("ℹ️ Scanner déjà arrêté");
             } else {
-                console.error("❌ Modale non trouvée");
-                return;
+                console.warn("⚠️ Erreur à l'arrêt du scanner:", err);
             }
+            presta_qrScannerInstance = null;
+        });
+    }
+}
 
-            // Configurer les étapes
-            const stepQR = document.getElementById("presta-stepQR");
-            const stepForm = document.getElementById("presta-stepForm");
-            const stepSuccess = document.getElementById("presta-stepSuccess");
+async function presta_finirPremierScan() {
+    console.log("🔄 Finalisation du premier scan");
+    
+    try {
+        // Construire l'URL avec tous les paramètres nécessaires
+        const callbackName = 'cbFinirPremierScan' + Date.now();
+        let url = `${presta_webAppUrl}?type=updateMissionStatus`;
+        url += `&id=${encodeURIComponent(presta_currentMissionId)}`;
+        url += `&email=${encodeURIComponent(presta_currentEmail)}`;
+        url += `&status=en cours`;
+        
+        // Ajouter la géolocalisation seulement si disponible
+        if (presta_currentLatitude && presta_currentLongitude) {
+            url += `&latitude=${encodeURIComponent(presta_currentLatitude)}`;
+            url += `&longitude=${encodeURIComponent(presta_currentLongitude)}`;
+        }
+        
+        // Ajouter l'heure de début
+        if (presta_heureDebut) {
+            url += `&heureDebut=${encodeURIComponent(presta_heureDebut)}`;
+        }
+        
+        console.log("📡 Appel API pour finaliser le premier scan:", url);
+        
+        const data = await presta_callApiJsonp(url, callbackName);
+        console.log("📦 Réponse API:", data);
+        
+        if (data.success) {
+            console.log("✅ Mission mise à jour:", data.message);
+            presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
             
-            if (stepQR) {
-                stepQR.style.display = "flex";
-                stepQR.style.flexDirection = "column";
-                stepQR.style.alignItems = "center";
-            }
-            if (stepForm) stepForm.style.display = "none";
-            if (stepSuccess) stepSuccess.style.display = "none";
-
-            // Démarrer le scanner QR
+            // Fermer la modale
+            presta_closeModalQR();
+            
+            // Recharger les missions pour mettre à jour l'interface
             setTimeout(() => {
-                presta_startQrScanner();
-            }, 100);
+                presta_loadMissions(presta_currentEmail);
+            }, 1000);
+            
+        } else {
+            // Si l'API ne répond pas correctement, on affiche un message d'erreur
+            console.error("❌ Erreur API:", data.message || data.error);
+            presta_showNotification("❌ Erreur lors de la mise à jour: " + (data.message || data.error), 'error');
+            
+            // On ferme quand même la modale mais on affiche l'erreur
+            presta_closeModalQR();
         }
+    } catch (error) {
+        console.error("❌ Erreur finalisation premier scan:", error);
+        
+        // En cas d'erreur réseau ou autre, on continue mais avec un avertissement
+        console.warn("⚠️ Erreur API, mais on continue le processus");
+        presta_showNotification("⚠️ Mission démarrée (erreur technique) - Vérifiez le statut", 'warning');
+        presta_closeModalQR();
+        setTimeout(() => {
+            presta_loadMissions(presta_currentEmail);
+        }, 1000);
+    }
+}
 
-        function presta_closeModalQR() {
-            console.log("🔒 Fermeture de la modale QR");
-            
-            const modal = document.getElementById("presta-modalOverlay");
-            if (modal) {
-                modal.style.display = "none";
-            }
-            
-            // Réinitialiser le formulaire
-            presta_clearForm();
-            
-            // Arrêter le scanner s'il est en cours
-            if (presta_qrScannerInstance) {
-                presta_qrScannerInstance.stop().catch(err => {
-                    console.warn("Erreur à l'arrêt du scanner:", err);
-                });
-                presta_qrScannerInstance = null;
-            }
-        }
-
-        async function presta_finirPremierScan() {
-            console.log("🔄 Finalisation du premier scan");
-            
+async function presta_startQrScanner() {
+    console.log("📱 Démarrage du scanner QR");
+    
+    const qrReader = document.getElementById("presta-qr-reader");
+    if (!qrReader) {
+        console.error("❌ Élément QR reader non trouvé");
+        return;
+    }
+    
+    qrReader.innerHTML = "";
+    
+    try {
+        // Vérifier si un scanner est déjà en cours
+        if (presta_qrScannerInstance) {
             try {
-                // Construire l'URL avec tous les paramètres nécessaires
-                const callbackName = 'cbFinirPremierScan' + Date.now();
-                let url = `${presta_webAppUrl}?type=updateMissionStatus`;
-                url += `&id=${encodeURIComponent(presta_currentMissionId)}`;
-                url += `&email=${encodeURIComponent(presta_currentEmail)}`;
-                url += `&status=en cours`;
-                
-                // Ajouter la géolocalisation seulement si disponible
-                if (presta_currentLatitude && presta_currentLongitude) {
-                    url += `&latitude=${encodeURIComponent(presta_currentLatitude)}`;
-                    url += `&longitude=${encodeURIComponent(presta_currentLongitude)}`;
-                }
-                
-                // Ajouter l'heure de début
-                if (presta_heureDebut) {
-                    url += `&heureDebut=${encodeURIComponent(presta_heureDebut)}`;
-                }
-                
-                console.log("📡 Appel API pour finaliser le premier scan:", url);
-                
-                const data = await presta_callApiJsonp(url, callbackName);
-                console.log("📦 Réponse API:", data);
-                
-                if (data.success) {
-                    console.log("✅ Mission mise à jour:", data.message);
-                    presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
-                    
-                    // Fermer la modale
-                    presta_closeModalQR();
-                    
-                    // Recharger les missions pour mettre à jour l'interface
-                    setTimeout(() => {
-                        presta_loadMissions(presta_currentEmail);
-                    }, 1000);
-                    
-                } else {
-                    // Si l'API ne répond pas correctement, on continue quand même pour la démo
-                    console.warn("⚠️ API a répondu avec une erreur, mais on continue le processus");
-                    presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
-                    presta_closeModalQR();
-                    setTimeout(() => {
-                        presta_loadMissions(presta_currentEmail);
-                    }, 1000);
-                }
-            } catch (error) {
-                console.error("❌ Erreur finalisation premier scan:", error);
-                
-                // Même en cas d'erreur API, on continue pour la démo
-                console.warn("⚠️ Erreur API, mais on continue le processus");
-                presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
-                presta_closeModalQR();
-                setTimeout(() => {
-                    presta_loadMissions(presta_currentEmail);
-                }, 1000);
+                await presta_qrScannerInstance.stop();
+            } catch (e) {
+                // Ignorer les erreurs d'arrêt
             }
         }
-
-        function presta_clearForm() {
-            if (presta_obsDateInput) presta_obsDateInput.value = "";
-            if (presta_etatSanteInput) presta_etatSanteInput.value = "";
-            if (presta_etatFormeInput) presta_etatFormeInput.value = "";
-            if (presta_environnementInput) presta_environnementInput.value = "";
-            if (presta_photosInput) presta_photosInput.value = "";
-            if (presta_photosPreview) presta_photosPreview.innerHTML = "";
-        }
-
-        async function presta_startQrScanner() {
-            console.log("📱 Démarrage du scanner QR");
-            
-            const qrReader = document.getElementById("presta-qr-reader");
-            if (!qrReader) {
-                console.error("❌ Élément QR reader non trouvé");
-                return;
-            }
-            
-            qrReader.innerHTML = "";
-            
-            try {
-                presta_qrScannerInstance = new Html5Qrcode("presta-qr-reader");
+        
+        presta_qrScannerInstance = new Html5Qrcode("presta-qr-reader");
+        
+        await presta_qrScannerInstance.start(
+            { facingMode: "environment" },
+            { 
+                fps: 10, 
+                qrbox: { width: 250, height: 250 } // Format corrigé
+            },
+            async (decodedText) => {
+                console.log("✅ QR Code scanné:", decodedText);
                 
-                await presta_qrScannerInstance.start(
-                    { facingMode: "environment" },
-                    { 
-                        fps: 10, 
-                        qrbox: 250 
-                    },
-                    async (decodedText) => {
-                        console.log("✅ QR Code scanné:", decodedText);
-                        
-                        // Arrêter le scanner immédiatement
-                        try {
-                            await presta_qrScannerInstance.stop();
-                            console.log("✅ Scanner arrêté avec succès");
-                        } catch (stopError) {
+                // Arrêter le scanner immédiatement - AVEC GESTION D'ERREUR
+                if (presta_qrScannerInstance) {
+                    try {
+                        await presta_qrScannerInstance.stop();
+                        console.log("✅ Scanner arrêté avec succès");
+                        presta_qrScannerInstance = null;
+                    } catch (stopError) {
+                        // Ignorer l'erreur si le scanner n'est pas en cours
+                        if (stopError.message && stopError.message.includes("not running")) {
+                            console.log("ℹ️ Scanner déjà arrêté");
+                        } else {
                             console.warn("⚠️ Erreur lors de l'arrêt du scanner:", stopError);
                         }
-                        
-                        try {
-                            const url = new URL(decodedText);
-                            const email = url.searchParams.get("email");
-                            const clientId = url.searchParams.get("clientId");
-                            
-                            if (!email) {
-                                throw new Error("QR invalide - email manquant");
-                            }
-
-                            console.log("📧 Email extrait:", email);
-                            console.log("🔑 Client ID:", clientId);
-
-                            // VÉRIFICATION SIMPLIFIÉE - Pour la démo, on accepte tous les QR codes valides
-                            console.log("✅ QR Code accepté pour la démonstration");
-                            
-                            // VÉRIFIER SI C'EST LE PREMIER OU DEUXIÈME SCAN
-                            if (!presta_heureDebut) {
-                                // PREMIER SCAN - DÉBUT D'INTERVENTION
-                                console.log("🟢 PREMIER SCAN - Début d'intervention");
-                                
-                                // ENREGISTRER L'HEURE DE DÉBUT IMMÉDIATEMENT
-                                presta_heureDebut = new Date().toISOString();
-                                console.log("⏰ Heure début enregistrée:", presta_heureDebut);
-                                
-                                // Obtenir la géolocalisation pour le début
-                                if (!navigator.geolocation) {
-                                    alert("❌ Votre appareil ne supporte pas la géolocalisation.");
-                                    presta_closeModalQR();
-                                    return;
-                                }
-
-                                navigator.geolocation.getCurrentPosition(
-                                    async (position) => {
-                                        presta_currentLatitude = position.coords.latitude;
-                                        presta_currentLongitude = position.coords.longitude;
-                                        
-                                        console.log("📍 Géolocalisation début:", {
-                                            latitude: presta_currentLatitude,
-                                            longitude: presta_currentLongitude,
-                                            heureDebut: presta_heureDebut
-                                        });
-                                        
-                                        // APPELER LA FONCTION DE FINALISATION
-                                        await presta_finirPremierScan();
-                                    },
-                                    async (error) => {
-                                        let message = "⚠️ Erreur de géolocalisation.";
-                                        switch (error.code) {
-                                            case error.PERMISSION_DENIED:
-                                                message = "❌ Vous devez autoriser la géolocalisation pour continuer.";
-                                                break;
-                                            case error.POSITION_UNAVAILABLE:
-                                                message = "📍 Position non disponible.";
-                                                break;
-                                            case error.TIMEOUT:
-                                                message = "⏱️ Le délai de localisation est dépassé.";
-                                                break;
-                                            default:
-                                                message = "❌ Erreur inconnue.";
-                                        }
-                                        alert(message);
-                                        // Même avec erreur de géoloc, on continue avec l'heure enregistrée
-                                        await presta_finirPremierScan();
-                                    },
-                                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-                                );
-                                                
-                            } else {
-                                // DEUXIÈME SCAN - FIN D'INTERVENTION
-                                console.log("🔴 DEUXIÈME SCAN - Fin d'intervention");
-                                
-                                // ENREGISTRER L'HEURE DE FIN IMMÉDIATEMENT
-                                presta_heureFin = new Date().toISOString();
-                                console.log("⏰ Heure fin enregistrée:", presta_heureFin);
-                                
-                                // Obtenir la géolocalisation pour la fin
-                                if (!navigator.geolocation) {
-                                    alert("❌ Votre appareil ne supporte pas la géolocalisation.");
-                                    presta_closeModalQR();
-                                    return;
-                                }
-
-                                navigator.geolocation.getCurrentPosition(
-                                    position => {
-                                        presta_latitudeFin = position.coords.latitude;
-                                        presta_longitudeFin = position.coords.longitude;
-                                        
-                                        console.log("📍 Géolocalisation fin:", {
-                                            latitudeFin: presta_latitudeFin,
-                                            longitudeFin: presta_longitudeFin,
-                                            heureFin: presta_heureFin
-                                        });
-                                        
-                                        // AFFICHER TOUTES LES DONNÉES ENREGISTRÉES
-                                        console.log("📊 DONNÉES COMPLÈTES POUR LE PDF:", {
-                                            missionId: presta_currentMissionId,
-                                            heureDebut: presta_heureDebut,
-                                            heureFin: presta_heureFin,
-                                            latitudeDebut: presta_currentLatitude,
-                                            longitudeDebut: presta_currentLongitude,
-                                            latitudeFin: presta_latitudeFin,
-                                            longitudeFin: presta_longitudeFin
-                                        });
-                                        
-                                        // Afficher le formulaire
-                                        presta_showForm();
-                                        
-                                    },
-                                    error => {
-                                        let message = "⚠️ Erreur de géolocalisation pour la fin.";
-                                        switch (error.code) {
-                                            case error.PERMISSION_DENIED:
-                                                message = "❌ Vous devez autoriser la géolocalisation pour terminer.";
-                                                break;
-                                            case error.POSITION_UNAVAILABLE:
-                                                message = "📍 Position non disponible.";
-                                                break;
-                                            case error.TIMEOUT:
-                                                message = "⏱️ Le délai de localisation est dépassé.";
-                                                break;
-                                            default:
-                                                message = "❌ Erreur inconnue.";
-                                        }
-                                        alert(message);
-                                        presta_closeModalQR();
-                                    },
-                                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-                                );
-                            }
-
-                        } catch (err) {
-                            console.error("❌ Erreur traitement QR:", err);
-                            alert("Erreur lors du scan QR: " + err.message);
-                            presta_closeModalQR();
-                        }
-                    },
-                    (errorMessage) => {
-                        // Ignorer les erreurs de scan normales
-                        console.log("📱 Scan en cours...", errorMessage);
+                        presta_qrScannerInstance = null;
                     }
-                );
-            } catch (error) {
-                console.error("❌ Erreur démarrage scanner:", error);
-                alert("Erreur lors du démarrage du scanner: " + error.message);
+                }
+                
+                try {
+                    const url = new URL(decodedText);
+                    const email = url.searchParams.get("email");
+                    const clientId = url.searchParams.get("clientId");
+                    
+                    if (!email) {
+                        throw new Error("QR invalide - email manquant");
+                    }
+
+                    console.log("📧 Email extrait:", email);
+                    console.log("🔑 Client ID:", clientId);
+
+                    // VÉRIFICATION SIMPLIFIÉE - Pour la démo, on accepte tous les QR codes valides
+                    console.log("✅ QR Code accepté pour la démonstration");
+                    
+                    // VÉRIFIER SI C'EST LE PREMIER OU DEUXIÈME SCAN
+                    if (!presta_heureDebut) {
+                        // PREMIER SCAN - DÉBUT D'INTERVENTION
+                        console.log("🟢 PREMIER SCAN - Début d'intervention");
+                        
+                        // ENREGISTRER L'HEURE DE DÉBUT IMMÉDIATEMENT
+                        presta_heureDebut = new Date().toISOString();
+                        console.log("⏰ Heure début enregistrée:", presta_heureDebut);
+                        
+                        // Obtenir la géolocalisation pour le début
+                        if (!navigator.geolocation) {
+                            alert("❌ Votre appareil ne supporte pas la géolocalisation.");
+                            presta_closeModalQR();
+                            return;
+                        }
+
+                        navigator.geolocation.getCurrentPosition(
+                            async (position) => {
+                                presta_currentLatitude = position.coords.latitude;
+                                presta_currentLongitude = position.coords.longitude;
+                                
+                                console.log("📍 Géolocalisation début:", {
+                                    latitude: presta_currentLatitude,
+                                    longitude: presta_currentLongitude,
+                                    heureDebut: presta_heureDebut
+                                });
+                                
+                                // APPELER LA FONCTION DE FINALISATION
+                                await presta_finirPremierScan();
+                            },
+                            async (error) => {
+                                let message = "⚠️ Erreur de géolocalisation.";
+                                switch (error.code) {
+                                    case error.PERMISSION_DENIED:
+                                        message = "❌ Vous devez autoriser la géolocalisation pour continuer.";
+                                        break;
+                                    case error.POSITION_UNAVAILABLE:
+                                        message = "📍 Position non disponible.";
+                                        break;
+                                    case error.TIMEOUT:
+                                        message = "⏱️ Le délai de localisation est dépassé.";
+                                        break;
+                                    default:
+                                        message = "❌ Erreur inconnue.";
+                                }
+                                alert(message);
+                                // Même avec erreur de géoloc, on continue avec l'heure enregistrée
+                                await presta_finirPremierScan();
+                            },
+                            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                        );
+                                        
+                    } else {
+                        // DEUXIÈME SCAN - FIN D'INTERVENTION
+                        console.log("🔴 DEUXIÈME SCAN - Fin d'intervention");
+                        
+                        // ENREGISTRER L'HEURE DE FIN IMMÉDIATEMENT
+                        presta_heureFin = new Date().toISOString();
+                        console.log("⏰ Heure fin enregistrée:", presta_heureFin);
+                        
+                        // Obtenir la géolocalisation pour la fin
+                        if (!navigator.geolocation) {
+                            alert("❌ Votre appareil ne supporte pas la géolocalisation.");
+                            presta_closeModalQR();
+                            return;
+                        }
+
+                        navigator.geolocation.getCurrentPosition(
+                            position => {
+                                presta_latitudeFin = position.coords.latitude;
+                                presta_longitudeFin = position.coords.longitude;
+                                
+                                console.log("📍 Géolocalisation fin:", {
+                                    latitudeFin: presta_latitudeFin,
+                                    longitudeFin: presta_longitudeFin,
+                                    heureFin: presta_heureFin
+                                });
+                                
+                                // AFFICHER TOUTES LES DONNÉES ENREGISTRÉES
+                                console.log("📊 DONNÉES COMPLÈTES POUR LE PDF:", {
+                                    missionId: presta_currentMissionId,
+                                    heureDebut: presta_heureDebut,
+                                    heureFin: presta_heureFin,
+                                    latitudeDebut: presta_currentLatitude,
+                                    longitudeDebut: presta_currentLongitude,
+                                    latitudeFin: presta_latitudeFin,
+                                    longitudeFin: presta_longitudeFin
+                                });
+                                
+                                // Afficher le formulaire
+                                presta_showForm();
+                                
+                            },
+                            error => {
+                                let message = "⚠️ Erreur de géolocalisation pour la fin.";
+                                switch (error.code) {
+                                    case error.PERMISSION_DENIED:
+                                        message = "❌ Vous devez autoriser la géolocalisation pour terminer.";
+                                        break;
+                                    case error.POSITION_UNAVAILABLE:
+                                        message = "📍 Position non disponible.";
+                                        break;
+                                    case error.TIMEOUT:
+                                        message = "⏱️ Le délai de localisation est dépassé.";
+                                        break;
+                                    default:
+                                        message = "❌ Erreur inconnue.";
+                                }
+                                alert(message);
+                                presta_closeModalQR();
+                            },
+                            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                        );
+                    }
+
+                } catch (err) {
+                    console.error("❌ Erreur traitement QR:", err);
+                    alert("Erreur lors du scan QR: " + err.message);
+                    presta_closeModalQR();
+                }
+            },
+            (errorMessage) => {
+                // Ignorer les erreurs de scan normales - pas besoin de les logger
+                // Ces messages sont normaux pendant la recherche de QR codes
             }
+        );
+    } catch (error) {
+        console.error("❌ Erreur démarrage scanner:", error);
+        alert("Erreur lors du démarrage du scanner: " + error.message);
+    }
+}
+
+// Fonction pour tester manuellement le scan (pour debug)
+function presta_testScanManually() {
+    console.log("🧪 Test manuel du scan");
+    
+    // Simuler un scan réussi
+    const decodedText = "https://viiveo.app/scan?clientId=cli-gamu87416&email=gm.harchies%40gmail.com";
+    
+    // Appeler le handler de scan manuellement
+    if (presta_qrScannerInstance) {
+        const onScanSuccess = presta_qrScannerInstance._onScanSuccess;
+        if (onScanSuccess) {
+            onScanSuccess(decodedText);
         }
+    }
+}
+
+// Ajouter un bouton de test manuel au DOM (optionnel, pour debug)
+function presta_addManualTestButton() {
+    const testButton = document.createElement('button');
+    testButton.textContent = '🧪 Test Scan Manuel';
+    testButton.className = 'btn-secondary mt-2';
+    testButton.onclick = presta_testScanManually;
+    
+    const modalContent = document.getElementById('presta-modalContent');
+    if (modalContent) {
+        modalContent.appendChild(testButton);
+    }
+}
 
         function presta_showForm() {
             console.log("📝 Affichage du formulaire d'observation");
