@@ -1456,6 +1456,118 @@
     </div>
 
     <script>
+// TEST DE CONNEXION IMMÉDIAT
+console.log("🚀 TEST DE DÉMARRAGE - Vérification de l'environnement");
+
+// Vérification que tout est chargé
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("✅ DOM chargé");
+    console.log("📧 Champ email:", document.getElementById('presta-email'));
+    console.log("🔐 Champ password:", document.getElementById('presta-password'));
+    console.log("📝 Formulaire:", document.getElementById('login-form'));
+    
+    // TEST MANUEL - Déverrouillage immédiat
+    setTimeout(() => {
+        console.log("🔓 TEST: Tentative de déverrouillage manuel");
+        testManualUnlock();
+    }, 2000);
+});
+
+// Fonction de test manuel
+function testManualUnlock() {
+    // Créer un bouton de test
+    const testButton = document.createElement('button');
+    testButton.textContent = '🔓 TEST MANUEL - Déverrouiller Interface';
+    testButton.className = 'btn-elegant w-full mt-4';
+    testButton.onclick = function() {
+        console.log("🎯 Activation manuelle de l'interface");
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('prestataire-interface').classList.remove('hidden');
+        document.getElementById('prestataire-name').textContent = "Test User";
+        
+        // Données de test
+        presta_currentMissions = [
+            {
+                id: "TEST-001",
+                client: "Client Test",
+                adresse: "123 Rue Test",
+                service: "Ménage",
+                date: new Date().toISOString(),
+                heure: "14:00",
+                statut: "en attente"
+            },
+            {
+                id: "TEST-002", 
+                client: "Autre Client",
+                adresse: "456 Avenue Test",
+                service: "Jardinage",
+                date: new Date().toISOString(),
+                heure: "16:00",
+                statut: "confirmée"
+            }
+        ];
+        
+        presta_updateStats(presta_currentMissions);
+        presta_loadMissionsByStatus('pending', presta_currentMissions);
+        presta_loadMissionsByStatus('today', presta_currentMissions);
+        presta_attacherListenersStartPrestation();
+        
+        presta_showNotification("Mode test activé - Interface déverrouillée", 'success');
+    };
+    
+    // Ajouter le bouton au formulaire
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.appendChild(testButton);
+        console.log("✅ Bouton test ajouté");
+    }
+}
+
+// SURCHARGE DE LA FONCTION DE CONNEXION POUR LE DÉBOGAGE
+const originalLogin = presta_login;
+presta_login = async function() {
+    console.log("🔐 SURCHARGE: Tentative de connexion interceptée");
+    const email = document.getElementById('presta-email').value;
+    const password = document.getElementById('presta-password').value;
+    
+    console.log("📧 Email saisi:", email);
+    console.log("🔐 Mot de passe saisi:", password ? "***" : "vide");
+    
+    try {
+        // Appel original
+        await originalLogin.call(this);
+    } catch (error) {
+        console.error("💥 ERREUR CAPTURÉE:", error);
+        
+        // Afficher l'erreur complète
+        const message = document.getElementById('login-message');
+        message.innerHTML = `
+            <div class="message message-error">
+                <strong>Erreur détaillée:</strong><br>
+                ${error.message || "Erreur inconnue"}<br>
+                <small>Vérifiez la console (F12) pour plus de détails</small>
+            </div>
+        `;
+        message.classList.remove('hidden');
+    }
+};
+
+// TEST DE L'URL API
+console.log("🌐 Test de l'URL API:", presta_webAppUrl);
+
+// Vérifier si l'URL est accessible
+fetch(presta_webAppUrl + '?type=test')
+    .then(response => {
+        console.log("✅ URL accessible - Status:", response.status);
+        return response.text();
+    })
+    .then(text => {
+        console.log("📨 Réponse brute:", text.substring(0, 200));
+    })
+    .catch(error => {
+        console.error("❌ URL inaccessible:", error);
+    });
+        
     // URL de l'application Google Apps Script
     const presta_webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
     console.log("✅ URL définie:", presta_webAppUrl);
