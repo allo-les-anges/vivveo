@@ -1999,17 +1999,17 @@ function presta_closeModalQR() {
     }
 }
 async function presta_finirPremierScan() {
-    console.log("🔄 Finalisation du premier scan");
+    console.log("🔄 Finalisation du premier scan - AVEC updateMissionStatus");
     
     try {
-        // UTILISER LE BON TYPE D'API - "updateMission" au lieu de "updateMissionStatus"
-        const callbackName = 'cbFinirPremierScan' + Date.now();
-        let url = `${presta_webAppUrl}?type=updateMission`;
+        // UTILISER updateMissionStatus QUI FONCTIONNE
+        const callbackName = 'cbUpdateStatus' + Date.now();
+        let url = `${presta_webAppUrl}?type=updateMissionStatus`;
         url += `&id=${encodeURIComponent(presta_currentMissionId)}`;
         url += `&email=${encodeURIComponent(presta_currentEmail)}`;
         url += `&status=en cours`;
         
-        // Ajouter la géolocalisation seulement si disponible
+        // Ajouter la géolocalisation
         if (presta_currentLatitude && presta_currentLongitude) {
             url += `&latitude=${encodeURIComponent(presta_currentLatitude)}`;
             url += `&longitude=${encodeURIComponent(presta_currentLongitude)}`;
@@ -2020,44 +2020,30 @@ async function presta_finirPremierScan() {
             url += `&heureDebut=${encodeURIComponent(presta_heureDebut)}`;
         }
         
-        console.log("📡 Appel API pour finaliser le premier scan:", url);
+        console.log("📡 Appel API updateMissionStatus:", url);
         
         const data = await presta_callApiJsonp(url, callbackName);
-        console.log("📦 Réponse API:", data);
+        console.log("📦 Réponse updateMissionStatus:", data);
         
         if (data.success) {
-            console.log("✅ Mission mise à jour:", data.message);
+            console.log("✅ Statut mis à jour:", data.message);
             presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
-            
-            // Fermer la modale
-            presta_closeModalQR();
-            
-            // Recharger les missions pour mettre à jour l'interface
-            setTimeout(() => {
-                presta_loadMissions(presta_currentEmail);
-            }, 1000);
-            
         } else {
-            // Si l'API ne répond pas correctement, on essaie avec un autre type
-            console.error("❌ Erreur API avec updateMission:", data.message || data.error);
-            
-            // ESSAYER AVEC UN AUTRE TYPE D'API
-            console.log("🔄 Tentative avec un autre type d'API...");
-            await presta_tryAlternativeApiCall();
+            console.error("❌ Erreur updateMissionStatus:", data.message || data.error);
+            presta_showNotification("❌ Erreur de mise à jour: " + (data.message || data.error), 'error');
         }
-    } catch (error) {
-        console.error("❌ Erreur finalisation premier scan:", error);
         
-        // En cas d'erreur réseau ou autre, on continue mais avec un avertissement
-        console.warn("⚠️ Erreur API, mais on continue le processus");
-        presta_showNotification("⚠️ Mission démarrée (erreur technique) - Vérifiez le statut", 'warning');
-        presta_closeModalQR();
-        setTimeout(() => {
-            presta_loadMissions(presta_currentEmail);
-        }, 1000);
+    } catch (error) {
+        console.error("❌ Erreur finalisation:", error);
+        presta_showNotification("❌ Erreur de connexion API", 'error');
     }
+    
+    // Fermer la modale et recharger
+    presta_closeModalQR();
+    setTimeout(() => {
+        presta_loadMissions(presta_currentEmail);
+    }, 2000);
 }
-
 // Fonction alternative pour les appels API
 async function presta_tryAlternativeApiCall() {
     try {
