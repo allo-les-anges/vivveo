@@ -1863,6 +1863,122 @@
             return "";
         }
 
+// Fonction temporaire pour afficher les missions en cours
+function presta_showInProgressMissions() {
+    const inProgressMissions = presta_currentMissions.filter(m => m.statut === "en cours");
+    
+    if (inProgressMissions.length === 0) {
+        alert("Aucune mission en cours");
+        return;
+    }
+    
+    // Créer un modal pour afficher les missions en cours
+    const modalHTML = `
+        <div class="modal" id="inprogress-modal" style="display: block;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Missions en cours</h2>
+                    <span class="close" onclick="presta_closeModal('inprogress-modal')">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="table-wrapper">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-gradient-to-r from-orange-50 to-orange-100">
+                                    <th class="p-4 text-left">ID Mission</th>
+                                    <th class="p-4 text-left">Client</th>
+                                    <th class="p-4 text-left">Service</th>
+                                    <th class="p-4 text-left">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${inProgressMissions.map(mission => `
+                                    <tr class="border-b border-gray-100">
+                                        <td class="p-4">${mission.id}</td>
+                                        <td class="p-4">${mission.client}</td>
+                                        <td class="p-4">${mission.service}</td>
+                                        <td class="p-4">
+                                            <button onclick="presta_openModalEndPrestation('${mission.id}', '${mission.clientPrenom || ''}', '${mission.clientNom || ''}')" 
+                                                    class="btn-danger">
+                                                🔚 Terminer
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Ajouter le modal au DOM
+    const existingModal = document.getElementById('inprogress-modal');
+    if (existingModal) existingModal.remove();
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+// Fonction pour ouvrir la modale de fin de prestation
+function presta_openModalEndPrestation(missionId, clientPrenom, clientNom) {
+    console.log("🎯 Ouverture modale fin pour mission:", missionId);
+    
+    // Réutiliser la même modale QR mais pour la fin
+    presta_currentMissionId = missionId;
+    presta_currentClientPrenom = clientPrenom;
+    presta_currentClientNom = clientNom;
+    presta_heureDebut = new Date().toISOString(); // Simuler une heure de début
+    
+    const modal = document.getElementById("presta-modalOverlay");
+    if (modal) {
+        modal.style.display = "flex";
+        
+        // Configurer pour le DEUXIÈME scan
+        const stepQR = document.getElementById("presta-stepQR");
+        const stepForm = document.getElementById("presta-stepForm");
+        const stepSuccess = document.getElementById("presta-stepSuccess");
+        
+        if (stepQR) {
+            stepQR.style.display = "flex";
+            stepQR.style.flexDirection = "column";
+            stepQR.style.alignItems = "center";
+        }
+        if (stepForm) stepForm.style.display = "none";
+        if (stepSuccess) stepSuccess.style.display = "none";
+        
+        // Mettre à jour le titre
+        const title = stepQR.querySelector('h2');
+        if (title) title.textContent = "📸 Scanner le QR code pour terminer la mission";
+        
+        // Démarrer le scanner
+        setTimeout(() => {
+            presta_startQrScanner();
+        }, 100);
+    }
+}
+
+// Ajouter un bouton dans l'interface
+function addInProgressButton() {
+    const btn = document.createElement('button');
+    btn.textContent = '🔧 Missions en cours (Debug)';
+    btn.className = 'btn-secondary mt-4';
+    btn.onclick = presta_showInProgressMissions;
+    
+    const interface = document.getElementById('prestataire-interface');
+    if (interface) {
+        const statsSection = interface.querySelector('.prestataire-section');
+        if (statsSection) {
+            statsSection.appendChild(btn);
+        }
+    }
+}
+
+// Initialiser au chargement
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(addInProgressButton, 3000);
+});
+        
         // Valider une mission avec JSONP
         async function presta_validerMission(id) {
             if (confirm("Confirmez-vous que vous acceptez cette mission ?")) {
