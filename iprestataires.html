@@ -1847,51 +1847,7 @@ function forceCreateInProgressTab() {
         }
 
         // =============================================
-        // FONCTIONS D'AUTHENTIFICATION
-        // =============================================
-
-        // Fonction de connexion avec JSONP - VERSION AVEC DÉBOGAGE
-        async function presta_login() {
-            const email = document.getElementById('presta-email').value;
-            const password = document.getElementById('presta-password').value;
-            const message = document.getElementById('login-message');
-
-            console.log("🔐 Tentative de connexion avec:", email);
-            
-            document.getElementById('loader').style.display = 'flex';
-
-            try {
-                const callbackName = 'cbLogin' + Date.now();
-                const url = `${presta_webAppUrl}?type=loginPresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-                
-                console.log("📡 URL de connexion:", url);
-                
-                const data = await presta_callApiJsonp(url, callbackName);
-                console.log("📦 Réponse de connexion:", data);
-
-                if (data.success) {
-                    presta_currentEmail = email;
-                    document.getElementById('login-section').classList.add('hidden');
-                    document.getElementById('prestataire-interface').classList.remove('hidden');
-                    
-                    document.getElementById('prestataire-name').textContent = data.prenom || "Prestataire";
-                    document.getElementById('prestataire-rating').textContent = data.note || "4.8";
-
-                    await presta_loadMissions(email);
-                    presta_showNotification("Connexion réussie !", 'success');
-                } else {
-                    throw new Error(data.message || "Email ou mot de passe incorrect");
-                }
-            } catch (error) {
-                console.error("❌ Erreur de connexion:", error);
-                message.textContent = error.message;
-                message.classList.remove('hidden');
-                message.className = 'message message-error';
-            } finally {
-                document.getElementById('loader').style.display = 'none';
-            }
-        }
-
+        
         // Fonction de déconnexion
         function presta_logout() {
             presta_currentEmail = "";
@@ -3673,6 +3629,248 @@ async function presta_login() {
         document.getElementById('loader').style.display = 'none';
     }
 }
+
+// =============================================
+// CORRECTION DÉFINITIVE POUR L'ONGLET "EN COURS"
+// =============================================
+
+// REMPLACEZ complètement la fonction presta_login par celle-ci :
+async function presta_login() {
+    const email = document.getElementById('presta-email').value;
+    const password = document.getElementById('presta-password').value;
+    const message = document.getElementById('login-message');
+
+    console.log("🔐 Tentative de connexion avec:", email);
+    
+    document.getElementById('loader').style.display = 'flex';
+
+    try {
+        const callbackName = 'cbLogin' + Date.now();
+        const url = `${presta_webAppUrl}?type=loginPresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+        
+        console.log("📡 URL de connexion:", url);
+        
+        const data = await presta_callApiJsonp(url, callbackName);
+        console.log("📦 Réponse de connexion:", data);
+
+        if (data.success) {
+            presta_currentEmail = email;
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('prestataire-interface').classList.remove('hidden');
+            
+            document.getElementById('prestataire-name').textContent = data.prenom || "Prestataire";
+            document.getElementById('prestataire-rating').textContent = data.note || "4.8";
+
+            await presta_loadMissions(email);
+            
+            // ✅ CRÉATION IMMÉDIATE DE L'ONGLET "EN COURS"
+            console.log("🚀 Création de l'onglet En Cours...");
+            createInProgressTabNow();
+            
+            presta_showNotification("Connexion réussie !", 'success');
+        } else {
+            throw new Error(data.message || "Email ou mot de passe incorrect");
+        }
+    } catch (error) {
+        console.error("❌ Erreur de connexion:", error);
+        message.textContent = error.message;
+        message.classList.remove('hidden');
+        message.className = 'message message-error';
+    } finally {
+        document.getElementById('loader').style.display = 'none';
+    }
+}
+
+// FONCTION POUR CRÉER L'ONGLET IMMÉDIATEMENT
+function createInProgressTabNow() {
+    console.log("🎯 Création IMMÉDIATE de l'onglet En Cours");
+    
+    // Vérifier si l'onglet existe déjà
+    if (document.getElementById('tab-inprogress')) {
+        console.log("✅ Onglet En Cours existe déjà");
+        return;
+    }
+    
+    // 1. Ajouter le bouton dans la navigation
+    const tabButtons = document.querySelector('.flex.space-x-8');
+    if (tabButtons) {
+        const inProgressButton = document.createElement('button');
+        inProgressButton.className = 'tab-button';
+        inProgressButton.innerHTML = '<i class="fas fa-play-circle mr-2"></i>En Cours';
+        inProgressButton.onclick = () => presta_showTab('inprogress');
+        tabButtons.appendChild(inProgressButton);
+        console.log("✅ Bouton onglet ajouté");
+    }
+    
+    // 2. Ajouter le contenu de l'onglet
+    const tabContainer = document.querySelector('.prestataire-section > .border-b')?.parentNode;
+    if (tabContainer) {
+        const inProgressTab = document.createElement('div');
+        inProgressTab.id = 'tab-inprogress';
+        inProgressTab.className = 'tab-container';
+        inProgressTab.innerHTML = `
+            <h4 class="text-lg font-semibold text-gray-800 mb-4">Missions en cours d'intervention</h4>
+            <div class="table-wrapper">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-orange-50 to-orange-100">
+                            <th class="p-4 text-left">ID Mission</th>
+                            <th class="p-4 text-left">Client</th>
+                            <th class="p-4 text-left">Adresse</th>
+                            <th class="p-4 text-left">Service</th>
+                            <th class="p-4 text-left">Date</th>
+                            <th class="p-4 text-left">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inprogress-missions-table">
+                        <tr><td colspan="6" class="p-4 text-center text-gray-500">Aucune mission en cours</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mobile-card-view" id="inprogress-missions-cards">
+                <div class="text-center p-8 text-gray-500">Aucune mission en cours</div>
+            </div>
+        `;
+        
+        tabContainer.appendChild(inProgressTab);
+        console.log("✅ Contenu onglet ajouté");
+    }
+    
+    console.log("🎉 Onglet En Cours créé avec succès !");
+    
+    // Recharger les missions pour peupler le nouvel onglet
+    if (presta_currentMissions && presta_currentMissions.length > 0) {
+        presta_loadInProgressMissions(presta_currentMissions);
+    }
+}
+
+// FONCTION AMÉLIORÉE POUR CHARGER LES MISSIONS EN COURS
+function presta_loadInProgressMissions(missions) {
+    console.log("🔄 Chargement des missions en cours:", missions);
+    
+    const tableBody = document.getElementById('inprogress-missions-table');
+    const cardsContainer = document.getElementById('inprogress-missions-cards');
+    
+    if (!tableBody || !cardsContainer) {
+        console.error("❌ Éléments de l'onglet En Cours non trouvés");
+        return;
+    }
+
+    const inProgressMissions = missions.filter(m => m.statut === "en cours");
+    console.log(`📊 ${inProgressMissions.length} mission(s) en cours trouvée(s):`, inProgressMissions);
+    
+    if (inProgressMissions.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">Aucune mission en cours</td></tr>`;
+        cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission en cours</div>`;
+    } else {
+        // Version tableaux
+        tableBody.innerHTML = inProgressMissions.map(mission => {
+            const safeId = mission.id || 'N/A';
+            const safeClientPrenom = (mission.prenom || '').replace(/'/g, "\\'");
+            const safeClientNom = (mission.client || '').replace(/'/g, "\\'");
+            
+            return `
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <td class="p-4">${safeId}</td>
+                    <td class="p-4">${mission.client || 'N/A'}</td>
+                    <td class="p-4">${mission.adresse || 'N/A'}</td>
+                    <td class="p-4">${mission.service || 'N/A'}</td>
+                    <td class="p-4">${presta_formatDate(mission.date)}</td>
+                    <td class="p-4">
+                        <button onclick="presta_openModalEndPrestation('${safeId}', '${safeClientPrenom}', '${safeClientNom}')" 
+                                class="btn-danger py-2 px-4 rounded-lg">
+                            <i class="fas fa-stop-circle mr-2"></i>
+                            Terminer
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+        
+        // Version cartes mobiles
+        cardsContainer.innerHTML = inProgressMissions.map(mission => {
+            const safeId = mission.id || 'N/A';
+            const safeClientPrenom = (mission.prenom || '').replace(/'/g, "\\'");
+            const safeClientNom = (mission.client || '').replace(/'/g, "\\'");
+            
+            return `
+                <div class="request-card">
+                    <div class="card-row">
+                        <span class="card-label">ID Mission</span>
+                        <span class="card-value">${safeId}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Client</span>
+                        <span class="card-value">${mission.client || 'N/A'}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Adresse</span>
+                        <span class="card-value">${mission.adresse || 'N/A'}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Service</span>
+                        <span class="card-value">${mission.service || 'N/A'}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Date</span>
+                        <span class="card-value">${presta_formatDate(mission.date)}</span>
+                    </div>
+                    <div class="card-status">
+                        <button onclick="presta_openModalEndPrestation('${safeId}', '${safeClientPrenom}', '${safeClientNom}')" 
+                                class="btn-danger w-full py-2 rounded-lg">
+                            <i class="fas fa-stop-circle mr-2"></i>
+                            Terminer
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    console.log("✅ Missions en cours chargées dans l'interface");
+}
+
+// FONCTION POUR TESTER MANUELLEMENT (debug)
+function testInProgressTab() {
+    console.log("🧪 Test manuel de l'onglet En Cours");
+    createInProgressTabNow();
+    
+    // Simuler des données de test
+    const testMissions = [
+        {
+            id: "TEST-001",
+            client: "Client Test",
+            adresse: "123 Rue Test",
+            service: "Ménage",
+            date: new Date().toISOString(),
+            statut: "en cours",
+            prenom: "Jean"
+        }
+    ];
+    
+    presta_loadInProgressMissions(testMissions);
+}
+
+// AJOUTEZ UN BOUTON DE TEST DANS L'INTERFACE (optionnel)
+function addTestButton() {
+    const testBtn = document.createElement('button');
+    testBtn.textContent = '🧪 Test Onglet En Cours';
+    testBtn.className = 'btn-secondary mt-4';
+    testBtn.onclick = testInProgressTab;
+    
+    const interface = document.getElementById('prestataire-interface');
+    if (interface) {
+        const statsSection = interface.querySelector('.prestataire-section');
+        if (statsSection) {
+            statsSection.appendChild(testBtn);
+        }
+    }
+}
+
+// Initialiser le bouton de test
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(addTestButton, 2000);
+});
         
     </script>
 </body>
