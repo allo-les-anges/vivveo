@@ -1490,6 +1490,108 @@
         // FONCTIONS D'INITIALISATION
         // =============================================
 
+        // Ajoutez CE SEUL CODE dans votre <script> existant
+function addInProgressTab() {
+    const tabButtons = document.querySelector('.flex.space-x-8');
+    if (tabButtons && !document.getElementById('tab-inprogress')) {
+        tabButtons.innerHTML += `
+            <button class="tab-button" onclick="presta_showTab('inprogress')">
+                <i class="fas fa-play-circle mr-2"></i>
+                En Cours
+            </button>
+        `;
+        
+        const tabContainer = document.querySelector('.prestataire-section > .border-b').parentNode;
+        tabContainer.innerHTML += `
+            <div id="tab-inprogress" class="tab-container">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Missions en cours d'intervention</h4>
+                <div class="table-wrapper">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-orange-50 to-orange-100">
+                                <th class="p-4 text-left">ID Mission</th>
+                                <th class="p-4 text-left">Client</th>
+                                <th class="p-4 text-left">Adresse</th>
+                                <th class="p-4 text-left">Service</th>
+                                <th class="p-4 text-left">Date</th>
+                                <th class="p-4 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inprogress-missions-table">
+                            <!-- Contenu chargé dynamiquement -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mobile-card-view" id="inprogress-missions-cards">
+                    <!-- Contenu chargé dynamiquement -->
+                </div>
+            </div>
+        `;
+    }
+}
+
+        // Une seule fonction à ajouter
+function presta_loadInProgressMissions(missions) {
+    const tableBody = document.getElementById('inprogress-missions-table');
+    const cardsContainer = document.getElementById('inprogress-missions-cards');
+    if (!tableBody || !cardsContainer) return;
+
+    const inProgressMissions = missions.filter(m => m.statut === "en cours");
+    
+    if (inProgressMissions.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">Aucune mission en cours</td></tr>`;
+        cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission en cours</div>`;
+    } else {
+        tableBody.innerHTML = inProgressMissions.map(mission => `
+            <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                <td class="p-4">${mission.id || 'N/A'}</td>
+                <td class="p-4">${mission.client || 'N/A'}</td>
+                <td class="p-4">${mission.adresse || 'N/A'}</td>
+                <td class="p-4">${mission.service || 'N/A'}</td>
+                <td class="p-4">${presta_formatDate(mission.date)}</td>
+                <td class="p-4">
+                    <button onclick="presta_openModalEndPrestation('${mission.id}', '${mission.prenom || ''}', '${mission.client || ''}')" 
+                            class="btn-danger py-2 px-4 rounded-lg">
+                        <i class="fas fa-stop-circle mr-2"></i>
+                        Terminer
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+        
+        cardsContainer.innerHTML = inProgressMissions.map(mission => `
+            <div class="request-card">
+                <div class="card-row">
+                    <span class="card-label">ID Mission</span>
+                    <span class="card-value">${mission.id || 'N/A'}</span>
+                </div>
+                <div class="card-row">
+                    <span class="card-label">Client</span>
+                    <span class="card-value">${mission.client || 'N/A'}</span>
+                </div>
+                <div class="card-row">
+                    <span class="card-label">Service</span>
+                    <span class="card-value">${mission.service || 'N/A'}</span>
+                </div>
+                <div class="card-row">
+                    <span class="card-label">Date</span>
+                    <span class="card-value">${presta_formatDate(mission.date)}</span>
+                </div>
+                <div class="card-status">
+                    <button onclick="presta_openModalEndPrestation('${mission.id}', '${mission.prenom || ''}', '${mission.client || ''}')" 
+                            class="btn-danger w-full py-2 rounded-lg">
+                        <i class="fas fa-stop-circle mr-2"></i>
+                        Terminer
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+        
+
+
+        
         // Fonction pour initialiser les éléments DOM
         function presta_initDOMElements() {
             presta_modalOverlay = document.getElementById("presta-modalOverlay");
@@ -1656,31 +1758,36 @@
         // =============================================
 
         // Charger les missions avec JSONP
-        async function presta_loadMissions(email) {
-            try {
-                const callbackName = 'cbMissions' + Date.now();
-                const url = `${presta_webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
-                const data = await presta_callApiJsonp(url, callbackName);
+        // REMPLACEZ la fonction presta_loadMissions existante par celle-ci :
+async function presta_loadMissions(email) {
+    try {
+        const callbackName = 'cbMissions' + Date.now();
+        const url = `${presta_webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
+        const data = await presta_callApiJsonp(url, callbackName);
 
-                const missions = data.missions || data;
-                
-                if (!Array.isArray(missions)) {
-                    throw new Error("Format de données invalide");
-                }
-
-                presta_currentMissions = missions;
-                presta_updateStats(missions);
-                presta_loadMissionsByStatus('pending', missions);
-                presta_loadMissionsByStatus('today', missions);
-                presta_loadMissionsByStatus('planned', missions);
-                presta_loadMissionsByStatus('completed', missions);
-                presta_attacherListenersStartPrestation();
-
-            } catch (error) {
-                console.error("Erreur lors du chargement des missions:", error);
-                presta_showNotification("Erreur lors du chargement des missions: " + error.message, 'error');
-            }
+        const missions = data.missions || data;
+        
+        if (!Array.isArray(missions)) {
+            throw new Error("Format de données invalide");
         }
+
+        presta_currentMissions = missions;
+        presta_updateStats(missions);
+        
+        // CHARGER TOUS LES ONGLETS (ajout de inprogress)
+        presta_loadMissionsByStatus('pending', missions);
+        presta_loadMissionsByStatus('today', missions);
+        presta_loadMissionsByStatus('planned', missions);
+        presta_loadMissionsByStatus('completed', missions);
+        presta_loadInProgressMissions(missions); // ← SEULE LIGNE À AJOUTER
+        
+        presta_attacherListenersStartPrestation();
+
+    } catch (error) {
+        console.error("Erreur lors du chargement des missions:", error);
+        presta_showNotification("Erreur lors du chargement des missions: " + error.message, 'error');
+    }
+}
 
         // Mettre à jour les statistiques
         function presta_updateStats(missions) {
@@ -2431,6 +2538,37 @@ function presta_testScanManually() {
     }
 }
 
+// Une fonction simple pour terminer
+function presta_openModalEndPrestation(missionId, clientPrenom, clientNom) {
+    console.log("🎯 Ouverture modale fin pour mission:", missionId);
+    
+    presta_currentMissionId = missionId;
+    presta_currentClientPrenom = clientPrenom;
+    presta_currentClientNom = clientNom;
+    
+    const modal = document.getElementById("presta-modalOverlay");
+    if (modal) {
+        modal.style.display = "flex";
+        
+        const stepQR = document.getElementById("presta-stepQR");
+        const stepForm = document.getElementById("presta-stepForm");
+        const stepSuccess = document.getElementById("presta-stepSuccess");
+        
+        if (stepQR) {
+            stepQR.style.display = "flex";
+            // Changer le titre
+            const title = stepQR.querySelector('h2');
+            if (title) title.textContent = "📸 Scanner pour TERMINER la mission";
+        }
+        if (stepForm) stepForm.style.display = "none";
+        if (stepSuccess) stepSuccess.style.display = "none";
+        
+        setTimeout(() => presta_startQrScanner(), 100);
+    }
+}
+
+        
+        
 // Ajouter un bouton de test manuel au DOM (optionnel, pour debug)
 function presta_addManualTestButton() {
     const testButton = document.createElement('button');
@@ -2910,6 +3048,10 @@ function presta_addManualTestButton() {
             
             // Initialiser les éléments DOM
             presta_initDOMElements();
+
+             setTimeout(() => {
+        addInProgressTab();
+    }, 500);
             
             // Vérifier que les éléments critiques existent
             if (!presta_modalOverlay) {
