@@ -8,237 +8,206 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
-        /* MODALE QR - CORRIGÉE */
-
-        /* STYLES OPTIMISÉS POUR LE SCANNER MOBILE */
-.scanner-header {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.scanner-container {
-    width: 100%;
-    margin: 0 auto 20px auto;
-    position: relative;
-}
-
-.qr-scanner-full {
-    width: 100% !important;
-    height: 65vh !important;
-    max-height: 500px !important;
-    min-height: 350px !important;
-    border: 3px solid #facc15 !important;
-    border-radius: 15px !important;
-    box-shadow: 0 8px 25px rgba(250, 204, 21, 0.3) !important;
-    background: black !important;
-    position: relative;
-}
-
-/* Override des styles de la librairie QR */
-.qr-scanner-full > div:first-child {
-    width: 100% !important;
-    height: 100% !important;
-    border: none !important;
-    border-radius: 12px !important;
-}
-
-.qr-scanner-full video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    border-radius: 12px !important;
-}
-
-.scanner-actions {
-    width: 100%;
-}
-
-/* Styles pour la modale complète */
-#presta-modalContent {
-    background: white;
-    border-radius: 20px;
-    padding: 25px;
-    width: 95%;
-    max-width: 500px;
-    max-height: 95vh;
-    overflow-y: auto;
-    box-sizing: border-box;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    display: flex;
-    flex-direction: column;
-}
-
-#presta-stepQR {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    flex: 1;
-}
-
-/* Responsive pour petits écrans */
-@media (max-width: 480px) {
-    #presta-modalContent {
-        width: 98%;
-        padding: 20px 15px;
-        margin: 10px;
-        border-radius: 15px;
-    }
-    
-    .qr-scanner-full {
-        height: 60vh !important;
-        min-height: 300px !important;
-    }
-}
-
-/* Mode paysage */
-@media (max-height: 600px) and (orientation: landscape) {
-    #presta-modalContent {
-        max-height: 98vh;
-        padding: 15px;
-    }
-    
-    .scanner-header {
-        margin-bottom: 10px;
-    }
-    
-    .scanner-header h2 {
-        font-size: 1.1rem;
-        margin-bottom: 5px;
-    }
-    
-    .scanner-header p {
-        display: none; /* Cache le texte en mode paysage pour gagner de la place */
-    }
-    
-    .qr-scanner-full {
-        height: 55vh !important;
-        min-height: 250px !important;
-        margin-bottom: 15px;
-    }
-}
-
-/* Très petits écrans */
-@media (max-height: 500px) {
-    .qr-scanner-full {
-        height: 50vh !important;
-        min-height: 200px !important;
-    }
-}
-
-/* Animation de focus pour le scanner */
-@keyframes scannerPulse {
-    0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(250, 204, 21, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
-}
-
-.qr-scanner-full {
-    animation: scannerPulse 2s infinite;
-}
-        
-        #presta-qr-reader.enhanced {
-            width: 100% !important;
-            height: 400px !important;
-            max-width: 400px !important;
-            border: 3px solid #facc15 !important;
-            border-radius: 15px !important;
-            box-shadow: 0 8px 25px rgba(250, 204, 21, 0.3) !important;
+        /* CORRECTIONS SCANNER QR - FENÊTRE ÉLARGIE */
+        #presta-modalOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
         }
 
-        #presta-modalContent .scanner-title {
-            font-size: 1.5rem;
+        #presta-modalContent {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 95vw; /* Élargi à 95% de la largeur de l'écran */
+            max-height: 95vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Container scanner - PLEINE LARGEUR */
+        .scanner-container {
+            width: 100%;
+            margin: 0 auto 20px auto;
+            position: relative;
+            min-height: 60vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Scanner QR - OCCUPE TOUTE LA LARGEUR */
+        #presta-qr-reader {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: 60vh !important;
+            min-height: 400px !important;
+            border: 4px solid #facc15 !important;
+            border-radius: 20px !important;
+            box-shadow: 0 8px 25px rgba(250, 204, 21, 0.4) !important;
+            background: black !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Override des styles de la librairie QR */
+        #presta-qr-reader > div:first-child {
+            width: 100% !important;
+            height: 100% !important;
+            border: none !important;
+            border-radius: 16px !important;
+        }
+
+        #presta-qr-reader video {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            border-radius: 16px !important;
+        }
+
+        /* Zone de scan élargie */
+        #presta-qr-reader .html5-qrcode-element {
+            border: 2px solid #facc15 !important;
+            border-radius: 15px !important;
+        }
+
+        /* Header du scanner */
+        .scanner-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .scanner-header h2 {
+            font-size: 1.4rem;
             font-weight: bold;
             color: #1f2937;
-            margin-bottom: 1rem;
-            text-align: center;
+            margin-bottom: 8px;
         }
 
-        #presta-modalContent .scanner-subtitle {
+        .scanner-header p {
             color: #6b7280;
-            text-align: center;
-            margin-bottom: 2rem;
+            font-size: 0.95rem;
         }
-        
-        /* CORRECTIONS SCANNER QR - FENÊTRE ÉLARGIE */
-#presta-modalOverlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.95);
-    z-index: 10000;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-}
 
-#presta-modalContent {
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    width: 100%;
-    max-width: 95vw; /* Élargi à 95% de la largeur de l'écran */
-    max-height: 95vh;
-    overflow-y: auto;
-    box-sizing: border-box;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-}
-
-/* Container scanner - PLEINE LARGEUR */
-.scanner-container {
-    width: 100%;
-    margin: 0 auto 20px auto;
-    position: relative;
-    min-height: 60vh;
-}
-
-/* Scanner QR - OCCUPE TOUTE LA LARGEUR */
-#presta-qr-reader {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: 60vh !important;
-    min-height: 400px !important;
-    border: 4px solid #facc15 !important;
-    border-radius: 20px !important;
-    background: black !important;
-}
-
-/* Override de la librairie QR */
-#presta-qr-reader > div:first-child {
-    width: 100% !important;
-    height: 100% !important;
-    border: none !important;
-}
-
-#presta-qr-reader video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-}
-
-/* Zone de scan élargie */
-#presta-qr-reader .html5-qrcode-element {
-    border: 2px solid #facc15 !important;
-    border-radius: 15px !important;
-}
-
-/* Responsive mobile */
-@media (max-width: 480px) {
-    #presta-modalContent {
-        width: 98%;
-        padding: 15px;
-        margin: 5px;
-    }
-    
-    #presta-qr-reader {
-        height: 55vh !important;
-        min-height: 350px !important;
-    }
-}
+        /* Actions du scanner */
+        .scanner-actions {
+            width: 100%;
+            padding: 0 10px;
         }
-        
+
+        /* Animation de focus pour le scanner */
+        @keyframes scannerPulse {
+            0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(250, 204, 21, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
+        }
+
+        #presta-qr-reader {
+            animation: scannerPulse 2s infinite;
+        }
+
+        /* Styles responsives */
+        @media (max-width: 480px) {
+            #presta-modalContent {
+                width: 98%;
+                padding: 15px;
+                margin: 5px;
+                border-radius: 15px;
+            }
+            
+            #presta-qr-reader {
+                height: 55vh !important;
+                min-height: 350px !important;
+                border-width: 3px !important;
+            }
+            
+            .scanner-header h2 {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Mode paysage */
+        @media (max-height: 600px) and (orientation: landscape) {
+            #presta-modalContent {
+                max-height: 98vh;
+                padding: 10px;
+            }
+            
+            #presta-qr-reader {
+                height: 50vh !important;
+                min-height: 250px !important;
+            }
+            
+            .scanner-header {
+                margin-bottom: 10px;
+            }
+            
+            .scanner-header h2 {
+                font-size: 1.1rem;
+                margin-bottom: 5px;
+            }
+            
+            .scanner-header p {
+                display: none;
+            }
+        }
+
+        /* Très petits écrans */
+        @media (max-height: 500px) {
+            #presta-qr-reader {
+                height: 45vh !important;
+                min-height: 200px !important;
+            }
+        }
+
+        /* Styles pour les étapes de la modale */
+        #presta-stepQR,
+        #presta-stepForm,
+        #presta-stepSuccess {
+            display: none;
+        }
+
+        #presta-stepQR {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            flex: 1;
+        }
+
+        /* Boutons */
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            padding: 12px 24px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-secondary:hover {
+            border-color: #facc15;
+            color: #facc15;
+            transform: translateY(-1px);
+        }
+
+        /* Styles généraux restants */
         :root {
             --primary-color: #facc15;
             --primary-dark: #eab308;
@@ -980,2005 +949,6 @@
             border-radius: 6px;
             border: 1px solid #ddd;
         }
-
-        /* Styles supplémentaires pour compléter */
-        .notification-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
-        }
-        
-        .notification {
-            background: white;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border-left: 4px solid #facc15;
-            min-width: 300px;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        .notification.success {
-            border-left-color: #10b981;
-        }
-        
-        .notification.error {
-            border-left-color: #ef4444;
-        }
-        
-        .notification.info {
-            border-left-color: #3b82f6;
-        }
-        
-        .qr-scanner-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        
-        .qr-scanner-container {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            max-width: 400px;
-            width: 90%;
-        }
-        
-        .mission-timeline {
-            position: relative;
-            padding-left: 30px;
-            margin: 20px 0;
-        }
-        
-        .mission-timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #facc15;
-        }
-        
-        .timeline-item {
-            position: relative;
-            margin-bottom: 20px;
-        }
-        
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -30px;
-            top: 5px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #facc15;
-            border: 2px solid white;
-        }
-        
-        .photo-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .photo-item {
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .photo-item img {
-            width: 100%;
-            height: 100px;
-            object-fit: cover;
-        }
-        
-        .photo-remove {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: rgba(239, 68, 68, 0.8);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e5e7eb;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
-            transition: width 0.3s ease;
-        }
-        
-        .rating-stars {
-            display: flex;
-            gap: 2px;
-        }
-        
-        .star {
-            color: #d1d5db;
-            font-size: 1.2rem;
-        }
-        
-        .star.filled {
-            color: #facc15;
-        }
-        
-        .star.half {
-            background: linear-gradient(90deg, #facc15 50%, #d1d5db 50%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .map-container {
-            width: 100%;
-            height: 200px;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #f3f4f6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6b7280;
-        }
-        
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .stat-item {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #facc15;
-            margin-bottom: 8px;
-        }
-        
-        .stat-label {
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-        
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 1px;
-            background: #e5e7eb;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .calendar-day {
-            background: white;
-            padding: 10px;
-            text-align: center;
-            min-height: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        
-        .calendar-day.header {
-            background: #f8fafc;
-            font-weight: 600;
-            color: #374151;
-        }
-        
-        .calendar-day.today {
-            background: #fef3c7;
-        }
-        
-        .calendar-day.has-mission {
-            background: #fef3c7;
-            border: 2px solid #facc15;
-        }
-        
-        .mission-dot {
-            width: 6px;
-            height: 6px;
-            background: #f59e0b;
-            border-radius: 50%;
-            margin: 0 auto;
-        }
-        
-        .document-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .document-item {
-            display: flex;
-            align-items: center;
-            justify-content: between;
-            padding: 12px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
-        
-        .document-icon {
-            margin-right: 12px;
-            color: #6b7280;
-        }
-        
-        .document-name {
-            flex: 1;
-            color: #374151;
-        }
-        
-        .document-actions {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .chat-container {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .chat-messages {
-            height: 300px;
-            overflow-y: auto;
-            padding: 20px;
-            background: #f8fafc;
-        }
-        
-        .message-bubble {
-            max-width: 70%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            margin-bottom: 12px;
-            position: relative;
-        }
-        
-        .message-bubble.sent {
-            background: #facc15;
-            color: white;
-            margin-left: auto;
-            border-bottom-right-radius: 4px;
-        }
-        
-        .message-bubble.received {
-            background: white;
-            color: #374151;
-            border: 1px solid #e5e7eb;
-            border-bottom-left-radius: 4px;
-        }
-        
-        .message-time {
-            font-size: 0.75rem;
-            color: #9ca3af;
-            margin-top: 4px;
-            text-align: right;
-        }
-        
-        .chat-input {
-            display: flex;
-            padding: 16px;
-            background: white;
-            border-top: 1px solid #e5e7eb;
-        }
-        
-        .chat-input input {
-            flex: 1;
-            padding: 12px 16px;
-            border: 1px solid #e5e7eb;
-            border-radius: 24px;
-            margin-right: 12px;
-        }
-        
-        .invoice-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .invoice-table th,
-        .invoice-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .invoice-table th {
-            background: #f8fafc;
-            font-weight: 600;
-            color: #374151;
-        }
-        
-        .invoice-total {
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: #facc15;
-        }
-        
-        .availability-slots {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
-            margin-top: 16px;
-        }
-        
-        .time-slot {
-            padding: 8px 12px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .time-slot.selected {
-            border-color: #facc15;
-            background: #fef3c7;
-        }
-        
-        .time-slot.unavailable {
-            background: #f3f4f6;
-            color: #9ca3af;
-            cursor: not-allowed;
-        }
-        
-        .service-categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-        
-        .service-category {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .service-category:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        
-        .service-category.selected {
-            border: 2px solid #facc15;
-            background: #fef3c7;
-        }
-        
-        .service-icon {
-            font-size: 2rem;
-            color: #facc15;
-            margin-bottom: 12px;
-        }
-        
-        .emergency-contact {
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-            border: 2px solid #ef4444;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .emergency-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        
-        .emergency-icon {
-            color: #ef4444;
-            font-size: 1.5rem;
-            margin-right: 12px;
-        }
-        
-        .emergency-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 16px;
-        }
-        
-        .training-progress {
-            margin: 20px 0;
-        }
-        
-        .training-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            margin-bottom: 12px;
-        }
-        
-        .training-status {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-        
-        .training-status.completed {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        
-        .training-status.pending {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        
-        .training-status.in-progress {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-        
-        .feedback-form {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .rating-input {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin: 20px 0;
-        }
-        
-        .rating-star {
-            font-size: 2rem;
-            color: #d1d5db;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-        
-        .rating-star:hover,
-        .rating-star.active {
-            color: #facc15;
-        }
-        
-        .schedule-calendar {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .calendar-navigation {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        
-        .calendar-month {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #374151;
-        }
-        
-        .time-grid {
-            display: grid;
-            grid-template-columns: 80px 1fr;
-            gap: 1px;
-            background: #e5e7eb;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .time-slot-header {
-            background: #f8fafc;
-            padding: 12px;
-            font-weight: 600;
-            color: #374151;
-        }
-        
-        .time-slot-content {
-            background: white;
-            padding: 12px;
-            min-height: 60px;
-        }
-        
-        .time-slot-booked {
-            background: #fef3c7;
-            border-left: 3px solid #facc15;
-            padding: 8px;
-            margin-bottom: 4px;
-            border-radius: 4px;
-        }
-        
-        .client-profile {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        
-        .client-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .client-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 20px;
-            border: 3px solid #facc15;
-        }
-        
-        .client-info {
-            flex: 1;
-        }
-        
-        .client-name {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 4px;
-        }
-        
-        .client-rating {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #6b7280;
-        }
-        
-        .client-details-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-        
-        .detail-item {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .detail-label {
-            font-size: 0.875rem;
-            color: #6b7280;
-            margin-bottom: 4px;
-        }
-        
-        .detail-value {
-            font-weight: 600;
-            color: #374151;
-        }
-        
-        .preferences-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .preference-item {
-            display: flex;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #f3f4f6;
-        }
-        
-        .preference-icon {
-            margin-right: 12px;
-            color: #facc15;
-        }
-        
-        .equipment-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-        
-        .equipment-item {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 16px;
-            text-align: center;
-        }
-        
-        .equipment-icon {
-            font-size: 2rem;
-            color: #facc15;
-            margin-bottom: 12px;
-        }
-        
-        .equipment-status {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-top: 8px;
-        }
-        
-        .equipment-status.available {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        
-        .equipment-status.maintenance {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        
-        .equipment-status.unavailable {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-        
-        .report-section {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        
-        .report-header {
-            display: flex;
-            align-items: center;
-            justify-content: between;
-            margin-bottom: 20px;
-        }
-        
-        .report-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #374151;
-        }
-        
-        .report-actions {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .chart-container {
-            height: 300px;
-            margin: 20px 0;
-            position: relative;
-        }
-        
-        .data-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .data-card {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .data-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #facc15;
-            margin-bottom: 8px;
-        }
-        
-        .data-label {
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-        
-        .notification-center {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .notification-header {
-            background: #f8fafc;
-            padding: 16px 24px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .notification-list {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        
-        .notification-item {
-            padding: 16px 24px;
-            border-bottom: 1px solid #f3f4f6;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-        
-        .notification-item:hover {
-            background: #f8fafc;
-        }
-        
-        .notification-item.unread {
-            background: #f0f9ff;
-        }
-        
-        .notification-content {
-            display: flex;
-            align-items: flex-start;
-        }
-        
-        .notification-icon {
-            margin-right: 12px;
-            color: #facc15;
-        }
-        
-        .notification-text {
-            flex: 1;
-        }
-        
-        .notification-time {
-            font-size: 0.875rem;
-            color: #9ca3af;
-            margin-top: 4px;
-        }
-        
-        .support-tickets {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .ticket-list {
-            max-height: 500px;
-            overflow-y: auto;
-        }
-        
-        .ticket-item {
-            padding: 16px 24px;
-            border-bottom: 1px solid #f3f4f6;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-        
-        .ticket-item:hover {
-            background: #f8fafc;
-        }
-        
-        .ticket-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-        
-        .ticket-title {
-            font-weight: 600;
-            color: #374151;
-        }
-        
-        .ticket-status {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-        
-        .ticket-status.open {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        
-        .ticket-status.in-progress {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-        
-        .ticket-status.resolved {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        
-        .ticket-priority {
-            font-size: 0.875rem;
-            color: #6b7280;
-        }
-        
-        .ticket-priority.high {
-            color: #ef4444;
-        }
-        
-        .ticket-priority.medium {
-            color: #f59e0b;
-        }
-        
-        .ticket-priority.low {
-            color: #10b981;
-        }
-        
-        .knowledge-base {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .kb-categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 24px;
-        }
-        
-        .kb-category {
-            background: #f8fafc;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .kb-category:hover {
-            background: #fef3c7;
-            transform: translateY(-2px);
-        }
-        
-        .kb-icon {
-            font-size: 2rem;
-            color: #facc15;
-            margin-bottom: 12px;
-        }
-        
-        .kb-articles {
-            max-height: 400px;
-            overflow-y: auto;
-            padding: 0 24px 24px;
-        }
-        
-        .kb-article {
-            padding: 16px;
-            border-bottom: 1px solid #e5e7eb;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-        
-        .kb-article:hover {
-            background: #f8fafc;
-        }
-        
-        .article-title {
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 4px;
-        }
-        
-        .article-excerpt {
-            color: #6b7280;
-            font-size: 0.875rem;
-        }
-
-        /* Styles pour les nouveaux composants */
-        .weather-widget {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .weather-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
-        
-        .weather-temp {
-            font-size: 2.5rem;
-            font-weight: bold;
-        }
-        
-        .weather-details {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-        
-        .weather-detail {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .pricing-table {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .pricing-header {
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .pricing-price {
-            font-size: 3rem;
-            font-weight: bold;
-            margin: 16px 0;
-        }
-        
-        .pricing-features {
-            padding: 30px;
-        }
-        
-        .pricing-feature {
-            display: flex;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #f3f4f6;
-        }
-        
-        .pricing-feature:last-child {
-            border-bottom: none;
-        }
-        
-        .feature-icon {
-            color: #10b981;
-            margin-right: 12px;
-        }
-        
-        .feature-unavailable {
-            color: #9ca3af;
-            text-decoration: line-through;
-        }
-        
-        .timeline-vertical {
-            position: relative;
-            padding-left: 30px;
-        }
-        
-        .timeline-vertical::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #facc15;
-        }
-        
-        .timeline-item-vertical {
-            position: relative;
-            margin-bottom: 30px;
-        }
-        
-        .timeline-item-vertical::before {
-            content: '';
-            position: absolute;
-            left: -30px;
-            top: 5px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #facc15;
-            border: 2px solid white;
-        }
-        
-        .badge-collection {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin: 20px 0;
-        }
-        
-        .badge {
-            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .badge.locked {
-            background: #9ca3af;
-            color: #6b7280;
-        }
-        
-        .achievement-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .achievement-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: all 0.2s ease;
-        }
-        
-        .achievement-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        
-        .achievement-icon {
-            font-size: 3rem;
-            color: #facc15;
-            margin-bottom: 12px;
-        }
-        
-        .achievement-progress {
-            height: 6px;
-            background: #e5e7eb;
-            border-radius: 3px;
-            margin: 12px 0;
-            overflow: hidden;
-        }
-        
-        .achievement-progress-fill {
-            height: 100%;
-            background: #facc15;
-            transition: width 0.3s ease;
-        }
-        
-        .resource-library {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .resource-categories {
-            display: flex;
-            border-bottom: 1px solid #e5e7eb;
-            background: #f8fafc;
-        }
-        
-        .resource-category {
-            padding: 16px 24px;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s ease;
-        }
-        
-        .resource-category.active {
-            border-bottom-color: #facc15;
-            background: white;
-            color: #facc15;
-        }
-        
-        .resource-items {
-            max-height: 400px;
-            overflow-y: auto;
-            padding: 24px;
-        }
-        
-        .resource-item {
-            display: flex;
-            align-items: center;
-            padding: 16px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .resource-item:hover {
-            border-color: #facc15;
-            background: #fef3c7;
-        }
-        
-        .resource-icon {
-            font-size: 1.5rem;
-            color: #facc15;
-            margin-right: 16px;
-        }
-        
-        .resource-info {
-            flex: 1;
-        }
-        
-        .resource-title {
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 4px;
-        }
-        
-        .resource-description {
-            color: #6b7280;
-            font-size: 0.875rem;
-        }
-        
-        .community-forum {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .forum-categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 24px;
-        }
-        
-        .forum-category {
-            background: #f8fafc;
-            border-radius: 8px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .forum-category:hover {
-            background: #fef3c7;
-            transform: translateY(-2px);
-        }
-        
-        .forum-stats {
-            display: flex;
-            gap: 20px;
-            margin-top: 12px;
-        }
-        
-        .forum-stat {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .forum-stat-value {
-            font-weight: bold;
-            color: #facc15;
-        }
-        
-        .forum-stat-label {
-            font-size: 0.875rem;
-            color: #6b7280;
-        }
-        
-        .recent-discussions {
-            max-height: 400px;
-            overflow-y: auto;
-            padding: 0 24px 24px;
-        }
-        
-        .discussion-item {
-            padding: 16px;
-            border-bottom: 1px solid #e5e7eb;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-        
-        .discussion-item:hover {
-            background: #f8fafc;
-        }
-        
-        .discussion-title {
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 4px;
-        }
-        
-        .discussion-meta {
-            display: flex;
-            gap: 16px;
-            color: #6b7280;
-            font-size: 0.875rem;
-        }
-        
-        .discussion-author {
-            color: #facc15;
-            font-weight: 600;
-        }
-
-        /* Derniers styles pour compléter */
-        .interactive-map {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            overflow: hidden;
-            height: 400px;
-            position: relative;
-        }
-        
-        .map-overlay {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: white;
-            border-radius: 8px;
-            padding: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            z-index: 10;
-        }
-        
-        .map-legend {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .legend-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-        
-        .legend-color.pending {
-            background: #f59e0b;
-        }
-        
-        .legend-color.in-progress {
-            background: #3b82f6;
-        }
-        
-        .legend-color.completed {
-            background: #10b981;
-        }
-        
-        .emergency-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(239, 68, 68, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-        }
-        
-        .emergency-modal {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-        }
-        
-        .emergency-title {
-            color: #ef4444;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 16px;
-        }
-        
-        .emergency-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-top: 24px;
-        }
-        
-        .voice-commands {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .voice-status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        
-        .voice-pulse {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #ef4444;
-            animation: pulse 1.5s infinite;
-        }
-        
-        .voice-commands-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-        }
-        
-        .voice-command {
-            background: #f8fafc;
-            border-radius: 8px;
-            padding: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .voice-command:hover {
-            background: #fef3c7;
-        }
-        
-        .ar-preview {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 24px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .ar-container {
-            width: 100%;
-            height: 300px;
-            background: #f3f4f6;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6b7280;
-            margin: 20px 0;
-        }
-        
-        .ar-controls {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-        
-        .smart-assistant {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .assistant-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        
-        .assistant-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-        
-        .assistant-suggestions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
-        }
-        
-        .suggestion-item {
-            background: rgba(255,255,255,0.2);
-            border-radius: 8px;
-            padding: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .suggestion-item:hover {
-            background: rgba(255,255,255,0.3);
-        }
-        
-        .blockchain-verification {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .blockchain-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        
-        .blockchain-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-        
-        .blockchain-status.verified {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        
-        .blockchain-status.pending {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        
-        .blockchain-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-        
-        .blockchain-detail {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .detail-hash {
-            font-family: monospace;
-            background: #f3f4f6;
-            padding: 8px;
-            border-radius: 4px;
-            font-size: 0.875rem;
-            word-break: break-all;
-        }
-        
-        .ai-recommendations {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .recommendation-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px;
-            border-bottom: 1px solid #f3f4f6;
-        }
-        
-        .recommendation-item:last-child {
-            border-bottom: none;
-        }
-        
-        .recommendation-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #fef3c7;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #facc15;
-        }
-        
-        .recommendation-content {
-            flex: 1;
-        }
-        
-        .recommendation-title {
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 4px;
-        }
-        
-        .recommendation-description {
-            color: #6b7280;
-            font-size: 0.875rem;
-        }
-        
-        .recommendation-action {
-            color: #facc15;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        
-        .quantum-safe {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
-            color: white;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .quantum-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        
-        .quantum-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .quantum-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-        
-        .quantum-feature {
-            text-align: center;
-        }
-        
-        .quantum-icon {
-            font-size: 2rem;
-            margin-bottom: 8px;
-            opacity: 0.8;
-        }
-        
-        /* Styles finaux pour atteindre le nombre de lignes */
-        .holographic-display {
-            background: linear-gradient(135deg, #00ff87 0%, #60efff 100%);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .holographic-content {
-            position: relative;
-            z-index: 2;
-            color: #1f2937;
-        }
-        
-        .holographic-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
-            animation: hologram 3s linear infinite;
-        }
-        
-        @keyframes hologram {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        
-        .neural-network {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .network-visualization {
-            height: 200px;
-            background: #f8fafc;
-            border-radius: 8px;
-            margin: 20px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .network-node {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #facc15;
-            animation: nodePulse 2s infinite;
-        }
-        
-        .network-connection {
-            position: absolute;
-            height: 2px;
-            background: #facc15;
-            transform-origin: 0 0;
-        }
-        
-        @keyframes nodePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-        
-        .biometric-auth {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .biometric-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-        
-        .biometric-option {
-            background: #f8fafc;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .biometric-option:hover {
-            background: #fef3c7;
-        }
-        
-        .biometric-icon {
-            font-size: 2rem;
-            color: #facc15;
-            margin-bottom: 12px;
-        }
-        
-        .quantum-clock {
-            background: linear-gradient(135deg, #000000 0%, #4338ca 100%);
-            color: white;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .quantum-time {
-            font-size: 3rem;
-            font-weight: bold;
-            font-family: monospace;
-            margin: 20px 0;
-        }
-        
-        .quantum-date {
-            font-size: 1.2rem;
-            opacity: 0.8;
-        }
-        
-        .teleportation-interface {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .teleportation-map {
-            height: 300px;
-            background: #f3f4f6;
-            border-radius: 8px;
-            margin: 20px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .teleportation-controls {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-        
-        .multiverse-navigation {
-            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            color: white;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .multiverse-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-        
-        .multiverse-option {
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .multiverse-option:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
-        }
-        
-        .temporal-controls {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .timeline-control {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin: 20px 0;
-        }
-        
-        .timeline-slider {
-            flex: 1;
-            height: 4px;
-            background: #e5e7eb;
-            border-radius: 2px;
-            position: relative;
-        }
-        
-        .timeline-handle {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #facc15;
-            border-radius: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            cursor: pointer;
-        }
-        
-        .reality-stabilizer {
-            background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
-            color: white;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .stability-meter {
-            height: 8px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 4px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-        
-        .stability-level {
-            height: 100%;
-            background: white;
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-        
-        .cosmic-background {
-            background: linear-gradient(135deg, #000000 0%, #1e3a8a 50%, #000000 100%);
-            color: white;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .stars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-        
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 2s infinite;
-        }
-        
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-        
-        .interdimensional-portal {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 24px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .portal-gate {
-            width: 200px;
-            height: 200px;
-            border: 4px solid #facc15;
-            border-radius: 50%;
-            margin: 20px auto;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .portal-energy {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: conic-gradient(from 0deg, #facc15, #ef4444, #3b82f6, #10b981, #facc15);
-            animation: spin 3s linear infinite;
-            opacity: 0.7;
-        }
-        
-        .quantum-entanglement {
-            background: linear-gradient(135deg, #7e22ce 0%, #c026d3 100%);
-            color: white;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .entanglement-pairs {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-        
-        .entanglement-pair {
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 16px;
-            text-align: center;
-        }
-        
-        .pair-status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #10b981;
-        }
-        
-        .status-dot.entangled {
-            background: #ef4444;
-        }
-        
-        .hyperdrive-interface {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .hyperdrive-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin: 20px 0;
-        }
-        
-        .hyperdrive-slider {
-            height: 4px;
-            background: #e5e7eb;
-            border-radius: 2px;
-            position: relative;
-        }
-        
-        .hyperdrive-throttle {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #facc15;
-            border-radius: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            cursor: pointer;
-        }
-        
-        .warp-factor {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #facc15;
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        .final-component {
-            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
-            color: white;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .completion-badge {
-            font-size: 4rem;
-            margin-bottom: 20px;
-        }
-        
-        .completion-message {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 16px;
-        }
-        
-        .line-count {
-            font-family: monospace;
-            background: rgba(255,255,255,0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            display: inline-block;
-        }
     </style>
 </head>
 <body>
@@ -3610,81 +1580,82 @@
     </div>
 
     <!-- Modal QR Code et fiche d'observation - CACHÉ PAR DÉFAIT -->
-    <div id="presta-modalOverlay">
-        <div id="presta-modalContent">
-            <div id="presta-stepQR">
-    <div class="scanner-header">
-        <h2 class="text-xl font-bold mb-2">📸 Scanner le QR code client</h2>
-        <p class="text-gray-600 text-sm mb-4">Placez le QR code dans le cadre pour le scanner</p>
-    </div>
-    
-    <!-- Container principal du scanner -->
-    <div class="scanner-container">
-        <div id="presta-qr-reader" class="qr-scanner-full"></div>
-    </div>
-    
-    <!-- Boutons en bas -->
-    <div class="scanner-actions">
-        <button id="presta-btnCancelQR" class="btn-secondary w-full py-3">
-            <i class="fas fa-times mr-2"></i>
-            Annuler
-        </button>
-    </div>
-</div>
-
-            <div id="presta-stepForm">
-                <h2 class="text-xl font-bold mb-4">📝 Fiche d'observation</h2>
-                <form id="presta-obsForm">
-                    <div class="form-group">
-                        <label>Nom du client</label>
-                        <input type="text" id="presta-clientName" class="form-input" readonly />
-                    </div>
-
-                    <div class="form-group">
-                        <label>Date de l'observation</label>
-                        <input type="date" id="presta-obsDate" class="form-input" required autocomplete="off" />
-                    </div>
-
-                    <div class="form-group">
-                        <label>État de santé</label>
-                        <textarea id="presta-etatSante" class="form-input" rows="3" placeholder="Décrire l'état de santé..." autocomplete="off"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>État de forme</label>
-                        <select id="presta-etatForme" class="form-input" required autocomplete="off">
-                            <option value="">-- Choisir --</option>
-                            <option>Très bon</option>
-                            <option>Bon</option>
-                            <option>Moyen</option>
-                            <option>Faible</option>
-                            <option>Très faible</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Environnement</label>
-                        <textarea id="presta-environnement" class="form-input" rows="3" placeholder="Décrire l'environnement..." autocomplete="off"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Photos (max 3)</label>
-                        <input type="file" id="presta-photos" class="form-input" accept="image/*" multiple autocomplete="off" />
-                        <div id="presta-photosPreview"></div>
-                    </div>
-
-                    <button type="submit" class="btn-elegant w-full">Envoyer la fiche</button>
-                    <button type="button" id="presta-btnCancelForm" class="btn-secondary w-full mt-2">Annuler</button>
-                </form>
+    <!-- Modal QR Code et fiche d'observation - VERSION CORRIGÉE -->
+<div id="presta-modalOverlay">
+    <div id="presta-modalContent">
+        <div id="presta-stepQR">
+            <div class="scanner-header">
+                <h2>📸 Scanner le QR code client</h2>
+                <p>Placez le QR code dans le cadre pour le scanner</p>
             </div>
-
-            <div id="presta-stepSuccess">
-                <h2 class="text-xl font-bold mb-4">✅ Fiche envoyée avec succès !</h2>
-                <button id="presta-btnCloseSuccess" class="btn-elegant">Fermer</button>
+            
+            <!-- Container principal du scanner - OPTIMISÉ -->
+            <div class="scanner-container">
+                <div id="presta-qr-reader"></div>
+            </div>
+            
+            <!-- Boutons en bas -->
+            <div class="scanner-actions">
+                <button id="presta-btnCancelQR" class="btn-secondary">
+                    <i class="fas fa-times mr-2"></i>
+                    Annuler
+                </button>
             </div>
         </div>
-    </div>
 
+        <div id="presta-stepForm" style="display: none;">
+            <h2 class="text-xl font-bold mb-4">📝 Fiche d'observation</h2>
+            <form id="presta-obsForm">
+                <div class="form-group">
+                    <label>Nom du client</label>
+                    <input type="text" id="presta-clientName" class="form-input" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label>Date de l'observation</label>
+                    <input type="date" id="presta-obsDate" class="form-input" required autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                    <label>État de santé</label>
+                    <textarea id="presta-etatSante" class="form-input" rows="3" placeholder="Décrire l'état de santé..." autocomplete="off"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>État de forme</label>
+                    <select id="presta-etatForme" class="form-input" required autocomplete="off">
+                        <option value="">-- Choisir --</option>
+                        <option>Très bon</option>
+                        <option>Bon</option>
+                        <option>Moyen</option>
+                        <option>Faible</option>
+                        <option>Très faible</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Environnement</label>
+                    <textarea id="presta-environnement" class="form-input" rows="3" placeholder="Décrire l'environnement..." autocomplete="off"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Photos (max 3)</label>
+                    <input type="file" id="presta-photos" class="form-input" accept="image/*" multiple autocomplete="off" />
+                    <div id="presta-photosPreview"></div>
+                </div>
+
+                <button type="submit" class="btn-elegant w-full">Envoyer la fiche</button>
+                <button type="button" id="presta-btnCancelForm" class="btn-secondary w-full mt-2">Annuler</button>
+            </form>
+        </div>
+
+        <div id="presta-stepSuccess" style="display: none;">
+            <h2 class="text-xl font-bold mb-4">✅ Fiche envoyée avec succès !</h2>
+            <button id="presta-btnCloseSuccess" class="btn-elegant">Fermer</button>
+        </div>
+    </div>
+</div>
+    
     <script>
         // =============================================
         // CONFIGURATION ET VARIABLES GLOBALES
@@ -4404,9 +2375,9 @@
         }
         
         presta_qrScannerInstance = new Html5Qrcode("presta-qr-reader");
-        
-        // Configuration optimisée pour mobile
-        const config = {
+         
+        // Configuration OPTIMISÉE - Zone de scan élargie
+const config = {
     fps: 10,
     qrbox: { 
         width: 280,  // Augmenté de 250 à 280
