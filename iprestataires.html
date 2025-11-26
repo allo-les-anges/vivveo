@@ -9,6 +9,133 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
         /* MODALE QR - CORRIGÉE */
+
+        /* STYLES OPTIMISÉS POUR LE SCANNER MOBILE */
+.scanner-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.scanner-container {
+    width: 100%;
+    margin: 0 auto 20px auto;
+    position: relative;
+}
+
+.qr-scanner-full {
+    width: 100% !important;
+    height: 65vh !important;
+    max-height: 500px !important;
+    min-height: 350px !important;
+    border: 3px solid #facc15 !important;
+    border-radius: 15px !important;
+    box-shadow: 0 8px 25px rgba(250, 204, 21, 0.3) !important;
+    background: black !important;
+    position: relative;
+}
+
+/* Override des styles de la librairie QR */
+.qr-scanner-full > div:first-child {
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+    border-radius: 12px !important;
+}
+
+.qr-scanner-full video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 12px !important;
+}
+
+.scanner-actions {
+    width: 100%;
+}
+
+/* Styles pour la modale complète */
+#presta-modalContent {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    width: 95%;
+    max-width: 500px;
+    max-height: 95vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+#presta-stepQR {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 1;
+}
+
+/* Responsive pour petits écrans */
+@media (max-width: 480px) {
+    #presta-modalContent {
+        width: 98%;
+        padding: 20px 15px;
+        margin: 10px;
+        border-radius: 15px;
+    }
+    
+    .qr-scanner-full {
+        height: 60vh !important;
+        min-height: 300px !important;
+    }
+}
+
+/* Mode paysage */
+@media (max-height: 600px) and (orientation: landscape) {
+    #presta-modalContent {
+        max-height: 98vh;
+        padding: 15px;
+    }
+    
+    .scanner-header {
+        margin-bottom: 10px;
+    }
+    
+    .scanner-header h2 {
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+    
+    .scanner-header p {
+        display: none; /* Cache le texte en mode paysage pour gagner de la place */
+    }
+    
+    .qr-scanner-full {
+        height: 55vh !important;
+        min-height: 250px !important;
+        margin-bottom: 15px;
+    }
+}
+
+/* Très petits écrans */
+@media (max-height: 500px) {
+    .qr-scanner-full {
+        height: 50vh !important;
+        min-height: 200px !important;
+    }
+}
+
+/* Animation de focus pour le scanner */
+@keyframes scannerPulse {
+    0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(250, 204, 21, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
+}
+
+.qr-scanner-full {
+    animation: scannerPulse 2s infinite;
+}
+        
         #presta-qr-reader.enhanced {
             width: 100% !important;
             height: 400px !important;
