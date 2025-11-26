@@ -3874,84 +3874,119 @@
 
         // Fonction pour charger les missions en cours
         function presta_loadInProgressMissions(missions) {
-            const tableBody = document.getElementById('inprogress-missions-table');
-            const cardsContainer = document.getElementById('inprogress-missions-cards');
-            
-            if (!tableBody || !cardsContainer) {
-                console.log("❌ Éléments de l'onglet En Cours non trouvés");
-                return;
-            }
+    console.log("🔄 CHARGEMENT MISSIONS EN COURS - Début");
+    
+    const tableBody = document.getElementById('inprogress-missions-table');
+    const cardsContainer = document.getElementById('inprogress-missions-cards');
+    
+    // DIAGNOSTIC DES ÉLÉMENTS DOM
+    console.log("🔍 Éléments DOM trouvés:");
+    console.log("- tableBody:", tableBody);
+    console.log("- cardsContainer:", cardsContainer);
+    
+    if (!tableBody || !cardsContainer) {
+        console.error("❌ Éléments de l'onglet En Cours non trouvés");
+        console.log("📍 Recherche alternative...");
+        
+        // Recherche alternative des éléments
+        const altTableBody = document.querySelector('#tab-inprogress #inprogress-missions-table');
+        const altCardsContainer = document.querySelector('#tab-inprogress #inprogress-missions-cards');
+        console.log("- Alternative tableBody:", altTableBody);
+        console.log("- Alternative cardsContainer:", altCardsContainer);
+        return;
+    }
 
-            const inProgressMissions = missions.filter(m => m.statut === "en cours");
-            console.log(`📊 ${inProgressMissions.length} mission(s) en cours trouvée(s)`);
-            
-            if (inProgressMissions.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">Aucune mission en cours</td></tr>`;
-                cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission en cours</div>`;
-            } else {
-                tableBody.innerHTML = inProgressMissions.map(mission => {
-                    const safeId = mission.id || 'N/A';
-                    const safeClientPrenom = (mission.prenom || '').replace(/'/g, "\\'");
-                    const safeClientNom = (mission.client || '').replace(/'/g, "\\'");
-                    
-                    return `
-                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                            <td class="p-4">${safeId}</td>
-                            <td class="p-4">${mission.client || 'N/A'}</td>
-                            <td class="p-4">${mission.adresse || 'N/A'}</td>
-                            <td class="p-4">${mission.service || 'N/A'}</td>
-                            <td class="p-4">${presta_formatDate(mission.date)}</td>
-                            <td class="p-4">
-                                <button onclick="presta_openModalEndPrestation('${safeId}', '${safeClientPrenom}', '${safeClientNom}')" 
-                                        class="btn-danger py-2 px-4 rounded-lg">
-                                    <i class="fas fa-stop-circle mr-2"></i>
-                                    Terminer
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-                
-                cardsContainer.innerHTML = inProgressMissions.map(mission => {
-                    const safeId = mission.id || 'N/A';
-                    const safeClientPrenom = (mission.prenom || '').replace(/'/g, "\\'");
-                    const safeClientNom = (mission.client || '').replace(/'/g, "\\'");
-                    
-                    return `
-                        <div class="request-card">
-                            <div class="card-row">
-                                <span class="card-label">ID Mission</span>
-                                <span class="card-value">${safeId}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Client</span>
-                                <span class="card-value">${mission.client || 'N/A'}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Adresse</span>
-                                <span class="card-value">${mission.adresse || 'N/A'}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Service</span>
-                                <span class="card-value">${mission.service || 'N/A'}</span>
-                            </div>
-                            <div class="card-row">
-                                <span class="card-label">Date</span>
-                                <span class="card-value">${presta_formatDate(mission.date)}</span>
-                            </div>
-                            <div class="card-status">
-                                <button onclick="presta_openModalEndPrestation('${safeId}', '${safeClientPrenom}', '${safeClientNom}')" 
-                                        class="btn-danger w-full py-2 rounded-lg">
-                                    <i class="fas fa-stop-circle mr-2"></i>
-                                    Terminer
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            }
-        }
+    // FILTRAGE ROBUSTE des missions en cours
+    const inProgressMissions = missions.filter(m => {
+        if (!m.statut) return false;
+        
+        const statut = m.statut.toLowerCase().trim();
+        
+        // Plusieurs variantes possibles du statut "en cours"
+        return statut === 'en cours' || 
+               statut === 'encours' ||
+               statut === 'in progress' ||
+               statut === 'in_progress' ||
+               statut.includes('cours') ||
+               statut.includes('progress');
+    });
+    
+    console.log(`📊 ${inProgressMissions.length} mission(s) en cours trouvée(s):`, inProgressMissions);
 
+    // AFFICHAGE DES MISSIONS
+    if (inProgressMissions.length === 0) {
+        console.log("ℹ️ Aucune mission en cours à afficher");
+        tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">Aucune mission en cours</td></tr>`;
+        cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission en cours</div>`;
+    } else {
+        console.log("🎯 Affichage des missions en cours");
+        
+        // Construction du tableau
+        tableBody.innerHTML = inProgressMissions.map(mission => {
+            const safeId = mission.id || 'N/A';
+            const safeClientPrenom = (mission.prenom || '').replace(/'/g, "\\'");
+            const safeClientNom = (mission.client || '').replace(/'/g, "\\'");
+            
+            return `
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <td class="p-4">${safeId}</td>
+                    <td class="p-4">${mission.client || 'N/A'}</td>
+                    <td class="p-4">${mission.adresse || 'N/A'}</td>
+                    <td class="p-4">${mission.service || 'N/A'}</td>
+                    <td class="p-4">${presta_formatDate(mission.date)}</td>
+                    <td class="p-4">
+                        <button onclick="presta_openModalEndPrestation('${safeId}', '${safeClientPrenom}', '${safeClientNom}')" 
+                                class="btn-danger py-2 px-4 rounded-lg">
+                            <i class="fas fa-stop-circle mr-2"></i>
+                            Terminer
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+        
+        // Construction des cartes mobiles
+        cardsContainer.innerHTML = inProgressMissions.map(mission => {
+            const safeId = mission.id || 'N/A';
+            const safeClientPrenom = (mission.prenom || '').replace(/'/g, "\\'");
+            const safeClientNom = (mission.client || '').replace(/'/g, "\\'");
+            
+            return `
+                <div class="request-card">
+                    <div class="card-row">
+                        <span class="card-label">ID Mission</span>
+                        <span class="card-value">${safeId}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Client</span>
+                        <span class="card-value">${mission.client || 'N/A'}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Adresse</span>
+                        <span class="card-value">${mission.adresse || 'N/A'}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Service</span>
+                        <span class="card-value">${mission.service || 'N/A'}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Date</span>
+                        <span class="card-value">${presta_formatDate(mission.date)}</span>
+                    </div>
+                    <div class="card-status">
+                        <button onclick="presta_openModalEndPrestation('${safeId}', '${safeClientPrenom}', '${safeClientNom}')" 
+                                class="btn-danger w-full py-2 rounded-lg">
+                            <i class="fas fa-stop-circle mr-2"></i>
+                            Terminer
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    console.log("✅ Chargement missions en cours - Terminé");
+}
         // Formatage des dates
         function presta_formatDate(dateString) {
             if (!dateString) return 'N/A';
