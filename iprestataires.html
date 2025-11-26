@@ -3871,7 +3871,60 @@ function addTestButton() {
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(addTestButton, 2000);
 });
+        // AJOUTEZ CETTE FONCTION POUR ACTIVER L'ONGLET
+function activateInProgressTab() {
+    console.log("🎯 Activation de l'onglet En Cours...");
+    
+    // 1. Trouver le bouton de l'onglet En Cours
+    const inProgressButton = document.querySelector('[onclick*="inprogress"]');
+    const inProgressTab = document.getElementById('tab-inprogress');
+    
+    if (inProgressButton && inProgressTab) {
+        console.log("✅ Éléments trouvés, activation en cours...");
         
+        // 2. Désactiver tous les onglets
+        document.querySelectorAll('.tab-container').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.classList.remove('active');
+        });
+        
+        // 3. Activer l'onglet En Cours
+        inProgressTab.classList.add('active');
+        inProgressButton.classList.add('active');
+        
+        console.log("✅ Onglet En Cours activé !");
+        
+        // 4. Vérifier visuellement
+        console.log("🔍 État des onglets:");
+        console.log("- Bouton En Cours:", inProgressButton.className);
+        console.log("- Contenu En Cours:", inProgressTab.className);
+        console.log("- Display:", window.getComputedStyle(inProgressTab).display);
+    } else {
+        console.error("❌ Impossible de trouver les éléments de l'onglet En Cours");
+        console.log("- Bouton:", inProgressButton);
+        console.log("- Tab:", inProgressTab);
+    }
+}
+
+// MODIFIEZ la fonction createInProgressTabNow() pour appeler l'activation :
+function createInProgressTabNow() {
+    console.log("🎯 Création IMMÉDIATE de l'onglet En Cours");
+    
+    // Vérifier si l'onglet existe déjà
+    if (document.getElementById('tab-inprogress')) {
+        console.log("✅ Onglet En Cours existe déjà");
+        // ACTIVER l'onglet existant
+        setTimeout(activateInProgressTab, 100);
+        return;
+    }
+    
+    // [Le reste du code de création reste identique...]
+    
+    // Après création, activer l'onglet
+    setTimeout(activateInProgressTab, 100);
+}
     </script>
 </body>
 </html>
