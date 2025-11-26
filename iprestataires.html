@@ -3425,6 +3425,255 @@ async function presta_discoverApiTypes() {
 
 // Appeler cette fonction pour debugger
 // presta_discoverApiTypes();
+// =============================================
+// CORRECTION POUR L'ONGLET "EN COURS"
+// =============================================
+
+// Fonction pour créer l'onglet "En Cours" - VERSION CORRIGÉE
+function addInProgressTab() {
+    console.log("🔄 Création de l'onglet En Cours...");
+    
+    // Vérifier que l'interface prestataire est visible
+    const prestataireInterface = document.getElementById('prestataire-interface');
+    if (!prestataireInterface || prestataireInterface.classList.contains('hidden')) {
+        console.log("❌ Interface prestataire non visible, on retarde...");
+        setTimeout(addInProgressTab, 1000);
+        return;
+    }
+    
+    const tabButtons = document.querySelector('.flex.space-x-8');
+    if (!tabButtons) {
+        console.error("❌ Conteneur des onglets non trouvé");
+        return;
+    }
+    
+    // Vérifier si l'onglet existe déjà
+    if (document.querySelector('[onclick*="inprogress"]')) {
+        console.log("✅ Onglet En Cours existe déjà");
+        return;
+    }
+    
+    console.log("✅ Ajout du bouton onglet...");
+    
+    // 1. Ajouter le bouton dans la navigation
+    const inProgressButton = document.createElement('button');
+    inProgressButton.className = 'tab-button';
+    inProgressButton.innerHTML = '<i class="fas fa-play-circle mr-2"></i>En Cours';
+    inProgressButton.onclick = () => presta_showTab('inprogress');
+    tabButtons.appendChild(inProgressButton);
+    
+    // 2. Ajouter le contenu de l'onglet
+    const tabContainer = document.querySelector('.prestataire-section > .border-b').parentNode;
+    const inProgressTab = document.createElement('div');
+    inProgressTab.id = 'tab-inprogress';
+    inProgressTab.className = 'tab-container';
+    inProgressTab.innerHTML = `
+        <h4 class="text-lg font-semibold text-gray-800 mb-4">Missions en cours d'intervention</h4>
+        <div class="table-wrapper">
+            <table class="w-full">
+                <thead>
+                    <tr class="bg-gradient-to-r from-orange-50 to-orange-100">
+                        <th class="p-4 text-left">ID Mission</th>
+                        <th class="p-4 text-left">Client</th>
+                        <th class="p-4 text-left">Adresse</th>
+                        <th class="p-4 text-left">Service</th>
+                        <th class="p-4 text-left">Date</th>
+                        <th class="p-4 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="inprogress-missions-table">
+                    <tr><td colspan="6" class="p-4 text-center text-gray-500">Aucune mission en cours</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mobile-card-view" id="inprogress-missions-cards">
+            <div class="text-center p-8 text-gray-500">Aucune mission en cours</div>
+        </div>
+    `;
+    
+    tabContainer.appendChild(inProgressTab);
+    
+    console.log("🎉 Onglet En Cours créé avec succès !");
+    
+    // Recharger les missions pour peupler le nouvel onglet
+    if (presta_currentMissions && presta_currentMissions.length > 0) {
+        presta_loadInProgressMissions(presta_currentMissions);
+    }
+}
+
+// Fonction pour charger les missions en cours dans l'onglet
+function presta_loadInProgressMissions(missions) {
+    const tableBody = document.getElementById('inprogress-missions-table');
+    const cardsContainer = document.getElementById('inprogress-missions-cards');
+    
+    if (!tableBody || !cardsContainer) {
+        console.log("❌ Éléments de l'onglet En Cours non trouvés - création en cours...");
+        return;
+    }
+
+    const inProgressMissions = missions.filter(m => m.statut === "en cours");
+    console.log(`📊 ${inProgressMissions.length} mission(s) en cours trouvée(s)`);
+    
+    if (inProgressMissions.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">Aucune mission en cours</td></tr>`;
+        cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission en cours</div>`;
+    } else {
+        tableBody.innerHTML = inProgressMissions.map(mission => `
+            <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                <td class="p-4">${mission.id || 'N/A'}</td>
+                <td class="p-4">${mission.client || 'N/A'}</td>
+                <td class="p-4">${mission.adresse || 'N/A'}</td>
+                <td class="p-4">${mission.service || 'N/A'}</td>
+                <td class="p-4">${presta_formatDate(mission.date)}</td>
+                <td class="p-4">
+                    <button onclick="presta_openModalEndPrestation('${mission.id}', '${mission.prenom || ''}', '${mission.client || ''}')" 
+                            class="btn-danger py-2 px-4 rounded-lg">
+                        <i class="fas fa-stop-circle mr-2"></i>
+                        Terminer
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+        
+        cardsContainer.innerHTML = inProgressMissions.map(mission => `
+            <div class="request-card">
+                <div class="card-row">
+                    <span class="card-label">ID Mission</span>
+                    <span class="card-value">${mission.id || 'N/A'}</span>
+                </div>
+                <div class="card-row">
+                    <span class="card-label">Client</span>
+                    <span class="card-value">${mission.client || 'N/A'}</span>
+                </div>
+                <div class="card-row">
+                    <span class="card-label">Adresse</span>
+                    <span class="card-value">${mission.adresse || 'N/A'}</span>
+                </div>
+                <div class="card-row">
+                    <span class="card-label">Service</span>
+                    <span class="card-value">${mission.service || 'N/A'}</span>
+                </div>
+                <div class="card-row">
+                    <span class="card-label">Date</span>
+                    <span class="card-value">${presta_formatDate(mission.date)}</span>
+                </div>
+                <div class="card-status">
+                    <button onclick="presta_openModalEndPrestation('${mission.id}', '${mission.prenom || ''}', '${mission.client || ''}')" 
+                            class="btn-danger w-full py-2 rounded-lg">
+                        <i class="fas fa-stop-circle mr-2"></i>
+                        Terminer
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+// MODIFIEZ la fonction presta_showTab pour gérer le nouvel onglet
+function presta_showTab(tabName) {
+    console.log(`🔍 Affichage de l'onglet: ${tabName}`);
+    
+    document.querySelectorAll('.tab-container').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
+
+    const targetTab = document.getElementById(`tab-${tabName}`);
+    if (targetTab) {
+        targetTab.classList.add('active');
+        event.target.classList.add('active');
+        console.log(`✅ Onglet ${tabName} affiché`);
+    } else {
+        console.error(`❌ Onglet ${tabName} non trouvé`);
+    }
+}
+
+// MODIFIEZ la fonction presta_loadMissions pour inclure l'onglet En Cours
+async function presta_loadMissions(email) {
+    try {
+        const callbackName = 'cbMissions' + Date.now();
+        const url = `${presta_webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
+        const data = await presta_callApiJsonp(url, callbackName);
+
+        const missions = data.missions || data;
+        
+        if (!Array.isArray(missions)) {
+            throw new Error("Format de données invalide");
+        }
+
+        presta_currentMissions = missions;
+        console.log("📦 Missions reçues:", missions);
+        
+        presta_updateStats(missions);
+        
+        // CHARGER TOUS LES ONGLETS
+        presta_loadMissionsByStatus('pending', missions);
+        presta_loadMissionsByStatus('today', missions);
+        presta_loadMissionsByStatus('planned', missions);
+        presta_loadMissionsByStatus('completed', missions);
+        presta_loadInProgressMissions(missions); // ← CHARGER LES MISSIONS EN COURS
+        
+        presta_attacherListenersStartPrestation();
+
+        // DEBUG
+        console.log("🔍 État des missions après chargement:");
+        console.log("- Total:", missions.length);
+        console.log("- En cours:", missions.filter(m => m.statut === "en cours").length);
+        
+    } catch (error) {
+        console.error("Erreur lors du chargement des missions:", error);
+        presta_showNotification("Erreur lors du chargement des missions: " + error.message, 'error');
+    }
+}
+
+// MODIFIEZ la fonction presta_login pour créer l'onglet après connexion
+async function presta_login() {
+    const email = document.getElementById('presta-email').value;
+    const password = document.getElementById('presta-password').value;
+    const message = document.getElementById('login-message');
+
+    console.log("🔐 Tentative de connexion avec:", email);
+    
+    document.getElementById('loader').style.display = 'flex';
+
+    try {
+        const callbackName = 'cbLogin' + Date.now();
+        const url = `${presta_webAppUrl}?type=loginPresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+        
+        console.log("📡 URL de connexion:", url);
+        
+        const data = await presta_callApiJsonp(url, callbackName);
+        console.log("📦 Réponse de connexion:", data);
+
+        if (data.success) {
+            presta_currentEmail = email;
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('prestataire-interface').classList.remove('hidden');
+            
+            document.getElementById('prestataire-name').textContent = data.prenom || "Prestataire";
+            document.getElementById('prestataire-rating').textContent = data.note || "4.8";
+
+            await presta_loadMissions(email);
+            
+            // ✅ CRÉER L'ONGLET APRÈS LA CONNEXION
+            setTimeout(addInProgressTab, 500);
+            
+            presta_showNotification("Connexion réussie !", 'success');
+        } else {
+            throw new Error(data.message || "Email ou mot de passe incorrect");
+        }
+    } catch (error) {
+        console.error("❌ Erreur de connexion:", error);
+        message.textContent = error.message;
+        message.classList.remove('hidden');
+        message.className = 'message message-error';
+    } finally {
+        document.getElementById('loader').style.display = 'none';
+    }
+}
+        
     </script>
 </body>
 </html>
