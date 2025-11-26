@@ -1490,6 +1490,58 @@
         // FONCTIONS D'INITIALISATION
         // =============================================
 
+        // AJOUTEZ cette fonction pour debugger l'état des missions
+function debugMissionsState() {
+    console.log("🔍 DEBUG État des missions:");
+    console.log("- Missions chargées:", presta_currentMissions);
+    console.log("- Missions en cours:", presta_currentMissions?.filter(m => m.statut === "en cours"));
+    console.log("- Onglet existe:", !!document.getElementById('tab-inprogress'));
+    console.log("- Table body existe:", !!document.getElementById('inprogress-missions-table'));
+    
+    // Forcer l'affichage de l'onglet pour test
+    if (document.getElementById('tab-inprogress')) {
+        document.getElementById('tab-inprogress').style.display = 'block';
+        console.log("✅ Onglet forcé à s'afficher");
+    }
+}
+
+// Appelez cette fonction après le chargement des missions
+// Modifiez presta_loadMissions pour ajouter :
+async function presta_loadMissions(email) {
+    try {
+        const callbackName = 'cbMissions' + Date.now();
+        const url = `${presta_webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
+        const data = await presta_callApiJsonp(url, callbackName);
+
+        const missions = data.missions || data;
+        
+        if (!Array.isArray(missions)) {
+            throw new Error("Format de données invalide");
+        }
+
+        presta_currentMissions = missions;
+        console.log("📦 Missions reçues:", missions); // AJOUTEZ CETTE LIGNE
+        
+        presta_updateStats(missions);
+        
+        // CHARGER TOUS LES ONGLETS
+        presta_loadMissionsByStatus('pending', missions);
+        presta_loadMissionsByStatus('today', missions);
+        presta_loadMissionsByStatus('planned', missions);
+        presta_loadMissionsByStatus('completed', missions);
+        presta_loadInProgressMissions(missions);
+        
+        presta_attacherListenersStartPrestation();
+
+        // AJOUTEZ CET APPEL POUR DEBUG
+        debugMissionsState();
+        
+    } catch (error) {
+        console.error("Erreur lors du chargement des missions:", error);
+        presta_showNotification("Erreur lors du chargement des missions: " + error.message, 'error');
+    }
+}
+        
         // REMPLACEZ la fonction addInProgressTab() par cette version corrigée :
 function addInProgressTab() {
     console.log("🔄 Tentative d'ajout de l'onglet En Cours...");
