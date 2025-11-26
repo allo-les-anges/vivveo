@@ -1490,6 +1490,66 @@
         // FONCTIONS D'INITIALISATION
         // =============================================
 
+        // REMPLACEZ la fonction addInProgressTab() par cette version corrigée :
+function addInProgressTab() {
+    console.log("🔄 Tentative d'ajout de l'onglet En Cours...");
+    
+    const tabButtons = document.querySelector('.flex.space-x-8');
+    if (!tabButtons) {
+        console.error("❌ Conteneur des onglets non trouvé");
+        return;
+    }
+    
+    // Vérifier si l'onglet existe déjà
+    if (document.getElementById('tab-inprogress')) {
+        console.log("✅ Onglet En Cours existe déjà");
+        return;
+    }
+    
+    console.log("✅ Conteneur trouvé, ajout de l'onglet...");
+    
+    // Ajouter le bouton d'onglet
+    tabButtons.innerHTML += `
+        <button class="tab-button" onclick="presta_showTab('inprogress')">
+            <i class="fas fa-play-circle mr-2"></i>
+            En Cours
+        </button>
+    `;
+    
+    // Ajouter le contenu de l'onglet
+    const tabContainer = document.querySelector('.prestataire-section > .border-b')?.parentNode;
+    if (tabContainer) {
+        tabContainer.innerHTML += `
+            <div id="tab-inprogress" class="tab-container">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Missions en cours d'intervention</h4>
+                <div class="table-wrapper">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-orange-50 to-orange-100">
+                                <th class="p-4 text-left">ID Mission</th>
+                                <th class="p-4 text-left">Client</th>
+                                <th class="p-4 text-left">Adresse</th>
+                                <th class="p-4 text-left">Service</th>
+                                <th class="p-4 text-left">Date</th>
+                                <th class="p-4 text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inprogress-missions-table">
+                            <tr><td colspan="6" class="p-4 text-center text-gray-500">Chargement...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mobile-card-view" id="inprogress-missions-cards">
+                    <div class="text-center p-8 text-gray-500">Chargement...</div>
+                </div>
+            </div>
+        `;
+        console.log("✅ Onglet En Cours ajouté avec succès");
+    } else {
+        console.error("❌ Conteneur du contenu des onglets non trouvé");
+    }
+}
+        
         // Ajoutez CE SEUL CODE dans votre <script> existant
 function addInProgressTab() {
     const tabButtons = document.querySelector('.flex.space-x-8');
@@ -3048,7 +3108,7 @@ function presta_addManualTestButton() {
             
             // Initialiser les éléments DOM
             presta_initDOMElements();
-
+             addInProgressTab();
              setTimeout(() => {
         addInProgressTab();
     }, 500);
