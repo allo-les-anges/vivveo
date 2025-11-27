@@ -980,6 +980,12 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
+
+                <!-- Ajoutez ce bouton quelque part dans votre interface prestataire -->
+                <button onclick="testEnvoiFicheManuel()" class="btn-secondary mt-4">
+                🧪 TEST Manuel - Envoyer Fiche
+                </button>
+                        
                     </button>
                     <div id="language-dropdown" class="language-dropdown">
                         <div class="language-option active" data-lang="fr">
@@ -3314,6 +3320,70 @@ async function handleSecondScan() {
                 passwordConfirmInput.addEventListener('input', presta_checkPasswordMatch);
             }
         });
+
+        // FONCTION DE TEST MANUEL - À AJOUTER DANS VOTRE SCRIPT
+async function testEnvoiFicheManuel() {
+    console.log("🧪 DÉBUT TEST MANUEL ENVOI FICHE");
+    
+    // Données de test réalistes
+    const donneesTest = {
+        missionId: "TEST_" + Date.now(),
+        prenomClient: "Jean",
+        nomClient: "Dupont",
+        obsDate: new Date().toISOString().split("T")[0],
+        etatSante: "État de santé correct, légère fatigue",
+        etatForme: "Bon",
+        environnement: "Appartement propre et bien entretenu",
+        latitudeDebut: "50.468410",
+        longitudeDebut: "3.595267", 
+        latitudeFin: "50.468411",
+        longitudeFin: "3.595268",
+        heureDebut: new Date().toISOString(),
+        heureFin: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(), // +2 heures
+        prestataireEmail: presta_currentEmail || "test@example.com",
+        prestatairePrenom: "Ray",
+        prestataireNom: "Mon",
+        type: "envoyerFiche"
+    };
+    
+    console.log("📦 DONNÉES DE TEST:", donneesTest);
+    
+    try {
+        // Créer FormData comme le fait le vrai formulaire
+        const formData = new FormData();
+        
+        // Ajouter toutes les données
+        Object.keys(donneesTest).forEach(key => {
+            formData.append(key, donneesTest[key]);
+        });
+        
+        console.log("📡 Envoi vers:", presta_webAppUrl);
+        
+        // Envoyer la requête
+        const response = await fetch(presta_webAppUrl, {
+            method: "POST",
+            body: formData
+        });
+        
+        console.log("📨 Réponse reçue - Status:", response.status);
+        const result = await response.json();
+        console.log("📨 Réponse complète:", result);
+        
+        if (result.success) {
+            console.log("✅ SUCCÈS - PDF généré !");
+            console.log("📄 Lien PDF:", result.url);
+            alert("✅ TEST RÉUSSI!\nPDF généré: " + (result.url || "Lien disponible"));
+        } else {
+            console.error("❌ ÉCHEC - Erreur:", result.message);
+            alert("❌ TEST ÉCHOUÉ:\n" + result.message);
+        }
+        
+    } catch (error) {
+        console.error("💥 ERREUR CRITIQUE:", error);
+        alert("💥 ERREUR: " + error.message);
+    }
+}
+        
     </script>
 </body>
 </html>
