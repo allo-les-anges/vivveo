@@ -108,6 +108,31 @@
             padding: 0 10px;
         }
 
+        .photo-preview-item {
+    transition: all 0.3s ease;
+}
+
+.photo-preview-item:hover {
+    transform: translateY(-2px);
+}
+
+.photo-preview-item img {
+    transition: all 0.3s ease;
+}
+
+.photo-preview-item:hover img {
+    border-color: #f59e0b;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.remove-photo {
+    transition: all 0.2s ease;
+}
+
+.remove-photo:hover {
+    transform: scale(1.1);
+}
+   
         /* Animation de focus pour le scanner */
         @keyframes scannerPulse {
             0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7); }
@@ -3167,68 +3192,100 @@ async function handleSecondScan() {
                 });
             }
 
-            // Gestion de la soumission du formulaire d'observation
-            if (document.getElementById("presta-obsForm")) {
-                document.getElementById("presta-obsForm").addEventListener("submit", async function(e) {
-                    e.preventDefault();
-                    
-                    if (presta_photosInput.files.length > 3) {
-                        alert("Maximum 3 photos autorisées.");
-                        return;
-                    }
+            // Gestion de la soumission du formulaire d'observation - VERSION CORRIGÉE
+if (document.getElementById("presta-obsForm")) {
+    document.getElementById("presta-obsForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        
+        if (presta_photosInput.files.length > 3) {
+            alert("Maximum 3 photos autorisées.");
+            return;
+        }
 
-                    const formData = new FormData();
-                    formData.append("type", "envoyerFiche");
-                    formData.append("missionId", presta_currentMissionId);
-                    formData.append("prenomClient", presta_currentClientPrenom);
-                    formData.append("nomClient", presta_currentClientNom);
-                    formData.append("obsDate", presta_obsDateInput.value);
-                    formData.append("etatSante", presta_etatSanteInput.value);
-                    formData.append("etatForme", presta_etatFormeInput.value);
-                    formData.append("environnement", presta_environnementInput.value);
-                    formData.append("latitudeDebut", presta_currentLatitude);
-                    formData.append("longitudeDebut", presta_currentLongitude);
-                    formData.append("latitudeFin", presta_latitudeFin);
-                    formData.append("longitudeFin", presta_longitudeFin);
-                    formData.append("heureDebut", presta_heureDebut);
-                    formData.append("heureFin", presta_heureFin);
-                    formData.append("prestatairePrenom", presta_currentPrestatairePrenom);
-                    formData.append("prestataireNom", presta_currentPrestataireNom);
-                    formData.append("prestataireEmail", presta_currentEmail);
-                    
-                    for (let file of presta_photosInput.files) {
-                        formData.append("photos", file);
-                    }
+        console.log("📸 Préparation de l'envoi avec photos...");
 
-                    try {
-                        document.getElementById('loader').style.display = 'flex';
-                        
-                        const res = await fetch(presta_webAppUrl, {
-                            method: "POST",
-                            body: formData,
-                        });
-                        
-                        const json = await res.json();
-                        
-                        if (json.success) {
-                            presta_stepForm.style.display = "none";
-                            presta_stepSuccess.style.display = "block";
-                            presta_showNotification("Fiche d'observation envoyée avec succès !", 'success');
-                            
-                            // Recharger les missions
-                            await presta_loadMissions(presta_currentEmail);
-                        } else {
-                            throw new Error(json.message || "Envoi échoué");
-                        }
-                    } catch (err) {
-                        console.error("❌ Erreur envoi fiche:", err);
-                        presta_showNotification("Erreur lors de l'envoi de la fiche: " + err.message, 'error');
-                    } finally {
-                        document.getElementById('loader').style.display = 'none';
-                    }
+        // 1. Convertir les photos en Base64
+        const photosBase64 = [];
+        for (let file of presta_photosInput.files) {
+            try {
+                const base64 = await fileToBase64(file);
+                photosBase64.push({
+                    name: file.name,
+                    type: file.type,
+                    data: base64.split(',')[1] // Enlever le préfixe "data:image/...;base64,"
                 });
+                console.log(`✅ Photo convertie: ${file.name}`);
+            } catch (error) {
+                console.error(`❌ Erreur conversion photo ${file.name}:`, error);
             }
+        }
 
+        console.log(`📸 ${photosBase64.length} photo(s) convertie(s) en Base64`);
+
+        // 2. Préparer FormData
+        const formData = new FormData();
+        formData.append("type", "envoyerFiche");
+        formData.append("missionId", presta_currentMissionId);
+        formData.append("prenomClient", presta_currentClientPrenom);
+        formData.append("nomClient", presta_currentClientNom);
+        formData.append("obsDate", presta_obsDateInput.value);
+        formData.append("etatSante", presta_etatSanteInput.value);
+        formData.append("etatForme", presta_etatFormeInput.value);
+        formData.append("environnement", presta_environnementInput.value);
+        formData.append("latitudeDebut", presta_currentLatitude);
+        formData.append("longitudeDebut", presta_currentLongitude);
+        formData.append("latitudeFin", presta_latitudeFin);
+        formData.append("longitudeFin", presta_longitudeFin);
+        formData.append("heureDebut", presta_heureDebut);
+        formData.append("heureFin", presta_heureFin);
+        formData.append("prestatairePrenom", presta_currentPrestatairePrenom);
+        formData.append("prestataireNom", presta_currentPrestataireNom);
+        formData.append("prestataireEmail", presta_currentEmail);
+        
+        // 3. Ajouter les photos en JSON (format attendu par le backend)
+        formData.append("photos", JSON.stringify(photosBase64));
+
+        console.log("📡 Envoi des données vers l'API...");
+
+        try {
+            document.getElementById('loader').style.display = 'flex';
+            
+            const res = await fetch(presta_webAppUrl, {
+                method: "POST",
+                body: formData,
+            });
+            
+            const json = await res.json();
+            console.log("📨 Réponse API:", json);
+            
+            if (json.success) {
+                presta_stepForm.style.display = "none";
+                presta_stepSuccess.style.display = "block";
+                presta_showNotification("Fiche d'observation envoyée avec succès !", 'success');
+                
+                // Recharger les missions
+                await presta_loadMissions(presta_currentEmail);
+            } else {
+                throw new Error(json.message || "Envoi échoué");
+            }
+        } catch (err) {
+            console.error("❌ Erreur envoi fiche:", err);
+            presta_showNotification("Erreur lors de l'envoi de la fiche: " + err.message, 'error');
+        } finally {
+            document.getElementById('loader').style.display = 'none';
+        }
+    });
+}
+
+// --- AJOUTEZ CETTE FONCTION UTILITAIRE ---
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
+}
             // Fermer les modales en cliquant à l'extérieur
             document.addEventListener('click', function(event) {
                 if (event.target.classList.contains('modal')) {
@@ -3246,28 +3303,72 @@ async function handleSecondScan() {
                 });
             });
 
-            // Gestion des photos dans la modale QR
-            if (presta_photosInput) {
-                presta_photosInput.addEventListener("change", e => {
-                    presta_photosPreview.innerHTML = "";
-                    const files = e.target.files;
-                    if (files.length > 3) {
-                        alert("Vous ne pouvez sélectionner que 3 photos max.");
-                        presta_photosInput.value = "";
-                        return;
+            // Gestion des photos dans le preview - VERSION AMÉLIORÉE
+if (presta_photosInput) {
+    presta_photosInput.addEventListener("change", function(e) {
+        presta_photosPreview.innerHTML = "";
+        const files = e.target.files;
+        
+        if (files.length > 3) {
+            alert("Vous ne pouvez sélectionner que 3 photos max.");
+            presta_photosInput.value = "";
+            return;
+        }
+        
+        // Afficher un message de statut
+        if (files.length > 0) {
+            const statusMsg = document.createElement('div');
+            statusMsg.className = 'text-sm text-green-600 mb-2';
+            statusMsg.textContent = `${files.length} photo(s) sélectionnée(s) - Elles seront converties en Base64`;
+            presta_photosPreview.appendChild(statusMsg);
+        }
+        
+        // Afficher les previews
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewItem = document.createElement("div");
+                previewItem.className = "photo-preview-item inline-block m-2 relative";
+                
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                img.alt = file.name;
+                img.className = "w-20 h-20 object-cover rounded border-2 border-yellow-400";
+                
+                const fileName = document.createElement("div");
+                fileName.className = "text-xs text-gray-600 truncate mt-1";
+                fileName.textContent = file.name;
+                fileName.style.maxWidth = "80px";
+                
+                const removeBtn = document.createElement("button");
+                removeBtn.className = "absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center";
+                removeBtn.innerHTML = "×";
+                removeBtn.onclick = (event) => {
+                    event.preventDefault();
+                    previewItem.remove();
+                    
+                    // Mettre à jour l'input files
+                    const newFiles = Array.from(presta_photosInput.files).filter(f => f !== file);
+                    const dataTransfer = new DataTransfer();
+                    newFiles.forEach(f => dataTransfer.items.add(f));
+                    presta_photosInput.files = dataTransfer.files;
+                    
+                    // Mettre à jour le message de statut
+                    const statusElements = presta_photosPreview.querySelectorAll('.text-sm');
+                    if (statusElements.length > 0 && newFiles.length === 0) {
+                        statusElements[0].remove();
                     }
-                    [...files].forEach(file => {
-                        const reader = new FileReader();
-                        reader.onload = ev => {
-                            const img = document.createElement("img");
-                            img.src = ev.target.result;
-                            presta_photosPreview.appendChild(img);
-                        };
-                        reader.readAsDataURL(file);
-                    });
-                });
-            }
-
+                };
+                
+                previewItem.appendChild(img);
+                previewItem.appendChild(fileName);
+                previewItem.appendChild(removeBtn);
+                presta_photosPreview.appendChild(previewItem);
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+}
             // Boutons d'annulation et fermeture
             if (document.getElementById("presta-btnCancelQR")) {
                 document.getElementById("presta-btnCancelQR").onclick = function() {
