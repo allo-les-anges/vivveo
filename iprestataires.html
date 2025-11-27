@@ -1851,8 +1851,8 @@
 
             try {
                 const callbackName = 'cbLogin' + Date.now();
-                const url = `${presta_webAppUrl}?type=loginPresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-                
+                const url = `${presta_webAppUrl}?type=loginpresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+
                 console.log("📡 URL de connexion:", url);
                 
                 const data = await presta_callApiJsonp(url, callbackName);
@@ -3197,6 +3197,14 @@ if (document.getElementById("presta-obsForm")) {
     document.getElementById("presta-obsForm").addEventListener("submit", async function(e) {
         e.preventDefault();
         
+        console.log("📝 Soumission du formulaire d'observation...");
+        
+        // Validation basique
+        if (!presta_obsDateInput.value || !presta_etatFormeInput.value) {
+            alert("Veuillez remplir les champs obligatoires (Date et État de forme)");
+            return;
+        }
+
         if (presta_photosInput.files.length > 3) {
             alert("Maximum 3 photos autorisées.");
             return;
@@ -3212,7 +3220,7 @@ if (document.getElementById("presta-obsForm")) {
                 photosBase64.push({
                     name: file.name,
                     type: file.type,
-                    data: base64.split(',')[1] // Enlever le préfixe "data:image/...;base64,"
+                    data: base64.split(',')[1] // Enlever le préfixe
                 });
                 console.log(`✅ Photo convertie: ${file.name}`);
             } catch (error) {
@@ -3222,61 +3230,81 @@ if (document.getElementById("presta-obsForm")) {
 
         console.log(`📸 ${photosBase64.length} photo(s) convertie(s) en Base64`);
 
-        // 2. Préparer FormData
-        const formData = new FormData();
-        formData.append("type", "envoyerFiche");
-        formData.append("missionId", presta_currentMissionId);
-        formData.append("prenomClient", presta_currentClientPrenom);
-        formData.append("nomClient", presta_currentClientNom);
-        formData.append("obsDate", presta_obsDateInput.value);
-        formData.append("etatSante", presta_etatSanteInput.value);
-        formData.append("etatForme", presta_etatFormeInput.value);
-        formData.append("environnement", presta_environnementInput.value);
-        formData.append("latitudeDebut", presta_currentLatitude);
-        formData.append("longitudeDebut", presta_currentLongitude);
-        formData.append("latitudeFin", presta_latitudeFin);
-        formData.append("longitudeFin", presta_longitudeFin);
-        formData.append("heureDebut", presta_heureDebut);
-        formData.append("heureFin", presta_heureFin);
-        formData.append("prestatairePrenom", presta_currentPrestatairePrenom);
-        formData.append("prestataireNom", presta_currentPrestataireNom);
-        formData.append("prestataireEmail", presta_currentEmail);
+        // 2. Préparer les paramètres URL (GET pour JSONP)
+        let url = `${presta_webAppUrl}?type=envoyerfiche`;
+        url += `&missionId=${encodeURIComponent(presta_currentMissionId)}`;
+        url += `&prenomClient=${encodeURIComponent(presta_currentClientPrenom)}`;
+        url += `&nomClient=${encodeURIComponent(presta_currentClientNom)}`;
+        url += `&obsDate=${encodeURIComponent(presta_obsDateInput.value)}`;
+        url += `&etatSante=${encodeURIComponent(presta_etatSanteInput.value)}`;
+        url += `&etatForme=${encodeURIComponent(presta_etatFormeInput.value)}`;
+        url += `&environnement=${encodeURIComponent(presta_environnementInput.value)}`;
+        url += `&latitudeDebut=${encodeURIComponent(presta_currentLatitude || '')}`;
+        url += `&longitudeDebut=${encodeURIComponent(presta_currentLongitude || '')}`;
+        url += `&latitudeFin=${encodeURIComponent(presta_latitudeFin || '')}`;
+        url += `&longitudeFin=${encodeURIComponent(presta_longitudeFin || '')}`;
+        url += `&heureDebut=${encodeURIComponent(presta_heureDebut || '')}`;
+        url += `&heureFin=${encodeURIComponent(presta_heureFin || '')}`;
+        url += `&prestatairePrenom=${encodeURIComponent(presta_currentPrestatairePrenom)}`;
+        url += `&prestataireNom=${encodeURIComponent(presta_currentPrestataireNom)}`;
+        url += `&prestataireEmail=${encodeURIComponent(presta_currentEmail)}`;
         
-        // 3. Ajouter les photos en JSON (format attendu par le backend)
-        formData.append("photos", JSON.stringify(photosBase64));
+        // Ajouter les photos (truncated si trop long)
+        if (photosBase64.length > 0) {
+            const photosJson = JSON.stringify(photosBase64);
+            // Limiter la taille pour les URLs longues
+            if (photosJson.length < 1500) {
+                url += `&photos=${encodeURIComponent(photosJson)}`;
+            } else {
+                console.warn("⚠️ Trop de photos, envoi sans photos");
+            }
+        }
 
         console.log("📡 Envoi des données vers l'API...");
+        console.log("URL:", url.substring(0, 200) + "...");
 
         try {
             document.getElementById('loader').style.display = 'flex';
             
-            const res = await fetch(presta_webAppUrl, {
-                method: "POST",
-                body: formData,
-            });
+            // Utiliser JSONP pour l'envoi
+            const callbackName = 'cbFiche' + Date.now();
+            const jsonpUrl = url + `&callback=${callbackName}`;
             
-            const json = await res.json();
-            console.log("📨 Réponse API:", json);
+            const data = await presta_callApiJsonp(jsonpUrl, callbackName);
+            console.log("📨 Réponse API:", data);
             
-            if (json.success) {
+            if (data.success) {
+                // SUCCÈS
                 presta_stepForm.style.display = "none";
                 presta_stepSuccess.style.display = "block";
-                presta_showNotification("Fiche d'observation envoyée avec succès !", 'success');
+                presta_showNotification("✅ Fiche d'observation envoyée avec succès !", 'success');
+                
+                // Afficher le lien PDF
+                if (data.url) {
+                    const successDiv = document.getElementById("presta-stepSuccess");
+                    const pdfLink = document.createElement('a');
+                    pdfLink.href = data.url;
+                    pdfLink.target = '_blank';
+                    pdfLink.className = 'btn-elegant mt-4';
+                    pdfLink.innerHTML = '<i class="fas fa-file-pdf mr-2"></i>Voir le PDF généré';
+                    successDiv.appendChild(pdfLink);
+                }
                 
                 // Recharger les missions
-                await presta_loadMissions(presta_currentEmail);
+                setTimeout(() => {
+                    presta_loadMissions(presta_currentEmail);
+                }, 2000);
             } else {
-                throw new Error(json.message || "Envoi échoué");
+                throw new Error(data.message || data.error || "Envoi échoué");
             }
         } catch (err) {
             console.error("❌ Erreur envoi fiche:", err);
-            presta_showNotification("Erreur lors de l'envoi de la fiche: " + err.message, 'error');
+            presta_showNotification("❌ Erreur lors de l'envoi: " + err.message, 'error');
         } finally {
             document.getElementById('loader').style.display = 'none';
         }
     });
 }
-
 // --- AJOUTEZ CETTE FONCTION UTILITAIRE ---
 function fileToBase64(file) {
     return new Promise((resolve, reject) => {
