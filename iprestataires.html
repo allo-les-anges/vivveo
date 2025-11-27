@@ -981,12 +981,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
 
-                <!-- Ajoutez ce bouton quelque part dans votre interface prestataire -->
-                <button onclick="testEnvoiFicheManuel()" class="btn-secondary mt-4">
-                🧪 TEST Manuel - Envoyer Fiche
-                </button>
-                        
-                    </button>
                     <div id="language-dropdown" class="language-dropdown">
                         <div class="language-option active" data-lang="fr">
                             <span>🇫🇷</span>
@@ -1067,6 +1061,17 @@
                 <div id="login-message" class="mt-4 hidden"></div>
             </form>
         </div>
+
+<!-- Section de test (À AJOUTER ICI) -->
+<div id="test-section" class="prestataire-section max-w-md mx-auto text-center mt-4">
+    <h3 class="text-lg font-bold mb-4">Test Manuel</h3>
+    <button onclick="testEnvoiFicheManuel()" class="btn-elegant w-full py-3">
+        🧪 TEST - Envoyer Fiche d'Observation
+    </button>
+    <p class="text-sm text-gray-600 mt-2">
+        Teste l'envoi d'une fiche avec la mission M0003 existante
+    </p>
+</div>
 
         <!-- Interface prestataire (cachée par défaut) -->
         <div id="prestataire-interface" class="hidden">
