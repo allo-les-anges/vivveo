@@ -3321,69 +3321,69 @@ async function handleSecondScan() {
             }
         });
 
-        // FONCTION DE TEST MANUEL - À AJOUTER DANS VOTRE SCRIPT
-async function testEnvoiFicheManuel() {
-    console.log("🧪 DÉBUT TEST MANUEL ENVOI FICHE");
+        // TEST AVEC LA MISSION M0003 EXISTANTE
+async function testAvecMissionExistante() {
+    console.log("🧪 TEST AVEC MISSION M0003 EXISTANTE");
     
-    // Données de test réalistes
     const donneesTest = {
-        missionId: "TEST_" + Date.now(),
-        prenomClient: "Jean",
-        nomClient: "Dupont",
+        type: "envoyerFiche",
+        missionId: "M0003", // ← ID de mission qui existe
+        prenomClient: "Gaëtan",
+        nomClient: "MUKEBA-HARCHIES", 
         obsDate: new Date().toISOString().split("T")[0],
-        etatSante: "État de santé correct, légère fatigue",
-        etatForme: "Bon",
-        environnement: "Appartement propre et bien entretenu",
-        latitudeDebut: "50.468410",
-        longitudeDebut: "3.595267", 
-        latitudeFin: "50.468411",
-        longitudeFin: "3.595268",
-        heureDebut: new Date().toISOString(),
-        heureFin: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(), // +2 heures
-        prestataireEmail: presta_currentEmail || "test@example.com",
+        etatSante: "État de santé excellent",
+        etatForme: "Très bon",
+        environnement: "Environnement très propre et bien organisé",
+        latitudeDebut: "50.4564235",
+        longitudeDebut: "3.9308222",
+        latitudeFin: "50.5018184", 
+        longitudeFin: "3.714986",
+        heureDebut: "2025-11-26T20:00:00Z",
+        heureFin: new Date().toISOString(),
+        prestataireEmail: "gm.harchies@gmail.com", // ← Email qui correspond
         prestatairePrenom: "Ray",
-        prestataireNom: "Mon",
-        type: "envoyerFiche"
+        prestataireNom: "Mon"
     };
     
-    console.log("📦 DONNÉES DE TEST:", donneesTest);
+    console.log("📦 DONNÉES POUR MISSION M0003:", donneesTest);
     
     try {
-        // Créer FormData comme le fait le vrai formulaire
         const formData = new FormData();
-        
-        // Ajouter toutes les données
         Object.keys(donneesTest).forEach(key => {
             formData.append(key, donneesTest[key]);
         });
         
-        console.log("📡 Envoi vers:", presta_webAppUrl);
-        
-        // Envoyer la requête
+        console.log("📡 Envoi vers l'API...");
         const response = await fetch(presta_webAppUrl, {
             method: "POST",
             body: formData
         });
         
-        console.log("📨 Réponse reçue - Status:", response.status);
+        console.log("📨 Réponse - Status:", response.status);
         const result = await response.json();
         console.log("📨 Réponse complète:", result);
         
         if (result.success) {
-            console.log("✅ SUCCÈS - PDF généré !");
+            console.log("✅ SUCCÈS !");
             console.log("📄 Lien PDF:", result.url);
-            alert("✅ TEST RÉUSSI!\nPDF généré: " + (result.url || "Lien disponible"));
+            
+            // Afficher le résultat
+            alert(`✅ TEST RÉUSSI!\n\nPDF généré: ${result.url || "Lien disponible"}\n\nOuvrez la console pour plus de détails.`);
+            
+            // Ouvrir le PDF dans un nouvel onglet
+            if (result.url) {
+                window.open(result.url, '_blank');
+            }
         } else {
-            console.error("❌ ÉCHEC - Erreur:", result.message);
-            alert("❌ TEST ÉCHOUÉ:\n" + result.message);
+            console.error("❌ ÉCHEC:", result.message);
+            alert(`❌ ÉCHEC:\n${result.message}\n\nVérifiez la console pour les détails.`);
         }
         
     } catch (error) {
         console.error("💥 ERREUR CRITIQUE:", error);
         alert("💥 ERREUR: " + error.message);
     }
-}
-        
+}  
     </script>
 </body>
 </html>
