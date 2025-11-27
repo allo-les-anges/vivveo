@@ -3192,12 +3192,12 @@ async function handleSecondScan() {
                 });
             }
 
-            // Gestion de la soumission du formulaire d'observation - VERSION CORRIGÉE
+// Gestion de la soumission du formulaire d'observation - VERSION POST
 if (document.getElementById("presta-obsForm")) {
     document.getElementById("presta-obsForm").addEventListener("submit", async function(e) {
         e.preventDefault();
         
-        console.log("📝 Soumission du formulaire d'observation...");
+        console.log("📝 Soumission du formulaire d'observation via POST...");
         
         // Validation basique
         if (!presta_obsDateInput.value || !presta_etatFormeInput.value) {
@@ -3220,7 +3220,7 @@ if (document.getElementById("presta-obsForm")) {
                 photosBase64.push({
                     name: file.name,
                     type: file.type,
-                    data: base64.split(',')[1] // Enlever le préfixe
+                    data: base64.split(',')[1]
                 });
                 console.log(`✅ Photo convertie: ${file.name}`);
             } catch (error) {
@@ -3230,47 +3230,46 @@ if (document.getElementById("presta-obsForm")) {
 
         console.log(`📸 ${photosBase64.length} photo(s) convertie(s) en Base64`);
 
-        // 2. Préparer les paramètres URL (GET pour JSONP)
-        let url = `${presta_webAppUrl}?type=envoyerfiche`;
-        url += `&missionId=${encodeURIComponent(presta_currentMissionId)}`;
-        url += `&prenomClient=${encodeURIComponent(presta_currentClientPrenom)}`;
-        url += `&nomClient=${encodeURIComponent(presta_currentClientNom)}`;
-        url += `&obsDate=${encodeURIComponent(presta_obsDateInput.value)}`;
-        url += `&etatSante=${encodeURIComponent(presta_etatSanteInput.value)}`;
-        url += `&etatForme=${encodeURIComponent(presta_etatFormeInput.value)}`;
-        url += `&environnement=${encodeURIComponent(presta_environnementInput.value)}`;
-        url += `&latitudeDebut=${encodeURIComponent(presta_currentLatitude || '')}`;
-        url += `&longitudeDebut=${encodeURIComponent(presta_currentLongitude || '')}`;
-        url += `&latitudeFin=${encodeURIComponent(presta_latitudeFin || '')}`;
-        url += `&longitudeFin=${encodeURIComponent(presta_longitudeFin || '')}`;
-        url += `&heureDebut=${encodeURIComponent(presta_heureDebut || '')}`;
-        url += `&heureFin=${encodeURIComponent(presta_heureFin || '')}`;
-        url += `&prestatairePrenom=${encodeURIComponent(presta_currentPrestatairePrenom)}`;
-        url += `&prestataireNom=${encodeURIComponent(presta_currentPrestataireNom)}`;
-        url += `&prestataireEmail=${encodeURIComponent(presta_currentEmail)}`;
-        
-        // Ajouter les photos (truncated si trop long)
-        if (photosBase64.length > 0) {
-            const photosJson = JSON.stringify(photosBase64);
-            // Limiter la taille pour les URLs longues
-            if (photosJson.length < 1500) {
-                url += `&photos=${encodeURIComponent(photosJson)}`;
-            } else {
-                console.warn("⚠️ Trop de photos, envoi sans photos");
-            }
-        }
+        // 2. Préparer les données pour POST
+        const postData = {
+            type: "envoyerfiche", // Important : doit correspondre à ce que doPost attend
+            missionId: presta_currentMissionId,
+            prenomClient: presta_currentClientPrenom,
+            nomClient: presta_currentClientNom,
+            obsDate: presta_obsDateInput.value,
+            etatSante: presta_etatSanteInput.value,
+            etatForme: presta_etatFormeInput.value,
+            environnement: presta_environnementInput.value,
+            latitudeDebut: presta_currentLatitude || '',
+            longitudeDebut: presta_currentLongitude || '',
+            latitudeFin: presta_latitudeFin || '',
+            longitudeFin: presta_longitudeFin || '',
+            heureDebut: presta_heureDebut || '',
+            heureFin: presta_heureFin || '',
+            prestatairePrenom: presta_currentPrestatairePrenom,
+            prestataireNom: presta_currentPrestataireNom,
+            prestataireEmail: presta_currentEmail,
+            photos: photosBase64 // Toutes les photos sans limitation !
+        };
 
-        console.log("📡 Envoi des données vers l'API...");
-        console.log("URL:", url.substring(0, 200) + "...");
+        console.log("📡 Envoi POST des données...");
+        console.log("Données:", JSON.stringify(postData).substring(0, 200) + "...");
 
         try {
             document.getElementById('loader').style.display = 'flex';
             
-            // Utiliser JSONP pour l'envoi
-            const callbackName = 'cbFiche' + Date.now();
-            const jsonpUrl = url + `&callback=${callbackName}`;
+            // Utiliser fetch avec POST
+            const response = await fetch(presta_webAppUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: Object.keys(postData).map(key => 
+                    `${encodeURIComponent(key)}=${encodeURIComponent(typeof postData[key] === 'object' ? JSON.stringify(postData[key]) : postData[key])}`
+                ).join('&')
+            });
             
-            const data = await presta_callApiJsonp(jsonpUrl, callbackName);
+            const data = await response.json();
             console.log("📨 Réponse API:", data);
             
             if (data.success) {
@@ -3282,10 +3281,14 @@ if (document.getElementById("presta-obsForm")) {
                 // Afficher le lien PDF
                 if (data.url) {
                     const successDiv = document.getElementById("presta-stepSuccess");
+                    // Nettoyer d'abord les anciens liens
+                    const oldLinks = successDiv.querySelectorAll('a');
+                    oldLinks.forEach(link => link.remove());
+                    
                     const pdfLink = document.createElement('a');
                     pdfLink.href = data.url;
                     pdfLink.target = '_blank';
-                    pdfLink.className = 'btn-elegant mt-4';
+                    pdfLink.className = 'btn-elegant mt-4 block text-center';
                     pdfLink.innerHTML = '<i class="fas fa-file-pdf mr-2"></i>Voir le PDF généré';
                     successDiv.appendChild(pdfLink);
                 }
