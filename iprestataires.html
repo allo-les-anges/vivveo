@@ -2555,46 +2555,6 @@ function presta_loadSessionData() {
     }
 }
 
-// FONCTION POUR TERMINER LA MISSION
-async function presta_terminerMission() {
-    console.log("🔚 Terminaison de la mission:", presta_currentMissionId);
-    
-    try {
-        const callbackName = 'cbEndMission' + Date.now();
-        let url = `${presta_webAppUrl}?type=endMission`;
-        url += `&missionId=${encodeURIComponent(presta_currentMissionId)}`;
-        url += `&email=${encodeURIComponent(presta_currentEmail)}`;
-        
-        // Ajouter la géolocalisation de fin
-        if (presta_latitudeFin && presta_longitudeFin) {
-            url += `&latitudeFin=${encodeURIComponent(presta_latitudeFin)}`;
-            url += `&longitudeFin=${encodeURIComponent(presta_longitudeFin)}`;
-        }
-        
-        // Ajouter l'heure de fin
-        if (presta_heureFin) {
-            url += `&heureFin=${encodeURIComponent(presta_heureFin)}`;
-        }
-        
-        console.log("📡 Appel API endMission:", url);
-        
-        const data = await presta_callApiJsonp(url, callbackName);
-        console.log("📦 Réponse endMission:", data);
-        
-        if (data.success) {
-            console.log("✅ Mission terminée:", data.message);
-            return true;
-        } else {
-            console.error("❌ Erreur endMission:", data.message || data.error);
-            return false;
-        }
-        
-    } catch (error) {
-        console.error("❌ Erreur terminaison mission:", error);
-        return false;
-    }
-}
-
 // Fonction séparée pour traiter le QR scanné - VERSION CORRIGÉE
 async function processScannedQR(decodedText) {
     try {
@@ -2988,24 +2948,40 @@ function presta_showForm() {
         // FONCTIONS D'INTERFACE UTILISATEUR
         // =============================================
 
-        function presta_showTab(tabName) {
-            document.querySelectorAll('.tab-container').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
-            });
+        function presta_showTab(tabName, event = null) {
+    console.log(`🎯 Changement onglet: ${tabName}`);
+    
+    document.querySelectorAll('.tab-container').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
 
-            const targetTab = document.getElementById(`tab-${tabName}`);
-            if (targetTab) {
-                targetTab.classList.add('active');
-                event.target.classList.add('active');
-                console.log(`✅ Onglet ${tabName} affiché`);
-            } else {
-                console.error(`❌ Onglet ${tabName} non trouvé`);
-            }
-        }
-
+    const targetTab = document.getElementById(`tab-${tabName}`);
+    
+    // Gestion sécurisée du bouton
+    let targetButton;
+    if (event && event.target) {
+        targetButton = event.target;
+    } else {
+        // Mode manuel - trouver le bouton par son onclick
+        targetButton = document.querySelector(`.tab-button[onclick*="${tabName}"]`);
+    }
+    
+    if (targetTab) {
+        targetTab.classList.add('active');
+        console.log(`✅ ${targetTab.id} -> activé`);
+    }
+    
+    if (targetButton) {
+        targetButton.classList.add('active');
+        console.log(`✅ Bouton ${tabName} -> activé`);
+    }
+    
+    console.log(`🔍 État final - ${tabName}:`, targetTab ? targetTab.classList.contains('active') : 'N/A');
+}
         function presta_closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
@@ -3871,34 +3847,6 @@ async function testDiagnostic() {
 // Exécutez cette fonction dans la console du navigateur
 testDiagnostic();
 
-// À AJOUTER DANS VOTRE CODE - FONCTION DE SAUVEGARDE
-function presta_saveSessionData() {
-    sessionStorage.setItem('presta_currentMissionId', presta_currentMissionId);
-    sessionStorage.setItem('presta_currentEmail', presta_currentEmail);
-    sessionStorage.setItem('presta_currentClientPrenom', presta_currentClientPrenom);
-    sessionStorage.setItem('presta_currentClientNom', presta_currentClientNom);
-    sessionStorage.setItem('presta_heureDebut', presta_heureDebut);
-    sessionStorage.setItem('presta_latitudeFin', presta_latitudeFin);
-    sessionStorage.setItem('presta_longitudeFin', presta_longitudeFin);
-    sessionStorage.setItem('presta_heureFin', presta_heureFin);
-    console.log("💾 Données sauvegardées");
-}
-
-function presta_loadSessionData() {
-    presta_currentMissionId = sessionStorage.getItem('presta_currentMissionId');
-    presta_currentEmail = sessionStorage.getItem('presta_currentEmail');
-    presta_currentClientPrenom = sessionStorage.getItem('presta_currentClientPrenom');
-    presta_currentClientNom = sessionStorage.getItem('presta_currentClientNom');
-    presta_heureDebut = sessionStorage.getItem('presta_heureDebut');
-    presta_latitudeFin = sessionStorage.getItem('presta_latitudeFin');
-    presta_longitudeFin = sessionStorage.getItem('presta_longitudeFin');
-    presta_heureFin = sessionStorage.getItem('presta_heureFin');
-    console.log("📂 Données chargées:", { 
-        missionId: presta_currentMissionId,
-        email: presta_currentEmail 
-    });
-}
-
 function presta_clearSessionData() {
     try {
         sessionStorage.removeItem('presta_currentMissionId');
@@ -3941,6 +3889,50 @@ function presta_loadSessionData() {
         });
     } catch (error) {
         console.error("❌ Erreur chargement session:", error);
+    }
+}
+
+async function presta_loadMissions(email) {
+    try {
+        const callbackName = 'cbMissions' + Date.now();
+        const url = `${presta_webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
+        const data = await presta_callApiJsonp(url, callbackName);
+
+        const missions = data.missions || data;
+        
+        if (!Array.isArray(missions)) {
+            throw new Error("Format de données invalide");
+        }
+
+        presta_currentMissions = missions;
+        console.log("📦 Missions reçues:", missions);
+        
+        presta_updateStats(missions);
+        
+        // CHARGER TOUS LES ONGLETS
+        presta_loadMissionsByStatus('pending', missions);
+        presta_loadMissionsByStatus('today', missions);
+        presta_loadMissionsByStatus('planned', missions);
+        presta_loadMissionsByStatus('completed', missions);
+        presta_loadInProgressMissions(missions);
+        
+        // ✅ AJOUTEZ CES LIGNES - Afficher automatiquement l'onglet En Cours si nécessaire
+        const hasInProgressMissions = missions.some(m => m.statut && m.statut.trim() === 'en cours');
+        console.log(`🎯 Missions en cours détectées: ${hasInProgressMissions}`);
+        
+        if (hasInProgressMissions) {
+            // Attendre un peu que le DOM soit mis à jour puis changer d'onglet
+            setTimeout(() => {
+                presta_showTab('inprogress');
+                console.log("✅ Onglet En Cours activé automatiquement");
+            }, 100);
+        }
+        
+        presta_attacherListenersStartPrestation();
+
+    } catch (error) {
+        console.error("Erreur lors du chargement des missions:", error);
+        presta_showNotification("Erreur lors du chargement des missions: " + error.message, 'error');
     }
 }
         
