@@ -3200,7 +3200,7 @@ async function handleSecondScan() {
                 });
             }
 
-// Gestion de la soumission du formulaire d'observation - VERSION POST
+// Gestion de la soumission du formulaire d'observation - VERSION CORRIGÉE AVEC FORMDATA
 if (document.getElementById("presta-obsForm")) {
     document.getElementById("presta-obsForm").addEventListener("submit", async function(e) {
         e.preventDefault();
@@ -3238,44 +3238,44 @@ if (document.getElementById("presta-obsForm")) {
 
         console.log(`📸 ${photosBase64.length} photo(s) convertie(s) en Base64`);
 
-        // 2. Préparer les données pour POST
-        const postData = {
-            type: "envoyerfiche", // Important : doit correspondre à ce que doPost attend
-            missionId: presta_currentMissionId,
-            prenomClient: presta_currentClientPrenom,
-            nomClient: presta_currentClientNom,
-            obsDate: presta_obsDateInput.value,
-            etatSante: presta_etatSanteInput.value,
-            etatForme: presta_etatFormeInput.value,
-            environnement: presta_environnementInput.value,
-            latitudeDebut: presta_currentLatitude || '',
-            longitudeDebut: presta_currentLongitude || '',
-            latitudeFin: presta_latitudeFin || '',
-            longitudeFin: presta_longitudeFin || '',
-            heureDebut: presta_heureDebut || '',
-            heureFin: presta_heureFin || '',
-            prestatairePrenom: presta_currentPrestatairePrenom,
-            prestataireNom: presta_currentPrestataireNom,
-            prestataireEmail: presta_currentEmail,
-            photos: photosBase64 // Toutes les photos sans limitation !
-        };
+        // 2. Préparer FormData (comme attendu par votre doPost)
+        const formData = new FormData();
+        formData.append("type", "envoyerfiche");
+        formData.append("missionId", presta_currentMissionId);
+        formData.append("prenomClient", presta_currentClientPrenom);
+        formData.append("nomClient", presta_currentClientNom);
+        formData.append("obsDate", presta_obsDateInput.value);
+        formData.append("etatSante", presta_etatSanteInput.value);
+        formData.append("etatForme", presta_etatFormeInput.value);
+        formData.append("environnement", presta_environnementInput.value);
+        formData.append("latitudeDebut", presta_currentLatitude || '');
+        formData.append("longitudeDebut", presta_currentLongitude || '');
+        formData.append("latitudeFin", presta_latitudeFin || '');
+        formData.append("longitudeFin", presta_longitudeFin || '');
+        formData.append("heureDebut", presta_heureDebut || '');
+        formData.append("heureFin", presta_heureFin || '');
+        formData.append("prestatairePrenom", presta_currentPrestatairePrenom);
+        formData.append("prestataireNom", presta_currentPrestataireNom);
+        formData.append("prestataireEmail", presta_currentEmail);
+        formData.append("photos", JSON.stringify(photosBase64));
 
-        console.log("📡 Envoi POST des données...");
-        console.log("Données:", JSON.stringify(postData).substring(0, 200) + "...");
+        console.log("📡 Envoi POST avec FormData...");
 
         try {
+            // AFFICHER LES LOADERS
+            presta_showFormLoader();
             document.getElementById('loader').style.display = 'flex';
             
-            // Utiliser fetch avec POST
+            // Utiliser fetch avec FormData
             const response = await fetch(presta_webAppUrl, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: Object.keys(postData).map(key => 
-                    `${encodeURIComponent(key)}=${encodeURIComponent(typeof postData[key] === 'object' ? JSON.stringify(postData[key]) : postData[key])}`
-                ).join('&')
+                body: formData
             });
+            
+            // Vérifier si la réponse est OK
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
             
             const data = await response.json();
             console.log("📨 Réponse API:", data);
@@ -3312,11 +3312,41 @@ if (document.getElementById("presta-obsForm")) {
             console.error("❌ Erreur envoi fiche:", err);
             presta_showNotification("❌ Erreur lors de l'envoi: " + err.message, 'error');
         } finally {
+            // CACHER LES LOADERS
+            presta_hideFormLoader();
             document.getElementById('loader').style.display = 'none';
         }
     });
 }
-// --- AJOUTEZ CETTE FONCTION UTILITAIRE ---
+
+// FONCTIONS POUR LE LOADER DU FORMULAIRE
+function presta_showFormLoader() {
+    const loader = document.getElementById('presta-form-loader');
+    const submitBtn = document.querySelector('#presta-obsForm button[type="submit"]');
+    
+    if (loader) {
+        loader.style.display = 'flex';
+    }
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Envoi en cours...';
+    }
+}
+
+function presta_hideFormLoader() {
+    const loader = document.getElementById('presta-form-loader');
+    const submitBtn = document.querySelector('#presta-obsForm button[type="submit"]');
+    
+    if (loader) {
+        loader.style.display = 'none';
+    }
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Envoyer la fiche';
+    }
+}
+
+// FONCTION UTILITAIRE POUR CONVERTIR LES FICHIERS EN BASE64
 function fileToBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -3325,24 +3355,25 @@ function fileToBase64(file) {
         reader.readAsDataURL(file);
     });
 }
-            // Fermer les modales en cliquant à l'extérieur
-            document.addEventListener('click', function(event) {
-                if (event.target.classList.contains('modal')) {
-                    event.target.style.display = 'none';
-                }
-                if (event.target.id === 'presta-modalOverlay') {
-                    presta_closeModalQR();
-                }
-            });
 
-            // Fermer le menu mobile en cliquant sur un lien
-            document.querySelectorAll('#mobile-menu a').forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.remove('open');
-                });
-            });
+// Fermer les modales en cliquant à l'extérieur
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+    }
+    if (event.target.id === 'presta-modalOverlay') {
+        presta_closeModalQR();
+    }
+});
 
-            // Gestion des photos dans le preview - VERSION AMÉLIORÉE
+// Fermer le menu mobile en cliquant sur un lien
+document.querySelectorAll('#mobile-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+    });
+});
+
+// Gestion des photos dans le preview - VERSION AMÉLIORÉE
 if (presta_photosInput) {
     presta_photosInput.addEventListener("change", function(e) {
         presta_photosPreview.innerHTML = "";
