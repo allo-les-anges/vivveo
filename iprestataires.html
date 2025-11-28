@@ -2090,20 +2090,24 @@
         return;
     }
 
-    // FILTRAGE ROBUSTE des missions en cours
-    const inProgressMissions = missions.filter(m => {
-        if (!m.statut) return false;
-        
-        const statut = m.statut.toLowerCase().trim();
-        
-        // Plusieurs variantes possibles du statut "en cours"
-        return statut === 'en cours' || 
-               statut === 'encours' ||
-               statut === 'in progress' ||
-               statut === 'in_progress' ||
-               statut.includes('cours') ||
-               statut.includes('progress');
-    });
+    // FILTRAGE CORRIGÉ - exact match avec le statut de la base de données
+console.log("🔍 Recherche missions en cours...");
+const inProgressMissions = missions.filter(m => {
+    console.log(`🔍 Vérification mission ${m.id}: statut="${m.statut}"`);
+    
+    if (!m.statut) {
+        console.log(`❌ ${m.id}: pas de statut`);
+        return false;
+    }
+    
+    // Comparaison exacte avec le statut de la base
+    const isInProgress = m.statut.trim() === 'en cours';
+    
+    console.log(`🔍 ${m.id} - "${m.statut}" -> en cours: ${isInProgress}`);
+    return isInProgress;
+});
+
+console.log(`📊 ${inProgressMissions.length} mission(s) en cours trouvée(s):`, inProgressMissions);
     
     console.log(`📊 ${inProgressMissions.length} mission(s) en cours trouvée(s):`, inProgressMissions);
 
