@@ -2583,6 +2583,7 @@ async function handleFirstScan() {
 }
 
 // Gestion du deuxième scan (fin)
+// Gestion du deuxième scan (fin) - VERSION CORRIGÉE
 async function handleSecondScan() {
     // ENREGISTRER L'HEURE DE FIN IMMÉDIATEMENT
     presta_heureFin = new Date().toISOString();
@@ -2591,12 +2592,12 @@ async function handleSecondScan() {
     // Obtenir la géolocalisation pour la fin
     if (!navigator.geolocation) {
         presta_showNotification("Votre appareil ne supporte pas la géolocalisation", 'error');
-        presta_showForm();
+        await presta_terminerEtAfficherFormulaire();
         return;
     }
 
     navigator.geolocation.getCurrentPosition(
-        position => {
+        async position => {
             presta_latitudeFin = position.coords.latitude;
             presta_longitudeFin = position.coords.longitude;
             
@@ -2606,9 +2607,9 @@ async function handleSecondScan() {
                 heureFin: presta_heureFin
             });
             
-            presta_showForm();
+            await presta_terminerEtAfficherFormulaire();
         },
-        error => {
+        async error => {
             let message = "Erreur de géolocalisation pour la fin.";
             switch (error.code) {
                 case error.PERMISSION_DENIED:
@@ -2616,7 +2617,7 @@ async function handleSecondScan() {
                     break;
             }
             presta_showNotification(message, 'warning');
-            presta_showForm(); // Continuer avec le formulaire même sans géoloc
+            await presta_terminerEtAfficherFormulaire(); // Continuer même sans géoloc
         },
         { 
             enableHighAccuracy: true, 
@@ -2625,7 +2626,23 @@ async function handleSecondScan() {
         }
     );
 }
-        function presta_openModalStartPrestation(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom) {
+
+// NOUVELLE FONCTION POUR TERMINER ET AFFICHER LE FORMULAIRE
+async function presta_terminerEtAfficherFormulaire() {
+    console.log("🔄 Terminaison mission puis affichage formulaire");
+    
+    // 1. D'abord terminer la mission
+    const success = await presta_terminerMission();
+    
+    if (success) {
+        presta_showNotification("✅ Mission terminée ! Remplissez maintenant la fiche d'observation.", 'success');
+    } else {
+        presta_showNotification("⚠️ Mission terminée mais erreur de mise à jour. Remplissez la fiche.", 'warning');
+    }
+    
+    // 2. Ensuite afficher le formulaire
+    presta_showForm();
+}        function presta_openModalStartPrestation(missionId, clientPrenom, clientNom, prestatairePrenom, prestataireNom) {
     console.log("🎯 Ouverture modale QR pour mission:", missionId);
     
     // RÉINITIALISER LES VARIABLES DE SESSION
@@ -3240,7 +3257,7 @@ if (document.getElementById("presta-obsForm")) {
 
         // 2. Préparer FormData (comme attendu par votre doPost)
         const formData = new FormData();
-        formData.append("type", "envoyerfiche");
+        formData.append("type", "envoyerFiche");
         formData.append("missionId", presta_currentMissionId);
         formData.append("prenomClient", presta_currentClientPrenom);
         formData.append("nomClient", presta_currentClientNom);
@@ -3585,7 +3602,73 @@ function presta_hideFormLoader() {
         submitBtn.disabled = false;
         submitBtn.innerHTML = 'Envoyer la fiche';
     }
-}       
+}      
+// FONCTION POUR TERMINER LA MISSION - À AJOUTER DANS VOTRE CODE
+async function presta_terminerMission() {
+    console.log("🔚 Terminaison de la mission:", presta_currentMissionId);
+    
+    try {
+        const callbackName = 'cbEndMission' + Date.now();
+        let url = `${presta_webAppUrl}?type=endMission`;
+        url += `&missionId=${encodeURIComponent(presta_currentMissionId)}`;
+        url += `&email=${encodeURIComponent(presta_currentEmail)}`;
+        
+        // Ajouter la géolocalisation de fin
+        if (presta_latitudeFin && presta_longitudeFin) {
+            url += `&latitudeFin=${encodeURIComponent(presta_latitudeFin)}`;
+            url += `&longitudeFin=${encodeURIComponent(presta_longitudeFin)}`;
+        }
+        
+        // Ajouter l'heure de fin
+        if (presta_heureFin) {
+            url += `&heureFin=${encodeURIComponent(presta_heureFin)}`;
+        }
+        
+        console.log("📡 Appel API endMission:", url);
+        
+        const data = await presta_callApiJsonp(url, callbackName);
+        console.log("📦 Réponse endMission:", data);
+        
+        if (data.success) {
+            console.log("✅ Mission terminée:", data.message);
+            return true;
+        } else {
+            console.error("❌ Erreur endMission:", data.message || data.error);
+            return false;
+        }
+        
+    } catch (error) {
+        console.error("❌ Erreur terminaison mission:", error);
+        return false;
+    }
+}
+
+// TEST D'URGENCE - À exécuter dans la console pour voir où ça bloque
+async function testDiagnostic() {
+    console.log("🔍 DIAGNOSTIC URGENCE");
+    
+    // Test 1: Vérifier la mission
+    console.log("📋 Mission actuelle:", presta_currentMissionId);
+    console.log("📧 Email:", presta_currentEmail);
+    console.log("📍 Géoloc fin:", presta_latitudeFin, presta_longitudeFin);
+    console.log("⏰ Heure fin:", presta_heureFin);
+    
+    // Test 2: Tester l'API endMission
+    try {
+        const testUrl = `${presta_webAppUrl}?type=endMission&missionId=M0003&email=gm.harchies%40gmail.com`;
+        console.log("🧪 Test URL:", testUrl);
+        
+        const response = await fetch(testUrl);
+        const result = await response.json();
+        console.log("🧪 Résultat test:", result);
+    } catch (err) {
+        console.error("❌ Test échoué:", err);
+    }
+}
+
+// Exécutez cette fonction dans la console du navigateur
+testDiagnostic();
+        
     </script>
 </body>
 </html>
