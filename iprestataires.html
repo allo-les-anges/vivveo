@@ -2133,7 +2133,7 @@ console.log(`📊 ${inProgressMissions.length} mission(s) en cours trouvée(s):`
                     <td class="p-4">${mission.service || 'N/A'}</td>
                     <td class="p-4">${presta_formatDate(mission.date)}</td>
                     <td class="p-4">
-                        <button onclick="presta_openModalEndPrestation('${safeId}', '${safeClientPrenom}', '${safeClientNom}')" 
+                        <button onclick="presta_openModalEndPrestationWithData('${safeId}', '${safeClientPrenom}', '${safeClientNom}', '${presta_currentEmail}')" 
                                 class="btn-danger py-2 px-4 rounded-lg">
                             <i class="fas fa-stop-circle mr-2"></i>
                             Terminer
@@ -2172,7 +2172,7 @@ console.log(`📊 ${inProgressMissions.length} mission(s) en cours trouvée(s):`
                         <span class="card-value">${presta_formatDate(mission.date)}</span>
                     </div>
                     <div class="card-status">
-                        <button onclick="presta_openModalEndPrestation('${safeId}', '${safeClientPrenom}', '${safeClientNom}')" 
+                        <button onclick="presta_openModalEndPrestationWithData('${safeId}', '${safeClientPrenom}', '${safeClientNom}', '${presta_currentEmail}')" 
                                 class="btn-danger w-full py-2 rounded-lg">
                             <i class="fas fa-stop-circle mr-2"></i>
                             Terminer
@@ -3942,6 +3942,47 @@ async function presta_loadMissions(email) {
     } catch (error) {
         console.error("Erreur lors du chargement des missions:", error);
         presta_showNotification("Erreur lors du chargement des missions: " + error.message, 'error');
+    }
+}
+
+// FONCTION SÉCURISÉE POUR OUVRIR LA MODALE DE FIN
+function presta_openModalEndPrestationWithData(missionId, clientPrenom, clientNom, email) {
+    console.log("🎯 Ouverture modale fin SÉCURISÉE pour mission:", missionId);
+    
+    // ✅ FORCER LES DONNÉES DIRECTEMENT
+    presta_currentMissionId = missionId;
+    presta_currentClientPrenom = clientPrenom;
+    presta_currentClientNom = clientNom;
+    presta_currentEmail = email;
+    
+    // ✅ SAUVEGARDER IMMÉDIATEMENT
+    presta_saveSessionData();
+    
+    console.log("💾 Données forcées:", {
+        missionId: presta_currentMissionId,
+        email: presta_currentEmail,
+        client: `${presta_currentClientPrenom} ${presta_currentClientNom}`
+    });
+    
+    // Ouvrir la modale normale
+    const modal = document.getElementById("presta-modalOverlay");
+    if (modal) {
+        modal.style.display = "flex";
+        
+        const stepQR = document.getElementById("presta-stepQR");
+        const stepForm = document.getElementById("presta-stepForm");
+        const stepSuccess = document.getElementById("presta-stepSuccess");
+        
+        if (stepQR) {
+            stepQR.style.display = "flex";
+            // Changer le titre
+            const title = stepQR.querySelector('h2');
+            if (title) title.textContent = "📸 Scanner pour TERMINER la mission";
+        }
+        if (stepForm) stepForm.style.display = "none";
+        if (stepSuccess) stepSuccess.style.display = "none";
+        
+        setTimeout(() => presta_startQrScanner(), 100);
     }
 }
         
