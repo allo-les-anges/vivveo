@@ -1631,60 +1631,68 @@
             </div>
             
             <!-- Boutons en bas -->
-            <div class="scanner-actions">
-                <button id="presta-btnCancelQR" class="btn-secondary">
-                    <i class="fas fa-times mr-2"></i>
-                    Annuler
-                </button>
-            </div>
+<div class="scanner-actions">
+    <button id="presta-btnCancelQR" class="btn-secondary">
+        <i class="fas fa-times mr-2"></i>
+        Annuler
+    </button>
+</div>
+</div>
+
+<div id="presta-stepForm" style="display: none;">
+    <!-- LOADER AJOUTÉ ICI -->
+    <div id="presta-form-loader" class="loader" style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.9); z-index: 10; border-radius: 12px;">
+        <div class="loader-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+            <div class="spinner" style="border: 4px solid #f3f3f3; border-top: 4px solid #facc15; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <p style="font-weight: 600; color: #374151; font-size: 1.1rem;">Envoi en cours...</p>
+            <p style="color: #6b7280; margin-top: 8px;">Génération du PDF et enregistrement des photos</p>
+        </div>
+    </div>
+
+    <h2 class="text-xl font-bold mb-4">📝 Fiche d'observation</h2>
+    <form id="presta-obsForm">
+        <div class="form-group">
+            <label>Nom du client</label>
+            <input type="text" id="presta-clientName" class="form-input" readonly />
         </div>
 
-        <div id="presta-stepForm" style="display: none;">
-            <h2 class="text-xl font-bold mb-4">📝 Fiche d'observation</h2>
-            <form id="presta-obsForm">
-                <div class="form-group">
-                    <label>Nom du client</label>
-                    <input type="text" id="presta-clientName" class="form-input" readonly />
-                </div>
-
-                <div class="form-group">
-                    <label>Date de l'observation</label>
-                    <input type="date" id="presta-obsDate" class="form-input" required autocomplete="off" />
-                </div>
-
-                <div class="form-group">
-                    <label>État de santé</label>
-                    <textarea id="presta-etatSante" class="form-input" rows="3" placeholder="Décrire l'état de santé..." autocomplete="off"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>État de forme</label>
-                    <select id="presta-etatForme" class="form-input" required autocomplete="off">
-                        <option value="">-- Choisir --</option>
-                        <option>Très bon</option>
-                        <option>Bon</option>
-                        <option>Moyen</option>
-                        <option>Faible</option>
-                        <option>Très faible</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Environnement</label>
-                    <textarea id="presta-environnement" class="form-input" rows="3" placeholder="Décrire l'environnement..." autocomplete="off"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Photos (max 3)</label>
-                    <input type="file" id="presta-photos" class="form-input" accept="image/*" multiple autocomplete="off" />
-                    <div id="presta-photosPreview"></div>
-                </div>
-
-                <button type="submit" class="btn-elegant w-full">Envoyer la fiche</button>
-                <button type="button" id="presta-btnCancelForm" class="btn-secondary w-full mt-2">Annuler</button>
-            </form>
+        <div class="form-group">
+            <label>Date de l'observation</label>
+            <input type="date" id="presta-obsDate" class="form-input" required autocomplete="off" />
         </div>
 
+        <div class="form-group">
+            <label>État de santé</label>
+            <textarea id="presta-etatSante" class="form-input" rows="3" placeholder="Décrire l'état de santé..." autocomplete="off"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>État de forme</label>
+            <select id="presta-etatForme" class="form-input" required autocomplete="off">
+                <option value="">-- Choisir --</option>
+                <option>Très bon</option>
+                <option>Bon</option>
+                <option>Moyen</option>
+                <option>Faible</option>
+                <option>Très faible</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Environnement</label>
+            <textarea id="presta-environnement" class="form-input" rows="3" placeholder="Décrire l'environnement..." autocomplete="off"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Photos (max 3)</label>
+            <input type="file" id="presta-photos" class="form-input" accept="image/*" multiple autocomplete="off" />
+            <div id="presta-photosPreview"></div>
+        </div>
+
+        <button type="submit" class="btn-elegant w-full">Envoyer la fiche</button>
+        <button type="button" id="presta-btnCancelForm" class="btn-secondary w-full mt-2">Annuler</button>
+    </form>
+</div>
         <div id="presta-stepSuccess" style="display: none;">
             <h2 class="text-xl font-bold mb-4">✅ Fiche envoyée avec succès !</h2>
             <button id="presta-btnCloseSuccess" class="btn-elegant">Fermer</button>
@@ -3521,6 +3529,32 @@ async function testEnvoiFicheManuel() {
         alert("💥 ERREUR: " + error.message);
     }
 }  
+// AJOUTEZ CES FONCTIONS DANS VOTRE JAVASCRIPT
+function presta_showFormLoader() {
+    const loader = document.getElementById('presta-form-loader');
+    const submitBtn = document.querySelector('#presta-obsForm button[type="submit"]');
+    
+    if (loader) {
+        loader.style.display = 'flex';
+    }
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Envoi en cours...';
+    }
+}
+
+function presta_hideFormLoader() {
+    const loader = document.getElementById('presta-form-loader');
+    const submitBtn = document.querySelector('#presta-obsForm button[type="submit"]');
+    
+    if (loader) {
+        loader.style.display = 'none';
+    }
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Envoyer la fiche';
+    }
+}       
     </script>
 </body>
 </html>
