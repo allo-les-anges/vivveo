@@ -3405,95 +3405,111 @@ function presta_showForm() {
             }
 
 // Gestion de la soumission du formulaire d'observation - VERSION CORRIGÉE AVEC FORMDATA
+// REMPLACEZ TOUTE LA FONCTION D'ÉCOUTE DU FORMULAIRE PAR CE CODE :
 if (document.getElementById("presta-obsForm")) {
     document.getElementById("presta-obsForm").addEventListener("submit", async function(e) {
         e.preventDefault();
         
-        console.log("📝 Soumission du formulaire d'observation via POST...");
-        presta_loadSessionData(); // Charger les données avant soumission
+        console.log("📝 Soumission du formulaire d'observation...");
+        presta_loadSessionData();
+        
         // Validation basique
         if (!presta_obsDateInput.value || !presta_etatFormeInput.value) {
             alert("Veuillez remplir les champs obligatoires (Date et État de forme)");
             return;
         }
 
-        if (presta_photosInput.files.length > 3) {
-            alert("Maximum 3 photos autorisées.");
-            return;
-        }
+        console.log("📸 Préparation de l'envoi...");
 
-        console.log("📸 Préparation de l'envoi avec photos...");
-
-        // 1. Convertir les photos en Base64
-        const photosBase64 = [];
-        for (let file of presta_photosInput.files) {
-            try {
-                const base64 = await fileToBase64(file);
-                photosBase64.push({
-                    name: file.name,
-                    type: file.type,
-                    data: base64.split(',')[1]
-                });
-                console.log(`✅ Photo convertie: ${file.name}`);
-            } catch (error) {
-                console.error(`❌ Erreur conversion photo ${file.name}:`, error);
-            }
-        }
-
-        console.log(`📸 ${photosBase64.length} photo(s) convertie(s) en Base64`);
-
-        // 2. Préparer FormData (comme attendu par votre doPost)
-        const formData = new FormData();
-        formData.append("type", "envoyerFiche");
-        formData.append("missionId", presta_currentMissionId);
-        formData.append("prenomClient", presta_currentClientPrenom);
-        formData.append("nomClient", presta_currentClientNom);
-        formData.append("obsDate", presta_obsDateInput.value);
-        formData.append("etatSante", presta_etatSanteInput.value);
-        formData.append("etatForme", presta_etatFormeInput.value);
-        formData.append("environnement", presta_environnementInput.value);
-        formData.append("latitudeDebut", presta_currentLatitude || '');
-        formData.append("longitudeDebut", presta_currentLongitude || '');
-        formData.append("latitudeFin", presta_latitudeFin || '');
-        formData.append("longitudeFin", presta_longitudeFin || '');
-        formData.append("heureDebut", presta_heureDebut || '');
-        formData.append("heureFin", presta_heureFin || '');
-        formData.append("prestatairePrenom", presta_currentPrestatairePrenom);
-        formData.append("prestataireNom", presta_currentPrestataireNom);
-        formData.append("prestataireEmail", presta_currentEmail);
-        formData.append("photos", JSON.stringify(photosBase64));
-
-        console.log("📡 Envoi POST avec FormData...");
+        // AFFICHER LES LOADERS IMMÉDIATEMENT
+        presta_showFormLoader();
+        document.getElementById('loader').style.display = 'flex';
 
         try {
-            // AFFICHER LES LOADERS
-            presta_showFormLoader();
-            document.getElementById('loader').style.display = 'flex';
+            // 1. Convertir les photos en Base64 (comme avant)
+            const photosBase64 = [];
+            const files = presta_photosInput.files;
             
-            // Utiliser fetch avec FormData
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                try {
+                    const base64 = await fileToBase64(file);
+                    photosBase64.push({
+                        name: file.name,
+                        type: file.type,
+                        data: base64.split(',')[1] // Retirer le préfixe data:image/...
+                    });
+                    console.log(`✅ Photo ${i+1} convertie: ${file.name}`);
+                } catch (error) {
+                    console.error(`❌ Erreur conversion photo ${file.name}:`, error);
+                }
+            }
+
+            console.log(`📸 ${photosBase64.length} photo(s) convertie(s)`);
+
+            // 2. Préparer les données POUR VOTRE BACKEND EXISTANT
+            const payload = {
+                type: "envoyerFiche",
+                missionId: presta_currentMissionId || "TEST001",
+                prenomClient: presta_currentClientPrenom || "Test",
+                nomClient: presta_currentClientNom || "Client", 
+                obsDate: presta_obsDateInput.value,
+                etatSante: presta_etatSanteInput.value || "Non renseigné",
+                etatForme: presta_etatFormeInput.value,
+                environnement: presta_environnementInput.value || "Non renseigné",
+                latitudeDebut: presta_currentLatitude || "50.4564235",
+                longitudeDebut: presta_currentLongitude || "3.9308222",
+                latitudeFin: presta_latitudeFin || "50.5018184",
+                longitudeFin: presta_longitudeFin || "3.714986",
+                heureDebut: presta_heureDebut || new Date().toISOString(),
+                heureFin: presta_heureFin || new Date().toISOString(),
+                prestatairePrenom: presta_currentPrestatairePrenom || "Ray",
+                prestataireNom: presta_currentPrestataireNom || "Mon",
+                prestataireEmail: presta_currentEmail || "test@test.com",
+                photos: JSON.stringify(photosBase64) // Important : stringifier
+            };
+
+            console.log("📦 Payload préparé:", payload);
+
+            // 3. ENVOYER VIA URL ENCODED (comme votre backend l'attend)
+            console.log("📡 Envoi vers l'API en URL encoded...");
+            
+            // Créer les paramètres URL
+            const params = new URLSearchParams();
+            Object.keys(payload).forEach(key => {
+                params.append(key, payload[key]);
+            });
+
             const response = await fetch(presta_webAppUrl, {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                },
+                body: params
             });
-            
-            // Vérifier si la réponse est OK
+
+            console.log("📨 Réponse reçue - Status:", response.status);
+
             if (!response.ok) {
                 throw new Error(`Erreur HTTP: ${response.status}`);
             }
-            
+
             const data = await response.json();
-            console.log("📨 Réponse API:", data);
-            
+            console.log("📨 Données réponse:", data);
+
             if (data.success) {
                 // SUCCÈS
+                console.log("✅ Fiche envoyée avec succès!");
+                
                 presta_stepForm.style.display = "none";
                 presta_stepSuccess.style.display = "block";
+                
                 presta_showNotification("✅ Fiche d'observation envoyée avec succès !", 'success');
-                presta_clearSessionData(); // Vider le stockage après succès
+                
                 // Afficher le lien PDF
                 if (data.url) {
                     const successDiv = document.getElementById("presta-stepSuccess");
-                    // Nettoyer d'abord les anciens liens
+                    // Nettoyer les anciens liens
                     const oldLinks = successDiv.querySelectorAll('a');
                     oldLinks.forEach(link => link.remove());
                     
@@ -3505,24 +3521,83 @@ if (document.getElementById("presta-obsForm")) {
                     successDiv.appendChild(pdfLink);
                 }
                 
-                // Recharger les missions
+                presta_clearSessionData();
+                
+                // Recharger les missions après délai
                 setTimeout(() => {
                     presta_loadMissions(presta_currentEmail);
                 }, 2000);
+                
             } else {
-                throw new Error(data.message || data.error || "Envoi échoué");
+                throw new Error(data.message || data.error || "Erreur inconnue du serveur");
             }
+
         } catch (err) {
-            console.error("❌ Erreur envoi fiche:", err);
+            console.error("❌ Erreur complète:", err);
             presta_showNotification("❌ Erreur lors de l'envoi: " + err.message, 'error');
+            
+            // TEST : Essayer avec une méthode alternative SANS photos
+            console.log("🔄 Test méthode alternative sans photos...");
+            await testEnvoiSansPhotos();
         } finally {
-            // CACHER LES LOADERS
+            // CACHER LES LOADERS DANS TOUS LES CAS
+            console.log("🔚 Masquage des loaders");
             presta_hideFormLoader();
             document.getElementById('loader').style.display = 'none';
         }
     });
 }
 
+// FONCTION DE TEST SANS PHOTOS
+async function testEnvoiSansPhotos() {
+    try {
+        console.log("🔄 Test envoi SANS photos...");
+        
+        const donneesTest = {
+            type: "envoyerFiche",
+            missionId: presta_currentMissionId || "TEST001",
+            prenomClient: presta_currentClientPrenom || "Test",
+            nomClient: presta_currentClientNom || "Client",
+            obsDate: new Date().toISOString().split("T")[0],
+            etatSante: "Test état santé",
+            etatForme: "Bon",
+            environnement: "Test environnement",
+            latitudeDebut: "50.4564235",
+            longitudeDebut: "3.9308222", 
+            latitudeFin: "50.5018184",
+            longitudeFin: "3.714986",
+            heureDebut: new Date().toISOString(),
+            heureFin: new Date().toISOString(),
+            prestatairePrenom: "Ray",
+            prestataireNom: "Mon",
+            prestataireEmail: presta_currentEmail || "test@test.com",
+            photos: "[]" // Tableau vide stringifié
+        };
+
+        const params = new URLSearchParams();
+        Object.keys(donneesTest).forEach(key => {
+            params.append(key, donneesTest[key]);
+        });
+
+        const response = await fetch(presta_webAppUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            },
+            body: params
+        });
+
+        const result = await response.json();
+        console.log("🧪 Résultat test sans photos:", result);
+        
+        if (result.success) {
+            presta_showNotification("✅ Test réussi sans photos!", 'success');
+        }
+        
+    } catch (error) {
+        console.error("❌ Test sans photos échoué:", error);
+    }
+}
 // FONCTIONS POUR LE LOADER DU FORMULAIRE
 function presta_showFormLoader() {
     const loader = document.getElementById('presta-form-loader');
@@ -3983,6 +4058,104 @@ function presta_openModalEndPrestationWithData(missionId, clientPrenom, clientNo
         if (stepSuccess) stepSuccess.style.display = "none";
         
         setTimeout(() => presta_startQrScanner(), 100);
+    }
+}
+
+    // TEST DE CONNEXION SIMPLE
+async function testConnexionSimple() {
+    console.log("🔍 Test connexion simple...");
+    
+    const testData = {
+        type: "test",
+        message: "Hello API"
+    };
+    
+    const params = new URLSearchParams();
+    Object.keys(testData).forEach(key => {
+        params.append(key, testData[key]);
+    });
+    
+    try {
+        const response = await fetch(presta_webAppUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: params
+        });
+        
+        const result = await response.text();
+        console.log("✅ API répond:", result);
+        return true;
+    } catch (error) {
+        console.error("❌ API ne répond pas:", error);
+        return false;
+    }
+}
+
+// BOUTON DE TEST DANS VOTRE HTML
+function ajouterBoutonTest() {
+    const testSection = document.getElementById('test-section');
+    if (testSection) {
+        testSection.innerHTML += `
+            <button onclick="testConnexionSimple()" class="btn-secondary w-full py-3 mt-2">
+                🔧 Test Connexion API
+            </button>
+            <button onclick="testEnvoiSimple()" class="btn-secondary w-full py-3 mt-2">
+                🧪 Test Envoi Simple
+            </button>
+        `;
+    }
+}
+
+// TEST D'ENVOI SIMPLE
+async function testEnvoiSimple() {
+    console.log("🧪 TEST ENVOI SIMPLE");
+    
+    const donneesTest = {
+        type: "envoyerFiche",
+        missionId: "M0003",
+        prenomClient: "Gaëtan",
+        nomClient: "MUKEBA-HARCHIES",
+        obsDate: new Date().toISOString().split("T")[0],
+        etatSante: "Test état santé",
+        etatForme: "Bon", 
+        environnement: "Test environnement",
+        prestataireEmail: "gm.harchies@gmail.com",
+        prestatairePrenom: "Ray",
+        prestataireNom: "Mon",
+        photos: "[]"
+    };
+    
+    console.log("📦 Données test:", donneesTest);
+    
+    try {
+        const params = new URLSearchParams();
+        Object.keys(donneesTest).forEach(key => {
+            params.append(key, donneesTest[key]);
+        });
+
+        const response = await fetch(presta_webAppUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: params
+        });
+        
+        const result = await response.json();
+        console.log("📨 Résultat:", result);
+        
+        if (result.success) {
+            alert("✅ TEST RÉUSSI! PDF: " + (result.url || "généré"));
+            if (result.url) window.open(result.url, '_blank');
+        } else {
+            alert("❌ ÉCHEC: " + result.message);
+        }
+        
+    } catch (error) {
+        console.error("💥 Erreur test:", error);
+        alert("💥 ERREUR: " + error.message);
     }
 }
         
