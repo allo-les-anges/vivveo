@@ -2336,33 +2336,42 @@ console.log(`📊 ${inProgressMissions.length} mission(s) en cours trouvée(s):`
         }
 
         function presta_openModalEndPrestation(missionId, clientPrenom, clientNom) {
-            console.log("🎯 Ouverture modale fin pour mission:", missionId);
-            
-            presta_currentMissionId = missionId;
-            presta_currentClientPrenom = clientPrenom;
-            presta_currentClientNom = clientNom;
-            
-            const modal = document.getElementById("presta-modalOverlay");
-            if (modal) {
-                modal.style.display = "flex";
-                
-                const stepQR = document.getElementById("presta-stepQR");
-                const stepForm = document.getElementById("presta-stepForm");
-                const stepSuccess = document.getElementById("presta-stepSuccess");
-                
-                if (stepQR) {
-                    stepQR.style.display = "flex";
-                    // Changer le titre
-                    const title = stepQR.querySelector('h2');
-                    if (title) title.textContent = "📸 Scanner pour TERMINER la mission";
-                }
-                if (stepForm) stepForm.style.display = "none";
-                if (stepSuccess) stepSuccess.style.display = "none";
-                
-                setTimeout(() => presta_startQrScanner(), 100);
-            }
+    console.log("🎯 Ouverture modale fin pour mission:", missionId);
+    
+    // ✅ SAUVEGARDER CORRECTEMENT LES DONNÉES
+    presta_currentMissionId = missionId;
+    presta_currentClientPrenom = clientPrenom;
+    presta_currentClientNom = clientNom;
+    
+    // ✅ SAUVEGARDER IMMÉDIATEMENT DANS LE STOCKAGE SESSION
+    presta_saveSessionData();
+    
+    console.log("💾 Données sauvegardées pour fin:", {
+        missionId: presta_currentMissionId,
+        email: presta_currentEmail,
+        client: `${presta_currentClientPrenom} ${presta_currentClientNom}`
+    });
+    
+    const modal = document.getElementById("presta-modalOverlay");
+    if (modal) {
+        modal.style.display = "flex";
+        
+        const stepQR = document.getElementById("presta-stepQR");
+        const stepForm = document.getElementById("presta-stepForm");
+        const stepSuccess = document.getElementById("presta-stepSuccess");
+        
+        if (stepQR) {
+            stepQR.style.display = "flex";
+            // Changer le titre
+            const title = stepQR.querySelector('h2');
+            if (title) title.textContent = "📸 Scanner pour TERMINER la mission";
         }
-
+        if (stepForm) stepForm.style.display = "none";
+        if (stepSuccess) stepSuccess.style.display = "none";
+        
+        setTimeout(() => presta_startQrScanner(), 100);
+    }
+}
         function presta_closeModalQR() {
             console.log("🔒 Fermeture de la modale QR");
             
