@@ -4018,34 +4018,36 @@ async function presta_terminerMission() {
     console.log("🔚 Terminaison de la mission:", presta_currentMissionId);
     
     try {
-        // ⚠️ UTILISEZ POST AU LIEU DE JSONP
+        // ⭐⭐ UTILISEZ POST POUR endMission ⭐⭐
         const payload = {
             type: "endMission",
             missionId: presta_currentMissionId,
-            email: presta_currentEmail,
-            latitudeFin: presta_latitudeFin,
-            longitudeFin: presta_longitudeFin,
-            heureFin: presta_heureFin
+            email: presta_currentEmail
         };
         
-        console.log("📡 Appel API endMission via POST:", payload);
+        // Ajouter les champs optionnels seulement s'ils existent
+        if (presta_latitudeFin) payload.latitudeFin = presta_latitudeFin;
+        if (presta_longitudeFin) payload.longitudeFin = presta_longitudeFin;
+        if (presta_heureFin) payload.heureFin = presta_heureFin;
         
-        // Créer les paramètres URL
+        console.log("📡 Appel API endMission (POST):", payload);
+        
+        // Créer les paramètres URL pour POST
         const params = new URLSearchParams();
         Object.keys(payload).forEach(key => {
-            if (payload[key] !== null && payload[key] !== undefined) {
-                params.append(key, payload[key]);
-            }
+            params.append(key, payload[key]);
         });
         
         // Appel POST direct
         const response = await fetch(presta_webAppUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
             },
             body: params
         });
+        
+        console.log("📨 Status réponse:", response.status);
         
         if (!response.ok) {
             throw new Error(`Erreur HTTP: ${response.status}`);
@@ -4067,7 +4069,8 @@ async function presta_terminerMission() {
         return false;
     }
 }
-// TEST D'URGENCE - À exécuter dans la console pour voir où ça bloque
+        
+        // TEST D'URGENCE - À exécuter dans la console pour voir où ça bloque
 async function testDiagnostic() {
     console.log("🔍 DIAGNOSTIC URGENCE");
     
