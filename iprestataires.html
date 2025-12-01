@@ -2849,7 +2849,7 @@ async function presta_finirPremierScan() {
             heureDebut: presta_heureDebut
         };
         
-        console.log("📡 Appel API startMission via POST:", payload);
+        console.log("📡 Appel API startMission:", payload);
         
         const params = new URLSearchParams();
         Object.keys(payload).forEach(key => {
@@ -2876,6 +2876,12 @@ async function presta_finirPremierScan() {
         if (data.success) {
             console.log("✅ Mission démarrée:", data.message);
             presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
+            
+            // Recharger les missions pour voir le changement
+            setTimeout(() => {
+                presta_loadMissions(presta_currentEmail);
+            }, 1000);
+            
         } else {
             console.error("❌ Erreur startMission:", data.message || data.error);
             presta_showNotification("❌ Erreur: " + (data.message || data.error), 'error');
@@ -2886,12 +2892,8 @@ async function presta_finirPremierScan() {
         presta_showNotification("❌ Erreur de connexion API", 'error');
     }
     
-    console.log("🔒 Fermeture modale et rechargement...");
+    console.log("🔒 Fermeture modale");
     presta_closeModalQR();
-    
-    setTimeout(() => {
-        presta_loadMissions(presta_currentEmail);
-    }, 2000);
 }
         
 function presta_showForm() {
