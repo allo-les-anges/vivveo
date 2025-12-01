@@ -2839,38 +2839,43 @@ function presta_openModalStartPrestation(missionId, clientPrenom, clientNom, pre
 async function presta_finirPremierScan() {
     console.log("🔄 Finalisation du premier scan");
     
-    // SAUVEGARDER LES DONNÉES AVANT L'APPEL API
-    presta_saveSessionData();
-    
     try {
-        // UTILISER LA FONCTION startMission
-        const callbackName = 'cbStartMission' + Date.now();
-        let url = `${presta_webAppUrl}?type=startMission`;
-        url += `&missionId=${encodeURIComponent(presta_currentMissionId)}`;
-        url += `&email=${encodeURIComponent(presta_currentEmail)}`;
+        const payload = {
+            type: "startMission",
+            missionId: presta_currentMissionId,
+            email: presta_currentEmail,
+            latitude: presta_currentLatitude,
+            longitude: presta_currentLongitude,
+            heureDebut: presta_heureDebut
+        };
         
-        // Ajouter la géolocalisation si disponible
-        if (presta_currentLatitude && presta_currentLongitude) {
-            url += `&latitude=${encodeURIComponent(presta_currentLatitude)}`;
-            url += `&longitude=${encodeURIComponent(presta_currentLongitude)}`;
+        console.log("📡 Appel API startMission via POST:", payload);
+        
+        const params = new URLSearchParams();
+        Object.keys(payload).forEach(key => {
+            if (payload[key] !== null && payload[key] !== undefined) {
+                params.append(key, payload[key]);
+            }
+        });
+        
+        const response = await fetch(presta_webAppUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: params
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
         }
         
-        // Ajouter l'heure de début
-        if (presta_heureDebut) {
-            url += `&heureDebut=${encodeURIComponent(presta_heureDebut)}`;
-        }
-        
-        console.log("📡 Appel API startMission:", url);
-        
-        const data = await presta_callApiJsonp(url, callbackName);
+        const data = await response.json();
         console.log("📦 Réponse startMission:", data);
         
         if (data.success) {
             console.log("✅ Mission démarrée:", data.message);
             presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
-            
-            // SAUVEGARDER APRÈS SUCCÈS
-            presta_saveSessionData();
         } else {
             console.error("❌ Erreur startMission:", data.message || data.error);
             presta_showNotification("❌ Erreur: " + (data.message || data.error), 'error');
@@ -2881,18 +2886,14 @@ async function presta_finirPremierScan() {
         presta_showNotification("❌ Erreur de connexion API", 'error');
     }
     
-    // Fermer la modale et recharger
     console.log("🔒 Fermeture modale et rechargement...");
     presta_closeModalQR();
-    
-    // SAUVEGARDER AVANT DE RECHARGER
-    presta_saveSessionData();
     
     setTimeout(() => {
         presta_loadMissions(presta_currentEmail);
     }, 2000);
 }
-
+        
 function presta_showForm() {
     console.log("📝 Affichage du formulaire d'observation");
     
@@ -4017,25 +4018,40 @@ async function presta_terminerMission() {
     console.log("🔚 Terminaison de la mission:", presta_currentMissionId);
     
     try {
-        const callbackName = 'cbEndMission' + Date.now();
-        let url = `${presta_webAppUrl}?type=endMission`;
-        url += `&missionId=${encodeURIComponent(presta_currentMissionId)}`;
-        url += `&email=${encodeURIComponent(presta_currentEmail)}`;
+        // ⚠️ UTILISEZ POST AU LIEU DE JSONP
+        const payload = {
+            type: "endMission",
+            missionId: presta_currentMissionId,
+            email: presta_currentEmail,
+            latitudeFin: presta_latitudeFin,
+            longitudeFin: presta_longitudeFin,
+            heureFin: presta_heureFin
+        };
         
-        // Ajouter la géolocalisation de fin
-        if (presta_latitudeFin && presta_longitudeFin) {
-            url += `&latitudeFin=${encodeURIComponent(presta_latitudeFin)}`;
-            url += `&longitudeFin=${encodeURIComponent(presta_longitudeFin)}`;
+        console.log("📡 Appel API endMission via POST:", payload);
+        
+        // Créer les paramètres URL
+        const params = new URLSearchParams();
+        Object.keys(payload).forEach(key => {
+            if (payload[key] !== null && payload[key] !== undefined) {
+                params.append(key, payload[key]);
+            }
+        });
+        
+        // Appel POST direct
+        const response = await fetch(presta_webAppUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: params
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
         }
         
-        // Ajouter l'heure de fin
-        if (presta_heureFin) {
-            url += `&heureFin=${encodeURIComponent(presta_heureFin)}`;
-        }
-        
-        console.log("📡 Appel API endMission:", url);
-        
-        const data = await presta_callApiJsonp(url, callbackName);
+        const data = await response.json();
         console.log("📦 Réponse endMission:", data);
         
         if (data.success) {
@@ -4051,7 +4067,6 @@ async function presta_terminerMission() {
         return false;
     }
 }
-
 // TEST D'URGENCE - À exécuter dans la console pour voir où ça bloque
 async function testDiagnostic() {
     console.log("🔍 DIAGNOSTIC URGENCE");
