@@ -4017,6 +4017,17 @@ function presta_hideFormLoader() {
 async function presta_terminerMission() {
     console.log("🔚 Terminaison de la mission:", presta_currentMissionId);
     
+    // CHARGER LES DONNÉES DE SESSION AVANT TOUT
+    presta_loadSessionData();
+    
+    console.log("📋 Données pour terminaison:", {
+        missionId: presta_currentMissionId,
+        email: presta_currentEmail,
+        latitudeFin: presta_latitudeFin,
+        longitudeFin: presta_longitudeFin,
+        heureFin: presta_heureFin
+    });
+    
     try {
         // ⭐⭐ UTILISEZ POST POUR endMission ⭐⭐
         const payload = {
