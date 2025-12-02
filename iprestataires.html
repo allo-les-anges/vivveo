@@ -2880,7 +2880,7 @@ function reinitialiserEcouteurFormulaire() {
         
     }, 100);
     
-    // 4. Écouteur avec protection
+    // 4. Écouteur avec protection et APPEL À LA FONCTION handleFormulaireObservation
     nouveauFormulaire.addEventListener("submit", async function(e) {
         console.log("🎯 Événement submit détecté");
         
@@ -2901,13 +2901,17 @@ function reinitialiserEcouteurFormulaire() {
             return;
         }
         
+        // DÉSACTIVER L'ANCIEN CODE ET APPELER LA NOUVELLE FONCTION
         e.preventDefault();
-        console.log("✅ FORMULAIRE SOUMIS MANUELLEMENT");
         
-        // Validation
+        // Récupérer les valeurs du formulaire
         const dateValue = document.getElementById("presta-obsDate").value;
         const formeValue = document.getElementById("presta-etatForme").value;
+        const etatSanteValue = document.getElementById("presta-etatSante").value;
+        const environnementValue = document.getElementById("presta-environnement").value;
+        const clientNameValue = document.getElementById("presta-clientName").value;
         
+        // Validation basique
         if (!dateValue || dateValue.trim() === '') {
             alert("❌ Date obligatoire");
             return;
@@ -2918,59 +2922,251 @@ function reinitialiserEcouteurFormulaire() {
             return;
         }
         
-        console.log("📤 Envoi des données...");
+        console.log("✅ FORMULAIRE SOUMIS MANUELLEMENT");
+        console.log("📋 Données récupérées:", {
+            date: dateValue,
+            forme: formeValue,
+            etatSante: etatSanteValue,
+            environnement: environnementValue,
+            client: clientNameValue
+        });
         
-        // VOTRE CODE DE SOUMISSION ICI
-        // (copiez votre code existant de traitement du formulaire)
+        // Afficher le loader
+        const loader = document.getElementById('presta-form-loader');
+        if (loader) {
+            loader.style.display = 'flex';
+        }
+        
+        // Récupérer les photos
+        const photosInput = document.getElementById("presta-photos");
+        const photosFiles = photosInput.files;
+        let photosBase64 = [];
+        
+        if (photosFiles.length > 0) {
+            // Convertir les photos en base64 (maximum 3)
+            const maxPhotos = Math.min(photosFiles.length, 3);
+            console.log(`📸 Conversion de ${maxPhotos} photos en base64...`);
+            
+            for (let i = 0; i < maxPhotos; i++) {
+                try {
+                    const base64 = await fileToBase64(photosFiles[i]);
+                    photosBase64.push(base64);
+                    console.log(`✅ Photo ${i+1} convertie`);
+                } catch (error) {
+                    console.error(`❌ Erreur conversion photo ${i+1}:`, error);
+                }
+            }
+        }
+        
+        // Préparer les données pour l'API - FORMAT CORRECT POUR VOTRE SERVEUR
+        const donneesFiche = {
+            type: "envoyerFiche",  // CORRECT - doit être "envoyerFiche" pour votre serveur
+            missionId: presta_currentMissionId || "",
+            prenomClient: presta_currentClientPrenom || "",
+            nomClient: presta_currentClientNom || "",
+            obsDate: dateValue,
+            etatSante: etatSanteValue,
+            etatForme: formeValue,
+            environnement: environnementValue,
+            prestataireEmail: presta_currentEmail || "",
+            prestatairePrenom: presta_currentPrestatairePrenom || "",
+            prestataireNom: presta_currentPrestataireNom || "",
+            photos: JSON.stringify(photosBase64), // Convertir en JSON string
+            latitude: presta_latitudeFin || "",
+            longitude: presta_longitudeFin || "",
+            heureFin: presta_heureFin || new Date().toISOString()
+        };
+        
+        console.log("📦 Données à envoyer à l'API:", donneesFiche);
         
         try {
-            const missionData = JSON.parse(localStorage.getItem('currentMissionData') || '{}');
-            const email = localStorage.getItem('prestaEmail') || '';
-            
-            const observationsData = {
-                type: "enregistrerObservations",
-                missionId: missionData.id || '',
-                email: email,
-                date_observation: dateValue,
-                etat_forme: formeValue,
-                observations: document.getElementById("presta-observations").value || '',
-                heures_travaillees: document.getElementById("presta-heures").value || '8',
-                signature: document.getElementById("presta-signature").checked ? "Oui" : "Non",
-                notes_complementaires: document.getElementById("presta-notes").value || '',
-                latitude: missionData.finLatitude || '',
-                longitude: missionData.finLongitude || '',
-                heure_fin: missionData.heureFin || new Date().toISOString()
-            };
-            
-            console.log("📦 Données à envoyer:", observationsData);
-            
-            // Appel API
-            const response = await fetch('https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(observationsData)
+            // Envoyer les données via POST - FORMAT URL ENCODED
+            const params = new URLSearchParams();
+            Object.keys(donneesFiche).forEach(key => {
+                if (donneesFiche[key] !== null && donneesFiche[key] !== undefined && donneesFiche[key] !== "") {
+                    params.append(key, donneesFiche[key]);
+                }
             });
             
+            console.log("📡 Envoi à l'API...");
+            console.log("🔗 URL:", presta_webAppUrl);
+            console.log("📝 Paramètres:", params.toString());
+            
+            const response = await fetch(presta_webAppUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                },
+                body: params
+            });
+            
+            console.log("📨 Statut réponse:", response.status);
+            
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
+            }
+            
             const result = await response.json();
-            console.log("📨 Réponse serveur:", result);
+            console.log("📊 Réponse complète du serveur:", result);
             
             if (result.success) {
-                alert("✅ Fiche d'observation enregistrée avec succès !");
-                fermerModalObservation();
-                chargerMissions(email);
+                console.log("✅ Fiche enregistrée avec succès !");
+                presta_showNotification("✅ Fiche d'observation enregistrée avec succès !", 'success');
+                
+                // Afficher le PDF si disponible
+                if (result.url) {
+                    console.log("📄 PDF généré:", result.url);
+                    setTimeout(() => {
+                        window.open(result.url, '_blank');
+                    }, 1000);
+                }
+                
+                // Afficher l'étape de succès
+                const stepForm = document.getElementById("presta-stepForm");
+                const stepSuccess = document.getElementById("presta-stepSuccess");
+                
+                if (stepForm) stepForm.style.display = "none";
+                if (stepSuccess) stepSuccess.style.display = "block";
+                
+                // Fermer la modale après 3 secondes et recharger les missions
+                setTimeout(() => {
+                    presta_closeModalQR();
+                    presta_loadMissions(presta_currentEmail);
+                }, 3000);
+                
             } else {
-                alert("❌ Erreur: " + (result.message || "Échec de l'enregistrement"));
+                throw new Error(result.message || result.error || "Erreur lors de l'enregistrement");
             }
             
         } catch (error) {
-            console.error("❌ Erreur:", error);
-            alert("❌ Erreur lors de l'envoi. Vérifiez votre connexion.");
+            console.error("❌ Erreur complète:", error);
+            presta_showNotification("❌ Erreur lors de l'envoi: " + error.message, 'error');
+            
+            // Réafficher le formulaire en cas d'erreur
+            const stepForm = document.getElementById("presta-stepForm");
+            if (stepForm) stepForm.style.display = "block";
+            
+        } finally {
+            // Cacher le loader
+            if (loader) {
+                loader.style.display = 'none';
+            }
         }
     });
     
     console.log("✅ Écouteur sécurisé attaché");
+}
+
+// =============================================
+// FONCTION DE SOUMISSION DU FORMULAIRE D'OBSERVATION
+// =============================================
+
+async function handleFormulaireObservation(e) {
+    e.preventDefault();
+    console.log("📤 Début de l'envoi des observations...");
+    
+    try {
+        // 1. Récupérer les données du formulaire
+        const dateObservation = document.getElementById("presta-obsDate").value;
+        const etatForme = document.getElementById("presta-etatForme").value;
+        const etatSante = document.getElementById("presta-etatSante").value;
+        const environnement = document.getElementById("presta-environnement").value;
+        
+        // 2. Récupérer les photos
+        const photosInput = document.getElementById("presta-photos");
+        const photosFiles = photosInput.files;
+        let photosBase64 = [];
+        
+        if (photosFiles.length > 0) {
+            // Convertir les photos en base64 (maximum 3)
+            const maxPhotos = Math.min(photosFiles.length, 3);
+            for (let i = 0; i < maxPhotos; i++) {
+                const base64 = await fileToBase64(photosFiles[i]);
+                photosBase64.push(base64);
+            }
+        }
+        
+        // 3. Préparer les données pour l'API
+        const donneesFiche = {
+            type: "envoyerFiche",
+            missionId: presta_currentMissionId,
+            prenomClient: presta_currentClientPrenom,
+            nomClient: presta_currentClientNom,
+            obsDate: dateObservation,
+            etatSante: etatSante,
+            etatForme: etatForme,
+            environnement: environnement,
+            prestataireEmail: presta_currentEmail,
+            prestatairePrenom: presta_currentPrestatairePrenom,
+            prestataireNom: presta_currentPrestataireNom,
+            photos: JSON.stringify(photosBase64), // Convertir en JSON string
+            latitude: presta_latitudeFin,
+            longitude: presta_longitudeFin,
+            heureFin: presta_heureFin
+        };
+        
+        console.log("📦 Données à envoyer:", donneesFiche);
+        
+        // 4. Afficher le loader
+        presta_showFormLoader();
+        
+        // 5. Envoyer les données via POST
+        const params = new URLSearchParams();
+        Object.keys(donneesFiche).forEach(key => {
+            if (donneesFiche[key] !== null && donneesFiche[key] !== undefined) {
+                params.append(key, donneesFiche[key]);
+            }
+        });
+        
+        const response = await fetch(presta_webAppUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            },
+            body: params
+        });
+        
+        console.log("📨 Statut réponse:", response.status);
+        
+        const result = await response.json();
+        console.log("📊 Réponse complète:", result);
+        
+        if (result.success) {
+            console.log("✅ Fiche enregistrée avec succès !");
+            
+            // Afficher le PDF si disponible
+            if (result.url) {
+                console.log("📄 PDF généré:", result.url);
+                window.open(result.url, '_blank');
+            }
+            
+            // Afficher l'étape de succès
+            const stepForm = document.getElementById("presta-stepForm");
+            const stepSuccess = document.getElementById("presta-stepSuccess");
+            
+            if (stepForm) stepForm.style.display = "none";
+            if (stepSuccess) stepSuccess.style.display = "block";
+            
+            // Rafraîchir les missions après 2 secondes
+            setTimeout(() => {
+                presta_loadMissions(presta_currentEmail);
+            }, 2000);
+            
+        } else {
+            throw new Error(result.message || result.error || "Erreur lors de l'enregistrement");
+        }
+        
+    } catch (error) {
+        console.error("❌ Erreur complète:", error);
+        presta_showNotification("❌ Erreur lors de l'envoi: " + error.message, 'error');
+        
+        // Réafficher le formulaire en cas d'erreur
+        const stepForm = document.getElementById("presta-stepForm");
+        if (stepForm) stepForm.style.display = "block";
+        
+    } finally {
+        presta_hideFormLoader();
+    }
 }
         
         function presta_clearForm() {
