@@ -1777,7 +1777,8 @@
         // =============================================
 
         // Fonction JSONP - VERSION AMÉLIORÉE AVEC GESTION D'ERREURS
-        function presta_callApiJsonp(url, callbackName) {
+        // Remplacer la fonction presta_callApiJsonp actuelle par cette version corrigée :
+function presta_callApiJsonp(url, callbackName) {
     return new Promise((resolve, reject) => {
         console.log(`📞 Appel JSONP: ${url}`);
         console.log(`📞 Callback: ${callbackName}`);
@@ -1788,15 +1789,17 @@
                 console.error('⏰ Timeout JSONP après 15 secondes');
                 reject(new Error('Timeout - Le serveur ne répond pas'));
                 delete window[callbackName];
-                if (script.parentNode) {
-                    script.parentNode.removeChild(script);
-                }
+                // Ne pas essayer de supprimer le script ici - laisse le navigateur gérer
             }
         }, 15000);
         
+        // Créer la fonction de callback
         window[callbackName] = function(data) {
             clearTimeout(timeoutId);
             console.log(`📨 Réponse JSONP reçue:`, data);
+            
+            // Nettoyer
+            delete window[callbackName];
             
             // Vérifier si la réponse contient une erreur
             if (data && data.success === false) {
@@ -1804,28 +1807,23 @@
             } else {
                 resolve(data);
             }
-            
-            delete window[callbackName];
-            if (script.parentNode) {
-                script.parentNode.removeChild(script);
-            }
         };
         
+        // Créer et ajouter le script
         const script = document.createElement('script');
         script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
         
-        script.onerror = () => {
+        script.onerror = function() {
             clearTimeout(timeoutId);
             console.error('❌ Erreur script JSONP - Impossible de charger le script');
-            reject(new Error('Impossible de contacter le serveur. Vérifiez votre connexion.'));
             delete window[callbackName];
-            if (script.parentNode) {
-                script.parentNode.removeChild(script);
-            }
+            reject(new Error('Impossible de contacter le serveur. Vérifiez votre connexion.'));
         };
         
-        console.log("🔄 Ajout du script au DOM");
-        document.head.appendChild(script); // ← CHANGEMENT ICI
+        // IMPORTANT: Ajouter à la fin du body, pas au head
+        document.body.appendChild(script);
+        
+        console.log("🔄 Script JSONP ajouté au DOM");
     });
 }
         // Fonction de test pour vérifier la connexion à l'API
