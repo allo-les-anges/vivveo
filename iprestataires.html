@@ -1892,8 +1892,8 @@ async function presta_login() {
         if (data && typeof data === 'object') {
             if (data.success === true) {
                 // ⭐⭐ STOCKER CORRECTEMENT L'EMAIL ⭐⭐
-                presta_currentEmail = data.email || email; // Utilisez data.email de la réponse
-                console.log("✅ Email stocké:", presta_currentEmail);
+                presta_currentEmail = email; // Simple et garantie de fonctionner
+                console.log("✅ Email stocké (depuis formulaire):", presta_currentEmail);
                 
                 document.getElementById('login-section').classList.add('hidden');
                 document.getElementById('prestataire-interface').classList.remove('hidden');
