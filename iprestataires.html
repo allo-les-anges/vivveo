@@ -1732,6 +1732,8 @@ let presta_modalOverlay, presta_stepQR, presta_stepForm, presta_stepSuccess;
 let presta_clientNameInput, presta_obsDateInput, presta_etatSanteInput;
 let presta_etatFormeInput, presta_environnementInput, presta_photosInput, presta_photosPreview;
 
+        
+
 // =============================================
 // FONCTIONS D'INITIALISATION
 // =============================================
@@ -2828,7 +2830,7 @@ function presta_showForm() {
 }
 
 function reinitialiserEcouteurFormulaire() {
-    console.log("🔄 Réinitialisation de l'écouteur du formulaire...");
+    console.log("🔄 Réinitialisation SÉCURISÉE de l'écouteur du formulaire...");
     
     const formulaire = document.getElementById("presta-obsForm");
     if (!formulaire) {
@@ -2836,25 +2838,76 @@ function reinitialiserEcouteurFormulaire() {
         return;
     }
     
-    formulaire.replaceWith(formulaire.cloneNode(true));
-    const nouveauFormulaire = document.getElementById("presta-obsForm");
+    // 1. Cloner pour supprimer les anciens écouteurs
+    const nouveauFormulaire = formulaire.cloneNode(true);
+    formulaire.parentNode.replaceChild(nouveauFormulaire, formulaire);
     
-    nouveauFormulaire.addEventListener("submit", async function(e) {
-        e.preventDefault();
-        console.log("🎯 FORMULAIRE SOUMIS - Écouteur réinitialisé");
+    // 2. Remplir AUTOMATIQUEMENT les champs obligatoires
+    setTimeout(() => {
+        const dateInput = document.getElementById("presta-obsDate");
+        const formeInput = document.getElementById("presta-etatForme");
         
-        if (!presta_obsDateInput.value || !presta_etatFormeInput.value) {
-            alert("Veuillez remplir les champs obligatoires (Date et État de forme)");
+        if (dateInput && !dateInput.value) {
+            dateInput.value = new Date().toISOString().split('T')[0];
+            console.log("✅ Date auto-remplie:", dateInput.value);
+        }
+        
+        if (formeInput && !formeInput.value) {
+            formeInput.value = "Bon";
+            console.log("✅ État forme auto-rempli:", formeInput.value);
+        }
+        
+        // Réactiver le bouton s'il est désactivé
+        const submitBtn = nouveauFormulaire.querySelector('button[type="submit"]');
+        if (submitBtn && submitBtn.disabled) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Envoyer la fiche';
+        }
+    }, 100);
+    
+    // 3. NOUVEL écouteur avec validation SÉCURISÉE
+    nouveauFormulaire.addEventListener("submit", async function(e) {
+        console.log("✅ FORMULAIRE SOUMIS MANUELLEMENT");
+        
+        // Bloquer IMMÉDIATEMENT
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        
+        // VALIDATION SÉCURISÉE - Récupérer les éléments à chaque fois
+        const dateInput = document.getElementById("presta-obsDate");
+        const formeInput = document.getElementById("presta-etatForme");
+        
+        console.log("🔍 Validation - Date:", dateInput ? dateInput.value : "null");
+        console.log("🔍 Validation - Forme:", formeInput ? formeInput.value : "null");
+        
+        if (!dateInput || !dateInput.value || dateInput.value.trim() === '') {
+            alert("Veuillez remplir le champ obligatoire: Date");
+            if (dateInput) dateInput.focus();
             return;
         }
-
-        console.log("📸 Préparation de l'envoi...");
+        
+        if (!formeInput || !formeInput.value || formeInput.value.trim() === '') {
+            alert("Veuillez remplir le champ obligatoire: État de forme");
+            if (formeInput) formeInput.focus();
+            return;
+        }
+        
+        console.log("✅ Validation réussie, traitement en cours...");
+        
+        // Activer le loader
         presta_showFormLoader();
         document.getElementById('loader').style.display = 'flex';
+        
+        // Désactiver le bouton pendant l'envoi
+        const submitBtn = this.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Envoi en cours...';
+        }
 
         try {
             const photosBase64 = [];
-            const files = presta_photosInput.files;
+            const files = presta_photosInput ? presta_photosInput.files : [];
             
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
@@ -2878,10 +2931,10 @@ function reinitialiserEcouteurFormulaire() {
                 missionId: presta_currentMissionId,
                 prenomClient: presta_currentClientPrenom,
                 nomClient: presta_currentClientNom,
-                obsDate: presta_obsDateInput.value,
-                etatSante: presta_etatSanteInput.value,
-                etatForme: presta_etatFormeInput.value,
-                environnement: presta_environnementInput.value,
+                obsDate: dateInput.value,
+                etatSante: document.getElementById("presta-etatSante").value,
+                etatForme: formeInput.value,
+                environnement: document.getElementById("presta-environnement").value,
                 latitudeDebut: presta_currentLatitude || '',
                 longitudeDebut: presta_currentLongitude || '',
                 latitudeFin: presta_latitudeFin || '',
@@ -2948,14 +3001,20 @@ function reinitialiserEcouteurFormulaire() {
             console.error("❌ Erreur:", err);
             presta_showNotification("❌ Erreur: " + err.message, 'error');
         } finally {
+            // IMPORTANT: TOUJOURS nettoyer, même en cas d'erreur
             presta_hideFormLoader();
             document.getElementById('loader').style.display = 'none';
+            
+            // Réactiver le bouton
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Envoyer la fiche';
+            }
         }
     });
     
-    console.log("✅ Écouteur du formulaire réinitialisé");
+    console.log("✅ Écouteur du formulaire réinitialisé AVEC PROTECTION");
 }
-
 function presta_clearForm() {
     console.log("🧹 Nettoyage du formulaire");
 
