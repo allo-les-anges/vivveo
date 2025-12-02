@@ -1891,18 +1891,25 @@ async function presta_login() {
 
         if (data && typeof data === 'object') {
             if (data.success === true) {
-                presta_currentEmail = email;
+                // ⭐⭐ STOCKER CORRECTEMENT L'EMAIL ⭐⭐
+                presta_currentEmail = data.email || email; // Utilisez data.email de la réponse
+                console.log("✅ Email stocké:", presta_currentEmail);
+                
                 document.getElementById('login-section').classList.add('hidden');
                 document.getElementById('prestataire-interface').classList.remove('hidden');
                 
-                const prenom = data.prenom || data.profile?.prénom || email.split('@')[0];
+                // Utilisez data.prenom de la réponse
+                const prenom = data.prenom || email.split('@')[0];
                 document.getElementById('prestataire-name').textContent = prenom;
                 document.getElementById('prestataire-rating').textContent = data.note || "4.8";
                 
+                // Stocker les données du profil
                 presta_currentPrestataireData = data.profile || {};
                 presta_currentPrestataireData.prenom = prenom;
                 
-                await presta_loadMissions(email);
+                // Charger les missions avec le bon email
+                console.log("🔄 Chargement missions pour:", presta_currentEmail);
+                await presta_loadMissions(presta_currentEmail);
                 
                 presta_showNotification("Connexion réussie ! Bienvenue " + prenom, 'success');
                 message.classList.add('hidden');
@@ -1936,7 +1943,6 @@ async function presta_login() {
         document.getElementById('loader').style.display = 'none';
     }
 }
-
 function presta_logout() {
     presta_currentEmail = "";
     presta_clearSessionData();
