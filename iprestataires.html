@@ -2525,16 +2525,23 @@ async function processScannedQR(decodedText) {
 
         console.log("📧 Email extrait:", email);
         console.log("🔑 Client ID:", clientId);
-
-        console.log("✅ QR Code accepté pour la démonstration");
-        console.log("🔍 État heureDebut:", presta_heureDebut ? "déjà défini" : "non défini");
+        console.log("✅ QR Code accepté");
         
-        if (!presta_heureDebut || presta_heureDebut === '') {
-            console.log("🟢 PREMIER SCAN - Début d'intervention");
-            await handleFirstScan();
-        } else {
-            console.log("🔴 DEUXIÈME SCAN - Fin d'intervention");
+        // ⭐⭐ NOUVELLE LOGIQUE : Vérifiez d'abord le statut de la mission ⭐⭐
+        console.log("🔍 Vérification du statut de la mission...");
+        
+        // Essayez de récupérer le statut depuis l'API ou depuis vos données
+        const missionStatus = await getMissionStatus(presta_currentMissionId);
+        console.log(`📋 Mission ${presta_currentMissionId} - Statut: ${missionStatus}`);
+        
+        if (missionStatus === 'en cours') {
+            // La mission est DÉJÀ en cours → c'est le DEUXIÈME scan
+            console.log("🔄 Mission déjà en cours → DEUXIÈME scan (FIN)");
             await handleSecondScan();
+        } else {
+            // La mission n'est pas en cours → c'est le PREMIER scan
+            console.log("🆕 Mission pas encore en cours → PREMIER scan (DÉBUT)");
+            await handleFirstScan();
         }
 
     } catch (err) {
@@ -2544,74 +2551,36 @@ async function processScannedQR(decodedText) {
     }
 }
 
-async function handleFirstScan() {
-    console.log("🟢 Gestion premier scan - Début");
-    
-    presta_saveSessionData();
-    presta_heureDebut = new Date().toISOString();
-    console.log("⏰ Heure début enregistrée:", presta_heureDebut);
-    presta_saveSessionData();
-    
-    if (!navigator.geolocation) {
-        console.warn("⚠️ Géolocalisation non supportée");
-        presta_showNotification("Votre appareil ne supporte pas la géolocalisation", 'error');
-        presta_saveSessionData();
-        await presta_finirPremierScan();
-        return;
-    }
-
-    console.log("📍 Demande de géolocalisation...");
-    
-    navigator.geolocation.getCurrentPosition(
-        async (position) => {
-            console.log("📍 Géolocalisation réussie");
-            
-            presta_currentLatitude = position.coords.latitude;
-            presta_currentLongitude = position.coords.longitude;
-            
-            console.log("📍 Géolocalisation début:", {
-                latitude: presta_currentLatitude,
-                longitude: presta_currentLongitude,
-                heureDebut: presta_heureDebut
-            });
-            
-            presta_saveSessionData();
-            console.log("💾 Données géoloc sauvegardées");
-            
-            await presta_finirPremierScan();
-        },
-        async (error) => {
-            console.error("❌ Erreur géolocalisation:", error);
-            
-            let message = "Erreur de géolocalisation.";
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    message = "Veuillez autoriser la géolocalisation pour continuer.";
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    message = "Position non disponible.";
-                    break;
-                case error.TIMEOUT:
-                    message = "Délai de localisation dépassé.";
-                    break;
+// Fonction pour récupérer le statut d'une mission
+async function getMissionStatus(missionId) {
+    try {
+        // Option 1: Depuis vos données locales
+        if (presta_currentMissions && presta_currentMissions.length > 0) {
+            const mission = presta_currentMissions.find(m => m.id === missionId);
+            if (mission && mission.statut) {
+                console.log(`📊 Statut local: ${mission.statut}`);
+                return mission.statut.trim().toLowerCase();
             }
-            
-            presta_showNotification(message, 'warning');
-            console.log("⚠️ Continuer sans géolocalisation");
-            
-            presta_saveSessionData();
-            await presta_finirPremierScan();
-        },
-        { 
-            enableHighAccuracy: true, 
-            timeout: 10000, 
-            maximumAge: 0 
         }
-    );
-    
-    console.log("🟢 Gestion premier scan - En attente géoloc");
+        
+        // Option 2: Depuis l'API
+        console.log(`🔍 Demande du statut depuis l'API pour ${missionId}...`);
+        const callbackName = 'cbStatus' + Date.now();
+        const url = `${presta_webAppUrl}?type=getMissionById&id=${encodeURIComponent(missionId)}`;
+        
+        const data = await presta_callApiJsonp(url, callbackName);
+        
+        if (data && data.success && data.mission) {
+            return data.mission.statut || 'inconnu';
+        }
+        
+        return 'inconnu';
+    } catch (error) {
+        console.error("❌ Erreur récupération statut:", error);
+        return 'inconnu';
+    }
 }
-
+        
 async function handleSecondScan() {
     console.log("🔴 Gestion deuxième scan - Début");
     
