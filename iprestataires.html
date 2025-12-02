@@ -2829,6 +2829,10 @@ function presta_showForm() {
     }, 100);
 }
         
+// ==== PROTECTION CONTRE AUTO-SUBMIT ====
+let formSubmitEnabled = false;
+let formInitializedTime = 0;
+
 function reinitialiserEcouteurFormulaire() {
     console.log("🔄 Réinitialisation SÉCURISÉE de l'écouteur du formulaire...");
     
@@ -2842,89 +2846,131 @@ function reinitialiserEcouteurFormulaire() {
     const nouveauFormulaire = formulaire.cloneNode(true);
     formulaire.parentNode.replaceChild(nouveauFormulaire, formulaire);
     
-    // 2. Remplir IMMÉDIATEMENT les champs obligatoires
-    const dateInput = document.getElementById("presta-obsDate");
-    const formeInput = document.getElementById("presta-etatForme");
+    // 2. Désactiver les submits pendant 2 secondes
+    formSubmitEnabled = false;
+    formInitializedTime = Date.now();
     
-    if (dateInput && !dateInput.value) {
-        dateInput.value = new Date().toISOString().split('T')[0];
-        console.log("✅ Date auto-remplie:", dateInput.value);
-    }
-    
-    if (formeInput && !formeInput.value) {
-        formeInput.value = "Bon";
-        console.log("✅ État forme auto-rempli:", formeInput.value);
-    }
-    
-    // 3. Activer le bouton s'il est désactivé
-    const submitBtn = nouveauFormulaire.querySelector('button[type="submit"]');
-    if (submitBtn && submitBtn.disabled) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Envoyer la fiche';
-    }
-    
-    // 4. Ajouter un petit délai avant d'attacher l'écouteur
+    // 3. Remplir les champs automatiquement
     setTimeout(() => {
-        // 5. Écouteur SÉCURISÉ avec vérification anti-auto-submit
-        nouveauFormulaire.addEventListener("submit", async function(e) {
-            console.log("🎯 ÉVÉNEMENT SUBMIT CAPTURÉ");
-            
-            // Vérifier si c'est un vrai clic utilisateur
-            if (!e.isTrusted) {
-                console.log("🚫 BLOQUÉ: Submit automatique (non trusted)");
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                return;
-            }
-            
-            // Vérifier le délai depuis l'initialisation
-            if (formInitializedTime && Date.now() - formInitializedTime < 2000) {
-                console.log("🚫 BLOQUÉ: Submit trop rapide après initialisation");
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                return;
-            }
-            
-            e.preventDefault();
-            console.log("✅ FORMULAIRE SOUMIS MANUELLEMENT");
-            
-            // Validation SÉCURISÉE
-            const currentDateInput = document.getElementById("presta-obsDate");
-            const currentFormeInput = document.getElementById("presta-etatForme");
-            
-            console.log("🔍 Validation directe:");
-            console.log("- Date:", currentDateInput ? currentDateInput.value : "NULL");
-            console.log("- Forme:", currentFormeInput ? currentFormeInput.value : "NULL");
-            
-            if (!currentDateInput || !currentDateInput.value || currentDateInput.value.trim() === '') {
-                alert("Veuillez remplir le champ obligatoire: Date");
-                if (currentDateInput) currentDateInput.focus();
-                return;
-            }
-            
-            if (!currentFormeInput || !currentFormeInput.value || currentFormeInput.value.trim() === '') {
-                alert("Veuillez remplir le champ obligatoire: État de forme");
-                if (currentFormeInput) currentFormeInput.focus();
-                return;
-            }
-            
-            console.log("✅ Validation réussie, traitement en cours...");
-            
-            // VOTRE CODE DE TRAITEMENT ICI (copiez-le depuis votre version)
-            // ... [le reste de votre code] ...
-            
-        });
+        const dateInput = document.getElementById("presta-obsDate");
+        const formeInput = document.getElementById("presta-etatForme");
         
-        console.log("✅ Écouteur SÉCURISÉ attaché (avec protection anti-auto-submit)");
+        if (dateInput && !dateInput.value) {
+            dateInput.value = new Date().toISOString().split('T')[0];
+            console.log("✅ Date auto-remplie");
+        }
         
-        // Enregistrer le moment de l'initialisation
-        formInitializedTime = Date.now();
+        if (formeInput && !formeInput.value) {
+            formeInput.value = "Bon";
+            console.log("✅ État forme auto-rempli");
+        }
         
-    }, 300); // Délai de 300ms avant d'attacher l'écouteur
+        // Activer le bouton
+        const submitBtn = nouveauFormulaire.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Envoyer la fiche';
+        }
+        
+        // Autoriser les submits après 2 secondes
+        setTimeout(() => {
+            formSubmitEnabled = true;
+            console.log("✅ Submit autorisé après délai de sécurité");
+        }, 2000);
+        
+    }, 100);
     
-    console.log("✅ Formulaire cloné et préparé");
-}
+    // 4. Attacher l'écouteur SÉCURISÉ
+    nouveauFormulaire.addEventListener("submit", async function(e) {
+        e.preventDefault();
+        console.log("🎯 ÉVÉNEMENT SUBMIT DÉTECTÉ");
         
+        // Protection anti-auto-submit
+        if (!formSubmitEnabled) {
+            console.log("🚫 BLOQUÉ: Submit automatique (protection active)");
+            alert("Veuillez patienter... Le formulaire se prépare.");
+            return;
+        }
+        
+        // Vérifier le délai minimum
+        if (Date.now() - formInitializedTime < 2000) {
+            console.log("🚫 BLOQUÉ: Trop rapide après initialisation");
+            alert("Veuillez attendre 2 secondes avant de soumettre.");
+            return;
+        }
+        
+        console.log("✅ FORMULAIRE SOUMIS MANUELLEMENT");
+        
+        // Validation
+        const dateValue = document.getElementById("presta-obsDate").value;
+        const formeValue = document.getElementById("presta-etatForme").value;
+        
+        if (!dateValue || dateValue.trim() === '') {
+            alert("❌ Date obligatoire");
+            document.getElementById("presta-obsDate").focus();
+            return;
+        }
+        
+        if (!formeValue || formeValue.trim() === '') {
+            alert("❌ État de forme obligatoire");
+            document.getElementById("presta-etatForme").focus();
+            return;
+        }
+        
+        console.log("✅ Validation réussie, traitement...");
+        
+        // ==== VOTRE CODE DE TRAITEMENT ICI ====
+        try {
+            const missionData = JSON.parse(localStorage.getItem('currentMissionData') || '{}');
+            const email = localStorage.getItem('prestaEmail') || '';
+            
+            const observationsData = {
+                type: "enregistrerObservations",
+                missionId: missionData.id || '',
+                email: email,
+                date_observation: dateValue,
+                etat_forme: formeValue,
+                observations: document.getElementById("presta-observations").value || '',
+                heures_travaillees: document.getElementById("presta-heures").value || '8',
+                signature: document.getElementById("presta-signature").checked ? "Oui" : "Non",
+                notes_complementaires: document.getElementById("presta-notes").value || '',
+                latitude: missionData.finLatitude || '',
+                longitude: missionData.finLongitude || '',
+                heure_fin: missionData.heureFin || new Date().toISOString()
+            };
+            
+            console.log("📤 Envoi des observations:", observationsData);
+            
+            // Appel API
+            const response = await fetch('https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(observationsData)
+            });
+            
+            const result = await response.json();
+            console.log("✅ Réponse serveur:", result);
+            
+            if (result.success) {
+                alert("✅ Fiche d'observation enregistrée avec succès !");
+                fermerModalObservation();
+                
+                // Recharger les missions
+                chargerMissions(email);
+            } else {
+                alert("❌ Erreur: " + (result.message || "Échec de l'enregistrement"));
+            }
+            
+        } catch (error) {
+            console.error("❌ Erreur:", error);
+            alert("❌ Erreur lors de l'envoi. Vérifiez votre connexion.");
+        }
+    });
+    
+    console.log("✅ Écouteur SÉCURISÉ attaché");
+}        
 function presta_clearForm() {
     console.log("🧹 Nettoyage du formulaire");
 
