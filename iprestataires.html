@@ -1846,47 +1846,164 @@ function presta_callApiJsonp(url, callbackName) {
         // =============================================
 
         async function presta_login() {
-            const email = document.getElementById('presta-email').value;
-            const password = document.getElementById('presta-password').value;
-            const message = document.getElementById('login-message');
+    const email = document.getElementById('presta-email').value;
+    const password = document.getElementById('presta-password').value;
+    const message = document.getElementById('login-message');
 
-            console.log("🔐 Tentative de connexion avec:", email);
+    console.log("🔐 Tentative de connexion avec:", email);
+    console.log("🔑 Mot de passe fourni:", password ? "***" : "vide");
+    
+    document.getElementById('loader').style.display = 'flex';
+    message.classList.add('hidden');
+
+    try {
+        // Version 1: Avec JSONP (pour contourner CORS)
+        const callbackName = 'cbLogin' + Date.now();
+        
+        // URL CORRIGÉE - vérifier les paramètres
+        const url = `${presta_webAppUrl}?type=loginpresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&timestamp=${Date.now()}`;
+        
+        console.log("📡 URL de connexion JSONP:", url);
+        
+        const data = await presta_callApiJsonp(url, callbackName);
+        console.log("📦 Réponse complète de connexion:", data);
+
+        // Analyse détaillée de la réponse
+        if (data && typeof data === 'object') {
+            console.log("✅ Structure réponse:", {
+                success: data.success,
+                message: data.message,
+                prenom: data.prenom,
+                note: data.note,
+                hasProfile: !!data.profile
+            });
             
-            document.getElementById('loader').style.display = 'flex';
-
-            try {
-                const callbackName = 'cbLogin' + Date.now();
-                const url = `${presta_webAppUrl}?type=loginpresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
-
-                console.log("📡 URL de connexion:", url);
+            if (data.success === true) {
+                // SUCCÈS
+                presta_currentEmail = email;
+                document.getElementById('login-section').classList.add('hidden');
+                document.getElementById('prestataire-interface').classList.remove('hidden');
                 
-                const data = await presta_callApiJsonp(url, callbackName);
-                console.log("📦 Réponse de connexion:", data);
+                // Mettre à jour le nom du prestataire
+                const prenom = data.prenom || data.profile?.prénom || email.split('@')[0];
+                document.getElementById('prestataire-name').textContent = prenom;
+                document.getElementById('prestataire-rating').textContent = data.note || "4.8";
+                
+                // Stocker les données du profil
+                presta_currentPrestataireData = data.profile || {};
+                presta_currentPrestataireData.prenom = prenom;
+                
+                // Charger les missions
+                await presta_loadMissions(email);
+                
+                presta_showNotification("Connexion réussie ! Bienvenue " + prenom, 'success');
+                
+                // Nettoyer le message d'erreur
+                message.classList.add('hidden');
+                
+            } else if (data.success === false) {
+                // ÉCHEC - afficher le message exact
+                const errorMsg = data.message || "Email ou mot de passe incorrect";
+                console.error("❌ Échec connexion:", errorMsg);
+                
+                // Afficher message détaillé
+                message.textContent = `Erreur: ${errorMsg}`;
+                message.classList.remove('hidden');
+                message.className = 'message message-error';
+                
+                // Test alternatif
+                await testConnexionAlternative(email, password);
+            }
+        } else {
+            // Réponse invalide
+            throw new Error("Réponse du serveur invalide");
+        }
+        
+    } catch (error) {
+        console.error("❌ Erreur lors de la connexion:", error);
+        
+        // Message d'erreur convivial
+        let errorMessage = error.message;
+        if (errorMessage.includes('Timeout')) {
+            errorMessage = "Le serveur ne répond pas. Vérifiez votre connexion internet.";
+        } else if (errorMessage.includes('JSONP')) {
+            errorMessage = "Problème de communication avec le serveur.";
+        }
+        
+        message.textContent = errorMessage;
+        message.classList.remove('hidden');
+        message.className = 'message message-error';
+        
+        // Essayer une méthode alternative
+        await testConnexionSimple(email, password);
+    } finally {
+        document.getElementById('loader').style.display = 'none';
+    }
+}
 
-                if (data.success) {
+// Fonction de test alternative
+async function testConnexionSimple(email, password) {
+    console.log("🔄 Test de connexion alternative...");
+    
+    try {
+        // Essayer avec fetch directement (pour débogage)
+        const testUrl = `${presta_webAppUrl}?type=loginpresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&mode=debug`;
+        console.log("🧪 URL test direct:", testUrl);
+        
+        const response = await fetch(testUrl);
+        const text = await response.text();
+        console.log("📨 Réponse brute:", text);
+        
+        // Essayer différents formats de parsing
+        try {
+            const data = JSON.parse(text);
+            console.log("✅ JSON parsé:", data);
+            
+            if (data.success) {
+                console.log("🎯 Connexion réussie en mode debug!");
+                // Forcer la connexion pour le débogage
+                if (confirm("Connexion debug réussie! Continuer en mode test?")) {
                     presta_currentEmail = email;
                     document.getElementById('login-section').classList.add('hidden');
                     document.getElementById('prestataire-interface').classList.remove('hidden');
-                    
-                    document.getElementById('prestataire-name').textContent = data.prenom || "Prestataire";
-                    document.getElementById('prestataire-rating').textContent = data.note || "4.8";
-
+                    document.getElementById('prestataire-name').textContent = "Prestataire Test";
                     await presta_loadMissions(email);
-                    
-                    presta_showNotification("Connexion réussie !", 'success');
-                } else {
-                    throw new Error(data.message || "Email ou mot de passe incorrect");
                 }
-            } catch (error) {
-                console.error("❌ Erreur de connexion:", error);
-                message.textContent = error.message;
-                message.classList.remove('hidden');
-                message.className = 'message message-error';
-            } finally {
-                document.getElementById('loader').style.display = 'none';
             }
+        } catch (e) {
+            console.log("⚠️ Pas de JSON:", text);
         }
+    } catch (error) {
+        console.error("❌ Test échoué:", error);
+    }
+}
 
+// Test de connexion alternative
+async function testConnexionAlternative(email, password) {
+    console.log("🔄 Test de connexion avec données alternatives...");
+    
+    // Test avec des combinaisons courantes
+    const tests = [
+        { desc: "email lowercase", email: email.toLowerCase(), password: password },
+        { desc: "email sans espaces", email: email.trim(), password: password },
+        { desc: "mot de passe numérique", email: email, password: password.toString() }
+    ];
+    
+    for (const test of tests) {
+        console.log(`🧪 Test: ${test.desc}`);
+        const testUrl = `${presta_webAppUrl}?type=loginpresta&email=${encodeURIComponent(test.email)}&password=${encodeURIComponent(test.password)}&test=1`;
+        
+        try {
+            const response = await fetch(testUrl);
+            const text = await response.text();
+            if (text.includes('success')) {
+                console.log(`✅ ${test.desc} fonctionne!`);
+            }
+        } catch (e) {
+            // Ignorer les erreurs
+        }
+    }
+}
         // Fonction de déconnexion
         function presta_logout() {
             presta_currentEmail = "";
