@@ -2942,120 +2942,112 @@ function reinitialiserEcouteurFormulaire() {
         
         e.preventDefault();
         
-            // Récupérer les noms formatés
-    const noms = getFormattedNames();
-    const clientPrenom = noms.clientPrenom;
-    const clientNom = noms.clientNom;
-    const prestatairePrenom = noms.prestatairePrenom;
-    const prestataireNom = noms.prestataireNom;
-    
-    console.log("📝 Noms formatés:", noms);
-    // ========================
-    
-    // Récupérer les valeurs du formulaire
-    const dateValue = document.getElementById("presta-obsDate").value;
-    const formeValue = document.getElementById("presta-etatForme").value;
-    const etatSanteValue = document.getElementById("presta-etatSante").value || "";
-    const environnementValue = document.getElementById("presta-environnement").value || "";
-    
-    // Validation basique
-    if (!dateValue || dateValue.trim() === '') {
-        alert("❌ Date obligatoire");
-        return;
-    }
-    
-    if (!formeValue || formeValue.trim() === '') {
-        alert("❌ État de forme obligatoire");
-        return;
-    }
-    
-    console.log("✅ FORMULAIRE SOUMIS MANUELLEMENT");
-    
-    // Afficher le loader
-    const loader = document.getElementById('presta-form-loader');
-    if (loader) {
-        loader.style.display = 'flex';
-    }
-    
-    // Récupérer les photos
-    const photosInput = document.getElementById("presta-photos");
-    const photosFiles = photosInput.files;
-    let photosBase64 = [];
-    
-    if (photosFiles.length > 0) {
-        console.log(`📸 ${photosFiles.length} photo(s) détectée(s)`);
+        // Récupérer les valeurs du formulaire
+        const dateValue = document.getElementById("presta-obsDate").value;
+        const formeValue = document.getElementById("presta-etatForme").value;
+        const etatSanteValue = document.getElementById("presta-etatSante").value || "";
+        const environnementValue = document.getElementById("presta-environnement").value || "";
         
-        // Convertir les photos en base64 (maximum 3)
-        const maxPhotos = Math.min(photosFiles.length, 3);
+        // Validation basique
+        if (!dateValue || dateValue.trim() === '') {
+            alert("❌ Date obligatoire");
+            return;
+        }
         
-        for (let i = 0; i < maxPhotos; i++) {
-            try {
-                const base64 = await fileToBase64(photosFiles[i]);
-                photosBase64.push(base64);
-                console.log(`✅ Photo ${i+1} convertie (${Math.round(base64.length / 1024)} Ko)`);
-            } catch (error) {
-                console.error(`❌ Erreur conversion photo ${i+1}:`, error);
+        if (!formeValue || formeValue.trim() === '') {
+            alert("❌ État de forme obligatoire");
+            return;
+        }
+        
+        console.log("✅ FORMULAIRE SOUMIS MANUELLEMENT");
+        
+        // Afficher le loader
+        const loader = document.getElementById('presta-form-loader');
+        if (loader) {
+            loader.style.display = 'flex';
+        }
+        
+        // Récupérer les photos
+        const photosInput = document.getElementById("presta-photos");
+        const photosFiles = photosInput.files;
+        let photosBase64 = [];
+        
+        if (photosFiles.length > 0) {
+            console.log(`📸 ${photosFiles.length} photo(s) détectée(s)`);
+            
+            // Convertir les photos en base64 (maximum 3)
+            const maxPhotos = Math.min(photosFiles.length, 3);
+            
+            for (let i = 0; i < maxPhotos; i++) {
+                try {
+                    const base64 = await fileToBase64(photosFiles[i]);
+                    photosBase64.push(base64);
+                    console.log(`✅ Photo ${i+1} convertie (${Math.round(base64.length / 1024)} Ko)`);
+                } catch (error) {
+                    console.error(`❌ Erreur conversion photo ${i+1}:`, error);
+                }
             }
         }
-    }
+        
+        // IMPORTANT : Récupérer l'heure de début depuis sessionStorage
+        presta_loadSessionData();
+        
+        // Préparer les données POUR LE GOOGLE SHEET
+        // Dans la fonction d'écouteur du formulaire, remplacez la partie d'envoi par :
+
+// Préparer les données EXACTEMENT comme attendu par le Google Apps Script
+const donneesPourSheet = {
+    type: "enregistrerObservations",
+    missionId: presta_currentMissionId || "",
+    emailPrestataire: presta_currentEmail || "",
     
-    // IMPORTANT : Récupérer l'heure de début depuis sessionStorage
-    presta_loadSessionData();
+    // DONNÉES DU FORMULAIRE - CORRECTEMENT NOMÉES
+    dateObservation: dateValue, // Format: "2025-12-03"
+    etatSante: etatSanteValue,
+    etatForme: formeValue,
+    environnement: environnementValue,
     
-    // ====== PUIS MODIFIER LES DONNÉES POUR LE SHEET ======
-    // Préparer les données POUR LE GOOGLE SHEET
-    const donneesPourSheet = {
-        type: "enregistrerObservations",
-        missionId: presta_currentMissionId || "",
-        emailPrestataire: presta_currentEmail || "",
-        
-        // DONNÉES DU FORMULAIRE - CORRECTEMENT NOMÉES
-        dateObservation: dateValue, // Format: "2025-12-03"
-        etatSante: etatSanteValue,
-        etatForme: formeValue,
-        environnement: environnementValue,
-        
-        // DONNÉES GÉOLOCALISATION
-        latitudeDebut: presta_currentLatitude || "",
-        longitudeDebut: presta_currentLongitude || "",
-        heureDebut: presta_heureDebut || "",
-        latitudeFin: presta_latitudeFin || "",
-        longitudeFin: presta_longitudeFin || "",
-        heureFin: presta_heureFin || new Date().toISOString(),
-        
-        // ====== UTILISER LES NOMS FORMATÉS ICI ======
-        prenomClient: clientPrenom,
-        nomClient: clientNom,
-        
-        // INFORMATIONS PRESTATAIRE
-        prenomPrestataire: prestatairePrenom,
-        nomPrestataire: prestataireNom,
-        
-        // PHOTOS - IMPORTANT : envoyer comme string JSON
-        photos: JSON.stringify(photosBase64)
-    };
+    // DONNÉES GÉOLOCALISATION
+    latitudeDebut: presta_currentLatitude || "",
+    longitudeDebut: presta_currentLongitude || "",
+    heureDebut: presta_heureDebut || "",
+    latitudeFin: presta_latitudeFin || "",
+    longitudeFin: presta_longitudeFin || "",
+    heureFin: presta_heureFin || new Date().toISOString(),
     
-    console.log("📊 Données COMPLÈTES pour Sheet:", donneesPourSheet);
+    // INFORMATIONS CLIENT
+    prenomClient: (presta_currentClientPrenom || "").trim(),
+    nomClient: (presta_currentClientNom || "").trim(),
     
-    // ====== ET POUR LE PDF AUSSI ======
-    const donneesPourPDF = {
-        type: "envoyerFiche", // IMPORTANT : type différent pour le PDF
-        missionId: presta_currentMissionId || "",
-        prenomClient: clientPrenom,  // Utiliser ici
-        nomClient: clientNom,        // Utiliser ici
-        obsDate: dateValue,
-        etatSante: etatSanteValue,
-        etatForme: formeValue,
-        environnement: environnementValue,
-        prestataireEmail: presta_currentEmail || "",
-        prestatairePrenom: prestatairePrenom,  // Utiliser ici
-        prestataireNom: prestataireNom,        // Utiliser ici
-        photos: JSON.stringify(photosBase64),
-        latitude: presta_latitudeFin || "",
-        longitude: presta_longitudeFin || "",
-        heureFin: presta_heureFin || new Date().toISOString(),
-        heureDebut: presta_heureDebut || "" // Ajouter heure début pour PDF
-    };
+    // INFORMATIONS PRESTATAIRE
+    prenomPrestataire: presta_currentPrestatairePrenom || "Ray", // Valeur par défaut
+    nomPrestataire: presta_currentPrestataireNom || "Mon", // Valeur par défaut
+    
+    // PHOTOS - IMPORTANT : envoyer comme string JSON
+    photos: JSON.stringify(photosBase64)
+};
+
+console.log("📊 Données COMPLÈTES pour Sheet:", donneesPourSheet);
+        
+        // Préparer les données POUR LE PDF
+        const donneesPourPDF = {
+            type: "envoyerFiche", // IMPORTANT : type différent pour le PDF
+            missionId: presta_currentMissionId || "",
+            prenomClient: presta_currentClientPrenom || "",
+            nomClient: presta_currentClientNom || "",
+            obsDate: dateValue,
+            etatSante: etatSanteValue,
+            etatForme: formeValue,
+            environnement: environnementValue,
+            prestataireEmail: presta_currentEmail || "",
+            prestatairePrenom: presta_currentPrestatairePrenom || "",
+            prestataireNom: presta_currentPrestataireNom || "",
+            photos: JSON.stringify(photosBase64),
+            latitude: presta_latitudeFin || "",
+            longitude: presta_longitudeFin || "",
+            heureFin: presta_heureFin || new Date().toISOString(),
+            heureDebut: presta_heureDebut || "" // Ajouter heure début pour PDF
+        };
         
         console.log("📄 Données pour PDF:", {
             type: donneesPourPDF.type,
@@ -3485,63 +3477,6 @@ function getFormattedNames() {
             } else if (clientNameParts.length === 1) {
                 clientNom = clientFullName;
             }
-        }
-    }
-    
-    console.log("👤 Noms formatés:", {
-        client: `${clientPrenom} ${clientNom}`,
-        prestataire: `${prestatairePrenom} ${prestataireNom}`
-    });
-    
-    return {
-        clientPrenom,
-        clientNom,
-        prestatairePrenom,
-        prestataireNom
-    };
-}
-
-// =============================================
-// FONCTION POUR FORMATER LES NOMS
-// =============================================
-
-function getFormattedNames() {
-    console.log("🔍 Début getFormattedNames");
-    
-    // Récupérer le nom complet du prestataire depuis l'interface
-    const prestataireNameElement = document.getElementById('prestataire-name');
-    let prestatairePrenom = "Ray"; // Valeurs par défaut
-    let prestataireNom = "Mon";
-    
-    if (prestataireNameElement) {
-        const fullName = prestataireNameElement.textContent.trim();
-        console.log("Nom prestataire brut:", fullName);
-        
-        if (fullName && fullName !== "Prestataire") {
-            const nameParts = fullName.split(' ');
-            prestatairePrenom = nameParts[0] || "Ray";
-            prestataireNom = nameParts.slice(1).join(' ') || "Mon";
-        }
-    }
-    
-    // Récupérer le nom du client
-    let clientPrenom = presta_currentClientPrenom || "Gaëtan"; // Valeur par défaut
-    let clientNom = presta_currentClientNom || "MUKEBA-HARCHIES";
-    
-    console.log("Données client brutes:", {
-        prenom: presta_currentClientPrenom,
-        nom: presta_currentClientNom
-    });
-    
-    // Si presta_currentClientNom contient les deux (prénom + nom)
-    if (presta_currentClientNom && presta_currentClientNom.trim() && !presta_currentClientPrenom) {
-        const clientFullName = presta_currentClientNom.trim();
-        const clientNameParts = clientFullName.split(' ');
-        
-        if (clientNameParts.length >= 2) {
-            // Le dernier mot est probablement le nom
-            clientNom = clientNameParts[clientNameParts.length - 1];
-            clientPrenom = clientNameParts.slice(0, clientNameParts.length - 1).join(' ');
         }
     }
     
