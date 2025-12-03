@@ -3443,73 +3443,6 @@ function getFormattedNames() {
     
     // Récupérer le nom complet du prestataire depuis l'interface
     const prestataireNameElement = document.getElementById('prestataire-name');
-    let prestatairePrenom = "Ray";
-    let prestataireNom = "Mon";
-    
-    if (prestataireNameElement) {
-        const fullName = prestataireNameElement.textContent.trim();
-        console.log("Nom prestataire brut:", fullName);
-        
-        if (fullName && fullName !== "Prestataire") {
-            const nameParts = fullName.split(' ');
-            prestatairePrenom = nameParts[0] || "Ray";
-            prestataireNom = nameParts.slice(1).join(' ') || "Mon";
-        }
-    }
-    
-    // Récupérer le nom du client
-    let clientPrenom = "Gaëtan"; // Valeur par défaut
-    let clientNom = "MUKEBA-HARCHIES";
-    
-    console.log("Données client brutes:", {
-        prenom: presta_currentClientPrenom,
-        nom: presta_currentClientNom
-    });
-    
-    // Si presta_currentClientNom contient les deux
-    if (presta_currentClientNom && presta_currentClientNom.trim()) {
-        const clientFullName = presta_currentClientNom.trim();
-        
-        // Cas 1 : Si le prénom est séparé dans presta_currentClientPrenom
-        if (presta_currentClientPrenom && presta_currentClientPrenom.trim()) {
-            clientPrenom = presta_currentClientPrenom.trim();
-            clientNom = clientFullName.replace(clientPrenom, '').trim();
-        } 
-        // Cas 2 : Essayer de séparer prénom et nom depuis le nom complet
-        else {
-            const clientNameParts = clientFullName.split(' ');
-            if (clientNameParts.length >= 2) {
-                // Supposons que le dernier mot est le nom
-                clientNom = clientNameParts[clientNameParts.length - 1];
-                clientPrenom = clientNameParts.slice(0, clientNameParts.length - 1).join(' ');
-            } else if (clientNameParts.length === 1) {
-                clientNom = clientFullName;
-            }
-        }
-    }
-    
-    console.log("👤 Noms formatés:", {
-        client: `${clientPrenom} ${clientNom}`,
-        prestataire: `${prestatairePrenom} ${prestataireNom}`
-    });
-    
-    return {
-        clientPrenom,
-        clientNom,
-        prestatairePrenom,
-        prestataireNom
-    };
-}
-
-// =============================================
-// FONCTION POUR FORMATER LES NOMS
-// =============================================
-
-function getFormattedNames() {
-    console.log("🔍 Début getFormattedNames");
-    
-    // Récupérer le nom complet du prestataire depuis l'interface
-    const prestataireNameElement = document.getElementById('prestataire-name');
     let prestatairePrenom = "Ray"; // Valeurs par défaut
     let prestataireNom = "Mon";
     
@@ -3533,6 +3466,34 @@ function getFormattedNames() {
         nom: presta_currentClientNom
     });
     
+    // Si presta_currentClientNom contient les deux (prénom + nom)
+    if (presta_currentClientNom && presta_currentClientNom.trim() && !presta_currentClientPrenom) {
+        const clientFullName = presta_currentClientNom.trim();
+        const clientNameParts = clientFullName.split(' ');
+        
+        if (clientNameParts.length >= 2) {
+            // Le dernier mot est probablement le nom
+            clientNom = clientNameParts[clientNameParts.length - 1];
+            clientPrenom = clientNameParts.slice(0, clientNameParts.length - 1).join(' ');
+        }
+    }
+    
+    console.log("👤 Noms formatés:", {
+        client: `${clientPrenom} ${clientNom}`,
+        prestataire: `${prestatairePrenom} ${prestataireNom}`
+    });
+    
+    return {
+        clientPrenom,
+        clientNom,
+        prestatairePrenom,
+        prestataireNom
+    };
+}
+
+// =============================================
+// FONCTIONS DE TEST (optionnelles)
+// =============================================    
     // Si presta_currentClientNom contient les deux (prénom + nom)
     if (presta_currentClientNom && presta_currentClientNom.trim() && !presta_currentClientPrenom) {
         const clientFullName = presta_currentClientNom.trim();
