@@ -2850,16 +2850,29 @@ function getFormattedNames() {
         }
     }
     
-    // Récupérer le nom du client depuis la mission
-    let clientPrenom = "Gaëtan"; // Valeur par défaut basée sur les logs
+    // Récupérer le nom du client - CORRECTION IMPORTANTE
+    let clientPrenom = "Gaëtan";
     let clientNom = "MUKEBA-HARCHIES";
     
-    if (presta_currentClientPrenom && presta_currentClientPrenom.trim()) {
-        clientPrenom = presta_currentClientPrenom.trim();
+    // Si presta_currentClientNom contient les deux (comme dans vos logs)
+    if (presta_currentClientNom && presta_currentClientNom.trim()) {
+        const clientFullName = presta_currentClientNom.trim();
+        // Essayer de séparer prénom et nom
+        const clientNameParts = clientFullName.split(' ');
+        if (clientNameParts.length >= 2) {
+            // Dernier mot = nom, le reste = prénom
+            clientNom = clientNameParts[clientNameParts.length - 1];
+            clientPrenom = clientNameParts.slice(0, clientNameParts.length - 1).join(' ');
+        } else if (clientNameParts.length === 1) {
+            // Un seul mot, considérer comme nom
+            clientNom = clientFullName;
+            clientPrenom = "Gaëtan"; // Valeur par défaut
+        }
     }
     
-    if (presta_currentClientNom && presta_currentClientNom.trim()) {
-        clientNom = presta_currentClientNom.trim();
+    // Priorité à presta_currentClientPrenom s'il est défini
+    if (presta_currentClientPrenom && presta_currentClientPrenom.trim()) {
+        clientPrenom = presta_currentClientPrenom.trim();
     }
     
     console.log("👤 Noms formatés:", {
