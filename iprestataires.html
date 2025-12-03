@@ -1960,105 +1960,173 @@ function presta_logout() {
 
 async function presta_loadMissions(email) {
     try {
-        console.log("🔄 Chargement missions pour:", email);
-        
-        // Créer un callback unique
-        const callbackName = 'loadMissionsCallback_' + Date.now();
-        
-        const data = await new Promise((resolve, reject) => {
-            window[callbackName] = function(response) {
-                console.log("📨 Réponse missions:", response);
-                delete window[callbackName];
-                resolve(response);
-            };
-            
-            const script = document.createElement('script');
-            script.src = `${presta_webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}&callback=${callbackName}`;
-            
-            script.onerror = () => {
-                delete window[callbackName];
-                reject(new Error("Erreur de chargement des missions"));
-            };
-            
-            document.body.appendChild(script);
-        });
-        
-        // Vérifier et traiter les données
-        const missions = data.missions || data || [];
+        const callbackName = 'cbMissions' + Date.now();
+        const url = `${presta_webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
+        const data = await presta_callApiJsonp(url, callbackName);
+
+        const missions = data.missions || data;
         
         if (!Array.isArray(missions)) {
-            console.error("❌ Format de données invalide pour les missions");
-            presta_showNotification("Erreur de format des données", 'error');
-            return;
+            throw new Error("Format de données invalide");
         }
-        
-        console.log(`📊 ${missions.length} mission(s) chargée(s)`);
+
         presta_currentMissions = missions;
+        console.log("📦 Missions reçues:", missions);
         
-        // Mettre à jour l'interface
         presta_updateStats(missions);
+        
         presta_loadMissionsByStatus('pending', missions);
         presta_loadMissionsByStatus('today', missions);
         presta_loadMissionsByStatus('planned', missions);
         presta_loadMissionsByStatus('completed', missions);
         presta_loadInProgressMissions(missions);
         
-        // Attacher les listeners
-        setTimeout(() => {
-            presta_attacherListenersStartPrestation();
-        }, 500);
+        const hasInProgressMissions = missions.some(m => m.statut && m.statut.trim() === 'en cours');
+        console.log(`🎯 Missions en cours détectées: ${hasInProgressMissions}`);
         
+        if (hasInProgressMissions) {
+            setTimeout(() => {
+                presta_showTab('inprogress');
+                console.log("✅ Onglet En Cours activé automatiquement");
+            }, 100);
+        }
+        
+        presta_attacherListenersStartPrestation();
+
     } catch (error) {
-        console.error("❌ Erreur chargement missions:", error);
-        presta_showNotification("Erreur chargement missions: " + error.message, 'error');
+        console.error("Erreur lors du chargement des missions:", error);
+        presta_showNotification("Erreur lors du chargement des missions: " + error.message, 'error');
     }
 }
 
-        // Fonction utilitaire JSONP
-function presta_callJsonp(url, callbackParam = 'callback') {
-    return new Promise((resolve, reject) => {
-        const callbackName = 'jsonp_' + Date.now() + '_' + Math.random().toString(36).substr(2);
-        
-        window[callbackName] = function(data) {
-            delete window[callbackName];
-            document.body.removeChild(script);
-            
-            if (data && typeof data === 'object') {
-                resolve(data);
-            } else {
-                reject(new Error("Réponse JSONP invalide"));
-            }
-        };
-        
-        const fullUrl = url + (url.includes('?') ? '&' : '?') + 
-                       `${callbackParam}=${callbackName}&_=${Date.now()}`;
-        
-        const script = document.createElement('script');
-        script.src = fullUrl;
-        
-        script.onerror = function() {
-            delete window[callbackName];
-            if (script.parentNode) {
-                document.body.removeChild(script);
-            }
-            reject(new Error("Erreur de chargement JSONP"));
-        };
-        
-        // Timeout
-        setTimeout(() => {
-            if (window[callbackName]) {
-                delete window[callbackName];
-                if (script.parentNode) {
-                    document.body.removeChild(script);
-                }
-                reject(new Error("Timeout JSONP"));
-            }
-        }, 15000);
-        
-        document.body.appendChild(script);
-    });
+function presta_updateStats(missions) {
+    if (!Array.isArray(missions)) {
+        console.error("Missions n'est pas un tableau:", missions);
+        return;
+    }
+
+    const pendingCount = missions.filter(m => m.statut === "en attente").length;
+    const todayCount = missions.filter(m => {
+        if (m.statut !== "confirmée") return false;
+        try {
+            const missionDate = new Date(m.date);
+            const today = new Date();
+            return missionDate.getDate() === today.getDate() && 
+                   missionDate.getMonth() === today.getMonth() && 
+                   missionDate.getFullYear() === today.getFullYear();
+        } catch (e) {
+            return false;
+        }
+    }).length;
+    const plannedCount = missions.filter(m => {
+        if (m.statut !== "confirmée") return false;
+        try {
+            const missionDate = new Date(m.date);
+            return missionDate > new Date();
+        } catch (e) {
+            return false;
+        }
+    }).length;
+    const completedCount = missions.filter(m => m.statut === "terminée" || m.statut === "validée").length;
+
+    document.getElementById('stats-pending').textContent = pendingCount;
+    document.getElementById('stats-today').textContent = todayCount;
+    document.getElementById('stats-planned').textContent = plannedCount;
+    document.getElementById('stats-completed').textContent = completedCount;
 }
+
+function presta_loadMissionsByStatus(status, missions) {
+    const tableBody = document.getElementById(`${status}-missions-table`);
+    const cardsContainer = document.getElementById(`${status}-missions-cards`);
+    
+    if (!tableBody || !cardsContainer) return;
+
+    let filteredMissions = [];
+    
+    switch(status) {
+        case 'pending':
+            filteredMissions = missions.filter(m => m.statut === "en attente");
+            break;
+        case 'today':
+            filteredMissions = missions.filter(m => {
+                if (m.statut !== "confirmée") return false;
+                try {
+                    const missionDate = new Date(m.date);
+                    const today = new Date();
+                    return missionDate.getDate() === today.getDate() && 
+                           missionDate.getMonth() === today.getMonth() && 
+                           missionDate.getFullYear() === today.getFullYear();
+                } catch (e) {
+                    return false;
+                }
+            });
+            break;
+        case 'planned':
+            filteredMissions = missions.filter(m => {
+                if (m.statut !== "confirmée") return false;
+                try {
+                    const missionDate = new Date(m.date);
+                    return missionDate > new Date();
+                } catch (e) {
+                    return false;
+                }
+            });
+            break;
+        case 'completed':
+            filteredMissions = missions.filter(m => m.statut === "terminée" || m.statut === "validée");
+            break;
+    }
+    
+    if (filteredMissions.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="${status === 'completed' ? '6' : '7'}" class="p-4 text-center text-gray-500">Aucune mission disponible</td></tr>`;
+        cardsContainer.innerHTML = `<div class="text-center p-8 text-gray-500">Aucune mission disponible</div>`;
+    } else {
+        tableBody.innerHTML = filteredMissions.map(mission => `
+            <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                <td class="p-4">${mission.id || 'N/A'}</td>
+                <td class="p-4" data-prenom="${mission.prenom || ''}">${mission.client || 'N/A'}</td>
+                <td class="p-4">${mission.adresse || 'N/A'}</td>
+                <td class="p-4">${mission.service || 'N/A'}</td>
+                <td class="p-4">${presta_formatDate(mission.date)}</td>
+                <td class="p-4">${presta_formatTime(mission.heure)}</td>
+                <td class="p-4">${presta_getMissionActions(status, mission)}</td>
+            </tr>
+        `).join('');
         
+        cardsContainer.innerHTML = filteredMissions.map(mission => `
+            <div class="request-card">
+                <div class="card-row">
+                    <span class="card-label">ID Mission</span>
+                    <span class="card-value">${mission.id || 'N/A'}</span>
+                </div>
+                <div class="card-row">
+                    <span class="card-label">Client</span>
+                    <span class="card-value">${mission.client || 'N/A'}</span>
+                </div>
+                <div class="card-row">
+                    <span class="card-label">Adresse</span>
+                    <span class="card-value">${mission.adresse || 'N/A'}</span>
+                </div>
+                <div class="card-row">
+                    <span class="card-label">Service</span>
+                    <span class="card-value">${mission.service || 'N/A'}</span>
+                </div>
+                <div class="card-row">
+                    <span class="card-label">Date</span>
+                    <span class="card-value">${presta_formatDate(mission.date)}</span>
+                </div>
+                <div class="card-row">
+                    <span class="card-label">Heure</span>
+                    <span class="card-value">${presta_formatTime(mission.heure)}</span>
+                </div>
+                <div class="card-status">
+                    ${presta_getMissionActions(status, mission)}
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
 function presta_loadInProgressMissions(missions) {
     console.log("🔄 CHARGEMENT MISSIONS EN COURS");
     
@@ -2853,29 +2921,28 @@ function reinitialiserEcouteurFormulaire() {
     
     // 4. Écouteur avec protection
     nouveauFormulaire.addEventListener("submit", async function(e) {
-    console.log("🎯 Événement submit détecté");
-    
-    // PROTECTION ANTI-AUTO-SUBMIT
-    if (!allowSubmit) {
-        console.log("🚫 BLOQUÉ: Auto-submit détecté");
+        console.log("🎯 Événement submit détecté");
+        
+        // PROTECTION ANTI-AUTO-SUBMIT
+        if (!allowSubmit) {
+            console.log("🚫 BLOQUÉ: Auto-submit détecté");
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            alert("Veuillez patienter 2 secondes...");
+            return;
+        }
+        
+        // Bloque aussi les submits non-manuels
+        if (!e.isTrusted) {
+            console.log("🚫 BLOQUÉ: Événement non-trusted");
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            return;
+        }
+        
         e.preventDefault();
-        e.stopImmediatePropagation();
-        alert("Veuillez patienter 2 secondes...");
-        return;
-    }
-    
-    // Bloque aussi les submits non-manuels
-    if (!e.isTrusted) {
-        console.log("🚫 BLOQUÉ: Événement non-trusted");
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        return;
-    }
-    
-    // CORRECTION ICI : Le slash était seul
-    e.preventDefault();
-    
-    // Récupérer les noms formatés
+        
+            // Récupérer les noms formatés
     const noms = getFormattedNames();
     const clientPrenom = noms.clientPrenom;
     const clientNom = noms.clientNom;
@@ -2883,8 +2950,8 @@ function reinitialiserEcouteurFormulaire() {
     const prestataireNom = noms.prestataireNom;
     
     console.log("📝 Noms formatés:", noms);
-// ========================
-
+    // ========================
+    
     // Récupérer les valeurs du formulaire
     const dateValue = document.getElementById("presta-obsDate").value;
     const formeValue = document.getElementById("presta-etatForme").value;
@@ -3376,6 +3443,73 @@ function getFormattedNames() {
     
     // Récupérer le nom complet du prestataire depuis l'interface
     const prestataireNameElement = document.getElementById('prestataire-name');
+    let prestatairePrenom = "Ray";
+    let prestataireNom = "Mon";
+    
+    if (prestataireNameElement) {
+        const fullName = prestataireNameElement.textContent.trim();
+        console.log("Nom prestataire brut:", fullName);
+        
+        if (fullName && fullName !== "Prestataire") {
+            const nameParts = fullName.split(' ');
+            prestatairePrenom = nameParts[0] || "Ray";
+            prestataireNom = nameParts.slice(1).join(' ') || "Mon";
+        }
+    }
+    
+    // Récupérer le nom du client
+    let clientPrenom = "Gaëtan"; // Valeur par défaut
+    let clientNom = "MUKEBA-HARCHIES";
+    
+    console.log("Données client brutes:", {
+        prenom: presta_currentClientPrenom,
+        nom: presta_currentClientNom
+    });
+    
+    // Si presta_currentClientNom contient les deux
+    if (presta_currentClientNom && presta_currentClientNom.trim()) {
+        const clientFullName = presta_currentClientNom.trim();
+        
+        // Cas 1 : Si le prénom est séparé dans presta_currentClientPrenom
+        if (presta_currentClientPrenom && presta_currentClientPrenom.trim()) {
+            clientPrenom = presta_currentClientPrenom.trim();
+            clientNom = clientFullName.replace(clientPrenom, '').trim();
+        } 
+        // Cas 2 : Essayer de séparer prénom et nom depuis le nom complet
+        else {
+            const clientNameParts = clientFullName.split(' ');
+            if (clientNameParts.length >= 2) {
+                // Supposons que le dernier mot est le nom
+                clientNom = clientNameParts[clientNameParts.length - 1];
+                clientPrenom = clientNameParts.slice(0, clientNameParts.length - 1).join(' ');
+            } else if (clientNameParts.length === 1) {
+                clientNom = clientFullName;
+            }
+        }
+    }
+    
+    console.log("👤 Noms formatés:", {
+        client: `${clientPrenom} ${clientNom}`,
+        prestataire: `${prestatairePrenom} ${prestataireNom}`
+    });
+    
+    return {
+        clientPrenom,
+        clientNom,
+        prestatairePrenom,
+        prestataireNom
+    };
+}
+
+// =============================================
+// FONCTION POUR FORMATER LES NOMS
+// =============================================
+
+function getFormattedNames() {
+    console.log("🔍 Début getFormattedNames");
+    
+    // Récupérer le nom complet du prestataire depuis l'interface
+    const prestataireNameElement = document.getElementById('prestataire-name');
     let prestatairePrenom = "Ray"; // Valeurs par défaut
     let prestataireNom = "Mon";
     
@@ -3399,34 +3533,6 @@ function getFormattedNames() {
         nom: presta_currentClientNom
     });
     
-    // Si presta_currentClientNom contient les deux (prénom + nom)
-    if (presta_currentClientNom && presta_currentClientNom.trim() && !presta_currentClientPrenom) {
-        const clientFullName = presta_currentClientNom.trim();
-        const clientNameParts = clientFullName.split(' ');
-        
-        if (clientNameParts.length >= 2) {
-            // Le dernier mot est probablement le nom
-            clientNom = clientNameParts[clientNameParts.length - 1];
-            clientPrenom = clientNameParts.slice(0, clientNameParts.length - 1).join(' ');
-        }
-    }
-    
-    console.log("👤 Noms formatés:", {
-        client: `${clientPrenom} ${clientNom}`,
-        prestataire: `${prestatairePrenom} ${prestataireNom}`
-    });
-    
-    return {
-        clientPrenom,
-        clientNom,
-        prestatairePrenom,
-        prestataireNom
-    };
-}
-
-// =============================================
-// FONCTIONS DE TEST (optionnelles)
-// =============================================    
     // Si presta_currentClientNom contient les deux (prénom + nom)
     if (presta_currentClientNom && presta_currentClientNom.trim() && !presta_currentClientPrenom) {
         const clientFullName = presta_currentClientNom.trim();
