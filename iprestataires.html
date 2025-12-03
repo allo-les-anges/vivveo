@@ -2940,18 +2940,16 @@ function reinitialiserEcouteurFormulaire() {
             return;
         }
         
-        e.preventDefault();
-        
-            // Récupérer les noms formatés
-    const noms = getFormattedNames();
-    const clientPrenom = noms.clientPrenom;
-    const clientNom = noms.clientNom;
-    const prestatairePrenom = noms.prestatairePrenom;
-    const prestataireNom = noms.prestataireNom;
-    
-    console.log("📝 Noms formatés:", noms);
-    // ========================
-    
+        / Récupérer les noms formatés
+const noms = getFormattedNames();
+const clientPrenom = noms.clientPrenom;
+const clientNom = noms.clientNom;
+const prestatairePrenom = noms.prestatairePrenom;
+const prestataireNom = noms.prestataireNom;
+
+console.log("📝 Noms formatés:", noms);
+// ========================
+
     // Récupérer les valeurs du formulaire
     const dateValue = document.getElementById("presta-obsDate").value;
     const formeValue = document.getElementById("presta-etatForme").value;
