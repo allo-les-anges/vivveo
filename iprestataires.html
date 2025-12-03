@@ -2834,6 +2834,47 @@ function presta_showForm() {
 let formSubmitEnabled = false;
 let formInitializedTime = 0;
 
+// Fonction pour récupérer les noms corrects
+function getFormattedNames() {
+    // Récupérer le nom complet du prestataire depuis l'interface
+    const prestataireNameElement = document.getElementById('prestataire-name');
+    let prestatairePrenom = "Ray";
+    let prestataireNom = "Mon";
+    
+    if (prestataireNameElement) {
+        const fullName = prestataireNameElement.textContent.trim();
+        if (fullName && fullName !== "Prestataire") {
+            const nameParts = fullName.split(' ');
+            prestatairePrenom = nameParts[0] || "Ray";
+            prestataireNom = nameParts.slice(1).join(' ') || "Mon";
+        }
+    }
+    
+    // Récupérer le nom du client depuis la mission
+    let clientPrenom = "Gaëtan"; // Valeur par défaut basée sur les logs
+    let clientNom = "MUKEBA-HARCHIES";
+    
+    if (presta_currentClientPrenom && presta_currentClientPrenom.trim()) {
+        clientPrenom = presta_currentClientPrenom.trim();
+    }
+    
+    if (presta_currentClientNom && presta_currentClientNom.trim()) {
+        clientNom = presta_currentClientNom.trim();
+    }
+    
+    console.log("👤 Noms formatés:", {
+        client: `${clientPrenom} ${clientNom}`,
+        prestataire: `${prestatairePrenom} ${prestataireNom}`
+    });
+    
+    return {
+        clientPrenom,
+        clientNom,
+        prestatairePrenom,
+        prestataireNom
+    };
+}        
+
 function reinitialiserEcouteurFormulaire() {
     console.log("🔄 Réinitialisation SÉCURISÉE de l'écouteur du formulaire...");
     
@@ -2955,24 +2996,41 @@ function reinitialiserEcouteurFormulaire() {
         presta_loadSessionData();
         
         // Préparer les données POUR LE GOOGLE SHEET
-        const donneesPourSheet = {
-            type: "enregistrerObservations", // IMPORTANT : type différent pour le sheet
-            missionId: presta_currentMissionId || "",
-            emailPrestataire: presta_currentEmail || "",
-            dateObservation: dateValue,
-            etatForme: formeValue,
-            observations: etatSanteValue, // Utiliser etatSante comme observations
-            environnement: environnementValue,
-            latitudeDebut: presta_currentLatitude || "",
-            longitudeDebut: presta_currentLongitude || "",
-            heureDebut: presta_heureDebut || "",
-            latitudeFin: presta_latitudeFin || "",
-            longitudeFin: presta_longitudeFin || "",
-            heureFin: presta_heureFin || new Date().toISOString(),
-            photosCount: photosBase64.length
-        };
-        
-        console.log("📊 Données pour Google Sheet:", donneesPourSheet);
+        // Dans la fonction d'écouteur du formulaire, remplacez la partie d'envoi par :
+
+// Préparer les données EXACTEMENT comme attendu par le Google Apps Script
+const donneesPourSheet = {
+    type: "enregistrerObservations",
+    missionId: presta_currentMissionId || "",
+    emailPrestataire: presta_currentEmail || "",
+    
+    // DONNÉES DU FORMULAIRE - CORRECTEMENT NOMÉES
+    dateObservation: dateValue, // Format: "2025-12-03"
+    etatSante: etatSanteValue,
+    etatForme: formeValue,
+    environnement: environnementValue,
+    
+    // DONNÉES GÉOLOCALISATION
+    latitudeDebut: presta_currentLatitude || "",
+    longitudeDebut: presta_currentLongitude || "",
+    heureDebut: presta_heureDebut || "",
+    latitudeFin: presta_latitudeFin || "",
+    longitudeFin: presta_longitudeFin || "",
+    heureFin: presta_heureFin || new Date().toISOString(),
+    
+    // INFORMATIONS CLIENT
+    prenomClient: (presta_currentClientPrenom || "").trim(),
+    nomClient: (presta_currentClientNom || "").trim(),
+    
+    // INFORMATIONS PRESTATAIRE
+    prenomPrestataire: presta_currentPrestatairePrenom || "Ray", // Valeur par défaut
+    nomPrestataire: presta_currentPrestataireNom || "Mon", // Valeur par défaut
+    
+    // PHOTOS - IMPORTANT : envoyer comme string JSON
+    photos: JSON.stringify(photosBase64)
+};
+
+console.log("📊 Données COMPLÈTES pour Sheet:", donneesPourSheet);
         
         // Préparer les données POUR LE PDF
         const donneesPourPDF = {
