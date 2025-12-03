@@ -2921,33 +2921,36 @@ function reinitialiserEcouteurFormulaire() {
     
     // 4. Écouteur avec protection
     nouveauFormulaire.addEventListener("submit", async function(e) {
-        console.log("🎯 Événement submit détecté");
-        
-        // PROTECTION ANTI-AUTO-SUBMIT
-        if (!allowSubmit) {
-            console.log("🚫 BLOQUÉ: Auto-submit détecté");
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            alert("Veuillez patienter 2 secondes...");
-            return;
-        }
-        
-        // Bloque aussi les submits non-manuels
-        if (!e.isTrusted) {
-            console.log("🚫 BLOQUÉ: Événement non-trusted");
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            return;
-        }
-        
-        / Récupérer les noms formatés
-const noms = getFormattedNames();
-const clientPrenom = noms.clientPrenom;
-const clientNom = noms.clientNom;
-const prestatairePrenom = noms.prestatairePrenom;
-const prestataireNom = noms.prestataireNom;
-
-console.log("📝 Noms formatés:", noms);
+    console.log("🎯 Événement submit détecté");
+    
+    // PROTECTION ANTI-AUTO-SUBMIT
+    if (!allowSubmit) {
+        console.log("🚫 BLOQUÉ: Auto-submit détecté");
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        alert("Veuillez patienter 2 secondes...");
+        return;
+    }
+    
+    // Bloque aussi les submits non-manuels
+    if (!e.isTrusted) {
+        console.log("🚫 BLOQUÉ: Événement non-trusted");
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return;
+    }
+    
+    // CORRECTION ICI : Le slash était seul
+    e.preventDefault();
+    
+    // Récupérer les noms formatés
+    const noms = getFormattedNames();
+    const clientPrenom = noms.clientPrenom;
+    const clientNom = noms.clientNom;
+    const prestatairePrenom = noms.prestatairePrenom;
+    const prestataireNom = noms.prestataireNom;
+    
+    console.log("📝 Noms formatés:", noms);
 // ========================
 
     // Récupérer les valeurs du formulaire
