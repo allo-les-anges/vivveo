@@ -28,7 +28,7 @@
             border-radius: 20px;
             padding: 20px;
             width: 100%;
-            max-width: 95vw; /* Élargi à 95% de la largeur de l'écran */
+            max-width: 95vw;
             max-height: 95vh;
             overflow-y: auto;
             box-sizing: border-box;
@@ -37,7 +37,6 @@
             flex-direction: column;
         }
 
-        /* Container scanner - PLEINE LARGEUR */
         .scanner-container {
             width: 100%;
             margin: 0 auto 20px auto;
@@ -48,7 +47,6 @@
             align-items: center;
         }
 
-        /* Scanner QR - OCCUPE TOUTE LA LARGEUR */
         #presta-qr-reader {
             width: 100% !important;
             max-width: 100% !important;
@@ -62,7 +60,6 @@
             overflow: hidden;
         }
 
-        /* Override des styles de la librairie QR */
         #presta-qr-reader > div:first-child {
             width: 100% !important;
             height: 100% !important;
@@ -77,13 +74,11 @@
             border-radius: 16px !important;
         }
 
-        /* Zone de scan élargie */
         #presta-qr-reader .html5-qrcode-element {
             border: 2px solid #facc15 !important;
             border-radius: 15px !important;
         }
 
-        /* Header du scanner */
         .scanner-header {
             text-align: center;
             margin-bottom: 20px;
@@ -102,38 +97,36 @@
             font-size: 0.95rem;
         }
 
-        /* Actions du scanner */
         .scanner-actions {
             width: 100%;
             padding: 0 10px;
         }
 
         .photo-preview-item {
-    transition: all 0.3s ease;
-}
+            transition: all 0.3s ease;
+        }
 
-.photo-preview-item:hover {
-    transform: translateY(-2px);
-}
+        .photo-preview-item:hover {
+            transform: translateY(-2px);
+        }
 
-.photo-preview-item img {
-    transition: all 0.3s ease;
-}
+        .photo-preview-item img {
+            transition: all 0.3s ease;
+        }
 
-.photo-preview-item:hover img {
-    border-color: #f59e0b;
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-}
+        .photo-preview-item:hover img {
+            border-color: #f59e0b;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
 
-.remove-photo {
-    transition: all 0.2s ease;
-}
+        .remove-photo {
+            transition: all 0.2s ease;
+        }
 
-.remove-photo:hover {
-    transform: scale(1.1);
-}
-   
-        /* Animation de focus pour le scanner */
+        .remove-photo:hover {
+            transform: scale(1.1);
+        }
+        
         @keyframes scannerPulse {
             0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7); }
             70% { box-shadow: 0 0 0 15px rgba(250, 204, 21, 0); }
@@ -144,7 +137,6 @@
             animation: scannerPulse 2s infinite;
         }
 
-        /* Styles responsives */
         @media (max-width: 480px) {
             #presta-modalContent {
                 width: 98%;
@@ -164,7 +156,6 @@
             }
         }
 
-        /* Mode paysage */
         @media (max-height: 600px) and (orientation: landscape) {
             #presta-modalContent {
                 max-height: 98vh;
@@ -190,7 +181,6 @@
             }
         }
 
-        /* Très petits écrans */
         @media (max-height: 500px) {
             #presta-qr-reader {
                 height: 45vh !important;
@@ -198,7 +188,6 @@
             }
         }
 
-        /* Styles pour les étapes de la modale */
         #presta-stepQR,
         #presta-stepForm,
         #presta-stepSuccess {
@@ -212,7 +201,6 @@
             flex: 1;
         }
 
-        /* Boutons */
         .btn-secondary {
             background: white;
             color: #374151;
@@ -232,7 +220,6 @@
             transform: translateY(-1px);
         }
 
-        /* Styles généraux restants */
         :root {
             --primary-color: #facc15;
             --primary-dark: #eab308;
@@ -1005,6 +992,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
+                    </button>
 
                     <div id="language-dropdown" class="language-dropdown">
                         <div class="language-option active" data-lang="fr">
@@ -1064,7 +1052,7 @@
                 </p>
             </div>
 
-            <form id="login-form" onsubmit="event.preventDefault(); presta_login();">
+            <form id="login-form">
                 <div class="form-group">
                     <label for="presta-email">Adresse email</label>
                     <div class="relative">
@@ -1086,17 +1074,6 @@
                 <div id="login-message" class="mt-4 hidden"></div>
             </form>
         </div>
-
-<!-- Section de test (À AJOUTER ICI) -->
-<div id="test-section" class="prestataire-section max-w-md mx-auto text-center mt-4">
-    <h3 class="text-lg font-bold mb-4">Test Manuel</h3>
-    <button onclick="testEnvoiFicheManuel()" class="btn-elegant w-full py-3">
-        🧪 TEST - Envoyer Fiche d'Observation
-    </button>
-    <p class="text-sm text-gray-600 mt-2">
-        Teste l'envoi d'une fiche avec la mission M0003 existante
-    </p>
-</div>
 
         <!-- Interface prestataire (cachée par défaut) -->
         <div id="prestataire-interface" class="hidden">
@@ -1434,7 +1411,7 @@
                 <span class="close" onclick="presta_closeModal('presta-profile-modal')">&times;</span>
             </div>
             <div class="modal-body">
-                <form id="presta-profile-form" onsubmit="event.preventDefault(); presta_saveProfile();">
+                <form id="presta-profile-form">
                     <!-- Section informations personnelles -->
                     <div class="form-section">
                         <h3 class="form-section-title">
@@ -1615,90 +1592,90 @@
         </div>
     </div>
 
-    <!-- Modal QR Code et fiche d'observation - CACHÉ PAR DÉFAIT -->
-    <!-- Modal QR Code et fiche d'observation - VERSION CORRIGÉE -->
-<div id="presta-modalOverlay">
-    <div id="presta-modalContent">
-        <div id="presta-stepQR">
-            <div class="scanner-header">
-                <h2>📸 Scanner le QR code client</h2>
-                <p>Placez le QR code dans le cadre pour le scanner</p>
+    <!-- Modal QR Code et fiche d'observation -->
+    <div id="presta-modalOverlay">
+        <div id="presta-modalContent">
+            <div id="presta-stepQR">
+                <div class="scanner-header">
+                    <h2>📸 Scanner le QR code client</h2>
+                    <p>Placez le QR code dans le cadre pour le scanner</p>
+                </div>
+                
+                <!-- Container principal du scanner - OPTIMISÉ -->
+                <div class="scanner-container">
+                    <div id="presta-qr-reader"></div>
+                </div>
+                
+                <!-- Boutons en bas -->
+                <div class="scanner-actions">
+                    <button id="presta-btnCancelQR" class="btn-secondary">
+                        <i class="fas fa-times mr-2"></i>
+                        Annuler
+                    </button>
+                </div>
+            </div>
+
+            <div id="presta-stepForm" style="display: none;">
+                <!-- LOADER AJOUTÉ ICI -->
+                <div id="presta-form-loader" class="loader" style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.9); z-index: 10; border-radius: 12px;">
+                    <div class="loader-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                        <div class="spinner" style="border: 4px solid #f3f3f3; border-top: 4px solid #facc15; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+                        <p style="font-weight: 600; color: #374151; font-size: 1.1rem;">Envoi en cours...</p>
+                        <p style="color: #6b7280; margin-top: 8px;">Génération du PDF et enregistrement des photos</p>
+                    </div>
+                </div>
+
+                <h2 class="text-xl font-bold mb-4">📝 Fiche d'observation</h2>
+                <form id="presta-obsForm">
+                    <div class="form-group">
+                        <label>Nom du client</label>
+                        <input type="text" id="presta-clientName" class="form-input" readonly />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date de l'observation</label>
+                        <input type="date" id="presta-obsDate" class="form-input" required autocomplete="off" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>État de santé</label>
+                        <textarea id="presta-etatSante" class="form-input" rows="3" placeholder="Décrire l'état de santé..." autocomplete="off"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>État de forme</label>
+                        <select id="presta-etatForme" class="form-input" required autocomplete="off">
+                            <option value="">-- Choisir --</option>
+                            <option>Très bon</option>
+                            <option>Bon</option>
+                            <option>Moyen</option>
+                            <option>Faible</option>
+                            <option>Très faible</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Environnement</label>
+                        <textarea id="presta-environnement" class="form-input" rows="3" placeholder="Décrire l'environnement..." autocomplete="off"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Photos (max 3)</label>
+                        <input type="file" id="presta-photos" class="form-input" accept="image/*" multiple autocomplete="off" />
+                        <div id="presta-photosPreview"></div>
+                    </div>
+
+                    <button type="submit" class="btn-elegant w-full">Envoyer la fiche</button>
+                    <button type="button" id="presta-btnCancelForm" class="btn-secondary w-full mt-2">Annuler</button>
+                </form>
             </div>
             
-            <!-- Container principal du scanner - OPTIMISÉ -->
-            <div class="scanner-container">
-                <div id="presta-qr-reader"></div>
+            <div id="presta-stepSuccess" style="display: none;">
+                <h2 class="text-xl font-bold mb-4">✅ Fiche envoyée avec succès !</h2>
+                <button id="presta-btnCloseSuccess" class="btn-elegant">Fermer</button>
             </div>
-            
-            <!-- Boutons en bas -->
-<div class="scanner-actions">
-    <button id="presta-btnCancelQR" class="btn-secondary">
-        <i class="fas fa-times mr-2"></i>
-        Annuler
-    </button>
-</div>
-</div>
-
-<div id="presta-stepForm" style="display: none;">
-    <!-- LOADER AJOUTÉ ICI -->
-    <div id="presta-form-loader" class="loader" style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.9); z-index: 10; border-radius: 12px;">
-        <div class="loader-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-            <div class="spinner" style="border: 4px solid #f3f3f3; border-top: 4px solid #facc15; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-            <p style="font-weight: 600; color: #374151; font-size: 1.1rem;">Envoi en cours...</p>
-            <p style="color: #6b7280; margin-top: 8px;">Génération du PDF et enregistrement des photos</p>
         </div>
     </div>
-
-    <h2 class="text-xl font-bold mb-4">📝 Fiche d'observation</h2>
-    <form id="presta-obsForm">
-        <div class="form-group">
-            <label>Nom du client</label>
-            <input type="text" id="presta-clientName" class="form-input" readonly />
-        </div>
-
-        <div class="form-group">
-            <label>Date de l'observation</label>
-            <input type="date" id="presta-obsDate" class="form-input" required autocomplete="off" />
-        </div>
-
-        <div class="form-group">
-            <label>État de santé</label>
-            <textarea id="presta-etatSante" class="form-input" rows="3" placeholder="Décrire l'état de santé..." autocomplete="off"></textarea>
-        </div>
-
-        <div class="form-group">
-            <label>État de forme</label>
-            <select id="presta-etatForme" class="form-input" required autocomplete="off">
-                <option value="">-- Choisir --</option>
-                <option>Très bon</option>
-                <option>Bon</option>
-                <option>Moyen</option>
-                <option>Faible</option>
-                <option>Très faible</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Environnement</label>
-            <textarea id="presta-environnement" class="form-input" rows="3" placeholder="Décrire l'environnement..." autocomplete="off"></textarea>
-        </div>
-
-        <div class="form-group">
-            <label>Photos (max 3)</label>
-            <input type="file" id="presta-photos" class="form-input" accept="image/*" multiple autocomplete="off" />
-            <div id="presta-photosPreview"></div>
-        </div>
-
-        <button type="submit" class="btn-elegant w-full">Envoyer la fiche</button>
-        <button type="button" id="presta-btnCancelForm" class="btn-secondary w-full mt-2">Annuler</button>
-    </form>
-</div>
-        <div id="presta-stepSuccess" style="display: none;">
-            <h2 class="text-xl font-bold mb-4">✅ Fiche envoyée avec succès !</h2>
-            <button id="presta-btnCloseSuccess" class="btn-elegant">Fermer</button>
-        </div>
-    </div>
-</div>
     
     <script>
 // =============================================
@@ -1732,8 +1709,6 @@ let presta_modalOverlay, presta_stepQR, presta_stepForm, presta_stepSuccess;
 let presta_clientNameInput, presta_obsDateInput, presta_etatSanteInput;
 let presta_etatFormeInput, presta_environnementInput, presta_photosInput, presta_photosPreview;
 
-        
-
 // =============================================
 // FONCTIONS D'INITIALISATION
 // =============================================
@@ -1757,23 +1732,21 @@ function presta_initDOMElements() {
 
 function presta_loadSessionData() {
     try {
-        presta_currentMissionId = sessionStorage.getItem('presta_currentMissionId') || '';
         presta_currentEmail = sessionStorage.getItem('presta_currentEmail') || '';
+        presta_currentMissionId = sessionStorage.getItem('presta_currentMissionId') || '';
         presta_currentClientPrenom = sessionStorage.getItem('presta_currentClientPrenom') || '';
         presta_currentClientNom = sessionStorage.getItem('presta_currentClientNom') || '';
         presta_currentPrestatairePrenom = sessionStorage.getItem('presta_currentPrestatairePrenom') || '';
         presta_currentPrestataireNom = sessionStorage.getItem('presta_currentPrestataireNom') || '';
-        presta_heureDebut = sessionStorage.getItem('presta_heureDebut') || '';
-        presta_currentLatitude = sessionStorage.getItem('presta_currentLatitude') || '';
-        presta_currentLongitude = sessionStorage.getItem('presta_currentLongitude') || '';
-        presta_latitudeFin = sessionStorage.getItem('presta_latitudeFin') || '';
-        presta_longitudeFin = sessionStorage.getItem('presta_longitudeFin') || '';
-        presta_heureFin = sessionStorage.getItem('presta_heureFin') || '';
         
         console.log("📂 Données chargées:", { 
-            missionId: presta_currentMissionId,
-            email: presta_currentEmail
+            email: presta_currentEmail,
+            missionId: presta_currentMissionId
         });
+        
+        if (presta_currentEmail) {
+            console.log("🔑 Utilisateur déjà connecté:", presta_currentEmail);
+        }
     } catch (error) {
         console.error("❌ Erreur chargement session:", error);
     }
@@ -1781,22 +1754,14 @@ function presta_loadSessionData() {
 
 function presta_saveSessionData() {
     try {
-        sessionStorage.setItem('presta_currentMissionId', presta_currentMissionId || '');
         sessionStorage.setItem('presta_currentEmail', presta_currentEmail || '');
+        sessionStorage.setItem('presta_currentMissionId', presta_currentMissionId || '');
         sessionStorage.setItem('presta_currentClientPrenom', presta_currentClientPrenom || '');
         sessionStorage.setItem('presta_currentClientNom', presta_currentClientNom || '');
         sessionStorage.setItem('presta_currentPrestatairePrenom', presta_currentPrestatairePrenom || '');
         sessionStorage.setItem('presta_currentPrestataireNom', presta_currentPrestataireNom || '');
-        sessionStorage.setItem('presta_heureDebut', presta_heureDebut || '');
-        sessionStorage.setItem('presta_currentLatitude', presta_currentLatitude || '');
-        sessionStorage.setItem('presta_currentLongitude', presta_currentLongitude || '');
-        sessionStorage.setItem('presta_latitudeFin', presta_latitudeFin || '');
-        sessionStorage.setItem('presta_longitudeFin', presta_longitudeFin || '');
-        sessionStorage.setItem('presta_heureFin', presta_heureFin || '');
-        console.log("💾 Données sauvegardées:", { 
-            missionId: presta_currentMissionId,
-            email: presta_currentEmail
-        });
+        
+        console.log("💾 Données sauvegardées");
     } catch (error) {
         console.error("❌ Erreur sauvegarde session:", error);
     }
@@ -1804,18 +1769,12 @@ function presta_saveSessionData() {
 
 function presta_clearSessionData() {
     try {
-        sessionStorage.removeItem('presta_currentMissionId');
         sessionStorage.removeItem('presta_currentEmail');
+        sessionStorage.removeItem('presta_currentMissionId');
         sessionStorage.removeItem('presta_currentClientPrenom');
         sessionStorage.removeItem('presta_currentClientNom');
         sessionStorage.removeItem('presta_currentPrestatairePrenom');
         sessionStorage.removeItem('presta_currentPrestataireNom');
-        sessionStorage.removeItem('presta_heureDebut');
-        sessionStorage.removeItem('presta_currentLatitude');
-        sessionStorage.removeItem('presta_currentLongitude');
-        sessionStorage.removeItem('presta_latitudeFin');
-        sessionStorage.removeItem('presta_longitudeFin');
-        sessionStorage.removeItem('presta_heureFin');
         
         console.log("🧹 Stockage session vidé");
     } catch (error) {
@@ -1830,13 +1789,12 @@ function presta_clearSessionData() {
 function presta_callApiJsonp(url, callbackName) {
     return new Promise((resolve, reject) => {
         console.log(`📞 Appel JSONP: ${url}`);
-        console.log(`📞 Callback: ${callbackName}`);
         
         const timeoutId = setTimeout(() => {
             if (window[callbackName]) {
                 console.error('⏰ Timeout JSONP après 15 secondes');
-                reject(new Error('Timeout - Le serveur ne répond pas'));
                 delete window[callbackName];
+                reject(new Error('Timeout - Le serveur ne répond pas'));
             }
         }, 15000);
         
@@ -1893,23 +1851,19 @@ async function presta_login() {
 
         if (data && typeof data === 'object') {
             if (data.success === true) {
-                // ⭐⭐ STOCKER CORRECTEMENT L'EMAIL ⭐⭐
-                presta_currentEmail = email; // Simple et garantie de fonctionner
-                console.log("✅ Email stocké (depuis formulaire):", presta_currentEmail);
+                presta_currentEmail = email;
+                console.log("✅ Email stocké:", presta_currentEmail);
                 
                 document.getElementById('login-section').classList.add('hidden');
                 document.getElementById('prestataire-interface').classList.remove('hidden');
                 
-                // Utilisez data.prenom de la réponse
                 const prenom = data.prenom || email.split('@')[0];
                 document.getElementById('prestataire-name').textContent = prenom;
                 document.getElementById('prestataire-rating').textContent = data.note || "4.8";
                 
-                // Stocker les données du profil
                 presta_currentPrestataireData = data.profile || {};
                 presta_currentPrestataireData.prenom = prenom;
                 
-                // Charger les missions avec le bon email
                 console.log("🔄 Chargement missions pour:", presta_currentEmail);
                 await presta_loadMissions(presta_currentEmail);
                 
@@ -1945,6 +1899,7 @@ async function presta_login() {
         document.getElementById('loader').style.display = 'none';
     }
 }
+
 function presta_logout() {
     presta_currentEmail = "";
     presta_clearSessionData();
@@ -1952,6 +1907,7 @@ function presta_logout() {
     document.getElementById('prestataire-interface').classList.add('hidden');
     document.getElementById('login-form').reset();
     document.getElementById('login-message').classList.add('hidden');
+    presta_showNotification("Déconnexion réussie", 'success');
 }
 
 // =============================================
@@ -1980,16 +1936,6 @@ async function presta_loadMissions(email) {
         presta_loadMissionsByStatus('planned', missions);
         presta_loadMissionsByStatus('completed', missions);
         presta_loadInProgressMissions(missions);
-        
-        const hasInProgressMissions = missions.some(m => m.statut && m.statut.trim() === 'en cours');
-        console.log(`🎯 Missions en cours détectées: ${hasInProgressMissions}`);
-        
-        if (hasInProgressMissions) {
-            setTimeout(() => {
-                presta_showTab('inprogress');
-                console.log("✅ Onglet En Cours activé automatiquement");
-            }, 100);
-        }
         
         presta_attacherListenersStartPrestation();
 
@@ -2529,10 +2475,9 @@ async function processScannedQR(decodedText) {
         console.log("🔑 Client ID:", clientId);
         console.log("✅ QR Code accepté");
         
-        // ⭐⭐ NOUVELLE LOGIQUE : Vérifiez d'abord le statut de la mission ⭐⭐
+        // Vérifiez d'abord le statut de la mission
         console.log("🔍 Vérification du statut de la mission...");
         
-        // Essayez de récupérer le statut depuis l'API ou depuis vos données
         const missionStatus = await getMissionStatus(presta_currentMissionId);
         console.log(`📋 Mission ${presta_currentMissionId} - Statut: ${missionStatus}`);
         
@@ -2583,6 +2528,125 @@ async function getMissionStatus(missionId) {
     }
 }
         
+async function handleFirstScan() {
+    console.log("🟢 Gestion premier scan - Début");
+    
+    presta_loadSessionData();
+    
+    if (!navigator.geolocation) {
+        console.error("❌ Géolocalisation non supportée");
+        presta_showNotification("Votre appareil ne supporte pas la géolocalisation", 'error');
+        presta_closeModalQR();
+        return;
+    }
+
+    presta_heureDebut = new Date().toISOString();
+    console.log("⏰ Heure début enregistrée:", presta_heureDebut);
+    presta_saveSessionData();
+
+    navigator.geolocation.getCurrentPosition(
+        async position => {
+            console.log("📍 Géolocalisation début réussie");
+            
+            presta_currentLatitude = position.coords.latitude;
+            presta_currentLongitude = position.coords.longitude;
+            
+            console.log("📍 Géolocalisation début:", {
+                latitude: presta_currentLatitude,
+                longitude: presta_currentLongitude,
+                heureDebut: presta_heureDebut
+            });
+            
+            presta_saveSessionData();
+            await presta_demarrerMission();
+        },
+        async error => {
+            console.error("❌ Erreur géolocalisation début:", error);
+            
+            let message = "Erreur de géolocalisation pour le début.";
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    message = "Veuillez autoriser la géolocalisation pour démarrer.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    message = "Position non disponible pour le début.";
+                    break;
+                case error.TIMEOUT:
+                    message = "Délai de localisation dépassé pour le début.";
+                    break;
+            }
+            presta_showNotification(message, 'warning');
+            
+            presta_saveSessionData();
+            await presta_demarrerMission();
+        },
+        { 
+            enableHighAccuracy: true, 
+            timeout: 10000, 
+            maximumAge: 0 
+        }
+    );
+}
+
+async function presta_demarrerMission() {
+    console.log("▶ Démarrage de la mission:", presta_currentMissionId);
+    
+    try {
+        const payload = {
+            type: "startMission",
+            missionId: presta_currentMissionId,
+            email: presta_currentEmail,
+            latitude: presta_currentLatitude,
+            longitude: presta_currentLongitude,
+            heureDebut: presta_heureDebut
+        };
+        
+        console.log("📡 Appel API startMission:", payload);
+        
+        const params = new URLSearchParams();
+        Object.keys(payload).forEach(key => {
+            if (payload[key] !== null && payload[key] !== undefined) {
+                params.append(key, payload[key]);
+            }
+        });
+        
+        const response = await fetch(presta_webAppUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: params
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log("📦 Réponse startMission:", data);
+        
+        if (data.success) {
+            console.log("✅ Mission démarrée:", data.message);
+            presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
+            
+            setTimeout(() => {
+                presta_loadMissions(presta_currentEmail);
+            }, 1000);
+            
+        } else {
+            console.error("❌ Erreur startMission:", data.message || data.error);
+            presta_showNotification("❌ Erreur: " + (data.message || data.error), 'error');
+        }
+        
+    } catch (error) {
+        console.error("❌ Erreur démarrage mission:", error);
+        presta_showNotification("❌ Erreur de connexion API", 'error');
+    }
+    
+    console.log("🔒 Fermeture modale après démarrage");
+    presta_closeModalQR();
+}
+
 async function handleSecondScan() {
     console.log("🔴 Gestion deuxième scan - Début");
     
@@ -2653,65 +2717,6 @@ async function handleSecondScan() {
             maximumAge: 0 
         }
     );
-}
-
-async function presta_finirPremierScan() {
-    console.log("🔄 Finalisation du premier scan");
-    
-    try {
-        const payload = {
-            type: "startMission",
-            missionId: presta_currentMissionId,
-            email: presta_currentEmail,
-            latitude: presta_currentLatitude,
-            longitude: presta_currentLongitude,
-            heureDebut: presta_heureDebut
-        };
-        
-        console.log("📡 Appel API startMission:", payload);
-        
-        const params = new URLSearchParams();
-        Object.keys(payload).forEach(key => {
-            if (payload[key] !== null && payload[key] !== undefined) {
-                params.append(key, payload[key]);
-            }
-        });
-        
-        const response = await fetch(presta_webAppUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params
-        });
-        
-        if (!response.ok) {
-            throw new Error(`Erreur HTTP: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        console.log("📦 Réponse startMission:", data);
-        
-        if (data.success) {
-            console.log("✅ Mission démarrée:", data.message);
-            presta_showNotification("✅ Mission démarrée ! Statut : En cours", 'success');
-            
-            setTimeout(() => {
-                presta_loadMissions(presta_currentEmail);
-            }, 1000);
-            
-        } else {
-            console.error("❌ Erreur startMission:", data.message || data.error);
-            presta_showNotification("❌ Erreur: " + (data.message || data.error), 'error');
-        }
-        
-    } catch (error) {
-        console.error("❌ Erreur finalisation:", error);
-        presta_showNotification("❌ Erreur de connexion API", 'error');
-    }
-    
-    console.log("🔒 Fermeture modale");
-    presta_closeModalQR();
 }
 
 async function presta_terminerMission() {
@@ -2795,8 +2800,7 @@ async function presta_terminerEtAfficherFormulaire() {
 function presta_showForm() {
     console.log("📝 Affichage du formulaire d'observation");
     
-    // Charger TOUTES les données
-    presta_loadAllSessionData();
+    presta_loadSessionData();
     
     const stepQR = document.getElementById("presta-stepQR");
     const stepForm = document.getElementById("presta-stepForm");
@@ -2829,48 +2833,6 @@ function presta_showForm() {
         reinitialiserEcouteurFormulaire();
     }, 100);
 }
-        
-// ==== PROTECTION CONTRE AUTO-SUBMIT ====
-let formSubmitEnabled = false;
-let formInitializedTime = 0;
-
-    // Récupérer le nom du client - CORRECTION IMPORTANTE
-    let clientPrenom = "Gaëtan";
-    let clientNom = "MUKEBA-HARCHIES";
-    
-    // Si presta_currentClientNom contient les deux (comme dans vos logs)
-    if (presta_currentClientNom && presta_currentClientNom.trim()) {
-        const clientFullName = presta_currentClientNom.trim();
-        // Essayer de séparer prénom et nom
-        const clientNameParts = clientFullName.split(' ');
-        if (clientNameParts.length >= 2) {
-            // Dernier mot = nom, le reste = prénom
-            clientNom = clientNameParts[clientNameParts.length - 1];
-            clientPrenom = clientNameParts.slice(0, clientNameParts.length - 1).join(' ');
-        } else if (clientNameParts.length === 1) {
-            // Un seul mot, considérer comme nom
-            clientNom = clientFullName;
-            clientPrenom = "Gaëtan"; // Valeur par défaut
-        }
-    }
-    
-    // Priorité à presta_currentClientPrenom s'il est défini
-    if (presta_currentClientPrenom && presta_currentClientPrenom.trim()) {
-        clientPrenom = presta_currentClientPrenom.trim();
-    }
-    
-    console.log("👤 Noms formatés:", {
-        client: `${clientPrenom} ${clientNom}`,
-        prestataire: `${prestatairePrenom} ${prestataireNom}`
-    });
-    
-    return {
-        clientPrenom,
-        clientNom,
-        prestatairePrenom,
-        prestataireNom
-    };
-}        
 
 function reinitialiserEcouteurFormulaire() {
     console.log("🔄 Réinitialisation SÉCURISÉE de l'écouteur du formulaire...");
@@ -2881,16 +2843,15 @@ function reinitialiserEcouteurFormulaire() {
         return;
     }
     
-    // 1. Cloner pour supprimer TOUS les anciens écouteurs
+    // Cloner pour supprimer TOUS les anciens écouteurs
     const nouveauFormulaire = formulaire.cloneNode(true);
     formulaire.parentNode.replaceChild(nouveauFormulaire, formulaire);
     
-    // 2. Bloquer l'auto-submit immédiatement
+    // Bloquer l'auto-submit immédiatement
     let allowSubmit = false;
     
-    // 3. Remplir les champs automatiquement
+    // Remplir les champs automatiquement
     setTimeout(() => {
-        // Remplir les champs obligatoires
         const dateInput = document.getElementById("presta-obsDate");
         const formeInput = document.getElementById("presta-etatForme");
         
@@ -2904,7 +2865,6 @@ function reinitialiserEcouteurFormulaire() {
             console.log("✅ État forme auto-rempli");
         }
         
-        // Activer le bouton
         const submitBtn = nouveauFormulaire.querySelector('button[type="submit"]');
         if (submitBtn) {
             submitBtn.disabled = false;
@@ -2919,7 +2879,7 @@ function reinitialiserEcouteurFormulaire() {
         
     }, 100);
     
-    // 4. Écouteur avec protection
+    // Écouteur avec protection
     nouveauFormulaire.addEventListener("submit", async function(e) {
         console.log("🎯 Événement submit détecté");
         
@@ -2940,8 +2900,15 @@ function reinitialiserEcouteurFormulaire() {
             return;
         }
         
-        e.preventDefault();
-        
+        // Récupérer les noms formatés
+        const noms = getFormattedNames();
+        const clientPrenom = noms.clientPrenom;
+        const clientNom = noms.clientNom;
+        const prestatairePrenom = noms.prestatairePrenom;
+        const prestataireNom = noms.prestataireNom;
+
+        console.log("📝 Noms formatés:", noms);
+
         // Récupérer les valeurs du formulaire
         const dateValue = document.getElementById("presta-obsDate").value;
         const formeValue = document.getElementById("presta-etatForme").value;
@@ -2989,64 +2956,61 @@ function reinitialiserEcouteurFormulaire() {
             }
         }
         
-        // IMPORTANT : Récupérer l'heure de début depuis sessionStorage
+        // Charger les données de session
         presta_loadSessionData();
         
         // Préparer les données POUR LE GOOGLE SHEET
-        // Dans la fonction d'écouteur du formulaire, remplacez la partie d'envoi par :
-
-// Préparer les données EXACTEMENT comme attendu par le Google Apps Script
-const donneesPourSheet = {
-    type: "enregistrerObservations",
-    missionId: presta_currentMissionId || "",
-    emailPrestataire: presta_currentEmail || "",
-    
-    // DONNÉES DU FORMULAIRE - CORRECTEMENT NOMÉES
-    dateObservation: dateValue, // Format: "2025-12-03"
-    etatSante: etatSanteValue,
-    etatForme: formeValue,
-    environnement: environnementValue,
-    
-    // DONNÉES GÉOLOCALISATION
-    latitudeDebut: presta_currentLatitude || "",
-    longitudeDebut: presta_currentLongitude || "",
-    heureDebut: presta_heureDebut || "",
-    latitudeFin: presta_latitudeFin || "",
-    longitudeFin: presta_longitudeFin || "",
-    heureFin: presta_heureFin || new Date().toISOString(),
-    
-    // INFORMATIONS CLIENT
-    prenomClient: (presta_currentClientPrenom || "").trim(),
-    nomClient: (presta_currentClientNom || "").trim(),
-    
-    // INFORMATIONS PRESTATAIRE
-    prenomPrestataire: presta_currentPrestatairePrenom || "Ray", // Valeur par défaut
-    nomPrestataire: presta_currentPrestataireNom || "Mon", // Valeur par défaut
-    
-    // PHOTOS - IMPORTANT : envoyer comme string JSON
-    photos: JSON.stringify(photosBase64)
-};
-
-console.log("📊 Données COMPLÈTES pour Sheet:", donneesPourSheet);
+        const donneesPourSheet = {
+            type: "enregistrerObservations",
+            missionId: presta_currentMissionId || "",
+            emailPrestataire: presta_currentEmail || "",
+            
+            // DONNÉES DU FORMULAIRE - CORRECTEMENT NOMÉES
+            dateObservation: dateValue,
+            etatSante: etatSanteValue,
+            etatForme: formeValue,
+            environnement: environnementValue,
+            
+            // DONNÉES GÉOLOCALISATION
+            latitudeDebut: presta_currentLatitude || "",
+            longitudeDebut: presta_currentLongitude || "",
+            heureDebut: presta_heureDebut || "",
+            latitudeFin: presta_latitudeFin || "",
+            longitudeFin: presta_longitudeFin || "",
+            heureFin: presta_heureFin || new Date().toISOString(),
+            
+            // UTILISER LES NOMS FORMATÉS
+            prenomClient: clientPrenom,
+            nomClient: clientNom,
+            
+            // INFORMATIONS PRESTATAIRE
+            prenomPrestataire: prestatairePrenom,
+            nomPrestataire: prestataireNom,
+            
+            // PHOTOS - IMPORTANT : envoyer comme string JSON
+            photos: JSON.stringify(photosBase64)
+        };
         
-        // Préparer les données POUR LE PDF
+        console.log("📊 Données COMPLÈTES pour Sheet:", donneesPourSheet);
+        
+        // DONNÉES POUR LE PDF
         const donneesPourPDF = {
             type: "envoyerFiche", // IMPORTANT : type différent pour le PDF
             missionId: presta_currentMissionId || "",
-            prenomClient: presta_currentClientPrenom || "",
-            nomClient: presta_currentClientNom || "",
+            prenomClient: clientPrenom,
+            nomClient: clientNom,
             obsDate: dateValue,
             etatSante: etatSanteValue,
             etatForme: formeValue,
             environnement: environnementValue,
             prestataireEmail: presta_currentEmail || "",
-            prestatairePrenom: presta_currentPrestatairePrenom || "",
-            prestataireNom: presta_currentPrestataireNom || "",
+            prestatairePrenom: prestatairePrenom,
+            prestataireNom: prestataireNom,
             photos: JSON.stringify(photosBase64),
             latitude: presta_latitudeFin || "",
             longitude: presta_longitudeFin || "",
             heureFin: presta_heureFin || new Date().toISOString(),
-            heureDebut: presta_heureDebut || "" // Ajouter heure début pour PDF
+            heureDebut: presta_heureDebut || ""
         };
         
         console.log("📄 Données pour PDF:", {
@@ -3122,7 +3086,6 @@ console.log("📊 Données COMPLÈTES pour Sheet:", donneesPourSheet);
                 if (resultPDF.url) {
                     console.log("📄 PDF généré:", resultPDF.url);
                     setTimeout(() => {
-                        // Ouvrir dans un nouvel onglet sans quitter la page
                         const newWindow = window.open(resultPDF.url, '_blank');
                         if (!newWindow) {
                             alert("Le PDF a été généré mais la popup a été bloquée. Cliquez sur le lien ci-dessous :\n" + resultPDF.url);
@@ -3140,7 +3103,7 @@ console.log("📊 Données COMPLÈTES pour Sheet:", donneesPourSheet);
                 // Fermer la modale après 5 secondes
                 setTimeout(() => {
                     presta_closeModalQR();
-                    // Recharger les missions SANS rediriger
+                    // Recharger les missions
                     if (presta_currentEmail) {
                         presta_loadMissions(presta_currentEmail);
                     }
@@ -3160,6 +3123,7 @@ console.log("📊 Données COMPLÈTES pour Sheet:", donneesPourSheet);
             
         } finally {
             // Cacher le loader
+            const loader = document.getElementById('presta-form-loader');
             if (loader) {
                 loader.style.display = 'none';
             }
@@ -3169,155 +3133,60 @@ console.log("📊 Données COMPLÈTES pour Sheet:", donneesPourSheet);
     console.log("✅ Écouteur sécurisé attaché");
 }
 
-// Fonction pour bien récupérer toutes les données de session
-function presta_loadAllSessionData() {
-    presta_loadSessionData(); // Charge les données de base
+function getFormattedNames() {
+    console.log("🔍 Début getFormattedNames");
     
-    // Récupérer les données de mission depuis localStorage
-    try {
-        const missionDataStr = localStorage.getItem('currentMissionData');
-        if (missionDataStr) {
-            const missionData = JSON.parse(missionDataStr);
-            console.log("📋 Données mission depuis localStorage:", missionData);
-            
-            // Compléter les données manquantes
-            if (!presta_heureDebut && missionData.heureDebut) {
-                presta_heureDebut = missionData.heureDebut;
-            }
-            if (!presta_currentLatitude && missionData.latitudeDebut) {
-                presta_currentLatitude = missionData.latitudeDebut;
-            }
-            if (!presta_currentLongitude && missionData.longitudeDebut) {
-                presta_currentLongitude = missionData.longitudeDebut;
-            }
+    // Récupérer le nom complet du prestataire depuis l'interface
+    const prestataireNameElement = document.getElementById('prestataire-name');
+    let prestatairePrenom = "Ray"; // Valeurs par défaut
+    let prestataireNom = "Mon";
+    
+    if (prestataireNameElement) {
+        const fullName = prestataireNameElement.textContent.trim();
+        console.log("Nom prestataire brut:", fullName);
+        
+        if (fullName && fullName !== "Prestataire") {
+            const nameParts = fullName.split(' ');
+            prestatairePrenom = nameParts[0] || "Ray";
+            prestataireNom = nameParts.slice(1).join(' ') || "Mon";
         }
-    } catch (e) {
-        console.warn("⚠️ Pas de données mission dans localStorage");
     }
     
-    console.log("📊 Données complètes après chargement:", {
-        heureDebut: presta_heureDebut,
-        latitudeDebut: presta_currentLatitude,
-        longitudeDebut: presta_currentLongitude,
-        heureFin: presta_heureFin,
-        latitudeFin: presta_latitudeFin,
-        longitudeFin: presta_longitudeFin
+    // Récupérer le nom du client
+    let clientPrenom = presta_currentClientPrenom || "Gaëtan"; // Valeur par défaut
+    let clientNom = presta_currentClientNom || "MUKEBA-HARCHIES";
+    
+    console.log("Données client brutes:", {
+        prenom: presta_currentClientPrenom,
+        nom: presta_currentClientNom
     });
-}
-        
-// =============================================
-// FONCTION DE SOUMISSION DU FORMULAIRE D'OBSERVATION
-// =============================================
-
-async function handleFormulaireObservation(e) {
-    e.preventDefault();
-    console.log("📤 Début de l'envoi des observations...");
     
-    try {
-        // 1. Récupérer les données du formulaire
-        const dateObservation = document.getElementById("presta-obsDate").value;
-        const etatForme = document.getElementById("presta-etatForme").value;
-        const etatSante = document.getElementById("presta-etatSante").value;
-        const environnement = document.getElementById("presta-environnement").value;
+    // Si presta_currentClientNom contient les deux (prénom + nom)
+    if (presta_currentClientNom && presta_currentClientNom.trim() && !presta_currentClientPrenom) {
+        const clientFullName = presta_currentClientNom.trim();
+        const clientNameParts = clientFullName.split(' ');
         
-        // 2. Récupérer les photos
-        const photosInput = document.getElementById("presta-photos");
-        const photosFiles = photosInput.files;
-        let photosBase64 = [];
-        
-        if (photosFiles.length > 0) {
-            // Convertir les photos en base64 (maximum 3)
-            const maxPhotos = Math.min(photosFiles.length, 3);
-            for (let i = 0; i < maxPhotos; i++) {
-                const base64 = await fileToBase64(photosFiles[i]);
-                photosBase64.push(base64);
-            }
+        if (clientNameParts.length >= 2) {
+            // Le dernier mot est probablement le nom
+            clientNom = clientNameParts[clientNameParts.length - 1];
+            clientPrenom = clientNameParts.slice(0, clientNameParts.length - 1).join(' ');
         }
-        
-        // 3. Préparer les données pour l'API
-        const donneesFiche = {
-            type: "envoyerFiche",
-            missionId: presta_currentMissionId,
-            prenomClient: presta_currentClientPrenom,
-            nomClient: presta_currentClientNom,
-            obsDate: dateObservation,
-            etatSante: etatSante,
-            etatForme: etatForme,
-            environnement: environnement,
-            prestataireEmail: presta_currentEmail,
-            prestatairePrenom: presta_currentPrestatairePrenom,
-            prestataireNom: presta_currentPrestataireNom,
-            photos: JSON.stringify(photosBase64), // Convertir en JSON string
-            latitude: presta_latitudeFin,
-            longitude: presta_longitudeFin,
-            heureFin: presta_heureFin
-        };
-        
-        console.log("📦 Données à envoyer:", donneesFiche);
-        
-        // 4. Afficher le loader
-        presta_showFormLoader();
-        
-        // 5. Envoyer les données via POST
-        const params = new URLSearchParams();
-        Object.keys(donneesFiche).forEach(key => {
-            if (donneesFiche[key] !== null && donneesFiche[key] !== undefined) {
-                params.append(key, donneesFiche[key]);
-            }
-        });
-        
-        const response = await fetch(presta_webAppUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            },
-            body: params
-        });
-        
-        console.log("📨 Statut réponse:", response.status);
-        
-        const result = await response.json();
-        console.log("📊 Réponse complète:", result);
-        
-        if (result.success) {
-            console.log("✅ Fiche enregistrée avec succès !");
-            
-            // Afficher le PDF si disponible
-            if (result.url) {
-                console.log("📄 PDF généré:", result.url);
-                window.open(result.url, '_blank');
-            }
-            
-            // Afficher l'étape de succès
-            const stepForm = document.getElementById("presta-stepForm");
-            const stepSuccess = document.getElementById("presta-stepSuccess");
-            
-            if (stepForm) stepForm.style.display = "none";
-            if (stepSuccess) stepSuccess.style.display = "block";
-            
-            // Rafraîchir les missions après 2 secondes
-            setTimeout(() => {
-                presta_loadMissions(presta_currentEmail);
-            }, 2000);
-            
-        } else {
-            throw new Error(result.message || result.error || "Erreur lors de l'enregistrement");
-        }
-        
-    } catch (error) {
-        console.error("❌ Erreur complète:", error);
-        presta_showNotification("❌ Erreur lors de l'envoi: " + error.message, 'error');
-        
-        // Réafficher le formulaire en cas d'erreur
-        const stepForm = document.getElementById("presta-stepForm");
-        if (stepForm) stepForm.style.display = "block";
-        
-    } finally {
-        presta_hideFormLoader();
     }
+    
+    console.log("👤 Noms formatés:", {
+        client: `${clientPrenom} ${clientNom}`,
+        prestataire: `${prestatairePrenom} ${prestataireNom}`
+    });
+    
+    return {
+        clientPrenom,
+        clientNom,
+        prestatairePrenom,
+        prestataireNom
+    };
 }
-        
-        function presta_clearForm() {
+
+function presta_clearForm() {
     console.log("🧹 Nettoyage du formulaire");
 
     if (presta_obsDateInput) presta_obsDateInput.value = "";
@@ -3430,146 +3299,36 @@ function fileToBase64(file) {
     });
 }
 
-function getFormattedNames() {
-    console.log("🔍 Début getFormattedNames");
-    
-    // Récupérer le nom complet du prestataire depuis l'interface
-    const prestataireNameElement = document.getElementById('prestataire-name');
-    let prestatairePrenom = "Ray";
-    let prestataireNom = "Mon";
-    
-    if (prestataireNameElement) {
-        const fullName = prestataireNameElement.textContent.trim();
-        console.log("Nom prestataire brut:", fullName);
-        
-        if (fullName && fullName !== "Prestataire") {
-            const nameParts = fullName.split(' ');
-            prestatairePrenom = nameParts[0] || "Ray";
-            prestataireNom = nameParts.slice(1).join(' ') || "Mon";
-        }
-    }
-    
-    // Récupérer le nom du client
-    let clientPrenom = "Gaëtan"; // Valeur par défaut
-    let clientNom = "MUKEBA-HARCHIES";
-    
-    console.log("Données client brutes:", {
-        prenom: presta_currentClientPrenom,
-        nom: presta_currentClientNom
-    });
-    
-    // Si presta_currentClientNom contient les deux
-    if (presta_currentClientNom && presta_currentClientNom.trim()) {
-        const clientFullName = presta_currentClientNom.trim();
-        
-        // Cas 1 : Si le prénom est séparé dans presta_currentClientPrenom
-        if (presta_currentClientPrenom && presta_currentClientPrenom.trim()) {
-            clientPrenom = presta_currentClientPrenom.trim();
-            clientNom = clientFullName.replace(clientPrenom, '').trim();
-        } 
-        // Cas 2 : Essayer de séparer prénom et nom depuis le nom complet
-        else {
-            const clientNameParts = clientFullName.split(' ');
-            if (clientNameParts.length >= 2) {
-                // Supposons que le dernier mot est le nom
-                clientNom = clientNameParts[clientNameParts.length - 1];
-                clientPrenom = clientNameParts.slice(0, clientNameParts.length - 1).join(' ');
-            } else if (clientNameParts.length === 1) {
-                clientNom = clientFullName;
-            }
-        }
-    }
-    
-    console.log("👤 Noms formatés:", {
-        client: `${clientPrenom} ${clientNom}`,
-        prestataire: `${prestatairePrenom} ${prestataireNom}`
-    });
-    
-    return {
-        clientPrenom,
-        clientNom,
-        prestatairePrenom,
-        prestataireNom
-    };
-}
-        
-function presta_showFormLoader() {
-    const loader = document.getElementById('presta-form-loader');
-    const submitBtn = document.querySelector('#presta-obsForm button[type="submit"]');
-    
-    if (loader) {
-        loader.style.display = 'flex';
-    }
-    if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Envoi en cours...';
-    }
-}
-
-function presta_hideFormLoader() {
-    const loader = document.getElementById('presta-form-loader');
-    const submitBtn = document.querySelector('#presta-obsForm button[type="submit"]');
-    
-    if (loader) {
-        loader.style.display = 'none';
-    }
-    if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Envoyer la fiche';
-    }
-}
-
 // =============================================
-// FONCTIONS DE TEST (optionnelles)
+// FONCTIONS DE MODALES GÉNÉRIQUES
 // =============================================
 
-async function testEnvoiSimple() {
-    console.log("🧪 TEST ENVOI SIMPLE");
-    
-    const donneesTest = {
-        type: "envoyerFiche",
-        missionId: "M0003",
-        prenomClient: "Gaëtan",
-        nomClient: "MUKEBA-HARCHIES",
-        obsDate: new Date().toISOString().split("T")[0],
-        etatSante: "Test état santé",
-        etatForme: "Bon", 
-        environnement: "Test environnement",
-        prestataireEmail: "gm.harchies@gmail.com",
-        prestatairePrenom: "Ray",
-        prestataireNom: "Mon",
-        photos: "[]"
-    };
-    
-    console.log("📦 Données test:", donneesTest);
-    
-    try {
-        const params = new URLSearchParams();
-        Object.keys(donneesTest).forEach(key => {
-            params.append(key, donneesTest[key]);
-        });
+function presta_showCompletedMissions() {
+    const modal = document.getElementById('completed-missions-modal');
+    if (modal) {
+        modal.style.display = 'block';
+        presta_loadCompletedMissionsModal();
+    }
+}
 
-        const response = await fetch(presta_webAppUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params
-        });
-        
-        const result = await response.json();
-        console.log("📨 Résultat:", result);
-        
-        if (result.success) {
-            alert("✅ TEST RÉUSSI! PDF: " + (result.url || "généré"));
-            if (result.url) window.open(result.url, '_blank');
-        } else {
-            alert("❌ ÉCHEC: " + result.message);
-        }
-        
-    } catch (error) {
-        console.error("💥 Erreur test:", error);
-        alert("💥 ERREUR: " + error.message);
+function presta_closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function presta_showProfileModal() {
+    const modal = document.getElementById('presta-profile-modal');
+    if (modal) {
+        modal.style.display = 'block';
+    }
+}
+
+function presta_showDeleteAccountModal() {
+    const modal = document.getElementById('presta-delete-account-modal');
+    if (modal) {
+        modal.style.display = 'block';
     }
 }
 
@@ -3584,6 +3343,14 @@ document.addEventListener('DOMContentLoaded', function() {
     presta_loadSessionData();
     
     // Initialisation des écouteurs d'événements
+    const loginForm = document.getElementById("login-form");
+    if (loginForm) {
+        loginForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            presta_login();
+        });
+    }
+    
     if (document.getElementById("presta-btnCancelQR")) {
         document.getElementById("presta-btnCancelQR").onclick = function() {
             presta_closeModalQR();
@@ -3606,6 +3373,15 @@ document.addEventListener('DOMContentLoaded', function() {
             presta_closeModalQR();
         }
     });
+
+    // Vérifier si l'utilisateur est déjà connecté
+    if (presta_currentEmail) {
+        console.log("🔑 Utilisateur déjà connecté, chargement automatique");
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('prestataire-interface').classList.remove('hidden');
+        document.getElementById('presta-email').value = presta_currentEmail;
+        presta_loadMissions(presta_currentEmail);
+    }
 
     console.log("✅ Application initialisée avec succès");
 });
