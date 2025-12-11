@@ -3014,72 +3014,67 @@ async function envoyerFicheComplete() {
         if (loader) loader.style.display = 'flex';
         
         // 7. PRÉPARER LES DONNÉES POUR VOTRE SCRIPT GAS
-        // IMPORTANT: Utilisez les noms de paramètres que votre script attend
         const donnees = {
             // Type de requête
-            type: "saveObservationData",
+            type: "saveAndGenerate",
             
-            // Colonne A: ID de mission
+            // Identifiants
             missionId: presta_currentMissionId || "M0003",
-            
-            // Colonne C: Email Prestataire
             emailPrestataire: presta_currentEmail || "",
             
-            // Colonne R: Latitude Début
-            latitudeDebut: presta_currentLatitude || "",
-            // Colonne S: Longitude Début
-            longitudeDebut: presta_currentLongitude || "",
-            // Colonne T: Latitude Fin
-            latitudeFin: presta_latitudeFin || "",
-            // Colonne U: Longitude Fin
-            longitudeFin: presta_longitudeFin || "",
-            
-            // Colonne V: Date Observation
+            // Données d'observation (colonnes V à Z)
             dateObservation: dateObservation,
-            
-            // Colonne W: État Santé
             etatSante: etatSante || "",
-            
-            // Colonne X: État Forme
-            etatForme: etatForme,
-            
-            // Colonne Y: Environnement
+            etatForme: etatForme, // OBLIGATOIRE
             environnement: environnement || "",
             
-            // Colonne Z: Liens Photos
+            // Géolocalisation (colonnes R à U)
+            latitudeDebut: presta_currentLatitude || "",
+            longitudeDebut: presta_currentLongitude || "",
+            latitudeFin: presta_latitudeFin || "",
+            longitudeFin: presta_longitudeFin || "",
+            
+            // Heures (colonnes N et O)
+            heureDebut: presta_heureDebut || "",
+            heureFin: presta_heureFin || "",
+            
+            // Liens photos (colonne Z)
             liensPhotos: liensPhotos.join(", ") || "",
             
-            // Données supplémentaires pour le PDF
+            // Données pour le PDF
             clientPrenom: clientPrenom,
             clientNom: clientNom,
             prestatairePrenom: prestatairePrenom,
             prestataireNom: prestataireNom,
-            heureDebut: presta_heureDebut || "",
-            heureFin: presta_heureFin || "",
+            prestataireEmail: presta_currentEmail || "",
+            obsDate: dateObservation,
             
             // Photos en base64 pour le PDF
-            photos: JSON.stringify(photosBase64),
-            
-            // Type spécial pour le PDF
-            pdfType: "generatePDF",
-            obsDate: dateObservation
+            photos: JSON.stringify(photosBase64)
         };
         
-        console.log("📊 Données préparées:", {
+        console.log("📊 Données préparées pour le sheet:", {
             missionId: donnees.missionId,
-            client: `${donnees.clientPrenom} ${donnees.clientNom}`,
-            prestataire: `${donnees.prestatairePrenom} ${donnees.prestataireNom}`,
-            hasPhotos: donnees.liensPhotos !== "",
             dateObservation: donnees.dateObservation,
-            etatForme: donnees.etatForme
+            etatForme: donnees.etatForme,
+            photosCount: photosBase64.length
         });
         
         // 8. Envoyer les données via POST
         const params = new URLSearchParams();
         Object.keys(donnees).forEach(key => {
-            if (donnees[key] !== null && donnees[key] !== undefined && donnees[key] !== "") {
+            if (donnees[key] !== null && donnees[key] !== undefined) {
                 params.append(key, donnees[key]);
             }
+        });
+        
+        console.log("📡 Envoi au script GAS...");
+        const response = await fetch(presta_webAppUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            },
+            body: params
         });
         
         console.log("📡 Envoi des données au script...");
