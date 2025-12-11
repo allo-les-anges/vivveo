@@ -3013,54 +3013,79 @@ async function envoyerFicheComplete() {
         const loader = document.getElementById('presta-form-loader');
         if (loader) loader.style.display = 'flex';
         
-        // 7. PRÉPARER LES DONNÉES POUR LE SHEET (selon vos colonnes)
-        const donneesSheet = {
-            type: "saveObservationData",  // Type pour votre script GAS
+        // 7. PRÉPARER LES DONNÉES POUR VOTRE SCRIPT GAS
+        // IMPORTANT: Utilisez les noms de paramètres que votre script attend
+        const donnees = {
+            // Type de requête
+            type: "saveObservationData",
             
-            // Identifiants
+            // Colonne A: ID de mission
             missionId: presta_currentMissionId || "M0003",
+            
+            // Colonne C: Email Prestataire
             emailPrestataire: presta_currentEmail || "",
             
-            // Données d'observation
-            dateObservation: dateObservation || "",
-            etatSante: etatSante || "",
-            etatForme: etatForme || "",
-            environnement: environnement || "",
-            
-            // Géolocalisation
+            // Colonne R: Latitude Début
             latitudeDebut: presta_currentLatitude || "",
+            // Colonne S: Longitude Début
             longitudeDebut: presta_currentLongitude || "",
+            // Colonne T: Latitude Fin
             latitudeFin: presta_latitudeFin || "",
+            // Colonne U: Longitude Fin
             longitudeFin: presta_longitudeFin || "",
             
-            // Heures
-            heureDebut: presta_heureDebut || "",
-            heureFin: presta_heureFin || "",
+            // Colonne V: Date Observation
+            dateObservation: dateObservation,
             
-            // Liens photos
+            // Colonne W: État Santé
+            etatSante: etatSante || "",
+            
+            // Colonne X: État Forme
+            etatForme: etatForme,
+            
+            // Colonne Y: Environnement
+            environnement: environnement || "",
+            
+            // Colonne Z: Liens Photos
             liensPhotos: liensPhotos.join(", ") || "",
             
-            // Données client/prestataire pour le PDF
+            // Données supplémentaires pour le PDF
             clientPrenom: clientPrenom,
             clientNom: clientNom,
             prestatairePrenom: prestatairePrenom,
             prestataireNom: prestataireNom,
+            heureDebut: presta_heureDebut || "",
+            heureFin: presta_heureFin || "",
             
             // Photos en base64 pour le PDF
-            photos: JSON.stringify(photosBase64)
+            photos: JSON.stringify(photosBase64),
+            
+            // Type spécial pour le PDF
+            pdfType: "generatePDF",
+            obsDate: dateObservation
         };
         
-        console.log("📊 Données pour Sheet:", donneesSheet);
+        console.log("📊 Données préparées:", {
+            missionId: donnees.missionId,
+            client: `${donnees.clientPrenom} ${donnees.clientNom}`,
+            prestataire: `${donnees.prestatairePrenom} ${donnees.prestataireNom}`,
+            hasPhotos: donnees.liensPhotos !== "",
+            dateObservation: donnees.dateObservation,
+            etatForme: donnees.etatForme
+        });
         
         // 8. Envoyer les données via POST
         const params = new URLSearchParams();
-        Object.keys(donneesSheet).forEach(key => {
-            if (donneesSheet[key] !== null && donneesSheet[key] !== undefined) {
-                params.append(key, donneesSheet[key]);
+        Object.keys(donnees).forEach(key => {
+            if (donnees[key] !== null && donnees[key] !== undefined && donnees[key] !== "") {
+                params.append(key, donnees[key]);
             }
         });
         
         console.log("📡 Envoi des données au script...");
+        console.log("URL:", presta_webAppUrl);
+        console.log("Données envoyées:", Object.fromEntries(params));
+        
         const response = await fetch(presta_webAppUrl, {
             method: 'POST',
             headers: {
@@ -3081,83 +3106,43 @@ async function envoyerFicheComplete() {
         if (result.success) {
             console.log("✅ Données enregistrées avec succès !");
             
-            // 9. GÉNÉRER LE PDF SÉPARÉMENT
-            console.log("📄 Génération du PDF...");
-            
-            const donneesPDF = {
-                type: "generatePDF",
-                missionId: presta_currentMissionId || "M0003",
-                clientPrenom: clientPrenom,
-                clientNom: clientNom,
-                prestatairePrenom: prestatairePrenom,
-                prestataireNom: prestataireNom,
-                obsDate: dateObservation,
-                etatSante: etatSante || "Non renseigné",
-                etatForme: etatForme || "Non renseigné",
-                environnement: environnement || "Non renseigné",
-                heureDebut: formatDateHeureComplete(presta_heureDebut) || "Non renseigné",
-                heureFin: formatDateHeureComplete(presta_heureFin) || "Non renseigné",
-                latitudeDebut: presta_currentLatitude || "Non renseigné",
-                longitudeDebut: presta_currentLongitude || "Non renseigné",
-                latitudeFin: presta_latitudeFin || "Non renseigné",
-                longitudeFin: presta_longitudeFin || "Non renseigné",
-                photos: JSON.stringify(photosBase64)
-            };
-            
-            const paramsPDF = new URLSearchParams();
-            Object.keys(donneesPDF).forEach(key => {
-                if (donneesPDF[key] !== null && donneesPDF[key] !== undefined) {
-                    paramsPDF.append(key, donneesPDF[key]);
-                }
-            });
-            
-            const responsePDF = await fetch(presta_webAppUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                },
-                body: paramsPDF
-            });
-            
-            const resultPDF = await responsePDF.json();
-            
-            if (resultPDF.success && resultPDF.url) {
-                console.log("✅ PDF généré:", resultPDF.url);
+            // Ouvrir le PDF si disponible
+            if (result.url) {
+                console.log("📄 PDF généré:", result.url);
                 presta_showNotification("✅ Fiche enregistrée et PDF généré !", 'success');
                 
-                // Ouvrir le PDF
                 setTimeout(() => {
-                    window.open(resultPDF.url, '_blank');
+                    window.open(result.url, '_blank');
                 }, 1000);
-                
-                // Afficher l'étape de succès
-                document.getElementById("presta-stepForm").style.display = "none";
-                document.getElementById("presta-stepSuccess").style.display = "block";
-                
-                // Fermer après 5 secondes
-                setTimeout(() => {
-                    presta_closeModalQR();
-                    if (presta_currentEmail) {
-                        presta_loadMissions(presta_currentEmail);
-                    }
-                }, 5000);
-                
             } else {
-                throw new Error(resultPDF.message || "Erreur génération PDF");
+                console.log("ℹ️ Pas d'URL PDF retournée");
+                presta_showNotification("✅ Fiche enregistrée !", 'success');
             }
             
+            // Afficher l'étape de succès
+            document.getElementById("presta-stepForm").style.display = "none";
+            document.getElementById("presta-stepSuccess").style.display = "block";
+            
+            // Fermer après 5 secondes
+            setTimeout(() => {
+                presta_closeModalQR();
+                if (presta_currentEmail) {
+                    presta_loadMissions(presta_currentEmail);
+                }
+            }, 5000);
+            
         } else {
-            throw new Error(result.message || "Erreur enregistrement données");
+            throw new Error(result.message || result.error || "Erreur enregistrement données");
         }
         
     } catch (error) {
         console.error("❌ Erreur complète:", error);
         presta_showNotification("❌ Erreur: " + error.message, 'error');
         
-        // Réafficher le formulaire
+        // Réafficher le formulaire en cas d'erreur
         document.getElementById("presta-stepForm").style.display = "block";
         
-        throw error; // Relancer pour l'appelant
+        throw error;
     } finally {
         // Cacher le loader
         const loader = document.getElementById('presta-form-loader');
