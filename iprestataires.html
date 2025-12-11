@@ -1830,7 +1830,66 @@ function presta_callApiJsonp(url, callbackName) {
         console.log("🔄 Script JSONP ajouté au DOM");
     });
 }
+
+// AJOUTEZ CETTE FONCTION DANS iprestataire.html
+async function presta_login(email, password) {
+    console.log("🔐 [presta_login] Début de connexion avec:", email);
+    
+    try {
+        const callbackName = 'cbLogin' + Date.now();
+        const url = `https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec?type=loginpresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&timestamp=${Date.now()}`;
         
+        console.log("📡 [presta_login] URL:", url);
+        console.log("📞 [presta_login] Callback:", callbackName);
+        
+        // Appel API JSONP
+        const data = await presta_callApiJsonp(url, callbackName);
+        
+        console.log("📦 [presta_login] Données reçues:", data);
+        
+        // Vérification des données
+        if (!data || typeof data !== 'object') {
+            console.error("❌ [presta_login] Données invalides:", data);
+            return { success: false, error: "Données invalides reçues du serveur" };
+        }
+        
+        // Vérification du succès
+        if (data.success !== true) {
+            console.error("❌ [presta_login] Échec API:", data);
+            return { 
+                success: false, 
+                error: data.message || data.error || "Échec de connexion" 
+            };
+        }
+        
+        // Extraction du prénom (fallback sur email si pas de prénom)
+        const prenom = data.prenom || email.split('@')[0];
+        const nom = data.nom || "";
+        
+        console.log("✅ [presta_login] SUCCÈS!");
+        console.log("👤 [presta_login] Prenom:", prenom);
+        console.log("👤 [presta_login] Nom:", nom);
+        console.log("📧 [presta_login] Email:", data.email);
+        
+        // Retour du résultat
+        return {
+            success: true,
+            prenom: prenom,
+            nom: nom,
+            email: data.email,
+            rgpd: data.rgpd || false,
+            validation: data.validation || false
+        };
+        
+    } catch (error) {
+        console.error("💥 [presta_login] Erreur:", error);
+        return {
+            success: false,
+            error: error.message || "Erreur inconnue lors de la connexion"
+        };
+    }
+}
+      
 // =============================================
 // FONCTIONS DE CONNEXION/DÉCONNEXION
 // =============================================
