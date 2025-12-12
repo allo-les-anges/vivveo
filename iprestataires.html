@@ -3574,94 +3574,83 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // =============================================
-// RENDRE LES FONCTIONS DISPONIBLES GLOBALEMENT
+// RENDRE LES FONCTIONS DISPONIBLES GLOBALEMENT - VERSION CORRIGÉE
 // =============================================
-// SIMPLE ET DIRECT - PAS D'IIFE
-console.log("🌐 Début de l'exportation des fonctions globales...");
+console.log("🚀 Démarrage de l'initialisation des fonctions globales...");
 
-// Attendre que le DOM soit complètement chargé
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("📄 DOM chargé - exportation des fonctions...");
+// Fonction qui s'exécute quand tout est prêt
+function initGlobalFunctions() {
+    console.log("🔍 Vérification des fonctions locales:");
+    console.log("presta_callApiJsonp (local):", typeof presta_callApiJsonp);
+    console.log("updatePrestataireName (local):", typeof updatePrestataireName);
+    console.log("updateUIAfterLogin (local):", typeof updateUIAfterLogin);
+    console.log("presta_login (local):", typeof presta_login);
     
-    // 1. Vérifier d'abord si les fonctions existent
-    console.log("🔍 Vérification des fonctions:");
-    console.log("presta_callApiJsonp existe?", typeof presta_callApiJsonp);
-    console.log("updatePrestataireName existe?", typeof updatePrestataireName);
-    console.log("updateUIAfterLogin existe?", typeof updateUIAfterLogin);
-    console.log("presta_login existe?", typeof presta_login);
-    
-    // 2. Exporter les fonctions sur l'objet window
-    if (typeof presta_callApiJsonp !== 'undefined') {
+    // Exporter chaque fonction sur window si elle existe
+    if (typeof presta_callApiJsonp === 'function') {
         window.presta_callApiJsonp = presta_callApiJsonp;
-        console.log("✅ presta_callApiJsonp exporté");
-    } else {
-        console.error("❌ presta_callApiJsonp non défini");
+        console.log("✅ presta_callApiJsonp → window.presta_callApiJsonp");
     }
     
-    if (typeof updatePrestataireName !== 'undefined') {
+    if (typeof updatePrestataireName === 'function') {
         window.updatePrestataireName = updatePrestataireName;
-        console.log("✅ updatePrestataireName exporté");
-    } else {
-        console.error("❌ updatePrestataireName non défini");
+        console.log("✅ updatePrestataireName → window.updatePrestataireName");
     }
     
-    if (typeof updateUIAfterLogin !== 'undefined') {
+    if (typeof updateUIAfterLogin === 'function') {
         window.updateUIAfterLogin = updateUIAfterLogin;
-        console.log("✅ updateUIAfterLogin exporté");
-    } else {
-        console.error("❌ updateUIAfterLogin non défini");
+        console.log("✅ updateUIAfterLogin → window.updateUIAfterLogin");
     }
     
-    if (typeof presta_login !== 'undefined') {
+    if (typeof presta_login === 'function') {
         window.presta_login = presta_login;
-        console.log("✅ presta_login exporté");
-    } else {
-        console.error("❌ presta_login non défini");
+        console.log("✅ presta_login → window.presta_login");
     }
     
-    // 3. Créer une fonction de test
-    window.testPrestataireApp = function() {
-        console.log("🧪 TEST DE L'APPLICATION PRESTATAIRE");
-        console.log("======================================");
-        console.log("1. Vérification des fonctions:");
-        console.log("   presta_callApiJsonp:", typeof window.presta_callApiJsonp);
-        console.log("   updatePrestataireName:", typeof window.updatePrestataireName);
-        console.log("   updateUIAfterLogin:", typeof window.updateUIAfterLogin);
-        console.log("   presta_login:", typeof window.presta_login);
+    // Créer une fonction de test SIMPLE
+    window.testPrestaFunctions = function() {
+        console.log("🧪 TEST DES FONCTIONS PRESTATAIRE");
+        console.log("================================");
         
-        console.log("\n2. Test visuel du nom:");
-        if (window.updatePrestataireName && typeof window.updatePrestataireName === 'function') {
-            const testName = "Gaëtan-TEST-" + Date.now().toString().slice(-4);
-            const success = window.updatePrestataireName(testName);
-            console.log("   ✅ Nom mis à jour:", testName);
-            console.log("   ✅ Fonction retour:", success);
-        } else {
-            console.log("   ❌ updatePrestataireName non disponible");
+        // Test 1: Vérification
+        console.log("1. Vérification:");
+        console.log("   window.presta_callApiJsonp:", typeof window.presta_callApiJsonp);
+        console.log("   window.updatePrestataireName:", typeof window.updatePrestataireName);
+        console.log("   window.updateUIAfterLogin:", typeof window.updateUIAfterLogin);
+        console.log("   window.presta_login:", typeof window.presta_login);
+        
+        // Test 2: Mise à jour du nom
+        console.log("\n2. Test de updatePrestataireName:");
+        if (typeof window.updatePrestataireName === 'function') {
+            const testName = "Gaëtan-" + Math.floor(Math.random() * 1000);
+            console.log("   Tentative avec:", testName);
+            const result = window.updatePrestataireName(testName);
+            console.log("   Résultat:", result ? "✅ Succès" : "❌ Échec");
+            console.log("   Regardez si '" + testName + "' s'affiche en haut à droite!");
         }
         
-        console.log("\n3. Test de connexion rapide:");
-        if (window.presta_login && typeof window.presta_login === 'function') {
-            console.log("   ✅ presta_login disponible - prêt à l'emploi");
-            console.log("   💡 Utilisez: presta_login('email', 'mdp')");
-        } else {
-            console.log("   ❌ presta_login non disponible");
+        // Test 3: API call
+        console.log("\n3. Test de presta_callApiJsonp:");
+        if (typeof window.presta_callApiJsonp === 'function') {
+            console.log("   ✅ Fonction disponible");
+            console.log("   💡 Utilisation: presta_callApiJsonp(url, callbackName)");
         }
         
-        console.log("\n🎉 Test terminé !");
+        console.log("\n🎯 Test terminé!");
+        console.log("💡 Pour tester la connexion: presta_login('votre@email.com', 'mdp')");
     };
     
-    console.log("\n🎯 Toutes les fonctions sont maintenant disponibles globalement !");
-    console.log("💡 Tapez 'testPrestataireApp()' dans la console pour vérifier.");
-    
-    // 4. Vérification finale
-    setTimeout(() => {
-        console.log("\n🔍 VÉRIFICATION FINALE:");
-        console.log("Window.presta_callApiJsonp:", typeof window.presta_callApiJsonp);
-        console.log("Window.updatePrestataireName:", typeof window.updatePrestataireName);
-        console.log("Window.updateUIAfterLogin:", typeof window.updateUIAfterLogin);
-        console.log("Window.presta_login:", typeof window.presta_login);
-    }, 500);
-});
+    console.log("\n✨ Initialisation terminée!");
+    console.log("📢 Tapez 'testPrestaFunctions()' dans la console pour tester.");
+}
+
+// Lancer l'initialisation au bon moment
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGlobalFunctions);
+} else {
+    // Le DOM est déjà chargé
+    setTimeout(initGlobalFunctions, 100);
+}
 </script>
 </body>
 </html>
