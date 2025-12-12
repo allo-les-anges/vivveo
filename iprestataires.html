@@ -1831,7 +1831,77 @@ function presta_callApiJsonp(url, callbackName) {
     });
 }
 
-// AJOUTEZ CETTE FONCTION DANS iprestataire.html
+// FONCTION POUR METTRE À JOUR LE PRÉNOM DANS L'INTERFACE
+function updatePrestataireName(prenom) {
+    console.log("🎨 Mise à jour du nom du prestataire:", prenom);
+    
+    // Méthode 1: Mettre à jour le span spécifique
+    const nameSpan = document.getElementById('prestataire-name');
+    if (nameSpan) {
+        console.log("✅ Span 'prestataire-name' trouvé:", nameSpan);
+        console.log("Avant:", nameSpan.textContent);
+        nameSpan.textContent = prenom;
+        console.log("Après:", nameSpan.textContent);
+        return true;
+    }
+    
+    // Méthode 2: Chercher par classe
+    const yellowSpans = document.querySelectorAll('.text-yellow-500');
+    yellowSpans.forEach(span => {
+        const text = span.textContent || '';
+        if (text === 'Prestataire') {
+            console.log("✅ Span avec classe text-yellow-500 trouvé:", span);
+            span.textContent = prenom;
+            return true;
+        }
+    });
+    
+    // Méthode 3: Chercher dans tous les spans
+    const allSpans = document.querySelectorAll('span');
+    allSpans.forEach(span => {
+        const text = span.textContent || '';
+        if (text.trim() === 'Prestataire') {
+            console.log("✅ Span avec texte 'Prestataire' trouvé:", span);
+            span.textContent = prenom;
+            return true;
+        }
+    });
+    
+    console.log("❌ Aucun élément trouvé pour mettre à jour le prénom");
+    return false;
+}
+
+// FONCTION POUR METTRE À JOUR TOUTE L'INTERFACE APRÈS CONNEXION
+function updateUIAfterLogin(userData) {
+    if (!userData || !userData.success) return false;
+    
+    console.log("🎭 Mise à jour complète de l'interface après connexion");
+    
+    const updated = updatePrestataireName(userData.prenom);
+    
+    if (updated) {
+        console.log("✅ Interface mise à jour avec succès!");
+        
+        // Optionnel: Cacher le formulaire de connexion
+        const loginForm = document.querySelector('form');
+        if (loginForm && loginForm.closest('.login-container')) {
+            loginForm.style.display = 'none';
+            console.log("📋 Formulaire de connexion caché");
+        }
+        
+        // Optionnel: Afficher la section connectée
+        const connectedSection = document.querySelector('.connected-section');
+        if (connectedSection) {
+            connectedSection.style.display = 'block';
+            console.log("✅ Section connectée affichée");
+        }
+    }
+    
+    return updated;
+}
+
+
+        
 async function presta_login(email, password) {
     console.log("🔐 [presta_login] Début de connexion avec:", email);
     
@@ -1871,6 +1941,27 @@ async function presta_login(email, password) {
         console.log("👤 [presta_login] Nom:", nom);
         console.log("📧 [presta_login] Email:", data.email);
         
+        // =============================================
+        // 🎯 CORRECTION CRITIQUE : METTRE À JOUR L'INTERFACE
+        // =============================================
+        
+        // 1. Sauvegarder les données dans sessionStorage
+        sessionStorage.setItem('presta_currentEmail', data.email);
+        sessionStorage.setItem('presta_currentPrenom', prenom);
+        sessionStorage.setItem('presta_currentNom', nom);
+        
+        // 2. Mettre à jour l'interface utilisateur
+        const uiUpdated = updateUIAfterLogin({
+            success: true,
+            prenom: prenom,
+            nom: nom,
+            email: data.email
+        });
+        
+        console.log("🎯 Interface mise à jour?", uiUpdated);
+        
+        // =============================================
+        
         // Retour du résultat
         return {
             success: true,
@@ -1878,7 +1969,8 @@ async function presta_login(email, password) {
             nom: nom,
             email: data.email,
             rgpd: data.rgpd || false,
-            validation: data.validation || false
+            validation: data.validation || false,
+            uiUpdated: uiUpdated
         };
         
     } catch (error) {
