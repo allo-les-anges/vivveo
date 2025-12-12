@@ -1681,7 +1681,14 @@
 // =============================================
 // CONFIGURATION ET VARIABLES GLOBALES
 // =============================================
-
+// =============================================
+// RENDRE LES FONCTIONS DISPONIBLES GLOBALEMENT
+// =============================================
+window.presta_callApiJsonp = presta_callApiJsonp;
+window.updatePrestataireName = updatePrestataireName;
+window.updateUIAfterLogin = updateUIAfterLogin;
+window.presta_login = presta_login;
+    
 // URL de l'application Google Apps Script
 const presta_webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
 console.log("✅ URL définie:", presta_webAppUrl);
@@ -3565,6 +3572,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
     console.log("✅ Application initialisée avec succès");
 });
+
+// =============================================
+// RENDRE LES FONCTIONS DISPONIBLES GLOBALEMENT
+// =============================================
+// Cette section rend les fonctions accessibles depuis la console
+(function() {
+    // Rendre les fonctions globales
+    window.presta_callApiJsonp = presta_callApiJsonp;
+    window.updatePrestataireName = updatePrestataireName;
+    window.updateUIAfterLogin = updateUIAfterLogin;
+    window.presta_login = presta_login;
+    
+    // Fonction de debug pour tester depuis la console
+    window.debugPrestataire = {
+        testUpdateName: function(name) {
+            if (typeof updatePrestataireName === 'function') {
+                return updatePrestataireName(name);
+            } else {
+                console.error("❌ updatePrestataireName non disponible");
+                return false;
+            }
+        },
+        testLogin: function(email, password) {
+            if (typeof presta_login === 'function') {
+                return presta_login(email, password);
+            } else {
+                console.error("❌ presta_login non disponible");
+                return false;
+            }
+        },
+        showFunctions: function() {
+            console.log("🔍 Fonctions disponibles:");
+            console.log("presta_callApiJsonp:", typeof presta_callApiJsonp);
+            console.log("updatePrestataireName:", typeof updatePrestataireName);
+            console.log("updateUIAfterLogin:", typeof updateUIAfterLogin);
+            console.log("presta_login:", typeof presta_login);
+        }
+    };
+    
+    console.log("✅ Fonctions rendues disponibles globalement");
+})();
+
 </script>
 </body>
 </html>
