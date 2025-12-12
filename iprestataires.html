@@ -1679,6 +1679,126 @@
     
     <script>
 // =============================================
+// DÉCLARATION GLOBALE IMMÉDIATE DES FONCTIONS
+// =============================================
+console.log("🚀 Déclaration globale des fonctions...");
+
+// Déclarer les fonctions GLOBALEMENT d'abord
+window.presta_callApiJsonp = async function(url, callbackName) {
+    console.log(`📞 [GLOBAL] Appel JSONP: ${url}`);
+    return new Promise((resolve, reject) => {
+        // Votre implémentation JSONP ici
+        const timeoutId = setTimeout(() => {
+            if (window[callbackName]) {
+                delete window[callbackName];
+                reject(new Error('Timeout JSONP'));
+            }
+        }, 15000);
+        
+        window[callbackName] = function(data) {
+            clearTimeout(timeoutId);
+            delete window[callbackName];
+            if (data && data.success === false) {
+                reject(new Error(data.message || data.error || "Erreur serveur"));
+            } else {
+                resolve(data);
+            }
+        };
+        
+        const script = document.createElement('script');
+        script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
+        document.body.appendChild(script);
+    });
+};
+
+window.updatePrestataireName = function(prenom) {
+    console.log("🎨 [GLOBAL] Mise à jour du nom:", prenom);
+    const nameSpan = document.getElementById('prestataire-name');
+    if (nameSpan) {
+        nameSpan.textContent = prenom;
+        return true;
+    }
+    console.error("❌ Élément 'prestataire-name' non trouvé");
+    return false;
+};
+
+window.updateUIAfterLogin = function(userData) {
+    console.log("🎭 [GLOBAL] Mise à jour UI après login");
+    if (!userData || !userData.success) return false;
+    
+    // Mettre à jour le nom
+    const updated = window.updatePrestataireName(userData.prenom);
+    
+    // Cacher/montrer les sections
+    const loginSection = document.getElementById('login-section');
+    const prestaInterface = document.getElementById('prestataire-interface');
+    
+    if (loginSection) loginSection.classList.add('hidden');
+    if (prestaInterface) prestaInterface.classList.remove('hidden');
+    
+    return updated;
+};
+
+window.presta_login = async function(email, password) {
+    console.log("🔐 [GLOBAL] Connexion avec:", email);
+    
+    try {
+        const callbackName = 'cbGlobalLogin' + Date.now();
+        const url = `https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec?type=loginpresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&timestamp=${Date.now()}`;
+        
+        const data = await window.presta_callApiJsonp(url, callbackName);
+        
+        if (data && data.success === true) {
+            const prenom = data.prenom || email.split('@')[0];
+            
+            // Sauvegarder en session
+            sessionStorage.setItem('presta_currentEmail', email);
+            sessionStorage.setItem('presta_currentPrenom', prenom);
+            
+            // Mettre à jour l'interface
+            window.updateUIAfterLogin({
+                success: true,
+                prenom: prenom,
+                email: email
+            });
+            
+            return { success: true, prenom: prenom, email: email };
+        } else {
+            throw new Error(data?.message || "Échec de connexion");
+        }
+    } catch (error) {
+        console.error("❌ Erreur connexion:", error);
+        return { success: false, error: error.message };
+    }
+};
+
+// Fonction de test IMMÉDIATE
+window.testPrestaNow = function() {
+    console.log("🧪 TEST IMMÉDIAT DES FONCTIONS GLOBALES");
+    console.log("========================================");
+    console.log("1. Vérification:");
+    console.log("   presta_callApiJsonp:", typeof window.presta_callApiJsonp);
+    console.log("   updatePrestataireName:", typeof window.updatePrestataireName);
+    console.log("   updateUIAfterLogin:", typeof window.updateUIAfterLogin);
+    console.log("   presta_login:", typeof window.presta_login);
+    
+    console.log("\n2. Test visuel:");
+    if (typeof window.updatePrestataireName === 'function') {
+        const testName = "Gaëtan-GLOBAL-" + Date.now().toString().slice(-4);
+        const success = window.updatePrestataireName(testName);
+        console.log("   Nom:", testName);
+        console.log("   Résultat:", success ? "✅ Succès" : "❌ Échec");
+    }
+    
+    console.log("\n3. Prêt pour connexion:");
+    console.log("   💡 Utilisez: presta_login('gm.harchies@gmail.com', '123')");
+    console.log("\n🎉 Test terminé !");
+};
+
+console.log("✅ Fonctions globales déclarées !");
+console.log("💡 Tapez 'testPrestaNow()' pour tester immédiatement.");
+        
+// =============================================
 // CONFIGURATION ET VARIABLES GLOBALES
 // =============================================
 // =============================================
