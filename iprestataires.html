@@ -2014,6 +2014,18 @@ async function presta_login() {
                 document.getElementById('prestataire-interface').classList.remove('hidden');
                 
                 const prenom = data.prenom || email.split('@')[0];
+                
+                // =============================================
+                // 🎯 AJOUTEZ CETTE LIGNE CRITIQUE !
+                // =============================================
+                updateUIAfterLogin({
+                    success: true,
+                    prenom: prenom,
+                    nom: data.nom || "",
+                    email: email
+                });
+                // =============================================
+                
                 document.getElementById('prestataire-name').textContent = prenom;
                 document.getElementById('prestataire-rating').textContent = data.note || "4.8";
                 
@@ -2055,7 +2067,6 @@ async function presta_login() {
         document.getElementById('loader').style.display = 'none';
     }
 }
-
 function presta_logout() {
     presta_currentEmail = "";
     presta_clearSessionData();
