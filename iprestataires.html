@@ -1802,18 +1802,11 @@ window.testPrestaSystem = function() {
 
 console.log("✅ Système prestataire prêt !");
 console.log("💡 Tapez 'testPrestaSystem()' pour tester.");
-        
+
 // =============================================
 // CONFIGURATION ET VARIABLES GLOBALES
 // =============================================
-// =============================================
-// RENDRE LES FONCTIONS DISPONIBLES GLOBALEMENT
-// =============================================
-window.presta_callApiJsonp = presta_callApiJsonp;
-window.updatePrestataireName = updatePrestataireName;
-window.updateUIAfterLogin = updateUIAfterLogin;
-window.presta_login = presta_login;
-    
+
 // URL de l'application Google Apps Script
 const presta_webAppUrl = "https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec";
 console.log("✅ URL définie:", presta_webAppUrl);
@@ -1915,301 +1908,6 @@ function presta_clearSessionData() {
 }
 
 // =============================================
-// FONCTIONS DE COMMUNICATION AVEC L'API
-// =============================================
-
-function presta_callApiJsonp(url, callbackName) {
-    return new Promise((resolve, reject) => {
-        console.log(`📞 Appel JSONP: ${url}`);
-        
-        // AJOUTEZ CES 2 LIGNES POUR LOGGER L'URL FINALE
-        const separator = url.includes('?') ? '&' : '?';
-        const finalUrl = `${url}${separator}callback=${callbackName}`;
-        console.log(`🎯 URL FINALE JSONP: ${finalUrl}`);
-        
-        const timeoutId = setTimeout(() => {
-            if (window[callbackName]) {
-                console.error('⏰ Timeout JSONP après 15 secondes');
-                delete window[callbackName];
-                reject(new Error('Timeout - Le serveur ne répond pas'));
-            }
-        }, 15000);
-        
-        window[callbackName] = function(data) {
-            clearTimeout(timeoutId);
-            console.log(`📨 Réponse JSONP reçue:`, data);
-            
-            delete window[callbackName];
-            
-            if (data && data.success === false) {
-                reject(new Error(data.message || data.error || "Erreur inconnue du serveur"));
-            } else {
-                resolve(data);
-            }
-        };
-        
-        const script = document.createElement('script');
-        script.src = finalUrl; // ← UTILISEZ finalUrl ici
-        
-        script.onerror = function() {
-            clearTimeout(timeoutId);
-            console.error('❌ Erreur script JSONP - Impossible de charger le script');
-            delete window[callbackName];
-            reject(new Error('Impossible de contacter le serveur. Vérifiez votre connexion.'));
-        };
-        
-        document.body.appendChild(script);
-        console.log("🔄 Script JSONP ajouté au DOM");
-    });
-}
-
-// FONCTION POUR METTRE À JOUR LE PRÉNOM DANS L'INTERFACE
-function updatePrestataireName(prenom) {
-    console.log("🎨 Mise à jour du nom du prestataire:", prenom);
-    
-    // Méthode 1: Mettre à jour le span spécifique
-    const nameSpan = document.getElementById('prestataire-name');
-    if (nameSpan) {
-        console.log("✅ Span 'prestataire-name' trouvé:", nameSpan);
-        console.log("Avant:", nameSpan.textContent);
-        nameSpan.textContent = prenom;
-        console.log("Après:", nameSpan.textContent);
-        return true;
-    }
-    
-    // Méthode 2: Chercher par classe
-    const yellowSpans = document.querySelectorAll('.text-yellow-500');
-    yellowSpans.forEach(span => {
-        const text = span.textContent || '';
-        if (text === 'Prestataire') {
-            console.log("✅ Span avec classe text-yellow-500 trouvé:", span);
-            span.textContent = prenom;
-            return true;
-        }
-    });
-    
-    // Méthode 3: Chercher dans tous les spans
-    const allSpans = document.querySelectorAll('span');
-    allSpans.forEach(span => {
-        const text = span.textContent || '';
-        if (text.trim() === 'Prestataire') {
-            console.log("✅ Span avec texte 'Prestataire' trouvé:", span);
-            span.textContent = prenom;
-            return true;
-        }
-    });
-    
-    console.log("❌ Aucun élément trouvé pour mettre à jour le prénom");
-    return false;
-}
-
-// FONCTION POUR METTRE À JOUR TOUTE L'INTERFACE APRÈS CONNEXION
-function updateUIAfterLogin(userData) {
-    if (!userData || !userData.success) return false;
-    
-    console.log("🎭 Mise à jour complète de l'interface après connexion");
-    
-    const updated = updatePrestataireName(userData.prenom);
-    
-    if (updated) {
-        console.log("✅ Interface mise à jour avec succès!");
-        
-        // Optionnel: Cacher le formulaire de connexion
-        const loginForm = document.querySelector('form');
-        if (loginForm && loginForm.closest('.login-container')) {
-            loginForm.style.display = 'none';
-            console.log("📋 Formulaire de connexion caché");
-        }
-        
-        // Optionnel: Afficher la section connectée
-        const connectedSection = document.querySelector('.connected-section');
-        if (connectedSection) {
-            connectedSection.style.display = 'block';
-            console.log("✅ Section connectée affichée");
-        }
-    }
-    
-    return updated;
-}
-
-
-        
-async function presta_login(email, password) {
-    console.log("🔐 [presta_login] Début de connexion avec:", email);
-    
-    try {
-        const callbackName = 'cbLogin' + Date.now();
-        const url = `https://script.google.com/macros/s/AKfycbzEEZZnZJK1BEXlCk81ogi0Aa7MFGunOkjS5s2CCDIZPSkHq0OtPAcEBLrkXp-fpb8aaQ/exec?type=loginpresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&timestamp=${Date.now()}`;
-        
-        console.log("📡 [presta_login] URL:", url);
-        console.log("📞 [presta_login] Callback:", callbackName);
-        
-        // Appel API JSONP
-        const data = await presta_callApiJsonp(url, callbackName);
-        
-        console.log("📦 [presta_login] Données reçues:", data);
-        
-        // Vérification des données
-        if (!data || typeof data !== 'object') {
-            console.error("❌ [presta_login] Données invalides:", data);
-            return { success: false, error: "Données invalides reçues du serveur" };
-        }
-        
-        // Vérification du succès
-        if (data.success !== true) {
-            console.error("❌ [presta_login] Échec API:", data);
-            return { 
-                success: false, 
-                error: data.message || data.error || "Échec de connexion" 
-            };
-        }
-        
-        // Extraction du prénom (fallback sur email si pas de prénom)
-        const prenom = data.prenom || email.split('@')[0];
-        const nom = data.nom || "";
-        
-        console.log("✅ [presta_login] SUCCÈS!");
-        console.log("👤 [presta_login] Prenom:", prenom);
-        console.log("👤 [presta_login] Nom:", nom);
-        console.log("📧 [presta_login] Email:", data.email);
-        
-        // =============================================
-        // 🎯 CORRECTION CRITIQUE : METTRE À JOUR L'INTERFACE
-        // =============================================
-        
-        // 1. Sauvegarder les données dans sessionStorage
-        sessionStorage.setItem('presta_currentEmail', data.email);
-        sessionStorage.setItem('presta_currentPrenom', prenom);
-        sessionStorage.setItem('presta_currentNom', nom);
-        
-        // 2. Mettre à jour l'interface utilisateur
-        const uiUpdated = updateUIAfterLogin({
-            success: true,
-            prenom: prenom,
-            nom: nom,
-            email: data.email
-        });
-        
-        console.log("🎯 Interface mise à jour?", uiUpdated);
-        
-        // =============================================
-        
-        // Retour du résultat
-        return {
-            success: true,
-            prenom: prenom,
-            nom: nom,
-            email: data.email,
-            rgpd: data.rgpd || false,
-            validation: data.validation || false,
-            uiUpdated: uiUpdated
-        };
-        
-    } catch (error) {
-        console.error("💥 [presta_login] Erreur:", error);
-        return {
-            success: false,
-            error: error.message || "Erreur inconnue lors de la connexion"
-        };
-    }
-}
-      
-// =============================================
-// FONCTIONS DE CONNEXION/DÉCONNEXION
-// =============================================
-
-async function presta_login() {
-    const email = document.getElementById('presta-email').value;
-    const password = document.getElementById('presta-password').value;
-    const message = document.getElementById('login-message');
-
-    console.log("🔐 Tentative de connexion avec:", email);
-    
-    document.getElementById('loader').style.display = 'flex';
-    message.classList.add('hidden');
-
-    try {
-        const callbackName = 'cbLogin' + Date.now();
-        const url = `${presta_webAppUrl}?type=loginpresta&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&timestamp=${Date.now()}`;
-        
-        console.log("📡 URL de connexion JSONP:", url);
-        
-        const data = await presta_callApiJsonp(url, callbackName);
-        console.log("📦 Réponse complète de connexion:", data);
-
-        if (data && typeof data === 'object') {
-            if (data.success === true) {
-                presta_currentEmail = email;
-                console.log("✅ Email stocké:", presta_currentEmail);
-                
-                document.getElementById('login-section').classList.add('hidden');
-                document.getElementById('prestataire-interface').classList.remove('hidden');
-                
-                const prenom = data.prenom || email.split('@')[0];
-                
-                // =============================================
-                // 🎯 AJOUTEZ CETTE LIGNE CRITIQUE !
-                // =============================================
-                updateUIAfterLogin({
-                    success: true,
-                    prenom: prenom,
-                    nom: data.nom || "",
-                    email: email
-                });
-                // =============================================
-                
-                document.getElementById('prestataire-name').textContent = prenom;
-                document.getElementById('prestataire-rating').textContent = data.note || "4.8";
-                
-                presta_currentPrestataireData = data.profile || {};
-                presta_currentPrestataireData.prenom = prenom;
-                
-                console.log("🔄 Chargement missions pour:", presta_currentEmail);
-                await presta_loadMissions(presta_currentEmail);
-                
-                presta_showNotification("Connexion réussie ! Bienvenue " + prenom, 'success');
-                message.classList.add('hidden');
-                
-            } else if (data.success === false) {
-                const errorMsg = data.message || "Email ou mot de passe incorrect";
-                console.error("❌ Échec connexion:", errorMsg);
-                
-                message.textContent = `Erreur: ${errorMsg}`;
-                message.classList.remove('hidden');
-                message.className = 'message message-error';
-            }
-        } else {
-            throw new Error("Réponse du serveur invalide");
-        }
-        
-    } catch (error) {
-        console.error("❌ Erreur lors de la connexion:", error);
-        
-        let errorMessage = error.message;
-        if (errorMessage.includes('Timeout')) {
-            errorMessage = "Le serveur ne répond pas. Vérifiez votre connexion internet.";
-        } else if (errorMessage.includes('JSONP')) {
-            errorMessage = "Problème de communication avec le serveur.";
-        }
-        
-        message.textContent = errorMessage;
-        message.classList.remove('hidden');
-        message.className = 'message message-error';
-    } finally {
-        document.getElementById('loader').style.display = 'none';
-    }
-}
-function presta_logout() {
-    presta_currentEmail = "";
-    presta_clearSessionData();
-    document.getElementById('login-section').classList.remove('hidden');
-    document.getElementById('prestataire-interface').classList.add('hidden');
-    document.getElementById('login-form').reset();
-    document.getElementById('login-message').classList.add('hidden');
-    presta_showNotification("Déconnexion réussie", 'success');
-}
-
-// =============================================
 // FONCTIONS DE GESTION DES MISSIONS
 // =============================================
 
@@ -2217,7 +1915,7 @@ async function presta_loadMissions(email) {
     try {
         const callbackName = 'cbMissions' + Date.now();
         const url = `${presta_webAppUrl}?type=missionsPresta&email=${encodeURIComponent(email)}`;
-        const data = await presta_callApiJsonp(url, callbackName);
+        const data = await window.presta_callApiJsonp(url, callbackName);
 
         const missions = data.missions || data;
         
@@ -2513,7 +2211,7 @@ async function presta_validerMission(id) {
         try {
             const callbackName = 'cbValider' + Date.now();
             const url = `${presta_webAppUrl}?type=validerMission&id=${encodeURIComponent(id)}`;
-            const data = await presta_callApiJsonp(url, callbackName);
+            const data = await window.presta_callApiJsonp(url, callbackName);
             
             if (data.success) {
                 presta_showNotification("Mission validée avec succès !", 'success');
@@ -2538,7 +2236,7 @@ async function presta_refuserMission(id) {
     try {
         const callbackName = 'cbRefuser' + Date.now();
         const url = `${presta_webAppUrl}?type=refuserMission&id=${encodeURIComponent(id)}&alternatives=${encodeURIComponent(alternatives)}`;
-        const data = await presta_callApiJsonp(url, callbackName);
+        const data = await window.presta_callApiJsonp(url, callbackName);
         
         if (data.success) {
             presta_showNotification("Votre proposition a bien été envoyée.", 'success');
@@ -2814,7 +2512,7 @@ async function getMissionStatus(missionId) {
         const callbackName = 'cbStatus' + Date.now();
         const url = `${presta_webAppUrl}?type=getMissionById&id=${encodeURIComponent(missionId)}`;
         
-        const data = await presta_callApiJsonp(url, callbackName);
+        const data = await window.presta_callApiJsonp(url, callbackName);
         
         if (data && data.success && data.mission) {
             return data.mission.statut || 'inconnu';
@@ -3376,18 +3074,6 @@ async function envoyerFicheComplete() {
             body: params
         });
         
-        console.log("📡 Envoi des données au script...");
-        console.log("URL:", presta_webAppUrl);
-        console.log("Données envoyées:", Object.fromEntries(params));
-        
-        const response = await fetch(presta_webAppUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            },
-            body: params
-        });
-        
         console.log("📨 Statut réponse:", response.status);
         
         if (!response.ok) {
@@ -3659,7 +3345,29 @@ document.addEventListener('DOMContentLoaded', function() {
     if (loginForm) {
         loginForm.addEventListener("submit", function(e) {
             e.preventDefault();
-            presta_login();
+            
+            const email = document.getElementById('presta-email').value;
+            const password = document.getElementById('presta-password').value;
+            const message = document.getElementById('login-message');
+            
+            // Utiliser la fonction GLOBALE window.presta_login
+            window.presta_login(email, password).then(result => {
+                if (result.success) {
+                    console.log("✅ Connexion réussie via formulaire");
+                    // Sauvegarder l'email
+                    presta_currentEmail = email;
+                    // Charger les missions
+                    presta_loadMissions(email);
+                } else {
+                    message.textContent = `Erreur: ${result.error}`;
+                    message.classList.remove('hidden');
+                    message.className = 'message message-error';
+                }
+            }).catch(error => {
+                message.textContent = `Erreur: ${error.message}`;
+                message.classList.remove('hidden');
+                message.className = 'message message-error';
+            });
         });
     }
     
@@ -3697,7 +3405,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     console.log("✅ Application initialisée avec succès");
 });
-
+        
 </script>
 </body>
 </html>
