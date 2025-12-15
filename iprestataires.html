@@ -2962,7 +2962,36 @@ async function envoyerFicheComplete() {
         const loader = document.getElementById('presta-form-loader');
         if (loader) loader.style.display = 'flex';
         
-        // 4. Préparer les données
+        // 4. Récupérer les photos
+        const photosInput = document.getElementById("presta-photos");
+        const photosFiles = photosInput.files;
+        let photosBase64 = [];
+        let liensPhotos = [];
+        
+        if (photosFiles.length > 0) {
+            console.log(`📸 ${photosFiles.length} photo(s) détectée(s)`);
+            const maxPhotos = Math.min(photosFiles.length, 3);
+            
+            for (let i = 0; i < maxPhotos; i++) {
+                try {
+                    const base64 = await fileToBase64(photosFiles[i]);
+                    photosBase64.push(base64);
+                    
+                    // Créer un nom de fichier unique
+                    const fileName = `photo_${presta_currentMissionId}_${Date.now()}_${i+1}.jpg`;
+                    liensPhotos.push(fileName);
+                    console.log(`✅ Photo ${i+1} préparée: ${fileName}`);
+                } catch (error) {
+                    console.error(`❌ Erreur conversion photo ${i+1}:`, error);
+                }
+            }
+        }
+        
+        // 5. Récupérer les noms formatés
+        presta_loadSessionData();
+        const noms = ensureNamesNotEmpty();
+        
+        // 6. Préparer les données
         const donnees = {
             type: "saveAndGenerate",
             missionId: presta_currentMissionId || "",
@@ -2984,22 +3013,29 @@ async function envoyerFicheComplete() {
             heureDebut: presta_heureDebut || "",
             heureFin: presta_heureFin || "",
             
+            // Liens photos
+            liensPhotos: liensPhotos.join(", ") || "",
+            
             // Données pour le PDF
-            clientPrenom: presta_currentClientPrenom || "Gaëtan",
-            clientNom: presta_currentClientNom || "MUKEBA-HARCHIES",
-            prestatairePrenom: presta_currentPrestatairePrenom || "Ray",
-            prestataireNom: presta_currentPrestataireNom || "Mon",
+            clientPrenom: noms.clientPrenom,
+            clientNom: noms.clientNom,
+            prestatairePrenom: noms.prestatairePrenom,
+            prestataireNom: noms.prestataireNom,
             prestataireEmail: presta_currentEmail || "",
-            obsDate: dateObservation
+            obsDate: dateObservation,
+            
+            // Photos en base64 pour le PDF
+            photos: JSON.stringify(photosBase64)
         };
         
         console.log("📊 Données préparées:", {
             missionId: donnees.missionId,
             dateObservation: donnees.dateObservation,
-            etatForme: donnees.etatForme
+            etatForme: donnees.etatForme,
+            photosCount: photosBase64.length
         });
         
-        // 5. Envoyer les données via JSONP
+        // 7. Envoyer les données via JSONP
         const callbackName = 'cbSaveFiche' + Date.now();
         const params = new URLSearchParams();
         Object.keys(donnees).forEach(key => {
@@ -3012,27 +3048,54 @@ async function envoyerFicheComplete() {
         console.log("📡 Envoi au script GAS...");
         
         const result = await window.presta_callApiJsonp(url, callbackName);
-        console.log("📦 Réponse du serveur:", result);
+        console.log("📦 Réponse complète du serveur:", result);
         
         if (result.success) {
             console.log("✅ Données enregistrées avec succès !");
             
-            // Ouvrir le PDF si disponible
-            if (result.url) {
+            // VÉRIFICATION AMÉLIORÉE : Vérifier si l'URL PDF existe
+            if (result.url && result.url !== 'undefined' && result.url.startsWith('http')) {
                 console.log("📄 PDF généré:", result.url);
                 presta_showNotification("✅ Fiche enregistrée et PDF généré !", 'success');
                 
+                // Ouvrir le PDF dans un nouvel onglet
                 setTimeout(() => {
                     window.open(result.url, '_blank');
                 }, 1000);
+            } else if (result.pdfUrl && result.pdfUrl.startsWith('http')) {
+                // Vérifier un autre nom de champ possible
+                console.log("📄 PDF généré (pdfUrl):", result.pdfUrl);
+                presta_showNotification("✅ Fiche enregistrée et PDF généré !", 'success');
+                
+                setTimeout(() => {
+                    window.open(result.pdfUrl, '_blank');
+                }, 1000);
             } else {
-                console.log("ℹ️ Pas d'URL PDF retournée");
-                presta_showNotification("✅ Fiche enregistrée !", 'success');
+                // PDF non généré mais données enregistrées
+                console.log("ℹ️ Données enregistrées mais PDF non généré");
+                console.log("📊 Résultat complet:", result);
+                
+                if (result.message && result.message.includes("succès")) {
+                    // Le message indique que c'est OK même sans PDF
+                    presta_showNotification("✅ " + result.message, 'success');
+                } else {
+                    presta_showNotification("✅ Fiche enregistrée ! (PDF non généré)", 'warning');
+                }
             }
             
             // Afficher l'étape de succès
             document.getElementById("presta-stepForm").style.display = "none";
             document.getElementById("presta-stepSuccess").style.display = "block";
+            
+            // Mettre à jour le message de succès
+            const successMessage = document.querySelector("#presta-stepSuccess p");
+            if (successMessage) {
+                if (result.url) {
+                    successMessage.textContent = "✅ Fiche enregistrée et PDF généré avec succès !";
+                } else {
+                    successMessage.textContent = "✅ Fiche enregistrée avec succès !";
+                }
+            }
             
             // Fermer après 5 secondes
             setTimeout(() => {
@@ -3043,18 +3106,83 @@ async function envoyerFicheComplete() {
             }, 5000);
             
         } else {
-            throw new Error(result.message || result.error || "Erreur enregistrement données");
+            // ANALYSE DE L'ERREUR AMÉLIORÉE
+            let errorMessage = result.message || result.error || "Erreur enregistrement données";
+            
+            // Si le message contient "succès" mais échoue quand même
+            if (errorMessage.includes("succès") || errorMessage.includes("enregistrées")) {
+                console.log("⚠️ Message ambigu:", errorMessage);
+                
+                // Séparer les parties du message
+                const parts = errorMessage.split('|');
+                if (parts.length > 1) {
+                    const dataSaved = parts[0].trim();
+                    const pdfError = parts[1].trim();
+                    
+                    presta_showNotification("✅ " + dataSaved + " (PDF non généré)", 'warning');
+                    
+                    // Afficher l'étape de succès quand même
+                    document.getElementById("presta-stepForm").style.display = "none";
+                    document.getElementById("presta-stepSuccess").style.display = "block";
+                    
+                    // Modifier le message
+                    const successMsg = document.querySelector("#presta-stepSuccess p");
+                    if (successMsg) {
+                        successMsg.textContent = "✅ " + dataSaved;
+                        successMsg.style.color = "#facc15"; // Jaune pour avertissement
+                    }
+                    
+                    // Fermer après 5 secondes
+                    setTimeout(() => {
+                        presta_closeModalQR();
+                        if (presta_currentEmail) {
+                            presta_loadMissions(presta_currentEmail);
+                        }
+                    }, 5000);
+                    
+                    return; // Sortir sans erreur
+                }
+            }
+            
+            // Si c'est une vraie erreur
+            throw new Error(errorMessage);
         }
         
     } catch (error) {
         console.error("❌ Erreur complète:", error);
-        presta_showNotification("❌ Erreur: " + error.message, 'error');
         
-        // Réafficher le formulaire en cas d'erreur
-        const stepForm = document.getElementById("presta-stepForm");
-        if (stepForm) stepForm.style.display = "block";
+        // VÉRIFICATION : Si l'erreur indique que les données sont sauvegardées
+        if (error.message.includes("enregistrées") || error.message.includes("succès")) {
+            console.log("⚠️ Données sauvegardées avec message d'erreur partiel");
+            presta_showNotification("✅ Données sauvegardées (PDF non généré)", 'warning');
+            
+            // Afficher quand même l'étape de succès
+            document.getElementById("presta-stepForm").style.display = "none";
+            document.getElementById("presta-stepSuccess").style.display = "block";
+            
+            const successMsg = document.querySelector("#presta-stepSuccess p");
+            if (successMsg) {
+                successMsg.textContent = "✅ Données enregistrées (PDF non généré)";
+                successMsg.style.color = "#facc15";
+            }
+            
+            // Fermer après 5 secondes
+            setTimeout(() => {
+                presta_closeModalQR();
+                if (presta_currentEmail) {
+                    presta_loadMissions(presta_currentEmail);
+                }
+            }, 5000);
+            
+        } else {
+            // Vraie erreur, afficher notification
+            presta_showNotification("❌ Erreur: " + error.message, 'error');
+            
+            // Réafficher le formulaire en cas d'erreur
+            const stepForm = document.getElementById("presta-stepForm");
+            if (stepForm) stepForm.style.display = "block";
+        }
         
-        throw error;
     } finally {
         // Cacher le loader
         const loader = document.getElementById('presta-form-loader');
@@ -3062,6 +3190,34 @@ async function envoyerFicheComplete() {
     }
 }
 
+// Fonction ensureNamesNotEmpty améliorée
+function ensureNamesNotEmpty() {
+    let noms = getFormattedNames();
+    
+    console.log("👤 Noms avant garantie:", noms);
+    
+    // Valeurs par défaut SI ET SEULEMENT SI vides
+    if (!noms.clientPrenom || noms.clientPrenom.trim() === "") {
+        noms.clientPrenom = "Gaëtan";
+        console.log("⚠️ clientPrenom vide → valeur par défaut");
+    }
+    if (!noms.clientNom || noms.clientNom.trim() === "") {
+        noms.clientNom = "MUKEBA-HARCHIES";
+        console.log("⚠️ clientNom vide → valeur par défaut");
+    }
+    if (!noms.prestatairePrenom || noms.prestatairePrenom.trim() === "") {
+        noms.prestatairePrenom = presta_currentPrestatairePrenom || "Ray";
+        console.log("⚠️ prestatairePrenom vide → valeur par défaut");
+    }
+    if (!noms.prestataireNom || noms.prestataireNom.trim() === "") {
+        noms.prestataireNom = presta_currentPrestataireNom || "Mon";
+        console.log("⚠️ prestataireNom vide → valeur par défaut");
+    }
+    
+    console.log("👤 Noms garantis:", noms);
+    return noms;
+}
+        
 function presta_clearForm() {
     console.log("🧹 Nettoyage du formulaire");
 
