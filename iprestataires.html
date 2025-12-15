@@ -1986,7 +1986,7 @@ function presta_updateStats(missions) {
             return false;
         }
     }).length;
-    const completedCount = missions.filter(m => m.statut === "terminée" || m.statut === "validée").length;
+    const completedCount = missions.filter(m => m.statut === "Clôturée" || m.statut === "validée").length;
     const inProgressCount = missions.filter(m => m.statut === "en cours").length;
 
     document.getElementById('stats-pending').textContent = pendingCount;
