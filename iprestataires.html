@@ -3366,6 +3366,42 @@ function fileToBase64(file) {
 }
 
 // =============================================
+// FONCTION DE COMPRESSION D'IMAGE
+// =============================================
+
+function compresserPhoto(base64, maxWidth = 400, quality = 0.5) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+            
+            // Redimensionner si trop large
+            if (width > maxWidth) {
+                height = (height * maxWidth) / width;
+                width = maxWidth;
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Convertir en JPEG avec qualité réduite
+            const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+            console.log(`📊 Compression: ${base64.length} → ${compressedBase64.length} chars`);
+            
+            // Retirer le préfixe "data:image/jpeg;base64," pour réduire encore
+            const base64SansPrefix = compressedBase64.split(',')[1];
+            resolve(base64SansPrefix);
+        };
+        img.src = base64;
+    });
+}
+        
+// =============================================
 // FONCTION DE DÉCONNEXION
 // =============================================
 
