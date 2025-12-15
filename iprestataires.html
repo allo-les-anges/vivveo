@@ -3190,6 +3190,96 @@ async function envoyerFicheComplete() {
     }
 }
 
+// =============================================
+// FONCTION MANQUANTE : getFormattedNames
+// =============================================
+function getFormattedNames() {
+    console.log("🔍 Début getFormattedNames");
+    
+    // Récupérer le nom complet du prestataire depuis l'interface
+    const prestataireNameElement = document.getElementById('prestataire-name');
+    let prestatairePrenom = "Ray"; // Valeurs par défaut
+    let prestataireNom = "Mon";
+    
+    if (prestataireNameElement) {
+        const fullName = prestataireNameElement.textContent.trim();
+        console.log("Nom prestataire brut:", fullName);
+        
+        if (fullName && fullName !== "Prestataire") {
+            const nameParts = fullName.split(' ');
+            prestatairePrenom = nameParts[0] || "Ray";
+            prestataireNom = nameParts.slice(1).join(' ') || "Mon";
+        }
+    } else {
+        // Si l'élément n'existe pas, utiliser les données de session
+        prestatairePrenom = presta_currentPrestatairePrenom || "Ray";
+        prestataireNom = presta_currentPrestataireNom || "Mon";
+    }
+    
+    // Récupérer le nom du client depuis les variables globales
+    let clientPrenom = presta_currentClientPrenom || "Gaëtan";
+    let clientNom = presta_currentClientNom || "MUKEBA-HARCHIES";
+    
+    console.log("Données client brutes:", {
+        prenom: presta_currentClientPrenom,
+        nom: presta_currentClientNom
+    });
+    
+    // Si presta_currentClientNom contient les deux (prénom + nom)
+    if (presta_currentClientNom && presta_currentClientNom.trim() && !presta_currentClientPrenom) {
+        const clientFullName = presta_currentClientNom.trim();
+        const clientNameParts = clientFullName.split(' ');
+        
+        if (clientNameParts.length >= 2) {
+            // Le dernier mot est probablement le nom
+            clientNom = clientNameParts[clientNameParts.length - 1];
+            clientPrenom = clientNameParts.slice(0, clientNameParts.length - 1).join(' ');
+        }
+    }
+    
+    console.log("👤 Noms formatés:", {
+        client: `${clientPrenom} ${clientNom}`,
+        prestataire: `${prestatairePrenom} ${prestataireNom}`
+    });
+    
+    return {
+        clientPrenom,
+        clientNom,
+        prestatairePrenom,
+        prestataireNom
+    };
+}
+
+// =============================================
+// VOTRE FONCTION EXISTANTE ensureNamesNotEmpty
+// =============================================
+function ensureNamesNotEmpty() {
+    let noms = getFormattedNames();
+    
+    console.log("👤 Noms avant garantie:", noms);
+    
+    // Valeurs par défaut SI ET SEULEMENT SI vides
+    if (!noms.clientPrenom || noms.clientPrenom.trim() === "") {
+        noms.clientPrenom = "Gaëtan";
+        console.log("⚠️ clientPrenom vide → valeur par défaut");
+    }
+    if (!noms.clientNom || noms.clientNom.trim() === "") {
+        noms.clientNom = "MUKEBA-HARCHIES";
+        console.log("⚠️ clientNom vide → valeur par défaut");
+    }
+    if (!noms.prestatairePrenom || noms.prestatairePrenom.trim() === "") {
+        noms.prestatairePrenom = presta_currentPrestatairePrenom || "Ray";
+        console.log("⚠️ prestatairePrenom vide → valeur par défaut");
+    }
+    if (!noms.prestataireNom || noms.prestataireNom.trim() === "") {
+        noms.prestataireNom = presta_currentPrestataireNom || "Mon";
+        console.log("⚠️ prestataireNom vide → valeur par défaut");
+    }
+    
+    console.log("👤 Noms garantis:", noms);
+    return noms;
+                }
+        
 // Fonction ensureNamesNotEmpty améliorée
 function ensureNamesNotEmpty() {
     let noms = getFormattedNames();
