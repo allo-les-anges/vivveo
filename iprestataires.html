@@ -3042,11 +3042,14 @@ async function envoyerFicheComplete() {
             
             for (let i = 0; i < photosBase64.length; i++) {
                 try {
+                    // TRÈS IMPORTANT : Compresser/réduire la taille de la photo
+                    const photoCompressee = await compresserPhoto(photosBase64[i], 400, 0.5);
+                    
                     const photoData = {
                         type: "savePhoto",
                         missionId: presta_currentMissionId,
                         photoIndex: i.toString(),
-                        photoData: photosBase64[i]
+                        photoData: photoCompressee
                     };
                     
                     const callbackPhoto = 'cbPhoto_' + Date.now() + '_' + i;
@@ -3113,8 +3116,7 @@ async function envoyerFicheComplete() {
         const loader = document.getElementById('presta-form-loader');
         if (loader) loader.style.display = 'none';
     }
-}
-        
+}        
 // =============================================
 // FONCTION MANQUANTE : getFormattedNames
 // =============================================
