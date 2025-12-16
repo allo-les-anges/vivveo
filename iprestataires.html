@@ -1935,9 +1935,37 @@ async function presta_loadMissions(email) {
 
         const missions = data.missions || data;
         
+        // ============ AJOUTEZ CE CODE ============
+        console.log("🔍 DEBUG DÉTAILLÉ - Missions reçues:");
+        console.log("Données brutes API:", data);
+        console.log("Missions extraites:", missions);
+        
         if (!Array.isArray(missions)) {
             throw new Error("Format de données invalide");
         }
+
+        // Afficher chaque mission avec son statut
+        console.log(`📊 ${missions.length} mission(s) reçue(s):`);
+        missions.forEach((mission, index) => {
+            console.log(`${index + 1}. ID: ${mission.id}`);
+            console.log(`   Statut: "${mission.statut}"`);
+            console.log(`   Type statut: ${typeof mission.statut}`);
+            console.log(`   Trim: "${mission.statut ? mission.statut.trim() : 'null'}"`);
+            console.log(`   Lowercase: "${mission.statut ? mission.statut.toLowerCase() : 'null'}"`);
+            
+            // Tests de comparaison
+            console.log(`   === "en cours" ? ${mission.statut === "en cours"}`);
+            console.log(`   === 'en cours' ? ${mission.statut === 'en cours'}`);
+            console.log(`   trimmed === "en cours" ? ${mission.statut && mission.statut.trim() === "en cours"}`);
+            console.log(`   lowercase === "en cours" ? ${mission.statut && mission.statut.toLowerCase() === "en cours"}`);
+            
+            // Afficher d'autres propriétés importantes
+            console.log(`   Client: ${mission.client}`);
+            console.log(`   Date: ${mission.date}`);
+            console.log(`   Service: ${mission.service}`);
+            console.log("   ---");
+        });
+        // ============ FIN DU CODE AJOUTÉ ============
 
         presta_currentMissions = missions;
         console.log("📦 Missions reçues:", missions.length, "mission(s)");
@@ -1957,7 +1985,6 @@ async function presta_loadMissions(email) {
         presta_showNotification("Erreur lors du chargement des missions: " + error.message, 'error');
     }
 }
-
 function presta_updateStats(missions) {
     if (!Array.isArray(missions)) {
         console.error("Missions n'est pas un tableau:", missions);
